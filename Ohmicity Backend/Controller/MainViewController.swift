@@ -11,7 +11,7 @@ import FirebaseDatabase
 
 
 
-class MainViewController: NSViewController, NSTableViewDataSource, NSTabViewDelegate {
+class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     
     //Properties
     @IBOutlet weak var scrapeDataButton: NSButton!
@@ -21,6 +21,9 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTabViewDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.delegate = self
+        tableView.dataSource = self
         
     }
     
@@ -73,11 +76,14 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTabViewDele
     }
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        guard let vw = tableView.makeView(withIdentifier: tableColumn!.identifier, owner: self) as? NSTableCellView else { return nil }
         
-        vw.textField?.stringValue = dataController.dataArray[row].venueName
+        if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "VenueCell"), owner: nil) as? NSTableCellView {
+            cell.textField?.stringValue = "\(row + 1): \(dataController.dataArray[row].venueName)"
+            
+            return cell
+        }
         
-        return vw
+        return  nil
     }
     
 }

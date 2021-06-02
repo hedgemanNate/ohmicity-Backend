@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D8092A0F26681C0000560A97 /* Venue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8092A0E26681C0000560A97 /* Venue.swift */; };
+		D8092A1226682D4E00560A97 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8092A1126682D4E00560A97 /* User.swift */; };
 		F630FC0726583E5A001D0DA6 /* DoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F630FC0626583E5A001D0DA6 /* DoData.swift */; };
 		F6A2D74F2656F05900C50456 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A2D74D2656F05900C50456 /* MainViewController.swift */; };
 		F6A2D7502656F05900C50456 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F6A2D74E2656F05900C50456 /* MainViewController.xib */; };
@@ -23,6 +25,8 @@
 		0510E24CFF24417E831AB32A /* Pods_Ohmicity_Backend.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ohmicity_Backend.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		74DF8D66E225A721CD277204 /* Pods-Ohmicity Backend.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ohmicity Backend.debug.xcconfig"; path = "Target Support Files/Pods-Ohmicity Backend/Pods-Ohmicity Backend.debug.xcconfig"; sourceTree = "<group>"; };
 		D756B91D473B0E99A41EF7C5 /* Pods-Ohmicity Backend.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ohmicity Backend.release.xcconfig"; path = "Target Support Files/Pods-Ohmicity Backend/Pods-Ohmicity Backend.release.xcconfig"; sourceTree = "<group>"; };
+		D8092A0E26681C0000560A97 /* Venue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Venue.swift; sourceTree = "<group>"; };
+		D8092A1126682D4E00560A97 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		F6292DD52656F58000DAE6B5 /* PythonTests.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = PythonTests.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		F630FC0626583E5A001D0DA6 /* DoData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoData.swift; sourceTree = "<group>"; };
 		F6A2D74D2656F05900C50456 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -63,6 +67,8 @@
 			isa = PBXGroup;
 			children = (
 				F630FC0626583E5A001D0DA6 /* DoData.swift */,
+				D8092A0E26681C0000560A97 /* Venue.swift */,
+				D8092A1126682D4E00560A97 /* User.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -261,6 +267,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6A2D74F2656F05900C50456 /* MainViewController.swift in Sources */,
+				D8092A0F26681C0000560A97 /* Venue.swift in Sources */,
+				D8092A1226682D4E00560A97 /* User.swift in Sources */,
 				F630FC0726583E5A001D0DA6 /* DoData.swift in Sources */,
 				F6C5930C26585F1A000E0245 /* ParseDataController.swift in Sources */,
 				F6C31F552656E57B004A1BB2 /* AppDelegate.swift in Sources */,
