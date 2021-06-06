@@ -9,7 +9,14 @@
 /* Begin PBXBuildFile section */
 		D8092A0F26681C0000560A97 /* Venue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8092A0E26681C0000560A97 /* Venue.swift */; };
 		D8092A1226682D4E00560A97 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8092A1126682D4E00560A97 /* User.swift */; };
-		F630FC0726583E5A001D0DA6 /* DoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F630FC0626583E5A001D0DA6 /* DoData.swift */; };
+		F610AA3A2669309100EC2E8A /* VenueDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610AA382669309100EC2E8A /* VenueDetailViewController.swift */; };
+		F610AA3F26699EE700EC2E8A /* LocalDataStorageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610AA3E26699EE700EC2E8A /* LocalDataStorageController.swift */; };
+		F630FC0726583E5A001D0DA6 /* RawJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = F630FC0626583E5A001D0DA6 /* RawJSON.swift */; };
+		F65B06A4266C360F00616BD9 /* BandDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65B06A2266C360F00616BD9 /* BandDetailViewController.swift */; };
+		F65B06A5266C360F00616BD9 /* BandDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F65B06A3266C360F00616BD9 /* BandDetailViewController.xib */; };
+		F65B06A9266C3EC300616BD9 /* ShowDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65B06A7266C3EC300616BD9 /* ShowDetailViewController.swift */; };
+		F65B06AA266C3EC300616BD9 /* ShowDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F65B06A8266C3EC300616BD9 /* ShowDetailViewController.xib */; };
+		F65B06AD266C95AF00616BD9 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65B06AC266C95AF00616BD9 /* Helper.swift */; };
 		F6A2D74F2656F05900C50456 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A2D74D2656F05900C50456 /* MainViewController.swift */; };
 		F6A2D7502656F05900C50456 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F6A2D74E2656F05900C50456 /* MainViewController.xib */; };
 		F6A2D75B2656F1D100C50456 /* Ohmicity Logo Banner.png in Resources */ = {isa = PBXBuildFile; fileRef = F6A2D75A2656F1D100C50456 /* Ohmicity Logo Banner.png */; };
@@ -18,6 +25,9 @@
 		F6C31F5C2656E57B004A1BB2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6C31F5A2656E57B004A1BB2 /* Main.storyboard */; };
 		F6C5930C26585F1A000E0245 /* ParseDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C5930B26585F1A000E0245 /* ParseDataController.swift */; };
 		F6C59E91B82AB86354537DE1 /* Pods_Ohmicity_Backend.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0510E24CFF24417E831AB32A /* Pods_Ohmicity_Backend.framework */; };
+		F6D80C44266AF93200A18ED2 /* Band.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D80C43266AF93200A18ED2 /* Band.swift */; };
+		F6D80C48266B01EA00A18ED2 /* BandController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D80C47266B01EA00A18ED2 /* BandController.swift */; };
+		F6D80C4B266B0FEF00A18ED2 /* Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D80C4A266B0FEF00A18ED2 /* Show.swift */; };
 		F6F5C1B02656EB110003924A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F6F5C1AF2656EB110003924A /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -27,8 +37,15 @@
 		D756B91D473B0E99A41EF7C5 /* Pods-Ohmicity Backend.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ohmicity Backend.release.xcconfig"; path = "Target Support Files/Pods-Ohmicity Backend/Pods-Ohmicity Backend.release.xcconfig"; sourceTree = "<group>"; };
 		D8092A0E26681C0000560A97 /* Venue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Venue.swift; sourceTree = "<group>"; };
 		D8092A1126682D4E00560A97 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		F610AA382669309100EC2E8A /* VenueDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueDetailViewController.swift; sourceTree = "<group>"; };
+		F610AA3E26699EE700EC2E8A /* LocalDataStorageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataStorageController.swift; sourceTree = "<group>"; };
 		F6292DD52656F58000DAE6B5 /* PythonTests.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = PythonTests.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		F630FC0626583E5A001D0DA6 /* DoData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoData.swift; sourceTree = "<group>"; };
+		F630FC0626583E5A001D0DA6 /* RawJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawJSON.swift; sourceTree = "<group>"; };
+		F65B06A2266C360F00616BD9 /* BandDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BandDetailViewController.swift; sourceTree = "<group>"; };
+		F65B06A3266C360F00616BD9 /* BandDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BandDetailViewController.xib; sourceTree = "<group>"; };
+		F65B06A7266C3EC300616BD9 /* ShowDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDetailViewController.swift; sourceTree = "<group>"; };
+		F65B06A8266C3EC300616BD9 /* ShowDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowDetailViewController.xib; sourceTree = "<group>"; };
+		F65B06AC266C95AF00616BD9 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		F6A2D74D2656F05900C50456 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		F6A2D74E2656F05900C50456 /* MainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
 		F6A2D75A2656F1D100C50456 /* Ohmicity Logo Banner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Ohmicity Logo Banner.png"; sourceTree = "<group>"; };
@@ -39,6 +56,9 @@
 		F6C31F5D2656E57B004A1BB2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F6C31F5E2656E57B004A1BB2 /* Ohmicity_Backend.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Ohmicity_Backend.entitlements; sourceTree = "<group>"; };
 		F6C5930B26585F1A000E0245 /* ParseDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseDataController.swift; sourceTree = "<group>"; };
+		F6D80C43266AF93200A18ED2 /* Band.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Band.swift; sourceTree = "<group>"; };
+		F6D80C47266B01EA00A18ED2 /* BandController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BandController.swift; sourceTree = "<group>"; };
+		F6D80C4A266B0FEF00A18ED2 /* Show.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Show.swift; sourceTree = "<group>"; };
 		F6F5C1AF2656EB110003924A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -66,9 +86,12 @@
 		F6292DD32656F2E000DAE6B5 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				F630FC0626583E5A001D0DA6 /* DoData.swift */,
+				F630FC0626583E5A001D0DA6 /* RawJSON.swift */,
 				D8092A0E26681C0000560A97 /* Venue.swift */,
+				F6D80C4A266B0FEF00A18ED2 /* Show.swift */,
+				F6D80C43266AF93200A18ED2 /* Band.swift */,
 				D8092A1126682D4E00560A97 /* User.swift */,
+				F65B06AC266C95AF00616BD9 /* Helper.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -85,7 +108,14 @@
 			isa = PBXGroup;
 			children = (
 				F6A2D74D2656F05900C50456 /* MainViewController.swift */,
+				F65B06A7266C3EC300616BD9 /* ShowDetailViewController.swift */,
+				F65B06A8266C3EC300616BD9 /* ShowDetailViewController.xib */,
+				F65B06A2266C360F00616BD9 /* BandDetailViewController.swift */,
+				F65B06A3266C360F00616BD9 /* BandDetailViewController.xib */,
+				F610AA382669309100EC2E8A /* VenueDetailViewController.swift */,
+				F610AA3E26699EE700EC2E8A /* LocalDataStorageController.swift */,
 				F6C5930B26585F1A000E0245 /* ParseDataController.swift */,
+				F6D80C47266B01EA00A18ED2 /* BandController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -210,7 +240,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6C31F592656E57B004A1BB2 /* Assets.xcassets in Resources */,
+				F65B06AA266C3EC300616BD9 /* ShowDetailViewController.xib in Resources */,
 				F6A2D75B2656F1D100C50456 /* Ohmicity Logo Banner.png in Resources */,
+				F65B06A5266C360F00616BD9 /* BandDetailViewController.xib in Resources */,
 				F6C31F5C2656E57B004A1BB2 /* Main.storyboard in Resources */,
 				F6F5C1B02656EB110003924A /* GoogleService-Info.plist in Resources */,
 				F6A2D7502656F05900C50456 /* MainViewController.xib in Resources */,
@@ -266,12 +298,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6D80C44266AF93200A18ED2 /* Band.swift in Sources */,
+				F65B06AD266C95AF00616BD9 /* Helper.swift in Sources */,
 				F6A2D74F2656F05900C50456 /* MainViewController.swift in Sources */,
 				D8092A0F26681C0000560A97 /* Venue.swift in Sources */,
+				F65B06A9266C3EC300616BD9 /* ShowDetailViewController.swift in Sources */,
 				D8092A1226682D4E00560A97 /* User.swift in Sources */,
-				F630FC0726583E5A001D0DA6 /* DoData.swift in Sources */,
+				F65B06A4266C360F00616BD9 /* BandDetailViewController.swift in Sources */,
+				F610AA3F26699EE700EC2E8A /* LocalDataStorageController.swift in Sources */,
+				F630FC0726583E5A001D0DA6 /* RawJSON.swift in Sources */,
+				F610AA3A2669309100EC2E8A /* VenueDetailViewController.swift in Sources */,
 				F6C5930C26585F1A000E0245 /* ParseDataController.swift in Sources */,
+				F6D80C48266B01EA00A18ED2 /* BandController.swift in Sources */,
 				F6C31F552656E57B004A1BB2 /* AppDelegate.swift in Sources */,
+				F6D80C4B266B0FEF00A18ED2 /* Show.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

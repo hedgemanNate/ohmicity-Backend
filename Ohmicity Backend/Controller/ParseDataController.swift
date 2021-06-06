@@ -12,11 +12,11 @@ class ParseDataController {
     
     var data: Venue?
     var path: URL?
-    var dataArray: [DoData] = []
+    var dataArray: [RawJSON] = []
     
     
     
-    func loadPath() {
+    func loadPath(completion: @escaping () -> Void) {
         guard let path = path else {return NSLog("No file loaded")}
         loadJson(fromURLString: path.absoluteString) { (result) in
             print(path)
@@ -24,10 +24,12 @@ class ParseDataController {
             case .success(let data):
                 print("loadJson worked")
                 self.parse(jsonData: data)
+                completion()
                 
             case .failure(let error):
                 print(error)
                 print("loadJson failed")
+                return
             }
         }
     }
@@ -51,13 +53,17 @@ class ParseDataController {
     
     private func parse(jsonData: Data) {
         do {
+            let serialQueue = DispatchQueue(label: "JsonArrayQueue")
+            dataArray = []
             let decodedData = try JSONDecoder().decode(Venue.self, from: jsonData)
             data = decodedData
-            print(data!.venue.count)
+            
             
             guard let data = data else {return}
             for show in data.venue {
-                dataArray.append(show)
+                serialQueue.async { [self] in
+                    dataArray.append(show)
+                }
             }
             
         } catch {
@@ -66,3 +72,5 @@ class ParseDataController {
     }
     
 }
+
+var parseDataController = ParseDataController()

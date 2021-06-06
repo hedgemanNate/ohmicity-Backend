@@ -19,6 +19,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Insert code here to initialize your application
         FirebaseApp.configure()
         Database.database().isPersistenceEnabled = true
+        
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
