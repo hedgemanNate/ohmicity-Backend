@@ -8,11 +8,15 @@
 import Foundation
 import Cocoa
 
+
 class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
     
     //MARK: Properties
     var currentVenue: RawJSON?
     var currentBusiness: BusinessFullData?
+    
+    var scheduleTextFieldsArray: [NSTextField] = []
+    var businessTypeButtonsArray: [NSButton] = []
     
     @IBOutlet weak var tableView: NSTableView!
     var currentBusinessShows: [Show]?
@@ -24,9 +28,18 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     @IBOutlet weak var starsTextField: NSTextField!
     @IBOutlet weak var websiteTextField: NSTextField!
     
-    //Buttons
+    //Schedule:
+    @IBOutlet weak var mondayOpenTextField: NSTextField!
+    @IBOutlet weak var tuesdayOpenTextField: NSTextField!
+    @IBOutlet weak var wednesdayOpenTextField: NSTextField!
+    @IBOutlet weak var thursdayOpenTextField: NSTextField!
+    @IBOutlet weak var fridayOpenTextField: NSTextField!
+    @IBOutlet weak var saturdayOpenTextField: NSTextField!
+    @IBOutlet weak var sundayOpenTextField: NSTextField!
     
+    //Buttons
     @IBOutlet weak var updateBusinessButton: NSButton!
+    @IBOutlet weak var makeBusinessButton: NSButton!
     @IBOutlet weak var deleteShowButton: NSButton!
     @IBOutlet weak var saveButton: NSButton!
     @IBOutlet weak var deleteButton: NSButton!
@@ -34,6 +47,14 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     @IBOutlet weak var loadPictureButton: NSButton!
     @IBOutlet weak var resetSaveButton: NSButton!
     @IBOutlet weak var logoImageView: NSImageView!
+    //Genre
+    @IBOutlet weak var resturantGenreButton: NSButton!
+    @IBOutlet weak var barGenreButton: NSButton!
+    @IBOutlet weak var clubGenreButton: NSButton!
+    @IBOutlet weak var outdoorsGenreButton: NSButton!
+    @IBOutlet weak var liveMusicGenreButton: NSButton!
+    @IBOutlet weak var familyGenreButton: NSButton!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,12 +84,38 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     }
     
     @IBAction func updateBusinessButtonTapped(_ sender: Any) {
-        var updated = currentBusiness
+        let name = nameTextField.stringValue
+        let address = addressTextField.stringValue
+        let website = websiteTextField.stringValue
+        let phoneString = phoneTextField.stringValue
+        let stars = Double(starsTextField.stringValue) ?? 0
         
-        localDataController.businessArray.map { $0.venueID == currentBusiness?.venueID ? $0 : updated}
+        let numberString = phoneString.filter("0123456789".contains)
+        print(numberString)
+        guard let phoneNumber = Int(numberString) else {return print("Return on phone number")}
+        
+        currentBusiness?.name = name
+        currentBusiness?.address = address
+        currentBusiness?.website = website
+        currentBusiness?.phoneNumber = phoneNumber
+        currentBusiness?.stars = stars
+        if ohmPick.state == .on {
+            currentBusiness?.ohmPick = true
+        } else if ohmPick.state == .off {
+            currentBusiness?.ohmPick = false
+        }
+        
+        addScheduleAndBusinessType(business: currentBusiness!)
+        guard let index = localDataController.businessArray.firstIndex(where: {$0.venueID == currentBusiness?.venueID}) else {return}
+        localDataController.businessBasicArray[index].name = name
+        localDataController.businessBasicArray[index].stars = stars
+        //localDataController.businessBasicArray[index].logo = logo /*Preparing for logo*/
+        
+        localDataController.saveBusinessData()
+        
     }
     
-    @IBAction func saveBusinessButtonTapped(_ sender: Any) {
+    @IBAction func makeBusinessButtonTapped(_ sender: Any) {
         DispatchQueue.main.async {
             self.saveButton.isEnabled = false
             self.resetSaveButton.isEnabled = true
@@ -77,6 +124,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         let address = addressTextField.stringValue
         let website = websiteTextField.stringValue
         let phoneString = phoneTextField.stringValue
+        let stars = starsTextField.stringValue
         
         let numberString = phoneString.filter("0123456789".contains)
         print(numberString)
@@ -84,6 +132,11 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         
         let newBusiness = BusinessFullData(name: name, address: address, phoneNumber: phoneNumber, website: website)
         print("Business Created")
+        
+        newBusiness.stars = Double(stars)!
+        addScheduleAndBusinessType(business: newBusiness)
+        
+        let newBusinessBasic = BusinessBasicData(venueID: newBusiness.venueID, name: newBusiness.name, logo: newBusiness.logo, stars: newBusiness.stars)
         
         if currentVenue?.shows != [] {
             for show in (currentVenue?.shows)! {
@@ -98,6 +151,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         }
         
         localDataController.businessArray.append(newBusiness)
+        localDataController.businessBasicArray.append(newBusinessBasic)
         localDataController.saveBusinessData()
         localDataController.saveShowData()
         activateDelete()
@@ -128,15 +182,19 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     
     
     @IBAction func deleteBusinessButtonTapped(_ sender: Any) {
-        guard let index = localDataController.businessArray.firstIndex(where: {$0.venueID == currentBusiness?.venueID}) else {return}
-        localDataController.businessArray.remove(at: index)
-        localDataController.saveBusinessData()
+//        guard let index = localDataController.businessArray.firstIndex(where: {$0.venueID == currentBusiness?.venueID}) else {return}
+//        localDataController.businessArray.remove(at: index)
+//        localDataController.saveBusinessData()
+        localDataController.businessArray.removeAll(where: {$0 == currentBusiness})
+        localDataController.businessBasicArray.removeAll(where: {$0.venueID == currentBusiness?.venueID})
         
         removeShows {
             localDataController.saveShowData()
             notificationCenter.post(name: NSNotification.Name("businessDeleted"), object: nil)
             notificationCenter.post(name: NSNotification.Name("showsDeleted"), object: nil)
         }
+        
+        localDataController.saveBusinessData()
         
     }
     
@@ -152,17 +210,57 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         tableView.dataSource = self
         
         if currentVenue != nil {
+            updateBusinessButton.isEnabled = false
             nameTextField.stringValue = currentVenue!.venueName!
+            makeBusinessButton.isEnabled = true
         } else if currentBusiness != nil {
+            addBusinessHours()
+            addBusinessType()
+            updateBusinessButton.isEnabled = true
+            makeBusinessButton.isEnabled = false
             nameTextField.stringValue = currentBusiness!.name
             addressTextField.stringValue = currentBusiness!.address
             phoneTextField.stringValue = String(currentBusiness!.phoneNumber)
             starsTextField.stringValue = String(currentBusiness?.stars ?? 0)
             websiteTextField.stringValue = currentBusiness!.website!
             
-            //Initializing currentBusinessArray
+            mondayOpenTextField.stringValue = currentBusiness?.hours.Monday ?? "No Hours"
+            tuesdayOpenTextField.stringValue = currentBusiness?.hours.Tuesday ?? "No Hours"
+            wednesdayOpenTextField.stringValue = currentBusiness?.hours.Wednesday ?? "No Hours"
+            thursdayOpenTextField.stringValue = currentBusiness?.hours.Thursday  ?? "No Hours"
+            fridayOpenTextField.stringValue = currentBusiness?.hours.Friday ?? "No Hours"
+            saturdayOpenTextField.stringValue = currentBusiness?.hours.Saturday ?? "No Hours"
+            sundayOpenTextField.stringValue = currentBusiness?.hours.Sunday ?? "No Hours"
+            //Initializing currentBusinessShows Array
             currentBusinessShows = localDataController.showArray.filter({$0.venue == currentBusiness?.name})
+            
+            if currentBusiness?.ohmPick == true {
+                ohmPick.state = .on
+            } else {
+                ohmPick.state = .off
+            }
         }
+        
+        //Text and Button Arrays
+        scheduleTextFieldsArray = [
+            mondayOpenTextField,
+            tuesdayOpenTextField,
+            wednesdayOpenTextField,
+            thursdayOpenTextField,
+            fridayOpenTextField,
+            saturdayOpenTextField,
+            sundayOpenTextField
+        ]
+        
+        businessTypeButtonsArray = [
+            resturantGenreButton,
+            barGenreButton,
+            clubGenreButton,
+            outdoorsGenreButton,
+            liveMusicGenreButton,
+            familyGenreButton
+        ]
+        
         deleteButton.isEnabled = false
         resetSaveButton.isEnabled = false
     }
@@ -189,6 +287,7 @@ extension VenueDetailViewController {
                 let convertedShow = Show(band: (jsonShow?.bandName)!, venue: (currentVenue?.venueName!)!, showTime: (jsonShow?.showTime!)!)
                 return convertedShow
             } else if currentBusiness != nil {
+               
                 let currentBusinessShows = localDataController.showArray.filter({$0.venue == currentBusiness?.name})
                 return currentBusinessShows[row]
             }
@@ -198,22 +297,15 @@ extension VenueDetailViewController {
         
         if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "Band") {
             let bandIdentifier = NSUserInterfaceItemIdentifier("BandCell")
-            
             guard let cellView = tableView.makeView(withIdentifier: bandIdentifier, owner: self) as? NSTableCellView else {return nil}
-            
             cellView.textField?.stringValue = currentShow?.band ?? "No Data"
-            
             return cellView
             
         } else if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "Time") {
             let showTimeIdentifier = NSUserInterfaceItemIdentifier("TimeCell")
-            
             guard let cellView = tableView.makeView(withIdentifier: showTimeIdentifier, owner: self) as? NSTableCellView else {return nil}
-            
             let showTime = currentShow?.showTime.replacingOccurrences(of: "\n", with: " ")
-            
             cellView.textField?.stringValue = showTime ?? "No Data"
-            
             return cellView
             
         }
@@ -235,5 +327,65 @@ extension VenueDetailViewController {
         }
         print("\(number) shows deleted")
         completion()
+    }
+    
+    private func addScheduleAndBusinessType(business: BusinessFullData) {
+        var day = 1
+        var type = 1
+        
+        for dateHours in self.scheduleTextFieldsArray {
+            business.addBusinessHours(textField: dateHours, textFieldNumber: day)
+            print("\(dateHours.stringValue)")
+            print("day added")
+            day += 1
+        }
+        
+        for businessTypeButton in self.businessTypeButtonsArray {
+            business.addAndRemoveBusinessType(button: businessTypeButton, genreNumber: type)
+            type += 1
+            print("genre added")
+        }
+    }
+    
+    private func addBusinessHours() {
+        if currentBusiness != nil {
+            mondayOpenTextField.stringValue = (currentBusiness?.hours.Monday)!
+            tuesdayOpenTextField.stringValue = (currentBusiness?.hours.Tuesday)!
+            wednesdayOpenTextField.stringValue = (currentBusiness?.hours.Wednesday)!
+            thursdayOpenTextField.stringValue = (currentBusiness?.hours.Thursday)!
+            fridayOpenTextField.stringValue = (currentBusiness?.hours.Friday)!
+            saturdayOpenTextField.stringValue = (currentBusiness?.hours.Saturday)!
+            sundayOpenTextField.stringValue = (currentBusiness?.hours.Sunday)!
+        } else {
+            mondayOpenTextField.stringValue = " "
+            tuesdayOpenTextField.stringValue = " "
+            wednesdayOpenTextField.stringValue = " "
+            thursdayOpenTextField.stringValue = " "
+            fridayOpenTextField.stringValue = " "
+            saturdayOpenTextField.stringValue = " "
+            sundayOpenTextField.stringValue = " "
+        }
+    }
+    
+    private func addBusinessType() {
+        if currentBusiness != nil {
+            for genre in currentBusiness!.businessType {
+                switch genre {
+                case .Resturant:
+                    resturantGenreButton.state = .on
+                case .Bar:
+                    barGenreButton.state = .on
+                case .Club:
+                    clubGenreButton.state = .on
+                case .Outdoors:
+                    outdoorsGenreButton.state = .on
+                case .LiveMusic:
+                    liveMusicGenreButton.state = .on
+                case .Family:
+                    familyGenreButton.state = .on
+                }
+            }
+            
+        }
     }
 }
