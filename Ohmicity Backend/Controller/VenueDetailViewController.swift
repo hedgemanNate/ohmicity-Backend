@@ -112,6 +112,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         //localDataController.businessBasicArray[index].logo = logo /*Preparing for logo*/
         
         localDataController.saveBusinessData()
+        localDataController.saveBusinessBasicData()
         
     }
     
@@ -153,6 +154,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         localDataController.businessArray.append(newBusiness)
         localDataController.businessBasicArray.append(newBusinessBasic)
         localDataController.saveBusinessData()
+        localDataController.saveBusinessBasicData()
         localDataController.saveShowData()
         activateDelete()
         notificationCenter.post(name: NSNotification.Name("showsUpdated"), object: nil)
@@ -182,9 +184,6 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     
     
     @IBAction func deleteBusinessButtonTapped(_ sender: Any) {
-//        guard let index = localDataController.businessArray.firstIndex(where: {$0.venueID == currentBusiness?.venueID}) else {return}
-//        localDataController.businessArray.remove(at: index)
-//        localDataController.saveBusinessData()
         localDataController.businessArray.removeAll(where: {$0 == currentBusiness})
         localDataController.businessBasicArray.removeAll(where: {$0.venueID == currentBusiness?.venueID})
         
@@ -195,6 +194,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         }
         
         localDataController.saveBusinessData()
+        localDataController.saveBusinessBasicData()
         
     }
     

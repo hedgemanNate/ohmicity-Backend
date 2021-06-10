@@ -22,11 +22,15 @@ class LocalDataStorageController {
                 print("Business Data Loaded")
                 //return
             }
-            
-            if let decoded2 = try? JSONDecoder().decode([BusinessBasicData].self, from: data) {
-                self.businessBasicArray = decoded2
-                print("Business Basic Data Loaded")
-                return
+        }
+    }
+    
+    func loadBusinessBasicData() {
+        if let data = UserDefaults.standard.data(forKey: "SavedBusinessBasicData") {
+            if let decoded = try? JSONDecoder().decode([BusinessBasicData].self, from: data) {
+                self.businessBasicArray = decoded
+                print("Business Data Loaded")
+                //return
             }
         }
     }
@@ -36,10 +40,12 @@ class LocalDataStorageController {
             UserDefaults.standard.set(encoded, forKey: "SavedBusinessData")
             print("Business Data Saved")
         }
-        
-        if let encoded2 = try? JSONEncoder().encode(businessBasicArray) {
-            UserDefaults.standard.set(encoded2, forKey: "SavedOhmData")
-            print("Business Basic Data Saved")
+    }
+    
+    func saveBusinessBasicData() {
+        if let encoded = try? JSONEncoder().encode(businessArray) {
+            UserDefaults.standard.set(encoded, forKey: "SavedBusinessBasicData")
+            print("Business Data Saved")
         }
     }
 }

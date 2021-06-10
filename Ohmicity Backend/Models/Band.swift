@@ -14,10 +14,10 @@ enum Genre: String, Codable {
     case dance
     case reggae
     case country
-    case bluegrass
-    case techno
+    case funkSoul
+    case edm
     case hiphop
-    case rap
+    case dj
 }
 
 struct Band: Codable, Equatable {

@@ -209,6 +209,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     private func updateViews() {
         rawJSONDataButton.state = .on
         localDataController.loadBusinessData()
+        localDataController.loadBusinessBasicData()
         localDataController.loadJsonData()
         localDataController.loadShowData()
         

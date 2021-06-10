@@ -1122,7 +1122,7 @@
                                 </buttonCell>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HlT-GK-1o9">
-                                <rect key="frame" x="549" y="533" width="71" height="18"/>
+                                <rect key="frame" x="544" y="533" width="71" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="check" title="Country" bezelStyle="regularSquare" imagePosition="left" inset="2" id="XGp-qY-umv">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1130,9 +1130,9 @@
                                 </buttonCell>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5AH-QH-sEU">
-                                <rect key="frame" x="650" y="533" width="82" height="18"/>
+                                <rect key="frame" x="650" y="533" width="83" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="check" title="Bluegrass" bezelStyle="regularSquare" imagePosition="left" inset="2" id="lnP-EK-1r1">
+                                <buttonCell key="cell" type="check" title="Funk/Soul" bezelStyle="regularSquare" imagePosition="left" inset="2" id="lnP-EK-1r1">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -1154,9 +1154,9 @@
                                 </buttonCell>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bYP-hq-fGJ">
-                                <rect key="frame" x="199" y="500" width="46" height="18"/>
+                                <rect key="frame" x="199" y="500" width="39" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="check" title="Rap" bezelStyle="regularSquare" imagePosition="left" inset="2" id="pbj-pg-nFd">
+                                <buttonCell key="cell" type="check" title="DJ" bezelStyle="regularSquare" imagePosition="left" inset="2" id="pbj-pg-nFd">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -1316,9 +1316,9 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gxr-X4-fEk">
-                                <rect key="frame" x="107" y="644" width="39" height="16"/>
+                                <rect key="frame" x="107" y="644" width="70" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" title="Video" id="s8h-jB-BxP">
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Media Link" id="s8h-jB-BxP">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1327,6 +1327,22 @@
                         </subviews>
                     </view>
                     <connections>
+                        <outlet property="bandMediaLinkTextField" destination="abZ-Ur-gxb" id="eSQ-CK-fs9"/>
+                        <outlet property="bandNameTextField" destination="2t1-xO-xvV" id="8nN-7g-EG4"/>
+                        <outlet property="bluesButton" destination="t1t-Gp-dli" id="6bj-fC-yJt"/>
+                        <outlet property="countryButton" destination="HlT-GK-1o9" id="RZ6-hh-ffl"/>
+                        <outlet property="danceButton" destination="Zjc-1Y-d9O" id="BcG-4Q-TMZ"/>
+                        <outlet property="deleteButton" destination="YBK-S1-FRV" id="833-LX-lz8"/>
+                        <outlet property="djButton" destination="bYP-hq-fGJ" id="XiS-fC-T31"/>
+                        <outlet property="edmButton" destination="rOc-wd-l48" id="hOT-yY-FRz"/>
+                        <outlet property="funkButton" destination="5AH-QH-sEU" id="tDn-9q-77R"/>
+                        <outlet property="hiphopButton" destination="kZe-iJ-8HZ" id="yL2-GN-pSf"/>
+                        <outlet property="jazzButton" destination="zFD-sj-Lzk" id="Cg2-Jf-yCH"/>
+                        <outlet property="loadPictureButton" destination="dlg-Fa-82D" id="1l2-ea-fwc"/>
+                        <outlet property="reggaeButton" destination="mFh-7K-R77" id="19J-mi-61e"/>
+                        <outlet property="rockButton" destination="CCJ-BO-bqD" id="BBr-5f-eFn"/>
+                        <outlet property="saveButton" destination="uLx-yW-zTD" id="5vI-fk-Wxh"/>
+                        <outlet property="tableView" destination="rb4-mx-fsd" id="438-Tp-N2J"/>
                         <segue destination="yOJ-ms-d4r" kind="modal" identifier="ShowSegue" id="23S-EP-GKd"/>
                     </connections>
                 </viewController>

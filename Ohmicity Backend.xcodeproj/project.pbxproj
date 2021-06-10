@@ -13,9 +13,7 @@
 		F610AA3F26699EE700EC2E8A /* LocalDataStorageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610AA3E26699EE700EC2E8A /* LocalDataStorageController.swift */; };
 		F630FC0726583E5A001D0DA6 /* RawJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = F630FC0626583E5A001D0DA6 /* RawJSON.swift */; };
 		F65B06A4266C360F00616BD9 /* BandDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65B06A2266C360F00616BD9 /* BandDetailViewController.swift */; };
-		F65B06A5266C360F00616BD9 /* BandDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F65B06A3266C360F00616BD9 /* BandDetailViewController.xib */; };
 		F65B06A9266C3EC300616BD9 /* ShowDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65B06A7266C3EC300616BD9 /* ShowDetailViewController.swift */; };
-		F65B06AA266C3EC300616BD9 /* ShowDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F65B06A8266C3EC300616BD9 /* ShowDetailViewController.xib */; };
 		F65B06AD266C95AF00616BD9 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65B06AC266C95AF00616BD9 /* Helper.swift */; };
 		F6A2D74F2656F05900C50456 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A2D74D2656F05900C50456 /* MainViewController.swift */; };
 		F6A2D7502656F05900C50456 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F6A2D74E2656F05900C50456 /* MainViewController.xib */; };
@@ -42,9 +40,7 @@
 		F6292DD52656F58000DAE6B5 /* PythonTests.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = PythonTests.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		F630FC0626583E5A001D0DA6 /* RawJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawJSON.swift; sourceTree = "<group>"; };
 		F65B06A2266C360F00616BD9 /* BandDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BandDetailViewController.swift; sourceTree = "<group>"; };
-		F65B06A3266C360F00616BD9 /* BandDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BandDetailViewController.xib; sourceTree = "<group>"; };
 		F65B06A7266C3EC300616BD9 /* ShowDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDetailViewController.swift; sourceTree = "<group>"; };
-		F65B06A8266C3EC300616BD9 /* ShowDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowDetailViewController.xib; sourceTree = "<group>"; };
 		F65B06AC266C95AF00616BD9 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		F6A2D74D2656F05900C50456 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		F6A2D74E2656F05900C50456 /* MainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
@@ -108,11 +104,9 @@
 			isa = PBXGroup;
 			children = (
 				F6A2D74D2656F05900C50456 /* MainViewController.swift */,
-				F65B06A7266C3EC300616BD9 /* ShowDetailViewController.swift */,
-				F65B06A8266C3EC300616BD9 /* ShowDetailViewController.xib */,
-				F65B06A2266C360F00616BD9 /* BandDetailViewController.swift */,
-				F65B06A3266C360F00616BD9 /* BandDetailViewController.xib */,
 				F610AA382669309100EC2E8A /* VenueDetailViewController.swift */,
+				F65B06A7266C3EC300616BD9 /* ShowDetailViewController.swift */,
+				F65B06A2266C360F00616BD9 /* BandDetailViewController.swift */,
 				F610AA3E26699EE700EC2E8A /* LocalDataStorageController.swift */,
 				F6C5930B26585F1A000E0245 /* ParseDataController.swift */,
 				F6D80C47266B01EA00A18ED2 /* BandController.swift */,
@@ -240,9 +234,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6C31F592656E57B004A1BB2 /* Assets.xcassets in Resources */,
-				F65B06AA266C3EC300616BD9 /* ShowDetailViewController.xib in Resources */,
 				F6A2D75B2656F1D100C50456 /* Ohmicity Logo Banner.png in Resources */,
-				F65B06A5266C360F00616BD9 /* BandDetailViewController.xib in Resources */,
 				F6C31F5C2656E57B004A1BB2 /* Main.storyboard in Resources */,
 				F6F5C1B02656EB110003924A /* GoogleService-Info.plist in Resources */,
 				F6A2D7502656F05900C50456 /* MainViewController.xib in Resources */,
