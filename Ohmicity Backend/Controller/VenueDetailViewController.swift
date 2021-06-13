@@ -139,19 +139,6 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         
         let newBusinessBasic = BusinessBasicData(venueID: newBusiness.venueID, name: newBusiness.name, logo: newBusiness.logo, stars: newBusiness.stars)
         
-        if currentVenue?.shows != [] {
-            for show in (currentVenue?.shows)! {
-                var newShow: Show = Show(
-                    band:show.bandName!,
-                    venue:(currentVenue?.venueName)!,
-                    dateString: show.showTime!)
-                newShow.fixShowTime(showTime: newShow.dateString)
-                
-                localDataController.showArray.append(newShow)
-                print("Show added to Business")
-            }
-        }
-        
         localDataController.businessArray.append(newBusiness)
         localDataController.businessBasicArray.append(newBusinessBasic)
         localDataController.saveBusinessData()
@@ -163,24 +150,26 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     }
     
     @IBAction func deleteShowButtonTapped(_ sender: Any) {
-        if tableView.selectedRow < 0 {
-            return print("No show selected")
-        } else {
-            let index = tableView.selectedRow
-            let selectedShow = currentBusinessShows?[index]
-            currentBusinessShows?.remove(at: index)
-            
-            guard let removeIndex = localDataController.showArray.firstIndex(where: {$0.showID == selectedShow?.showID}) else {return print("No show found")}
-            localDataController.showArray.remove(at: removeIndex)
-            
-            localDataController.saveShowData()
-            
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-            notificationCenter.post(name: NSNotification.Name("showsUpdated"), object: nil)
-            print("Show Deleted")
-        }
+        //Will handle indivuals show deletes later. Once all businesses are entered into the data//
+        
+//        if tableView.selectedRow < 0 {
+//            return print("No show selected")
+//        } else {
+//            let index = tableView.selectedRow
+//            let selectedShow = currentBusinessShows?[index]
+//            currentBusinessShows?.remove(at: index)
+//
+//            guard let removeIndex = localDataController.showArray.firstIndex(where: {$0.showID == selectedShow?.showID}) else {return print("No show found")}
+//            localDataController.showArray.remove(at: removeIndex)
+//
+//            localDataController.saveShowData()
+//
+//            DispatchQueue.main.async {
+//                self.tableView.reloadData()
+//            }
+//            notificationCenter.post(name: NSNotification.Name("showsUpdated"), object: nil)
+//            print("Show Deleted")
+//        }
     }
     
     

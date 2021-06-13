@@ -848,7 +848,7 @@
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XPU-yf-Di1">
                                 <rect key="frame" x="2" y="582" width="206" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="push" title="Save Venues" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="5Xt-zv-Njm">
+                                <buttonCell key="cell" type="push" title="Save Venues/Shows" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="5Xt-zv-Njm">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -868,9 +868,9 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JBw-Kw-nnb">
-                                <rect key="frame" x="7" y="462" width="197" height="36"/>
+                                <rect key="frame" x="7" y="473" width="197" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="radio" title="   Saved Businesses" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="8Vy-qN-rdk">
+                                <buttonCell key="cell" type="radio" title="Local Businesses" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="8Vy-qN-rdk">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -879,9 +879,9 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="myJ-Go-i2Y">
-                                <rect key="frame" x="7" y="344" width="197" height="36"/>
+                                <rect key="frame" x="7" y="349" width="197" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="radio" title="   Saved Bands" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="iNg-xv-TDv">
+                                <buttonCell key="cell" type="radio" title="Local Bands" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="iNg-xv-TDv">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -890,7 +890,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="32i-af-p9P">
-                                <rect key="frame" x="2" y="414" width="206" height="32"/>
+                                <rect key="frame" x="2" y="398" width="206" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="push" title="Edit Business" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="HKA-pq-6R7">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -912,7 +912,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LPX-1l-UFJ">
-                                <rect key="frame" x="2" y="317" width="206" height="32"/>
+                                <rect key="frame" x="2" y="300" width="206" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="push" title="Add Band" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="EIi-8z-vE2">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -923,7 +923,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5q1-2m-29C">
-                                <rect key="frame" x="2" y="438" width="206" height="32"/>
+                                <rect key="frame" x="2" y="422" width="206" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="push" title="Add Business" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="FCi-hC-wgi">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -934,7 +934,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FaP-Je-e0M">
-                                <rect key="frame" x="2" y="293" width="206" height="32"/>
+                                <rect key="frame" x="2" y="276" width="206" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="push" title="Edit Band" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="tcw-9c-4ux">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -945,16 +945,16 @@
                                 </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LDx-du-tX3">
-                                <rect key="frame" x="6" y="191" width="198" height="29"/>
+                                <rect key="frame" x="6" y="120" width="198" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Label" id="5IO-aw-laR">
-                                    <font key="font" metaFont="system" size="25"/>
+                                    <font key="font" metaFont="system" size="18"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lsn-3g-9JI">
-                                <rect key="frame" x="20" y="147" width="169" height="21"/>
+                                <rect key="frame" x="20" y="107" width="169" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="zjR-6M-87z">
                                     <font key="font" metaFont="system"/>
@@ -963,7 +963,7 @@
                                 </textFieldCell>
                             </textField>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b6i-LO-JJe">
-                                <rect key="frame" x="41" y="103" width="127" height="32"/>
+                                <rect key="frame" x="41" y="74" width="127" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="push" title="remove shows" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UBg-Xc-Ovn">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -971,6 +971,80 @@
                                 </buttonCell>
                                 <connections>
                                     <action selector="removeShowButtonTapped:" target="XfG-lQ-9wD" id="jFg-lG-TIl"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fP3-hU-Jce">
+                                <rect key="frame" x="2" y="510" width="206" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Empty Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="wbd-Rc-CGf">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="emptyButtonTapped:" target="XfG-lQ-9wD" id="64Y-zZ-xcJ"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ByN-yM-yO3">
+                                <rect key="frame" x="7" y="445" width="197" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="radio" title="Remote Businesses" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="jjg-9f-hDT">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="radioButtonChanged:" target="XfG-lQ-9wD" id="PTx-Cl-gMv"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sne-TK-j4o">
+                                <rect key="frame" x="7" y="323" width="197" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="radio" title="Remote Bands" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="p7k-PZ-ivN">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="radioButtonChanged:" target="XfG-lQ-9wD" id="s8G-bl-bhE"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M4u-hk-ABn">
+                                <rect key="frame" x="7" y="228" width="197" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="radio" title="Local Shows" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="FYo-8y-eNI">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="radioButtonChanged:" target="XfG-lQ-9wD" id="bAx-pn-3Tf"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NJd-G9-awL">
+                                <rect key="frame" x="7" y="203" width="197" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="radio" title="Remote Shows" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="IeM-OS-0xE">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="radioButtonChanged:" target="XfG-lQ-9wD" id="9eg-I4-nPv"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="u8D-RX-K57">
+                                <rect key="frame" x="2" y="180" width="206" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Add Show" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="M9T-K3-74a">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ojr-Hd-Q9M">
+                                <rect key="frame" x="2" y="156" width="206" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Edit Show" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="u4d-pd-hOR">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="editBandButtonTapped:" target="XfG-lQ-9wD" id="Hlp-ts-Hgz"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -986,19 +1060,26 @@
                     <connections>
                         <outlet property="addBandButton" destination="LPX-1l-UFJ" id="8a4-lj-twE"/>
                         <outlet property="addBusinessButton" destination="5q1-2m-29C" id="Ul2-vc-PSM"/>
+                        <outlet property="addShowButton" destination="u8D-RX-K57" id="vOD-VT-o4T"/>
                         <outlet property="clearButton" destination="1FZ-jM-Hkx" id="fcc-ct-xqf"/>
                         <outlet property="consolidateButton" destination="eXB-8y-OFs" id="JMR-A3-JxQ"/>
                         <outlet property="editBandButton" destination="FaP-Je-e0M" id="tTF-MS-KsQ"/>
                         <outlet property="editBusinessButton" destination="32i-af-p9P" id="gdM-CF-EBn"/>
+                        <outlet property="editShowButton" destination="Ojr-Hd-Q9M" id="bW6-w3-rVk"/>
                         <outlet property="editVenueButton" destination="XXy-ri-YjH" id="sAq-Qj-k4S"/>
+                        <outlet property="emptyButton" destination="wbd-Rc-CGf" id="Kp9-py-LVM"/>
                         <outlet property="loadBandButton" destination="XXy-ri-YjH" id="co7-F4-VqG"/>
                         <outlet property="loadFileButton" destination="Oed-CL-YVO" id="mwa-52-W3U"/>
+                        <outlet property="localBandsButton" destination="myJ-Go-i2Y" id="ufT-1m-iqX"/>
+                        <outlet property="localBusinessesButton" destination="JBw-Kw-nnb" id="iET-FZ-grR"/>
+                        <outlet property="localShowsButton" destination="M4u-hk-ABn" id="kJR-Hz-CvT"/>
                         <outlet property="rawJSONDataButton" destination="hdS-RU-Rte" id="aUm-o2-XVy"/>
+                        <outlet property="remoteBandsButton" destination="sne-TK-j4o" id="HAg-XX-DlF"/>
+                        <outlet property="remoteBusinessButton" destination="ByN-yM-yO3" id="vZs-PD-KUf"/>
+                        <outlet property="remoteShowsButton" destination="NJd-G9-awL" id="ks3-c9-UC5"/>
                         <outlet property="removeShowButton" destination="b6i-LO-JJe" id="37c-oG-Xq5"/>
                         <outlet property="removeShowTextField" destination="lsn-3g-9JI" id="FsM-AJ-udJ"/>
                         <outlet property="saveVenuesButton" destination="XPU-yf-Di1" id="YfA-yy-vQX"/>
-                        <outlet property="savedBandsButton" destination="myJ-Go-i2Y" id="ufT-1m-iqX"/>
-                        <outlet property="savedBusinessesButton" destination="JBw-Kw-nnb" id="iET-FZ-grR"/>
                         <outlet property="showAmountLabel" destination="LDx-du-tX3" id="ejc-ut-nPw"/>
                         <outlet property="tableView" destination="I5g-zz-Oab" id="XlB-Jw-TFp"/>
                         <segue destination="QaH-ga-u3R" kind="modal" identifier="editVenueSegue" id="CsE-1C-13z"/>
