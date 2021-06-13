@@ -141,10 +141,11 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         
         if currentVenue?.shows != [] {
             for show in (currentVenue?.shows)! {
-                let newShow: Show = Show(
+                var newShow: Show = Show(
                     band:show.bandName!,
                     venue:(currentVenue?.venueName)!,
-                    showTime: show.showTime!)
+                    dateString: show.showTime!)
+                newShow.fixShowTime(showTime: newShow.dateString)
                 
                 localDataController.showArray.append(newShow)
                 print("Show added to Business")
@@ -189,8 +190,8 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         
         removeShows {
             localDataController.saveShowData()
-            notificationCenter.post(name: NSNotification.Name("businessDeleted"), object: nil)
-            notificationCenter.post(name: NSNotification.Name("showsDeleted"), object: nil)
+            notificationCenter.post(name: NSNotification.Name("businessUpdated"), object: nil)
+            notificationCenter.post(name: NSNotification.Name("showsUpdated"), object: nil)
         }
         
         localDataController.saveBusinessData()
@@ -213,6 +214,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
             updateBusinessButton.isEnabled = false
             nameTextField.stringValue = currentVenue!.venueName!
             makeBusinessButton.isEnabled = true
+            deleteButton.isEnabled = false
         } else if currentBusiness != nil {
             addBusinessHours()
             addBusinessType()
@@ -284,7 +286,7 @@ extension VenueDetailViewController {
             if currentVenue != nil {
                 
                 let jsonShow = currentVenue?.shows![row]
-                let convertedShow = Show(band: (jsonShow?.bandName)!, venue: (currentVenue?.venueName!)!, showTime: (jsonShow?.showTime!)!)
+                let convertedShow = Show(band: (jsonShow?.bandName)!, venue: (currentVenue?.venueName!)!, dateString: (jsonShow?.showTime!)!)
                 return convertedShow
             } else if currentBusiness != nil {
                
@@ -304,8 +306,8 @@ extension VenueDetailViewController {
         } else if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "Time") {
             let showTimeIdentifier = NSUserInterfaceItemIdentifier("TimeCell")
             guard let cellView = tableView.makeView(withIdentifier: showTimeIdentifier, owner: self) as? NSTableCellView else {return nil}
-            let showTime = currentShow?.showTime.replacingOccurrences(of: "\n", with: " ")
-            cellView.textField?.stringValue = showTime ?? "No Data"
+            //let showTime = currentShow?.dateString.replacingOccurrences(of: "\n", with: " ")
+            cellView.textField?.stringValue = "\(currentShow?.dateString ?? "No Data") \(currentShow?.time ?? "")"
             return cellView
             
         }
@@ -317,15 +319,7 @@ extension VenueDetailViewController {
 extension VenueDetailViewController {
     
     private func removeShows(completion: @escaping () -> Void) {
-        var number = 0
-        for show in localDataController.showArray {
-            if show.venue == currentBusiness?.name {
-                let index = localDataController.showArray.firstIndex(where: {$0.showID == show.showID})
-                localDataController.showArray.remove(at: index!)
-                number += 1
-            }
-        }
-        print("\(number) shows deleted")
+        localDataController.showArray.removeAll(where: {$0.venue == currentBusiness?.name})
         completion()
     }
     
@@ -341,7 +335,7 @@ extension VenueDetailViewController {
         }
         
         for businessTypeButton in self.businessTypeButtonsArray {
-            business.addAndRemoveBusinessType(button: businessTypeButton, genreNumber: type)
+            business.addAndRemoveBusinessType(button: businessTypeButton, typeNumber: type)
             type += 1
             print("genre added")
         }

@@ -78,43 +78,44 @@ class BusinessFullData: Codable, Equatable {
         }
     }
     
-    func addAndRemoveBusinessType(button: NSButton, genreNumber: Int) {
-        switch genreNumber {
+    func addAndRemoveBusinessType(button: NSButton, typeNumber: Int) {
+        //NOTES: Used with a loop function and number counter to check the state (on/off) of all buttons in the array. The loop adds the next button into this function along with the Business Type current number on the counter. Which decides which Business Type is added/removed to/from the Businesses BusinessType Array.
+        switch typeNumber {
         case 1:
             if button.state == .on {
-                self.businessType.append(BusinessType.Resturant)
+                businessType.append(BusinessType.Resturant)
             } else if button.state == .off {
-                self.businessType.removeAll(where: {$0 == BusinessType.Resturant})
+                businessType.removeAll(where: {$0 == BusinessType.Resturant})
             }
         case 2:
             if button.state == .on {
-                self.businessType.append(BusinessType.Bar)
+                businessType.append(BusinessType.Bar)
             } else if button.state == .off {
-                self.businessType.removeAll(where: {$0 == BusinessType.Bar})
+                businessType.removeAll(where: {$0 == BusinessType.Bar})
             }
         case 3:
             if button.state == .on {
-                self.businessType.append(BusinessType.Club)
+                businessType.append(BusinessType.Club)
             } else if button.state == .off {
-                self.businessType.removeAll(where: {$0 == BusinessType.Club})
+                businessType.removeAll(where: {$0 == BusinessType.Club})
             }
         case 4:
             if button.state == .on {
-                self.businessType.append(BusinessType.Outdoors)
+                businessType.append(BusinessType.Outdoors)
             } else if button.state == .off {
-                self.businessType.removeAll(where: {$0 == BusinessType.Outdoors})
+                businessType.removeAll(where: {$0 == BusinessType.Outdoors})
             }
         case 5:
             if button.state == .on {
-                self.businessType.append(BusinessType.LiveMusic)
+                businessType.append(BusinessType.LiveMusic)
             } else if button.state == .off {
-                self.businessType.removeAll(where: {$0 == BusinessType.LiveMusic})
+                businessType.removeAll(where: {$0 == BusinessType.LiveMusic})
             }
         case 6:
             if button.state == .on {
-                self.businessType.append(BusinessType.Family)
+                businessType.append(BusinessType.Family)
             } else if button.state == .off {
-                self.businessType.removeAll(where: {$0 == BusinessType.Family})
+                businessType.removeAll(where: {$0 == BusinessType.Family})
             }
         default:
             break

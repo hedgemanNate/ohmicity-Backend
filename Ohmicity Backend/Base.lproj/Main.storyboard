@@ -953,6 +953,26 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lsn-3g-9JI">
+                                <rect key="frame" x="20" y="147" width="169" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="zjR-6M-87z">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b6i-LO-JJe">
+                                <rect key="frame" x="41" y="103" width="127" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="remove shows" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UBg-Xc-Ovn">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="removeShowButtonTapped:" target="XfG-lQ-9wD" id="jFg-lG-TIl"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="6tV-ah-eDL" secondAttribute="trailing" constant="20" id="4dE-zY-W9M"/>
@@ -974,6 +994,8 @@
                         <outlet property="loadBandButton" destination="XXy-ri-YjH" id="co7-F4-VqG"/>
                         <outlet property="loadFileButton" destination="Oed-CL-YVO" id="mwa-52-W3U"/>
                         <outlet property="rawJSONDataButton" destination="hdS-RU-Rte" id="aUm-o2-XVy"/>
+                        <outlet property="removeShowButton" destination="b6i-LO-JJe" id="37c-oG-Xq5"/>
+                        <outlet property="removeShowTextField" destination="lsn-3g-9JI" id="FsM-AJ-udJ"/>
                         <outlet property="saveVenuesButton" destination="XPU-yf-Di1" id="YfA-yy-vQX"/>
                         <outlet property="savedBandsButton" destination="myJ-Go-i2Y" id="ufT-1m-iqX"/>
                         <outlet property="savedBusinessesButton" destination="JBw-Kw-nnb" id="iET-FZ-grR"/>
@@ -1174,6 +1196,9 @@
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="loadPictureButtonTapped:" target="MNe-r1-lri" id="vvr-Xi-tLy"/>
+                                </connections>
                             </button>
                             <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="44" horizontalPageScroll="10" verticalLineScroll="44" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NO2-A8-4bE">
                                 <rect key="frame" x="107" y="208" width="521" height="165"/>
@@ -1291,7 +1316,7 @@
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="makeBusinessButtonTapped:" target="QaH-ga-u3R" id="qdZ-9f-CFq"/>
+                                    <action selector="saveButtonTapped:" target="MNe-r1-lri" id="NH8-oH-CxZ"/>
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YBK-S1-FRV">
@@ -1303,7 +1328,7 @@
                                 </buttonCell>
                                 <color key="contentTintColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
                                 <connections>
-                                    <action selector="deleteBusinessButtonTapped:" target="QaH-ga-u3R" id="1YO-NN-Zer"/>
+                                    <action selector="deleteButtonTapped:" target="MNe-r1-lri" id="z7c-xy-l5q"/>
                                 </connections>
                             </button>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="abZ-Ur-gxb">
@@ -1324,6 +1349,17 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r8f-ep-ncx">
+                                <rect key="frame" x="169" y="61" width="75" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Brake" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="idd-Jq-xkU">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="breaker:" target="MNe-r1-lri" id="tlE-k5-h2E"/>
+                                </connections>
+                            </button>
                         </subviews>
                     </view>
                     <connections>
@@ -1339,6 +1375,7 @@
                         <outlet property="hiphopButton" destination="kZe-iJ-8HZ" id="yL2-GN-pSf"/>
                         <outlet property="jazzButton" destination="zFD-sj-Lzk" id="Cg2-Jf-yCH"/>
                         <outlet property="loadPictureButton" destination="dlg-Fa-82D" id="1l2-ea-fwc"/>
+                        <outlet property="ohmPickButton" destination="5lF-fv-Wa0" id="tM8-DA-Tab"/>
                         <outlet property="reggaeButton" destination="mFh-7K-R77" id="19J-mi-61e"/>
                         <outlet property="rockButton" destination="CCJ-BO-bqD" id="BBr-5f-eFn"/>
                         <outlet property="saveButton" destination="uLx-yW-zTD" id="5vI-fk-Wxh"/>
@@ -1729,7 +1766,7 @@
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xoC-hB-hOw">
                                 <rect key="frame" x="647" y="9" width="140" height="38"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="bevel" title="Delete Business" bezelStyle="regularSquare" image="buttonCell:5zy-jf-j9z:image" imagePosition="overlaps" alignment="center" enabled="NO" inset="2" id="5zy-jf-j9z">
+                                <buttonCell key="cell" type="bevel" title="Delete Business" bezelStyle="regularSquare" image="buttonCell:5zy-jf-j9z:image" imagePosition="overlaps" alignment="center" inset="2" id="5zy-jf-j9z">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="systemHeavy" size="17"/>
                                 </buttonCell>

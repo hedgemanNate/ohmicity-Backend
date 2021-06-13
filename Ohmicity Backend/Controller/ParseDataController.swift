@@ -12,7 +12,7 @@ class ParseDataController {
     
     var data: Venue?
     var path: URL?
-    var dataArray: [RawJSON] = []
+    var jsonDataArray: [RawJSON] = []
     
     
     
@@ -54,7 +54,7 @@ class ParseDataController {
     private func parse(jsonData: Data) {
         do {
             let serialQueue = DispatchQueue(label: "JsonArrayQueue")
-            dataArray = []
+            jsonDataArray = []
             let decodedData = try JSONDecoder().decode(Venue.self, from: jsonData)
             data = decodedData
             
@@ -62,7 +62,7 @@ class ParseDataController {
             guard let data = data else {return}
             for show in data.venue {
                 serialQueue.async { [self] in
-                    dataArray.append(show)
+                    jsonDataArray.append(show)
                 }
             }
             

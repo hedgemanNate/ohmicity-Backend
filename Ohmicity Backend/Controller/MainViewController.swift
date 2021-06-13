@@ -38,6 +38,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     @IBOutlet weak var showAmountLabel: NSTextField!
     
     
+    @IBOutlet weak var removeShowTextField: NSTextField!
     
     //MARK: ViewDidLoad
     override func viewDidLoad() {
@@ -46,8 +47,9 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         tableView.delegate = self
         tableView.dataSource = self
         
-        notificationCenter.addObserver(self, selector: #selector(businessDeletedAlertRecieved), name: NSNotification.Name("businessDeleted"), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(businessUpdatedAlertRecieved), name: NSNotification.Name("businessUpdated"), object: nil)
         notificationCenter.addObserver(self, selector: #selector(numberOfShows), name: NSNotification.Name("showsUpdated"), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(bandUpdatedAlertRecieved), name: NSNotification.Name("bandsUpdated"), object: nil)
     }
     
     override func viewDidAppear() {
@@ -60,7 +62,17 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     }
     
     
-    //MARK: Button Tapped Functions
+    //MARK: Buttons Tapped Functions
+    
+    @IBAction func removeShowButtonTapped(_ sender: Any) {
+        localDataController.showArray.removeAll(where: {$0.venue == removeShowTextField.stringValue})
+        
+        DispatchQueue.main.async { [self] in
+            showAmountLabel.stringValue = "\(localDataController.showArray.count)"
+        }
+        localDataController.saveShowData()
+    }
+    
     @IBAction func loadFileButtonTapped(_ sender: Any) {
         let dialog = NSOpenPanel();
         dialog.title                   = "Choose a file| Our Code World"
@@ -98,12 +110,12 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     }
     
     @IBAction func consolidateButtonTapped(_ sender: Any) {
-        let reduce = parseDataController.dataArray.reduce(into: [:], {$0[$1, default: 0] += 1})
+        let reduce = parseDataController.jsonDataArray.reduce(into: [:], {$0[$1, default: 0] += 1})
         let sorted = reduce.sorted(by: {$0.value > $1.value})
         let map    = sorted.map({$0.key})
         let orderedArray = map.sorted { $0.venueName ?? "CORRUPTED" < $1.venueName ?? "CORRUPTED" }
-        parseDataController.dataArray = orderedArray
-        parseDataController.dataArray.removeAll(where: {$0.venueName == nil})
+        parseDataController.jsonDataArray = orderedArray
+        parseDataController.jsonDataArray.removeAll(where: {$0.venueName == nil})
         
         DispatchQueue.main.async {
             self.tableView.reloadData()
@@ -111,7 +123,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     }
     
     @IBAction func clearButtonTapped(_ sender: Any) {
-        parseDataController.dataArray = []
+        parseDataController.jsonDataArray = []
         localDataController.saveJsonData()
         DispatchQueue.main.async {
             self.tableView.reloadData()
@@ -155,7 +167,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     //MARK: Radio Buttons
     @IBAction func radioButtonChanged(_ sender: AnyObject) {
         
-        if self.rawJSONDataButton.state == .on && parseDataController.dataArray == [] {
+        if self.rawJSONDataButton.state == .on && parseDataController.jsonDataArray == [] {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
                 self.buttonController(false)
@@ -212,18 +224,19 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         localDataController.loadBusinessBasicData()
         localDataController.loadJsonData()
         localDataController.loadShowData()
+        localDataController.loadBandData()
         
         DispatchQueue.main.async {
             self.tableView.reloadData()
             self.numberOfShows()
         }
         
-        if parseDataController.dataArray == [] {
+        if parseDataController.jsonDataArray == [] {
             DispatchQueue.main.async {
                 self.buttonController(false)
                 self.loadFileButton.isEnabled = true
             }
-        } else if parseDataController.dataArray != [] {
+        } else if parseDataController.jsonDataArray != [] {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
                 self.buttonController(false)
@@ -240,10 +253,13 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     //MARK: TableView
     func numberOfRows(in tableView: NSTableView) -> Int {
         if rawJSONDataButton.state == .on {
-            return parseDataController.dataArray.count
-        } else {
+            return parseDataController.jsonDataArray.count
+        } else if savedBusinessesButton.state == .on {
             return localDataController.businessArray.count
+        } else if savedBandsButton.state == .on {
+            return localDataController.bandArray.count
         }
+        return 1
     }
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
@@ -251,10 +267,10 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "VenueCell"), owner: nil) as? NSTableCellView {
             
             if rawJSONDataButton.state == .on {
-                cell.textField?.stringValue = "\(row + 1): \(parseDataController.dataArray[row].venueName ?? "CORRUPTED")"
+                cell.textField?.stringValue = "\(row + 1): \(parseDataController.jsonDataArray[row].venueName ?? "CORRUPTED")"
             } else if savedBusinessesButton.state == .on && localDataController.businessArray != [] {
                 cell.textField?.stringValue = "\(row + 1): \(localDataController.businessArray[row].name)"
-            }  else if savedBusinessesButton.state == .on && localDataController.bandArray != [] {
+            }  else if savedBandsButton.state == .on && localDataController.bandArray != [] {
                 cell.textField?.stringValue = "\(row + 1): \(localDataController.bandArray[row].name)"
             } else {
                 cell.textField?.stringValue = "No Data"
@@ -273,7 +289,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         
         if segue.identifier == "editVenueSegue" {
             guard let venueVC = segue.destinationController as? VenueDetailViewController else {return}
-            venueVC.currentVenue = parseDataController.dataArray[indexPath]
+            venueVC.currentVenue = parseDataController.jsonDataArray[indexPath]
             
         } else if segue.identifier == "editBusinessSegue" {
             guard let businessVC = segue.destinationController as? VenueDetailViewController else {return}
@@ -310,7 +326,7 @@ extension MainViewController {
         }
     }
     
-    @objc func businessDeletedAlertRecieved() {
+    @objc func businessUpdatedAlertRecieved() {
         saveVenuesButton.state = .on
         if self.savedBusinessesButton.state == .on && localDataController.businessArray == [] {
             DispatchQueue.main.async {
@@ -327,6 +343,14 @@ extension MainViewController {
                 self.editBusinessButton.isEnabled = true
             }
             
+        }
+    }
+    
+    @objc func bandUpdatedAlertRecieved() {
+        if savedBandsButton.state == .on {
+            DispatchQueue.main.async { [self] in
+                tableView.reloadData()
+            }
         }
     }
 }
