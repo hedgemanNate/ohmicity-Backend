@@ -13,141 +13,21 @@ let timeExtrasArray = [":", ".", ",",]
 
 let commaArray = [","]
 
-func fixShowTime(showTime: String) {
-    var date = showTime
-    var modifiedDate = date.components(separatedBy: " ")
-
-    let hasDay: Bool = !Set(modifiedDate).isDisjoint(with: Set(daysArray))
-    let hasYear: Bool = !Set(modifiedDate).isDisjoint(with: Set(yearArray))
-    let hasSeperator: Bool = !Set(modifiedDate).isDisjoint(with: Set(seperatorArray))
-
-    if hasDay {
-        let set = Set(modifiedDate).intersection(daysArray)
-        let setResult = Array(set)
-        modifiedDate.removeAll(where: {$0 == setResult[0]})
-        date = modifiedDate.joined(separator: " ")
-    }
-
-    if hasYear {
-        let set = Set(modifiedDate).intersection(yearArray)
-        let setResult = Array(set)
-        modifiedDate.removeAll(where: {$0 == setResult[0]})
-        date = modifiedDate.joined(separator: " ")
-    }
-
-    if hasSeperator {
-        let set = Set(modifiedDate).intersection(seperatorArray)
-        let setResult = Array(set)
-        modifiedDate.removeAll(where: {$0 == setResult[0]})
-        date = modifiedDate.joined(separator: " ")
-    }
-
-    if !date.contains(",") {
-        modifiedDate[1] = "\(modifiedDate[1] + ",")"
-        date = modifiedDate.joined(separator: " ")
-    }
-
-    //These Two To Make Date & Time
-    let simiCleanDate = date.replacingOccurrences(of: "-", with: " ")
-    let simiCleanDateArray = simiCleanDate.components(separatedBy: " ")
-
-    var almostDate = simiCleanDateArray.prefix(2)
 
 
-
-    almostDate.append("2021")
-
-    let cleanDate = almostDate.joined(separator: " ")
-
-    let almostTime = simiCleanDateArray[2]
-    var simiCleanTime = almostTime.replacingOccurrences(of: "[\n:pmPMAa]", with: "", options: .regularExpression, range: nil)
-
-    let timeNumber = Int(simiCleanTime)
-    var cleanTime = ""
-
-    switch timeNumber! {
-    case 1...12:
-        cleanTime = "\(timeNumber!)pm"
-    case 100...1200:
-        simiCleanTime.removeLast(2)
-        cleanTime = "\(simiCleanTime)pm"
-    default:
-        break
-    }
-
-    print("\(cleanDate) \(cleanTime)")
+class foo {
+    var name: String = "Nate"
+    var fame: String = "Not Very"
 }
 
-//fixShowTime(showTime: "Sun, July 25\n2-6pm")
+var me = foo()
 
+var array: [foo] = [me]
 
-var date = "Sun, July 25 6pm-8am"
-var date2 = date.replacingOccurrences(of: "\n", with: " ")
-var modifiedDate = date2.components(separatedBy: " ")
+var ref: foo?
 
-let hasDay: Bool = !Set(modifiedDate).isDisjoint(with: Set(daysArray))
-let hasYear: Bool = !Set(modifiedDate).isDisjoint(with: Set(yearArray))
-let hasSeperator: Bool = !Set(modifiedDate).isDisjoint(with: Set(seperatorArray))
+ref = array[0]
 
-if hasDay {
-    let set = Set(modifiedDate).intersection(daysArray)
-    let setResult = Array(set)
-    modifiedDate.removeAll(where: {$0 == setResult[0]})
-    date = modifiedDate.joined(separator: " ")
-}
+ref?.name = "Nathan"
 
-if hasYear {
-    let set = Set(modifiedDate).intersection(yearArray)
-    let setResult = Array(set)
-    modifiedDate.removeAll(where: {$0 == setResult[0]})
-    date = modifiedDate.joined(separator: " ")
-}
-
-if hasSeperator {
-    let set = Set(modifiedDate).intersection(seperatorArray)
-    let setResult = Array(set)
-    modifiedDate.removeAll(where: {$0 == setResult[0]})
-    date = modifiedDate.joined(separator: " ")
-}
-
-if !date.contains(",") {
-    modifiedDate[1] = "\(modifiedDate[1] + ",")"
-    date = modifiedDate.joined(separator: " ")
-}
-
-//These Two To Make Date & Time
-let simiCleanDate = date.replacingOccurrences(of: "-", with: " ")
-let simiCleanDateArray = simiCleanDate.components(separatedBy: " ")
-
-var almostDate = simiCleanDateArray.prefix(2)
-
-
-
-almostDate.append("2021")
-
-let cleanDate = almostDate.joined(separator: " ")
-var cleanTime = "No Time"
-simiCleanDateArray[1]
-
-if simiCleanDateArray.count >= 3 {
-    let almostTime = simiCleanDateArray[2]
-    var simiCleanTime = almostTime.replacingOccurrences(of: "[\n:pmPMAa]", with: "", options: .regularExpression, range: nil)
-
-    let timeNumber = Int(simiCleanTime)
-    
-
-    switch timeNumber! {
-    case 1...12:
-        cleanTime = "\(timeNumber!)pm"
-    case 100...1200:
-        simiCleanTime.removeLast(2)
-        cleanTime = "\(simiCleanTime)pm"
-    default:
-        break
-    }
-}
-
-
-
-print("\(cleanDate) \(cleanTime)")
-
+print(array[0].name)

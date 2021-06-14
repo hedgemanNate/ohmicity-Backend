@@ -57,7 +57,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         tableView.dataSource = self
         
         notificationCenter.addObserver(self, selector: #selector(businessUpdatedAlertRecieved), name: NSNotification.Name("businessUpdated"), object: nil)
-        notificationCenter.addObserver(self, selector: #selector(numberOfShows), name: NSNotification.Name("showsUpdated"), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(showsUpdated), name: NSNotification.Name("showsUpdated"), object: nil)
         notificationCenter.addObserver(self, selector: #selector(bandUpdatedAlertRecieved), name: NSNotification.Name("bandsUpdated"), object: nil)
     }
     
@@ -74,7 +74,9 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     //MARK: Buttons Tapped Functions
     
     @IBAction func removeShowButtonTapped(_ sender: Any) {
-        localDataController.showArray.removeAll(where: {$0.venue == removeShowTextField.stringValue})
+        let removeDuplicatesSet = Array(NSOrderedSet(array: localDataController.showArray).array as! [Show])
+        let newArray = Array(removeDuplicatesSet)
+        localDataController.showArray = newArray
         
         DispatchQueue.main.async { [self] in
             showAmountLabel.stringValue = "\(localDataController.showArray.count)"
@@ -147,18 +149,12 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         for venue in parseDataController.jsonDataArray {
             for business in localDataController.businessArray {
                 if venue.venueName == business.name && venue.shows != nil {
+                    print("Found Matching Venues")
                     for show in venue.shows! {
+                        //print(show)
                         var newShow = Show(band: show.bandName!, venue: venue.venueName!, dateString: show.showTime!)
                         newShow.fixShowTime()
-                        for x in localDataController.showArray {
-                            if newShow == x {
-                                print("Show already exists")
-                                return
-                            } else {
-                                localDataController.showArray.append(newShow)
-                                print("Relevant Shows Added")
-                            }
-                        }
+                        localDataController.showArray.append(newShow)
                     }
                 }
             }
@@ -167,6 +163,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         print("All Raw Shows Saved")
         localDataController.saveShowData()
         print("All Relevant Shows Saved")
+        print(localDataController.showArray)
     }
     
     //MARK: Edit Buttons Tapped
@@ -195,9 +192,18 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         }
     }
     
+    @IBAction func editShowButtonTapped(_ sender: Any) {
+        if tableView.selectedRow < 0 {
+            return
+        } else {
+            performSegue(withIdentifier: "editShowSegue", sender: self)
+        }
+    }
+    
     @IBAction func emptyButtonTapped(_ sender: Any) {
         
     }
+    
     //MARK: Radio Buttons
     @IBAction func radioButtonChanged(_ sender: AnyObject) {
         
@@ -248,6 +254,19 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                 self.addBandButton.isEnabled = true
                 self.editBandButton.isEnabled = true
             }
+        } else if self.localShowsButton.state == .on && localDataController.showArray == [] {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                self.buttonController(false)
+                self.addShowButton.isEnabled = true
+            }
+        } else if self.localShowsButton.state == .on {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                self.buttonController(false)
+                self.addShowButton.isEnabled = true
+                self.editShowButton.isEnabled = true
+            }
         }
     }
     
@@ -262,7 +281,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         
         DispatchQueue.main.async {
             self.tableView.reloadData()
-            self.numberOfShows()
+            self.showsUpdated()
         }
         
         if parseDataController.jsonDataArray == [] {
@@ -292,6 +311,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             return localDataController.businessArray.count
         } else if localBandsButton.state == .on {
             return localDataController.bandArray.count
+        } else if localShowsButton.state == .on {
+            return localDataController.showArray.count
         }
         return 1
     }
@@ -306,6 +327,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                 cell.textField?.stringValue = "\(row + 1): \(localDataController.businessArray[row].name)"
             }  else if localBandsButton.state == .on && localDataController.bandArray != [] {
                 cell.textField?.stringValue = "\(row + 1): \(localDataController.bandArray[row].name)"
+            } else if localShowsButton.state == .on && localDataController.showArray != [] {
+                cell.textField?.stringValue = "\(row + 1): \(localDataController.showArray[row].venue): \(localDataController.showArray[row].dateString)"
             } else {
                 cell.textField?.stringValue = "No Data"
             }
@@ -332,6 +355,10 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         } else if segue.identifier == "editBandSegue" {
             guard let bandVC = segue.destinationController as? BandDetailViewController else {return}
             bandVC.currentBand = localDataController.bandArray[indexPath]
+            
+        } else if segue.identifier == "editShowSegue" {
+            guard let showVC = segue.destinationController as? ShowDetailViewController else {return}
+            showVC.currentShow = localDataController.showArray[indexPath]
         }
         
         
@@ -343,20 +370,24 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
 extension MainViewController {
     
     private func buttonController(_ state:Bool) {
-        self.loadFileButton.isEnabled = state
-        self.consolidateButton.isEnabled = state
-        self.saveVenuesButton.isEnabled = state
-        self.editVenueButton.isEnabled = state
-        self.clearButton.isEnabled = state
-        self.addBusinessButton.isEnabled = state
-        self.editBusinessButton.isEnabled = state
-        self.addBandButton.isEnabled = state
-        self.editBandButton.isEnabled = state
+        loadFileButton.isEnabled = state
+        consolidateButton.isEnabled = state
+        saveVenuesButton.isEnabled = state
+        editVenueButton.isEnabled = state
+        clearButton.isEnabled = state
+        addBusinessButton.isEnabled = state
+        editBusinessButton.isEnabled = state
+        addBandButton.isEnabled = state
+        editBandButton.isEnabled = state
+        addShowButton.isEnabled = state
+        editShowButton.isEnabled = state
+        
     }
     
-    @objc func numberOfShows() {
+    @objc func showsUpdated() {
         DispatchQueue.main.async {
             self.showAmountLabel.stringValue = "\(localDataController.showArray.count) Shows"
+            self.tableView.reloadData()
         }
     }
     

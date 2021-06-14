@@ -8,7 +8,7 @@ import Cocoa
 import Foundation
 
 struct Show: Codable, Equatable {
-    //var showID: String = UUID().uuidString
+    var showID: String = UUID().uuidString
     let band: String
     let venue: String
     var dateString: String
@@ -17,7 +17,7 @@ struct Show: Codable, Equatable {
     var ohmPick: Bool = false
     
     static func == (lhs: Show, rhs: Show) -> Bool {
-        return lhs == rhs
+        return lhs.showID == rhs.showID
     }
     
     mutating func fixShowTime() {

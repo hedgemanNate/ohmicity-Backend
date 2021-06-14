@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
-        <capability name="cells containing NSDateIntervalFormatter" minSystemVersion="10.11"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -1044,7 +1043,7 @@
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="editBandButtonTapped:" target="XfG-lQ-9wD" id="Hlp-ts-Hgz"/>
+                                    <action selector="editShowButtonTapped:" target="XfG-lQ-9wD" id="dap-n4-ha6"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -1085,6 +1084,7 @@
                         <segue destination="QaH-ga-u3R" kind="modal" identifier="editVenueSegue" id="CsE-1C-13z"/>
                         <segue destination="MNe-r1-lri" kind="modal" identifier="editBandSegue" id="SbH-tN-mGM"/>
                         <segue destination="QaH-ga-u3R" kind="modal" identifier="editBusinessSegue" id="EEW-w1-tA0"/>
+                        <segue destination="yOJ-ms-d4r" kind="modal" identifier="editShowSegue" id="Lh3-Il-Oj7"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -1501,15 +1501,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="913" height="780"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wGR-lx-4dP">
-                                <rect key="frame" x="106" y="692" width="701" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="S2d-ZG-CVB">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jmh-Rq-jid">
                                 <rect key="frame" x="106" y="735" width="74" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -1545,16 +1536,6 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xXm-Cd-CMg">
-                                <rect key="frame" x="110" y="459" width="701" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="eKp-cz-dey">
-                                    <dateIntervalFormatter key="formatter" dateStyle="short" timeStyle="short" id="Tn3-8m-Za3"/>
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VGE-c2-Hyy">
                                 <rect key="frame" x="110" y="502" width="68" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -1572,7 +1553,7 @@
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="makeBusinessButtonTapped:" target="QaH-ga-u3R" id="iF7-Uu-6qO"/>
+                                    <action selector="savedButtonTapped:" target="yOJ-ms-d4r" id="i1r-WL-8Eb"/>
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Dh-TH-Ys7">
@@ -1587,8 +1568,43 @@
                                     <action selector="deleteBusinessButtonTapped:" target="QaH-ga-u3R" id="SfG-Yp-lwC"/>
                                 </connections>
                             </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zkF-NI-Zx5">
+                                <rect key="frame" x="104" y="255" width="75" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Break" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yBi-NA-gjP">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="breaker:" target="yOJ-ms-d4r" id="blW-PT-0ux"/>
+                                </connections>
+                            </button>
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7uH-lX-sy4">
+                                <rect key="frame" x="108" y="459" width="701" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="hMd-Aq-zF7">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wGR-lx-4dP">
+                                <rect key="frame" x="108" y="692" width="701" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="S2d-ZG-CVB">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                     </view>
+                    <connections>
+                        <outlet property="bandNameTextField" destination="wGR-lx-4dP" id="dx2-At-AwM"/>
+                        <outlet property="deleteButton" destination="4Dh-TH-Ys7" id="Gqt-vv-Bta"/>
+                        <outlet property="startTimeTextField" destination="7uH-lX-sy4" id="XDM-Ov-x4h"/>
+                        <outlet property="venueNameTextField" destination="7BD-he-rcu" id="b5p-bH-RVp"/>
+                    </connections>
                 </viewController>
                 <customObject id="hnZ-rD-GqN" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2111,9 +2127,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="EEW-w1-tA0"/>
-        <segue reference="23S-EP-GKd"/>
-        <segue reference="SbH-tN-mGM"/>
+        <segue reference="9DB-sb-jYC"/>
+        <segue reference="Lh3-Il-Oj7"/>
+        <segue reference="pMn-zb-ggR"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="NSActionTemplate" width="14" height="14"/>
