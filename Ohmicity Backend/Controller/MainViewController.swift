@@ -73,17 +73,6 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     
     //MARK: Buttons Tapped Functions
     
-    @IBAction func removeShowButtonTapped(_ sender: Any) {
-        localDataController.showArray = []
-        
-        DispatchQueue.main.async { [self] in
-            showAmountLabel.stringValue = "\(localDataController.showArray.count)"
-            tableView.reloadData()
-        }
-        
-        localDataController.saveShowData()
-    }
-    
     @IBAction func loadFileButtonTapped(_ sender: Any) {
         let dialog = NSOpenPanel();
         dialog.title                   = "Choose a file| Our Code World"
@@ -220,6 +209,17 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     
     @IBAction func emptyButtonTapped(_ sender: Any) {
         
+    }
+    
+    @IBAction func removeShowButtonTapped(_ sender: Any) {
+        localDataController.showArray = []
+        
+        DispatchQueue.main.async { [self] in
+            showAmountLabel.stringValue = "\(localDataController.showArray.count) Shows"
+            tableView.reloadData()
+        }
+        
+        localDataController.saveShowData()
     }
     
     //MARK: Radio Buttons
