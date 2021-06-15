@@ -74,13 +74,13 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     //MARK: Buttons Tapped Functions
     
     @IBAction func removeShowButtonTapped(_ sender: Any) {
-        let removeDuplicatesSet = Array(NSOrderedSet(array: localDataController.showArray).array as! [Show])
-        let newArray = Array(removeDuplicatesSet)
-        localDataController.showArray = newArray
+        localDataController.showArray = []
         
         DispatchQueue.main.async { [self] in
             showAmountLabel.stringValue = "\(localDataController.showArray.count)"
+            tableView.reloadData()
         }
+        
         localDataController.saveShowData()
     }
     
@@ -146,6 +146,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     }
     
     @IBAction func saveVenuesButtonTapped(_ sender: Any) {
+        var cleanedJSONArray: [RawJSON] = []
+        
         for venue in parseDataController.jsonDataArray {
             for business in localDataController.businessArray {
                 if venue.venueName == business.name && venue.shows != nil {
@@ -154,16 +156,32 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                         //print(show)
                         var newShow = Show(band: show.bandName!, venue: venue.venueName!, dateString: show.showTime!)
                         newShow.fixShowTime()
-                        localDataController.showArray.append(newShow)
+                        
+                        if localDataController.showArray.contains(newShow) == false {
+                            localDataController.showArray.append(newShow)
+                        }
+                        
+                        cleanedJSONArray.append(venue)
                     }
                 }
             }
         }
+        
+        for venue in cleanedJSONArray {
+            parseDataController.jsonDataArray.removeAll(where: {$0 == venue})
+        }
+        
+        localDataController.showArray.removeDuplicates()
+        
         localDataController.saveJsonData()
         print("All Raw Shows Saved")
         localDataController.saveShowData()
         print("All Relevant Shows Saved")
         print(localDataController.showArray)
+        
+        DispatchQueue.main.async { [self] in
+            tableView.reloadData()
+        }
     }
     
     //MARK: Edit Buttons Tapped

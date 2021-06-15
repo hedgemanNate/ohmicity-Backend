@@ -8,7 +8,7 @@
 import Foundation
 
 struct Venue: Codable {
-    let venue: [RawJSON]
+    var venue: [RawJSON]
 }
 
 struct RawJSON: Codable, Equatable, Hashable {
@@ -18,6 +18,7 @@ struct RawJSON: Codable, Equatable, Hashable {
     
     let venueName: String?
     let shows: [ShowJSON]?
+    var delete: Bool?
 }
 
 struct ShowJSON: Codable, Hashable {

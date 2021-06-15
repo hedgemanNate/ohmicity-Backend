@@ -15,19 +15,12 @@ let commaArray = [","]
 
 
 
-class foo {
-    var name: String = "Nate"
-    var fame: String = "Not Very"
+var arrya = [1,2,3,4,4,4,5,4,6,7,6,6,88,8]
+
+for num in arrya {
+    if num == 4 {
+        (num) + 1
+    }
 }
 
-var me = foo()
-
-var array: [foo] = [me]
-
-var ref: foo?
-
-ref = array[0]
-
-ref?.name = "Nathan"
-
-print(array[0].name)
+print(arrya)
