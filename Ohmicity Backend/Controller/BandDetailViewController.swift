@@ -12,7 +12,11 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     //Properties
     var currentBand: Band?
     var shows: [Show] = []
+    var image: NSImage?
+    var imageData: Data?
+    
     @IBOutlet weak var tableView: NSTableView!
+    @IBOutlet weak var logoImageView: NSImageView!
     
     //TextFields
     @IBOutlet weak var bandNameTextField: NSTextField!
@@ -55,11 +59,13 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
             currentBand?.name = bandNameTextField.stringValue
             currentBand?.mediaLink = bandMediaLinkTextField.stringValue
             addAndRemoveBandType(band: currentBand!)
+            currentBand?.photo = imageData
             localDataController.saveBandData()
             notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
         } ifNil: { [self] in
             let newBand = Band(name: bandNameTextField.stringValue, mediaLink: bandMediaLinkTextField.stringValue, ohmPick: ohmPickButton.state)
             addAndRemoveBandType(band: newBand)
+            newBand.photo = imageData
             localDataController.bandArray.append(newBand)
             localDataController.saveBandData()
             notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
@@ -74,7 +80,26 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     }
     
     @IBAction func loadPictureButtonTapped(_ sender: Any) {
+        let dialog = NSOpenPanel();
+        dialog.title                   = "Choose a file| Our Code World"
+        dialog.showsResizeIndicator    = true
+        dialog.showsHiddenFiles        = false
+        dialog.allowsMultipleSelection = false
+        dialog.canChooseDirectories = false
+        dialog.allowsMultipleSelection = false
+        dialog.allowedFileTypes = ["png", "jpeg"]
         
+        if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
+            let result = dialog.url // Pathname of the file
+            image = imageController.addBusinessImage(file: result!)
+            logoImageView.image = image
+            
+            let imageData = NSData(contentsOf: result!)
+            self.imageData = imageData as! Data
+        } else {
+            // User clicked on "Cancel"
+            return
+        }
     }
     
     
@@ -85,8 +110,18 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         reloadTableView()
         fillData()
         
+        logoImageView.imageAlignment = .alignCenter
+        logoImageView.imageScaling = .scaleProportionallyDown
+        
         checkCurrentObject { [self] in
             deleteButton.isEnabled = true
+            
+            if currentBand!.photo != nil {
+                imageData = currentBand?.photo
+                image = NSImage(data: imageData! as Data)
+                logoImageView.image = image
+            }
+            
         } ifNil: { [self] in
             deleteButton.isEnabled = false
         }

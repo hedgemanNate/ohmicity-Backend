@@ -14,6 +14,8 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     //MARK: Properties
     var currentVenue: RawJSON?
     var currentBusiness: BusinessFullData?
+    var image: NSImage?
+    var imageData: Data?
     
     var scheduleTextFieldsArray: [NSTextField] = []
     var businessTypeButtonsArray: [NSButton] = []
@@ -76,12 +78,29 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     }
     
     //MARK: Buttons Tapped
-    @IBAction func resetSaveButtonTapped(_ sender: Any) {
-        DispatchQueue.main.async {
-            self.saveButton.isEnabled = true
-            self.resetSaveButton.isEnabled = false
+    @IBAction func loadPictureButtonTapped(_ sender: Any) {
+        let dialog = NSOpenPanel();
+        dialog.title                   = "Choose a file| Our Code World"
+        dialog.showsResizeIndicator    = true
+        dialog.showsHiddenFiles        = false
+        dialog.allowsMultipleSelection = false
+        dialog.canChooseDirectories = false
+        dialog.allowsMultipleSelection = false
+        dialog.allowedFileTypes = ["png", "jpeg"]
+        
+        if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
+            let result = dialog.url // Pathname of the file
+            image = imageController.addBusinessImage(file: result!)
+            logoImageView.image = image
+            
+            let imageData = NSData(contentsOf: result!)
+            self.imageData = imageData as! Data
+        } else {
+            // User clicked on "Cancel"
+            return
         }
     }
+    
     
     @IBAction func updateBusinessButtonTapped(_ sender: Any) {
         let name = nameTextField.stringValue
@@ -93,6 +112,10 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         let numberString = phoneString.filter("0123456789".contains)
         print(numberString)
         guard let phoneNumber = Int(numberString) else {return print("Return on phone number")}
+        
+        
+        //Picture Handling
+        currentBusiness?.logo = imageData
         
         currentBusiness?.name = name
         currentBusiness?.address = address
@@ -149,6 +172,13 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         print("Save Button Tapped")
     }
     
+    @IBAction func resetSaveButtonTapped(_ sender: Any) {
+        DispatchQueue.main.async {
+            self.saveButton.isEnabled = true
+            self.resetSaveButton.isEnabled = false
+        }
+    }
+    
     @IBAction func deleteShowButtonTapped(_ sender: Any) {
         //Will handle indivuals show deletes later. Once all businesses are entered into the data//
         
@@ -198,6 +228,8 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     func updateViews() {
         tableView.delegate = self
         tableView.dataSource = self
+        logoImageView.imageAlignment = .alignCenter
+        logoImageView.imageScaling = .scaleProportionallyDown
         
         if currentVenue != nil {
             updateBusinessButton.isEnabled = false
@@ -222,6 +254,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
             fridayOpenTextField.stringValue = currentBusiness?.hours.Friday ?? "No Hours"
             saturdayOpenTextField.stringValue = currentBusiness?.hours.Saturday ?? "No Hours"
             sundayOpenTextField.stringValue = currentBusiness?.hours.Sunday ?? "No Hours"
+            
             //Initializing currentBusinessShows Array
             currentBusinessShows = localDataController.showArray.filter({$0.venue == currentBusiness?.name})
             
@@ -230,6 +263,11 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
             } else {
                 ohmPick.state = .off
             }
+            
+            //Image Handling Should Happen Last
+            guard let logo = currentBusiness?.logo else {return}
+            image = NSImage(data: logo)
+            logoImageView.image = image
         }
         
         //Text and Button Arrays
@@ -255,7 +293,6 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         deleteButton.isEnabled = false
         resetSaveButton.isEnabled = false
     }
-    
 }
 
 //MARK: Tablview

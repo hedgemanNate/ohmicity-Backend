@@ -73,4 +73,4 @@ class ParseDataController {
     
 }
 
-var parseDataController = ParseDataController()
+let parseDataController = ParseDataController()

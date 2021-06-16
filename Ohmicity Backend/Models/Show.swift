@@ -7,7 +7,7 @@
 import Cocoa
 import Foundation
 
-struct Show: Codable, Equatable, Hashable {
+class Show: Codable, Equatable, Hashable {
     var showID: String = UUID().uuidString
     let band: String
     let venue: String
@@ -16,11 +16,23 @@ struct Show: Codable, Equatable, Hashable {
     var time: String?
     var ohmPick: Bool = false
     
+    //Equatable Conformity
     static func == (lhs: Show, rhs: Show) -> Bool {
         return lhs.venue == rhs.venue && lhs.dateString == rhs.dateString && lhs.time == rhs.time
     }
     
-    mutating func fixShowTime() {
+    //Hashable Conformity
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(showID)
+    }
+    
+    init(band: String, venue: String, dateString: String) {
+        self.band = band
+        self.venue = venue
+        self.dateString = dateString
+    }
+    
+    func fixShowTime() {
         //        let monthArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
         //        let dayNumberArray = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"]
         let daysArray = ["Sun,", "Mon,", "Tues,", "Wed,", "Thurs,", "Fri,", "Sat,", "Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"]

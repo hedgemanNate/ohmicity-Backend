@@ -143,7 +143,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                     print("Found Matching Venues")
                     for show in venue.shows! {
                         //print(show)
-                        var newShow = Show(band: show.bandName!, venue: venue.venueName!, dateString: show.showTime!)
+                        let newShow = Show(band: show.bandName!, venue: venue.venueName!, dateString: show.showTime!)
                         newShow.fixShowTime()
                         
                         if localDataController.showArray.contains(newShow) == false {

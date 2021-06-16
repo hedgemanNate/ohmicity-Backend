@@ -28,7 +28,7 @@ class Band: Codable, Equatable {
     
     var bandID: String = UUID().uuidString
     var name: String
-    var photo: String?
+    var photo: Data?
     var genre: [Genre] = []
     //var shows: [Show] = []
     var mediaLink: String?

@@ -31,7 +31,7 @@ class BusinessFullData: Codable, Equatable {
     var address: String
     var phoneNumber: Int
     var hours: Hours
-    var logo: String?
+    var logo: Data?
     //var shows: [Show] = []
     var ratings: [Rating] = []
     var stars: Double = 0
@@ -127,7 +127,7 @@ class BusinessFullData: Codable, Equatable {
 struct BusinessBasicData: Codable, Equatable, MutatingProtocolForBusinessData {
     var venueID: String
     var name: String
-    var logo: String?
+    var logo: Data?
     var stars: Double
     //var shows: [Show] //To Query which places has shows today
 }
