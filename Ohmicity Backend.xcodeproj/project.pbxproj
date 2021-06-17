@@ -10,6 +10,10 @@
 		D8092A0F26681C0000560A97 /* Venue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8092A0E26681C0000560A97 /* Venue.swift */; };
 		D8092A1226682D4E00560A97 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8092A1126682D4E00560A97 /* User.swift */; };
 		D83B32CD267A5D800065948E /* ImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83B32CC267A5D800065948E /* ImageController.swift */; };
+		D84E0041267BBA2400596C6A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D84E0040267BBA2400596C6A /* GoogleService-Info.plist */; };
+		D851048D267BCBA1002365F6 /* Pods_Ohmicity_Backend.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0510E24CFF24417E831AB32A /* Pods_Ohmicity_Backend.framework */; };
+		D851048E267BCBA1002365F6 /* Pods_Ohmicity_Backend.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0510E24CFF24417E831AB32A /* Pods_Ohmicity_Backend.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D85AC754267BB02B00CEA95B /* RemoteDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85AC753267BB02B00CEA95B /* RemoteDataController.swift */; };
 		F610AA3A2669309100EC2E8A /* VenueDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610AA382669309100EC2E8A /* VenueDetailViewController.swift */; };
 		F610AA3F26699EE700EC2E8A /* LocalDataStorageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610AA3E26699EE700EC2E8A /* LocalDataStorageController.swift */; };
 		F630FC0726583E5A001D0DA6 /* RawJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = F630FC0626583E5A001D0DA6 /* RawJSON.swift */; };
@@ -23,11 +27,23 @@
 		F6C31F592656E57B004A1BB2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F6C31F582656E57B004A1BB2 /* Assets.xcassets */; };
 		F6C31F5C2656E57B004A1BB2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6C31F5A2656E57B004A1BB2 /* Main.storyboard */; };
 		F6C5930C26585F1A000E0245 /* ParseDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C5930B26585F1A000E0245 /* ParseDataController.swift */; };
-		F6C59E91B82AB86354537DE1 /* Pods_Ohmicity_Backend.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0510E24CFF24417E831AB32A /* Pods_Ohmicity_Backend.framework */; };
 		F6D80C44266AF93200A18ED2 /* Band.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D80C43266AF93200A18ED2 /* Band.swift */; };
 		F6D80C4B266B0FEF00A18ED2 /* Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D80C4A266B0FEF00A18ED2 /* Show.swift */; };
-		F6F5C1B02656EB110003924A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F6F5C1AF2656EB110003924A /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D851048F267BCBA1002365F6 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D851048E267BCBA1002365F6 /* Pods_Ohmicity_Backend.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0510E24CFF24417E831AB32A /* Pods_Ohmicity_Backend.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ohmicity_Backend.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -36,6 +52,8 @@
 		D8092A0E26681C0000560A97 /* Venue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Venue.swift; sourceTree = "<group>"; };
 		D8092A1126682D4E00560A97 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		D83B32CC267A5D800065948E /* ImageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageController.swift; sourceTree = "<group>"; };
+		D84E0040267BBA2400596C6A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D85AC753267BB02B00CEA95B /* RemoteDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDataController.swift; sourceTree = "<group>"; };
 		F610AA382669309100EC2E8A /* VenueDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueDetailViewController.swift; sourceTree = "<group>"; };
 		F610AA3E26699EE700EC2E8A /* LocalDataStorageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataStorageController.swift; sourceTree = "<group>"; };
 		F6292DD52656F58000DAE6B5 /* PythonTests.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = PythonTests.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -55,7 +73,6 @@
 		F6C5930B26585F1A000E0245 /* ParseDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseDataController.swift; sourceTree = "<group>"; };
 		F6D80C43266AF93200A18ED2 /* Band.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Band.swift; sourceTree = "<group>"; };
 		F6D80C4A266B0FEF00A18ED2 /* Show.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Show.swift; sourceTree = "<group>"; };
-		F6F5C1AF2656EB110003924A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,13 +80,25 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F6C59E91B82AB86354537DE1 /* Pods_Ohmicity_Backend.framework in Frameworks */,
+				D851048D267BCBA1002365F6 /* Pods_Ohmicity_Backend.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D85AC756267BB03300CEA95B /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				F65B06AC266C95AF00616BD9 /* Helper.swift */,
+				D85AC753267BB02B00CEA95B /* RemoteDataController.swift */,
+				F610AA3E26699EE700EC2E8A /* LocalDataStorageController.swift */,
+				F6C5930B26585F1A000E0245 /* ParseDataController.swift */,
+				D83B32CC267A5D800065948E /* ImageController.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		E37BEE45EFF370F6F9D4F8E1 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -87,7 +116,6 @@
 				F6D80C4A266B0FEF00A18ED2 /* Show.swift */,
 				F6D80C43266AF93200A18ED2 /* Band.swift */,
 				D8092A1126682D4E00560A97 /* User.swift */,
-				F65B06AC266C95AF00616BD9 /* Helper.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -107,9 +135,6 @@
 				F610AA382669309100EC2E8A /* VenueDetailViewController.swift */,
 				F65B06A7266C3EC300616BD9 /* ShowDetailViewController.swift */,
 				F65B06A2266C360F00616BD9 /* BandDetailViewController.swift */,
-				F610AA3E26699EE700EC2E8A /* LocalDataStorageController.swift */,
-				F6C5930B26585F1A000E0245 /* ParseDataController.swift */,
-				D83B32CC267A5D800065948E /* ImageController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -144,6 +169,7 @@
 		F6C31F532656E57B004A1BB2 /* Ohmicity Backend */ = {
 			isa = PBXGroup;
 			children = (
+				D85AC756267BB03300CEA95B /* Helpers */,
 				F6292DD32656F2E000DAE6B5 /* Models */,
 				F6A2D7522656F06300C50456 /* Views */,
 				F6A2D7552656F09E00C50456 /* Controller */,
@@ -161,7 +187,7 @@
 				F6A2D75D2656F1D500C50456 /* Images */,
 				F6C31F582656E57B004A1BB2 /* Assets.xcassets */,
 				F6C31F542656E57B004A1BB2 /* AppDelegate.swift */,
-				F6F5C1AF2656EB110003924A /* GoogleService-Info.plist */,
+				D84E0040267BBA2400596C6A /* GoogleService-Info.plist */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -186,6 +212,7 @@
 				F6C31F4E2656E57B004A1BB2 /* Frameworks */,
 				F6C31F4F2656E57B004A1BB2 /* Resources */,
 				382F660E0B5D7A809CC681F9 /* [CP] Embed Pods Frameworks */,
+				D851048F267BCBA1002365F6 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -235,8 +262,8 @@
 			files = (
 				F6C31F592656E57B004A1BB2 /* Assets.xcassets in Resources */,
 				F6A2D75B2656F1D100C50456 /* Ohmicity Logo Banner.png in Resources */,
+				D84E0041267BBA2400596C6A /* GoogleService-Info.plist in Resources */,
 				F6C31F5C2656E57B004A1BB2 /* Main.storyboard in Resources */,
-				F6F5C1B02656EB110003924A /* GoogleService-Info.plist in Resources */,
 				F6A2D7502656F05900C50456 /* MainViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -294,6 +321,7 @@
 				F65B06AD266C95AF00616BD9 /* Helper.swift in Sources */,
 				F6A2D74F2656F05900C50456 /* MainViewController.swift in Sources */,
 				D8092A0F26681C0000560A97 /* Venue.swift in Sources */,
+				D85AC754267BB02B00CEA95B /* RemoteDataController.swift in Sources */,
 				F65B06A9266C3EC300616BD9 /* ShowDetailViewController.swift in Sources */,
 				D8092A1226682D4E00560A97 /* User.swift in Sources */,
 				F65B06A4266C360F00616BD9 /* BandDetailViewController.swift in Sources */,
@@ -372,7 +400,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -427,7 +455,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
