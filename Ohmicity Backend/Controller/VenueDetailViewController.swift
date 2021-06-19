@@ -7,6 +7,7 @@
 
 import Foundation
 import Cocoa
+import FirebaseFirestore
 
 
 class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
@@ -107,7 +108,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         let address = addressTextField.stringValue
         let website = websiteTextField.stringValue
         let phoneString = phoneTextField.stringValue
-        let stars = Double(starsTextField.stringValue) ?? 0
+        let stars = Int(starsTextField.stringValue) ?? 0
         
         let numberString = phoneString.filter("0123456789".contains)
         print(numberString)
@@ -128,7 +129,22 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
             currentBusiness?.ohmPick = false
         }
         
-        addScheduleAndBusinessType(business: currentBusiness!)
+        var day = 1
+        var type = 1
+        
+        for dateHours in self.scheduleTextFieldsArray {
+            currentBusiness?.addBusinessHours(textField: dateHours, textFieldNumber: day)
+            print("\(dateHours.stringValue)")
+            print("day added")
+            day += 1
+        }
+        
+        for businessTypeButton in self.businessTypeButtonsArray {
+            currentBusiness?.addAndRemoveBusinessType(button: businessTypeButton, typeNumber: type)
+            type += 1
+            print("genre added")
+        }
+        
         guard let index = localDataController.businessArray.firstIndex(where: {$0.venueID == currentBusiness?.venueID}) else {return}
         localDataController.businessBasicArray[index].name = name
         localDataController.businessBasicArray[index].stars = stars
@@ -150,17 +166,35 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         let phoneString = phoneTextField.stringValue
         let stars = starsTextField.stringValue
         
+        
         let numberString = phoneString.filter("0123456789".contains)
         print(numberString)
         guard let phoneNumber = Int(numberString) else {return print("Return on phone number")}
         
-        let newBusiness = BusinessFullData(name: name, address: address, phoneNumber: phoneNumber, website: website)
+        
+        
+        var newBusiness = BusinessFullData(name: name, address: address, phoneNumber: phoneNumber, website: website)
         print("Business Created")
         
-        newBusiness.stars = Double(stars)!
-        addScheduleAndBusinessType(business: newBusiness)
+        newBusiness.stars = Int(stars)!
         
-        let newBusinessBasic = BusinessBasicData(venueID: newBusiness.venueID, name: newBusiness.name, logo: newBusiness.logo, stars: newBusiness.stars)
+        var day = 1
+        var type = 1
+        
+        for dateHours in self.scheduleTextFieldsArray {
+            newBusiness.addBusinessHours(textField: dateHours, textFieldNumber: day)
+            print("\(dateHours.stringValue)")
+            print("day added")
+            day += 1
+        }
+        
+        for businessTypeButton in self.businessTypeButtonsArray {
+            newBusiness.addAndRemoveBusinessType(button: businessTypeButton, typeNumber: type)
+            type += 1
+            print("genre added")
+        }
+        
+        let newBusinessBasic = BusinessBasicData(venueID: newBusiness.venueID!, name: newBusiness.name!, logo: newBusiness.logo, stars: newBusiness.stars)
         
         localDataController.businessArray.append(newBusiness)
         localDataController.businessBasicArray.append(newBusinessBasic)
@@ -241,19 +275,19 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
             addBusinessType()
             updateBusinessButton.isEnabled = true
             makeBusinessButton.isEnabled = false
-            nameTextField.stringValue = currentBusiness!.name
-            addressTextField.stringValue = currentBusiness!.address
-            phoneTextField.stringValue = String(currentBusiness!.phoneNumber)
+            nameTextField.stringValue = currentBusiness!.name!
+            addressTextField.stringValue = currentBusiness!.address!
+            phoneTextField.stringValue = String(currentBusiness!.phoneNumber!)
             starsTextField.stringValue = String(currentBusiness?.stars ?? 0)
             websiteTextField.stringValue = currentBusiness!.website!
             
-            mondayOpenTextField.stringValue = currentBusiness?.hours.Monday ?? "No Hours"
-            tuesdayOpenTextField.stringValue = currentBusiness?.hours.Tuesday ?? "No Hours"
-            wednesdayOpenTextField.stringValue = currentBusiness?.hours.Wednesday ?? "No Hours"
-            thursdayOpenTextField.stringValue = currentBusiness?.hours.Thursday  ?? "No Hours"
-            fridayOpenTextField.stringValue = currentBusiness?.hours.Friday ?? "No Hours"
-            saturdayOpenTextField.stringValue = currentBusiness?.hours.Saturday ?? "No Hours"
-            sundayOpenTextField.stringValue = currentBusiness?.hours.Sunday ?? "No Hours"
+            mondayOpenTextField.stringValue = currentBusiness?.hours?.monday ?? "No Hours"
+            tuesdayOpenTextField.stringValue = currentBusiness?.hours?.tuesday ?? "No Hours"
+            wednesdayOpenTextField.stringValue = currentBusiness?.hours?.wednesday ?? "No Hours"
+            thursdayOpenTextField.stringValue = currentBusiness?.hours?.thursday  ?? "No Hours"
+            fridayOpenTextField.stringValue = currentBusiness?.hours?.friday ?? "No Hours"
+            saturdayOpenTextField.stringValue = currentBusiness?.hours?.saturday ?? "No Hours"
+            sundayOpenTextField.stringValue = currentBusiness?.hours?.sunday ?? "No Hours"
             
             //Initializing currentBusinessShows Array
             currentBusinessShows = localDataController.showArray.filter({$0.venue == currentBusiness?.name})
@@ -349,33 +383,16 @@ extension VenueDetailViewController {
         completion()
     }
     
-    private func addScheduleAndBusinessType(business: BusinessFullData) {
-        var day = 1
-        var type = 1
-        
-        for dateHours in self.scheduleTextFieldsArray {
-            business.addBusinessHours(textField: dateHours, textFieldNumber: day)
-            print("\(dateHours.stringValue)")
-            print("day added")
-            day += 1
-        }
-        
-        for businessTypeButton in self.businessTypeButtonsArray {
-            business.addAndRemoveBusinessType(button: businessTypeButton, typeNumber: type)
-            type += 1
-            print("genre added")
-        }
-    }
     
     private func addBusinessHours() {
         if currentBusiness != nil {
-            mondayOpenTextField.stringValue = (currentBusiness?.hours.Monday)!
-            tuesdayOpenTextField.stringValue = (currentBusiness?.hours.Tuesday)!
-            wednesdayOpenTextField.stringValue = (currentBusiness?.hours.Wednesday)!
-            thursdayOpenTextField.stringValue = (currentBusiness?.hours.Thursday)!
-            fridayOpenTextField.stringValue = (currentBusiness?.hours.Friday)!
-            saturdayOpenTextField.stringValue = (currentBusiness?.hours.Saturday)!
-            sundayOpenTextField.stringValue = (currentBusiness?.hours.Sunday)!
+            mondayOpenTextField.stringValue = (currentBusiness?.hours?.monday)!
+            tuesdayOpenTextField.stringValue = (currentBusiness?.hours?.tuesday)!
+            wednesdayOpenTextField.stringValue = (currentBusiness?.hours?.wednesday)!
+            thursdayOpenTextField.stringValue = (currentBusiness?.hours?.thursday)!
+            fridayOpenTextField.stringValue = (currentBusiness?.hours?.friday)!
+            saturdayOpenTextField.stringValue = (currentBusiness?.hours?.saturday)!
+            sundayOpenTextField.stringValue = (currentBusiness?.hours?.sunday)!
         } else {
             mondayOpenTextField.stringValue = " "
             tuesdayOpenTextField.stringValue = " "

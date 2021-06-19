@@ -18,10 +18,10 @@ post_install do |installer|
   end
 
   # Pods for Ohmicity Backend
-	pod 'FirebaseCore'
-	pod 'FirebaseDatabase'
+	pod 'FirebaseCore', '~> 6.10.4'
+	pod 'FirebaseDatabase', '~> 6.6.0'
 	pod 'FirebaseStorage'
-	pod 'FirebaseFirestoreSwift'
-	pod 'FirebaseFirestore'
+	pod 'FirebaseFirestoreSwift', '~> 0.4.0'
+	pod 'FirebaseFirestore', '~> 1.19.0'
 
 end

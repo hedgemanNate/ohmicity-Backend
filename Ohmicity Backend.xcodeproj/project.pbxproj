@@ -14,6 +14,7 @@
 		D851048D267BCBA1002365F6 /* Pods_Ohmicity_Backend.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0510E24CFF24417E831AB32A /* Pods_Ohmicity_Backend.framework */; };
 		D851048E267BCBA1002365F6 /* Pods_Ohmicity_Backend.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0510E24CFF24417E831AB32A /* Pods_Ohmicity_Backend.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D85AC754267BB02B00CEA95B /* RemoteDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85AC753267BB02B00CEA95B /* RemoteDataController.swift */; };
+		D85F3D1D267CF2FC001BCFCA /* FireStoreReferenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85F3D1C267CF2FC001BCFCA /* FireStoreReferenceManager.swift */; };
 		F610AA3A2669309100EC2E8A /* VenueDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610AA382669309100EC2E8A /* VenueDetailViewController.swift */; };
 		F610AA3F26699EE700EC2E8A /* LocalDataStorageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610AA3E26699EE700EC2E8A /* LocalDataStorageController.swift */; };
 		F630FC0726583E5A001D0DA6 /* RawJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = F630FC0626583E5A001D0DA6 /* RawJSON.swift */; };
@@ -54,6 +55,7 @@
 		D83B32CC267A5D800065948E /* ImageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageController.swift; sourceTree = "<group>"; };
 		D84E0040267BBA2400596C6A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D85AC753267BB02B00CEA95B /* RemoteDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDataController.swift; sourceTree = "<group>"; };
+		D85F3D1C267CF2FC001BCFCA /* FireStoreReferenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireStoreReferenceManager.swift; sourceTree = "<group>"; };
 		F610AA382669309100EC2E8A /* VenueDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueDetailViewController.swift; sourceTree = "<group>"; };
 		F610AA3E26699EE700EC2E8A /* LocalDataStorageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataStorageController.swift; sourceTree = "<group>"; };
 		F6292DD52656F58000DAE6B5 /* PythonTests.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = PythonTests.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -92,6 +94,7 @@
 			children = (
 				F65B06AC266C95AF00616BD9 /* Helper.swift */,
 				D85AC753267BB02B00CEA95B /* RemoteDataController.swift */,
+				D85F3D1C267CF2FC001BCFCA /* FireStoreReferenceManager.swift */,
 				F610AA3E26699EE700EC2E8A /* LocalDataStorageController.swift */,
 				F6C5930B26585F1A000E0245 /* ParseDataController.swift */,
 				D83B32CC267A5D800065948E /* ImageController.swift */,
@@ -324,6 +327,7 @@
 				D85AC754267BB02B00CEA95B /* RemoteDataController.swift in Sources */,
 				F65B06A9266C3EC300616BD9 /* ShowDetailViewController.swift in Sources */,
 				D8092A1226682D4E00560A97 /* User.swift in Sources */,
+				D85F3D1D267CF2FC001BCFCA /* FireStoreReferenceManager.swift in Sources */,
 				F65B06A4266C360F00616BD9 /* BandDetailViewController.swift in Sources */,
 				D83B32CD267A5D800065948E /* ImageController.swift in Sources */,
 				F610AA3F26699EE700EC2E8A /* LocalDataStorageController.swift in Sources */,
@@ -481,6 +485,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanhedgeman.Ohmicity-Backend";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -505,6 +510,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanhedgeman.Ohmicity-Backend";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

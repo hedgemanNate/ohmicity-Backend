@@ -32,9 +32,12 @@ class ShowDetailViewController: NSViewController {
     
     @IBAction func savedButtonTapped(_ sender: Any) {
         if currentShow != nil {
-            let editedShow = localDataController.showArray.first(where: {$0 == currentShow})
+            var editedShow = localDataController.showArray.first(where: {$0 == currentShow!})
             editedShow?.dateString = startDateTextField.stringValue
             editedShow?.time = startTimeTextField.stringValue
+            
+            localDataController.showArray.removeAll(where: {$0.showID == editedShow?.showID})
+            localDataController.showArray.append(editedShow!)
             
             if ohmPickButton.state == .on {
                 currentShow?.ohmPick = true
@@ -45,7 +48,7 @@ class ShowDetailViewController: NSViewController {
             notificationCenter.post(name: NSNotification.Name("showsUpdated"), object: nil)
             localDataController.saveShowData()
         } else {
-            let newShow = Show(band: bandNameTextField.stringValue, venue: venueNameTextField.stringValue, dateString: startDateTextField.stringValue)
+            var newShow = Show(band: bandNameTextField.stringValue, venue: venueNameTextField.stringValue, dateString: startDateTextField.stringValue)
             newShow.time = startTimeTextField.stringValue
             localDataController.showArray.append(newShow)
             localDataController.saveShowData()

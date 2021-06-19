@@ -7,6 +7,7 @@
 
 import Foundation
 import Cocoa
+import FirebaseFirestore
 
 enum BusinessType: String, Codable, Equatable {
     case Resturant
@@ -21,20 +22,20 @@ protocol MutatingProtocolForBusinessData {
     //Empty for the purpose adding Hours to a business
 }
 
-class BusinessFullData: Codable, Equatable {
+struct BusinessFullData: Codable, Equatable {
     static func == (lhs: BusinessFullData, rhs: BusinessFullData) -> Bool {
         return lhs.venueID == rhs.venueID
     }
     
-    var venueID: String = UUID().uuidString
-    var name: String
-    var address: String
-    var phoneNumber: Int
-    var hours: Hours
+    var venueID: String?
+    var name: String?
+    var address: String?
+    var phoneNumber: Int?
+    var hours: Hours?
     var logo: Data?
-    //var shows: [Show] = []
+    var shows: [Show] = []
     var ratings: [Rating] = []
-    var stars: Double = 0
+    var stars: Int = 0
     var customer: Bool = false
     var ohmPick: Bool = false
     var website: String?
@@ -42,43 +43,74 @@ class BusinessFullData: Codable, Equatable {
     
     init(name: String, address: String, phoneNumber: Int, website: String) {
         
+        let venueID = Firestore.firestore().collection(FireStoreReferenceManager.businessFullDataPath.className).document().documentID
+        
+        self.venueID = venueID
         self.name = name
         self.address = address
         self.phoneNumber = phoneNumber
         self.website = website
-        self.hours = Hours()
+    }
+
+    
+    private init?(venueID: String, dictionary: [String: Any]) {
+        guard let venueID = dictionary["venueID"] as? String,
+              let name = dictionary["name"] as? String,
+              let address = dictionary["address"] as? String,
+              let phoneNumber = dictionary["phoneNumber"] as? Int,
+              let logo = dictionary["logo"] as? Data,
+              let hours = dictionary["hours"] as? Hours,
+              let shows = dictionary["shows"] as? [Show],
+              let ratings = dictionary["ratings"] as? [Rating],
+              let customer = dictionary["customer"] as? Bool,
+              let ohmPick = dictionary["ohmPick"] as? Bool,
+              let website = dictionary["website"] as? String,
+              let businessType = dictionary["businessType"] as? [BusinessType] else {return}
+        
+        self.venueID = venueID
+        self.name = name
+        self.address = address
+        self.phoneNumber = phoneNumber
+        self.logo = logo
+        self.hours = hours
+        self.shows = shows
+        self.ratings = ratings
+        self.customer = customer
+        self.ohmPick = ohmPick
+        self.website = website
+        self.businessType = businessType
     }
     
-    func addBusinessHours(textField: NSTextField, textFieldNumber: Int) {
+    mutating func addBusinessHours(textField: NSTextField, textFieldNumber: Int) {
             
         switch textFieldNumber {
         case 1:
-            self.hours.Monday = textField.stringValue
+            self.hours?.monday = textField.stringValue
             print("Monday Set")
         case 2:
-            self.hours.Tuesday = textField.stringValue
+            self.hours?.tuesday = textField.stringValue
             print("Tuesday Set")
         case 3:
-            self.hours.Wednesday = textField.stringValue
+            self.hours?.wednesday = textField.stringValue
             print("Wednesday Set")
         case 4:
-            self.hours.Thursday = textField.stringValue
+            self.hours?.thursday = textField.stringValue
             print("Thursday Set")
         case 5:
-            self.hours.Friday = textField.stringValue
+            self.hours?.friday = textField.stringValue
             print("Friday Set")
         case 6:
-            self.hours.Saturday = textField.stringValue
+            self.hours?.saturday = textField.stringValue
             print("Saturday Set")
         case 7:
-            self.hours.Sunday = textField.stringValue
+            self.hours?.sunday = textField.stringValue
             print("Sunday Set")
         default:
             return print("No Schedule Set")
         }
     }
     
-    func addAndRemoveBusinessType(button: NSButton, typeNumber: Int) {
+    mutating func addAndRemoveBusinessType(button: NSButton, typeNumber: Int) {
         //NOTES: Used with a loop function and number counter to check the state (on/off) of all buttons in the array. The loop adds the next button into this function along with the Business Type current number on the counter. Which decides which Business Type is added/removed to/from the Businesses BusinessType Array.
         switch typeNumber {
         case 1:
@@ -128,22 +160,72 @@ struct BusinessBasicData: Codable, Equatable, MutatingProtocolForBusinessData {
     var venueID: String
     var name: String
     var logo: Data?
-    var stars: Double
+    var stars: Int
     //var shows: [Show] //To Query which places has shows today
 }
 
 struct Rating: Codable {
+    var ratingID: String
     let userID: String
     var stars: Int
     var review: String?
+    
+    init(ratingID: String, userID: String, stars: Int, review: String) {
+        
+        let ratingID = Firestore.firestore().collection("ratingData").document().documentID
+        
+        self.ratingID = ratingID
+        self.userID = userID
+        self.stars = stars
+        self.review = review
+    }
+    
+    private init?(ratingID: String, dictionary: [String : Any]) {
+        guard let userID = dictionary["userID"] as? String,
+              let stars = dictionary["stars"] as?  Int,
+              let review = dictionary["review"] as? String else {return nil}
+        
+        self.ratingID = ratingID
+        self.userID = userID
+        self.stars = stars
+        self.review = review
+    }
 }
 
 struct Hours: Codable, Equatable {
-    var Monday: String = " "
-    var Tuesday: String = " "
-    var Wednesday: String = " "
-    var Thursday: String = " "
-    var Friday: String = " "
-    var Saturday: String = " "
-    var Sunday: String = " "
+    var monday: String = " "
+    var tuesday: String = " "
+    var wednesday: String = " "
+    var thursday: String = " "
+    var friday: String = " "
+    var saturday: String = " "
+    var sunday: String = " "
+    
+    init(mon: String, tues: String, wed: String, thur: String, fri: String, sat: String, sun: String) {
+        self.monday = mon
+        self.tuesday = tues
+        self.wednesday = wed
+        self.thursday = thur
+        self.friday = fri
+        self.saturday = sat
+        self.sunday = sun
+    }
+    
+    private init?(dictionary: [String : Any]) {
+        guard let mon = dictionary["monday"] as? String,
+              let tues = dictionary["tuesday"] as? String,
+              let wed = dictionary["wednesday"] as? String,
+              let thur = dictionary["thursday"] as? String,
+              let fri = dictionary["friday"] as? String,
+              let sat = dictionary["saturday"] as? String,
+              let sun = dictionary["sunday"] as? String else {return nil}
+        
+        self.monday = mon
+        self.tuesday = tues
+        self.wednesday = wed
+        self.thursday = thur
+        self.friday = fri
+        self.saturday = sat
+        self.sunday = sun
+    }
 }

@@ -6,9 +6,10 @@
 //
 import Cocoa
 import Foundation
+import FirebaseFirestore
 
-class Show: Codable, Equatable, Hashable {
-    var showID: String = UUID().uuidString
+struct Show: Codable, Equatable, Hashable {
+    var showID: String
     let band: String
     let venue: String
     var dateString: String
@@ -20,19 +21,38 @@ class Show: Codable, Equatable, Hashable {
     static func == (lhs: Show, rhs: Show) -> Bool {
         return lhs.venue == rhs.venue && lhs.dateString == rhs.dateString && lhs.time == rhs.time
     }
-    
+
     //Hashable Conformity
     func hash(into hasher: inout Hasher) {
         hasher.combine(showID)
     }
     
+    
+}
+ 
+extension Show {
+    
     init(band: String, venue: String, dateString: String) {
+        
+        let showID = Firestore.firestore().collection("showData").document().documentID
+        self.showID = showID
         self.band = band
         self.venue = venue
         self.dateString = dateString
     }
     
-    func fixShowTime() {
+    private init?(showID: String, dictionary: [String: Any]) {
+        guard let band = dictionary["band"] as? String,
+              let venue = dictionary["venue"] as? String,
+              let dateString = dictionary["dateString"] as? String else {return nil}
+        
+        self.showID = showID
+        self.band = band
+        self.venue = venue
+        self.dateString = dateString
+    }
+
+    mutating func fixShowTime() {
         //        let monthArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
         //        let dayNumberArray = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"]
         let daysArray = ["Sun,", "Mon,", "Tues,", "Wed,", "Thurs,", "Fri,", "Sat,", "Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"]
@@ -87,9 +107,9 @@ class Show: Codable, Equatable, Hashable {
         if simiCleanDateArray.count >= 3 {
             let almostTime = simiCleanDateArray[2]
             var simiCleanTime = almostTime.replacingOccurrences(of: "[\n:pmPMAa]", with: "", options: .regularExpression, range: nil)
-            
+
             let timeNumber = Int(simiCleanTime)
-            
+
             switch timeNumber! {
             case 1...12:
                 cleanTime = "\(timeNumber!)pm"

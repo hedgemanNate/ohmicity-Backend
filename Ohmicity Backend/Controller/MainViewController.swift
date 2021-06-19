@@ -15,6 +15,7 @@ import FirebaseDatabase
 class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     
     //MARK: Properties
+    var users: [User] = []
     
     @IBOutlet weak var tableView: NSTableView!
     
@@ -27,9 +28,15 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     
     @IBOutlet weak var addBusinessButton: NSButton!
     @IBOutlet weak var editBusinessButton: NSButton!
+    @IBOutlet weak var pushBusinessButton: NSButton!
     
     @IBOutlet weak var addBandButton: NSButton!
     @IBOutlet weak var editBandButton: NSButton!
+    @IBOutlet weak var pushBandButton: NSButton!
+    
+    @IBOutlet weak var addShowButton: NSButton!
+    @IBOutlet weak var editShowButton: NSButton!
+    @IBOutlet weak var pushShowButton: NSButton!
     
     @IBOutlet weak var rawJSONDataButton: NSButton!
     
@@ -41,12 +48,9 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     
     @IBOutlet weak var localShowsButton: NSButton!
     @IBOutlet weak var remoteShowsButton: NSButton!
-    @IBOutlet weak var addShowButton: NSButton!
-    @IBOutlet weak var editShowButton: NSButton!
+    
 
     @IBOutlet weak var showAmountLabel: NSTextField!
-    
-    
     @IBOutlet weak var removeShowTextField: NSTextField!
     
     //MARK: ViewDidLoad
@@ -109,6 +113,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         }
     }
     
+    //MARK: Venue Buttons Tapped
     @IBAction func consolidateButtonTapped(_ sender: Any) {
         let reduce = parseDataController.jsonDataArray.reduce(into: [:], {$0[$1, default: 0] += 1})
         let sorted = reduce.sorted(by: {$0.value > $1.value})
@@ -143,7 +148,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                     print("Found Matching Venues")
                     for show in venue.shows! {
                         //print(show)
-                        let newShow = Show(band: show.bandName!, venue: venue.venueName!, dateString: show.showTime!)
+                        var newShow = Show(band: show.bandName!, venue: venue.venueName!, dateString: show.showTime!)
                         newShow.fixShowTime()
                         
                         if localDataController.showArray.contains(newShow) == false {
@@ -221,6 +226,46 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         
         localDataController.saveShowData()
     }
+    
+    //MARK: Push Buttons Tapped
+    @IBAction func pushBusinessButtonTapped(_ sender: Any) {
+        let fullBusinessData = localDataController.businessArray
+        let ref = FireStoreReferenceManager.businessFullDataPath
+        for business in fullBusinessData {
+            let businessDict: [String: Any] = [
+                "venueID" : business.venueID,
+                "name" : business.name,
+                "address" : business.address,
+                "phoneNumber" : business.phoneNumber,
+                "hours": [
+                    "monday": business.hours?.monday,
+                    "tuesday": business.hours?.tuesday,
+                    "wednesday": business.hours?.wednesday,
+                    "thursday": business.hours?.thursday,
+                    "friday": business.hours?.friday,
+                    "saturday": business.hours?.saturday,
+                    "sunday": business.hours?.sunday
+                    ],
+                "logo": business.logo,
+                "shows": [
+                    [
+                    ]
+                ]
+            
+            do {
+                try ref.document("\(business.venueID)").setData(businessDict)
+            } catch let error {
+                    NSLog(error.localizedDescription)
+            }
+        }
+    }
+    
+    @IBAction func pushBandButtonTapped(_ sender: Any) {
+    }
+    
+    @IBAction func pushShowButtonTapped(_ sender: Any) {
+    }
+    
     
     //MARK: Radio Buttons
     @IBAction func radioButtonChanged(_ sender: AnyObject) {
@@ -342,7 +387,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             if rawJSONDataButton.state == .on {
                 cell.textField?.stringValue = "\(row + 1): \(parseDataController.jsonDataArray[row].venueName ?? "CORRUPTED")"
             } else if localBusinessesButton.state == .on && localDataController.businessArray != [] {
-                cell.textField?.stringValue = "\(row + 1): \(localDataController.businessArray[row].name)"
+                cell.textField?.stringValue = "\(row + 1): \(localDataController.businessArray[row].name!)"
             }  else if localBandsButton.state == .on && localDataController.bandArray != [] {
                 cell.textField?.stringValue = "\(row + 1): \(localDataController.bandArray[row].name)"
             } else if localShowsButton.state == .on && localDataController.showArray != [] {

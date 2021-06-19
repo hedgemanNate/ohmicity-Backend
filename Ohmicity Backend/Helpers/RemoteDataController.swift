@@ -8,7 +8,6 @@
 import Foundation
 import FirebaseCore
 import FirebaseFirestore
-import FirebaseFirestoreSwift
 
 class RemoteDataController {
     
@@ -17,6 +16,8 @@ class RemoteDataController {
     var remoteBasicBusinessArray: [BusinessBasicData] = []
     var remoteBandsArray: [Band] = []
     var remoteShowArray: [Show] = []
+    
+    let db = Firestore.firestore()
 
 }
 

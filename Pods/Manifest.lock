@@ -287,10 +287,10 @@ PODS:
   - PromisesObjC (1.2.12)
 
 DEPENDENCIES:
-  - FirebaseCore
-  - FirebaseDatabase
-  - FirebaseFirestore
-  - FirebaseFirestoreSwift
+  - FirebaseCore (~> 6.10.4)
+  - FirebaseDatabase (~> 6.6.0)
+  - FirebaseFirestore (~> 1.19.0)
+  - FirebaseFirestoreSwift (~> 0.4.0)
   - FirebaseStorage
 
 SPEC REPOS:
@@ -330,6 +330,6 @@ SPEC CHECKSUMS:
   nanopb: 59317e09cf1f1a0af72f12af412d54edf52603fc
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
 
-PODFILE CHECKSUM: 538e5dc7d771acd93b03012a82ef0bf0372d79db
+PODFILE CHECKSUM: b57b1cddd7e54c06cb3fbc650519c657dc154742
 
 COCOAPODS: 1.10.1
