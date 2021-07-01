@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="BusinessPhoto" customModule="Ohmicity_Backend" customModuleProvider="target">
+            <connections>
+                <outlet property="image" destination="iLR-Cy-MgV" id="lET-Nb-stD"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView identifier="Photo" id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <imageView identifier="Photo" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iLR-Cy-MgV">
+                    <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="eVq-Ak-MxU"/>
+                </imageView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="iLR-Cy-MgV" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="D39-6F-052"/>
+                <constraint firstItem="iLR-Cy-MgV" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="DQU-9z-nh0"/>
+                <constraint firstAttribute="trailing" secondItem="iLR-Cy-MgV" secondAttribute="trailing" id="VOa-Vg-COK"/>
+                <constraint firstAttribute="bottom" secondItem="iLR-Cy-MgV" secondAttribute="bottom" id="kaL-Xc-zEf"/>
+            </constraints>
+            <point key="canvasLocation" x="-203" y="154"/>
+        </customView>
+        <collectionViewItem nibName="BusinessPhoto" id="VRv-u0-zx5" customClass="BusinessPhoto" customModule="Ohmicity_Backend" customModuleProvider="target">
+            <connections>
+                <outlet property="imageView" destination="iLR-Cy-MgV" id="v4G-b9-lG5"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="ihf-1y-Exb"/>
+            </connections>
+        </collectionViewItem>
+    </objects>
+</document>

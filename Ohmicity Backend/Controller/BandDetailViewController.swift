@@ -33,6 +33,10 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     @IBOutlet weak var edmButton: NSButton!
     @IBOutlet weak var hiphopButton: NSButton!
     @IBOutlet weak var djButton: NSButton!
+    @IBOutlet weak var popButton: NSButton!
+    @IBOutlet weak var metalButton: NSButton!
+    
+    
     var genreButtonArray: [NSButton] = []
     
     @IBOutlet weak var loadPictureButton: NSButton!
@@ -58,13 +62,23 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         checkCurrentObject { [self] in
             currentBand?.name = bandNameTextField.stringValue
             currentBand?.mediaLink = bandMediaLinkTextField.stringValue
-            addAndRemoveBandType(band: currentBand!)
             currentBand?.photo = imageData
+            if ohmPickButton.state == .on {
+                currentBand?.ohmPick = true
+            } else {
+                currentBand?.ohmPick = false
+            }
+            
+            if localDataController.bandArray.contains(currentBand!) == false {
+                localDataController.bandArray.append(currentBand!)
+            }
+            
             localDataController.saveBandData()
             notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
+            
+            
         } ifNil: { [self] in
             let newBand = Band(name: bandNameTextField.stringValue, mediaLink: bandMediaLinkTextField.stringValue, ohmPick: ohmPickButton.state)
-            addAndRemoveBandType(band: newBand)
             newBand.photo = imageData
             localDataController.bandArray.append(newBand)
             localDataController.saveBandData()
@@ -72,6 +86,18 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         }
 
     }
+    
+    @IBAction func pushhButtonTapped(_ sender: Any) {
+        let ref = FireStoreReferenceManager.bandDataPath
+        
+        do {
+            try ref.document(currentBand!.bandID ?? UUID.init().uuidString).setData(from: currentBand)
+            print("Maybe a good push to database: Wait for error")
+        } catch let error {
+                NSLog(error.localizedDescription)
+        }
+    }
+    
     
     @IBAction func deleteButtonTapped(_ sender: Any) {
         localDataController.bandArray.removeAll(where: {$0 == currentBand})
@@ -87,7 +113,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         dialog.allowsMultipleSelection = false
         dialog.canChooseDirectories = false
         dialog.allowsMultipleSelection = false
-        dialog.allowedFileTypes = ["png", "jpeg"]
+        dialog.allowedFileTypes = ["png", "jpeg", "jpg", "tiff", "webp"]
         
         if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
             let result = dialog.url // Pathname of the file
@@ -103,9 +129,96 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     }
     
     
+    //MARK: Genre CheckBoxes Tapped
+    @IBAction func rockButtonTapped(_ sender: Any) {
+        if rockButton.state == .on {
+            currentBand?.genre.append(Genre.Rock)
+        } else {
+            currentBand?.genre.removeAll(where: {$0 == Genre.Rock})
+        }
+    }
+    @IBAction func bluesButtonTapped(_ sender: Any) {
+        if bluesButton.state == .on {
+            currentBand?.genre.append(Genre.Blues)
+        } else {
+            currentBand?.genre.removeAll(where: {$0 == Genre.Blues})
+        }
+    }
+    @IBAction func jazzButtonTapped(_ sender: Any) {
+        if jazzButton.state == .on {
+            currentBand?.genre.append(Genre.Jazz)
+        } else {
+            currentBand?.genre.removeAll(where: {$0 == Genre.Jazz})
+        }
+    }
+    @IBAction func danceButtonTapped(_ sender: Any) {
+        if danceButton.state == .on {
+            currentBand?.genre.append(Genre.Dance)
+        } else {
+            currentBand?.genre.removeAll(where: {$0 == Genre.Dance})
+        }
+    }
+    @IBAction func reggaeButtonTapped(_ sender: Any) {
+        if reggaeButton.state == .on {
+            currentBand?.genre.append(Genre.Reggae)
+        } else {
+            currentBand?.genre.removeAll(where: {$0 == Genre.Reggae})
+        }
+    }
+    @IBAction func countryButtonTapped(_ sender: Any) {
+        if countryButton.state == .on {
+            currentBand?.genre.append(Genre.Country)
+        } else {
+            currentBand?.genre.removeAll(where: {$0 == Genre.Country})
+        }
+    }
+    @IBAction func funkButtonTapped(_ sender: Any) {
+        if funkButton.state == .on {
+            currentBand?.genre.append(Genre.FunkSoul)
+        } else {
+            currentBand?.genre.removeAll(where: {$0 == Genre.FunkSoul})
+        }
+    }
+    @IBAction func edmButtonTapped(_ sender: Any) {
+        if edmButton.state == .on {
+            currentBand?.genre.append(Genre.EDM)
+        } else {
+            currentBand?.genre.removeAll(where: {$0 == Genre.EDM})
+        }
+    }
+    @IBAction func hiphopButtonTapped(_ sender: Any) {
+        if hiphopButton.state == .on {
+            currentBand?.genre.append(Genre.HipHop)
+        } else {
+            currentBand?.genre.removeAll(where: {$0 == Genre.HipHop})
+        }
+    }
+    @IBAction func djButtonTapped(_ sender: Any) {
+        if djButton.state == .on {
+            currentBand?.genre.append(Genre.DJ)
+        } else {
+            currentBand?.genre.removeAll(where: {$0 == Genre.DJ})
+        }
+    }
+    @IBAction func popButtonTapped(_ sender: Any) {
+        if popButton.state == .on {
+            currentBand?.genre.append(Genre.Pop)
+        } else {
+            currentBand?.genre.removeAll(where: {$0 == Genre.Pop})
+        }
+    }
+    @IBAction func metalButtonTapped(_ sender: Any) {
+        if metalButton.state == .on {
+            currentBand?.genre.append(Genre.Metal)
+        } else {
+            currentBand?.genre.removeAll(where: {$0 == Genre.Metal})
+        }
+    }
+    
+    
+    
     //MARK: UpdateViews
     private func updateViews() {
-        genreButtonSetup()
         showArraySetup()
         reloadTableView()
         fillData()
@@ -115,6 +228,9 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         
         checkCurrentObject { [self] in
             deleteButton.isEnabled = true
+            if currentBand?.ohmPick == true {
+                ohmPickButton.state = .on
+            }
             
             if currentBand!.photo != nil {
                 imageData = currentBand?.photo
@@ -133,54 +249,6 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
 //MARK: Helper Functions
 extension BandDetailViewController {
     
-    private func genreButtonSetup() {
-        genreButtonArray = [
-            rockButton, bluesButton,
-            jazzButton, danceButton,
-            reggaeButton, countryButton,
-            funkButton, edmButton,
-            hiphopButton, djButton
-        ]
-        
-        guard let currentBand = currentBand else {
-            return
-        }
-        
-        for genre in currentBand.genre {
-            switch genre {
-            case .rock:
-                rockButton.state = .on
-            case .blues:
-                bluesButton.state = .on
-            case .jazz:
-                jazzButton.state = .on
-            case .dance:
-                danceButton.state = .on
-            case .reggae:
-                reggaeButton.state = .on
-            case .country:
-                countryButton.state = .on
-            case .funkSoul:
-                funkButton.state = .on
-            case .edm:
-                edmButton.state = .on
-            case .hiphop:
-                hiphopButton.state = .on
-            case .dj:
-                djButton.state = .on
-            }
-        }
-    }
-    
-    private func addAndRemoveBandType(band: Band) {
-        var genreNumber = 1
-        
-        for button in genreButtonArray {
-            band.addAndRemoveGenreType(button: button, genreNumber: genreNumber)
-            genreNumber += 1
-            print("genre added")
-        }
-    }
     
     private func showArraySetup() {
         checkCurrentObject { [self] in
@@ -201,29 +269,36 @@ extension BandDetailViewController {
     private func fillData() {
         checkCurrentObject() { [self] in
             bandNameTextField.stringValue = currentBand!.name
-            bandMediaLinkTextField.stringValue = currentBand!.mediaLink ?? "No Link"
-            for genre in currentBand!.genre {
-                switch genre {
-                case .rock:
-                    genreButtonArray[0].state = .on
-                case .blues:
-                    genreButtonArray[1].state = .on
-                case .jazz:
-                    genreButtonArray[2].state = .on
-                case .dance:
-                    genreButtonArray[3].state = .on
-                case .reggae:
-                    genreButtonArray[4].state = .on
-                case .country:
-                    genreButtonArray[5].state = .on
-                case .funkSoul:
-                    genreButtonArray[6].state = .on
-                case .edm:
-                    genreButtonArray[7].state = .on
-                case .hiphop:
-                    genreButtonArray[8].state = .on
-                case .dj:
-                    genreButtonArray[9].state = .on
+            bandMediaLinkTextField.stringValue = currentBand!.mediaLink ?? "This musician doesn have anything for you to listen to..."
+            
+            if currentBand != nil {
+                for genre in currentBand!.genre {
+                    switch genre {
+                    case .Rock:
+                        rockButton.state = .on
+                    case .Blues:
+                        bluesButton.state = .on
+                    case .Jazz:
+                        jazzButton.state = .on
+                    case .Dance:
+                        danceButton.state = .on
+                    case .Reggae:
+                        reggaeButton.state = .on
+                    case .Country:
+                        countryButton.state = .on
+                    case .FunkSoul:
+                        funkButton.state = .on
+                    case .EDM:
+                        edmButton.state = .on
+                    case .HipHop:
+                        hiphopButton.state = .on
+                    case .DJ:
+                        djButton.state = .on
+                    case .Pop:
+                        popButton.state = .on
+                    case .Metal:
+                        metalButton.state = .on
+                    }
                 }
             }
         } ifNil: {
@@ -241,7 +316,7 @@ extension BandDetailViewController {
     
 }
 
-//MARK: Table
+//MARK: Tableview
 extension BandDetailViewController {
     
     func numberOfRows(in tableView: NSTableView) -> Int {
@@ -252,7 +327,7 @@ extension BandDetailViewController {
         if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "Band") {
             let bandIdentifier = NSUserInterfaceItemIdentifier("BandCell")
             guard let cellView = tableView.makeView(withIdentifier: bandIdentifier, owner: self) as? NSTableCellView else {return nil}
-            cellView.textField?.stringValue = shows[row].band
+            cellView.textField?.stringValue = shows[row].venue
             return cellView
             
         } else if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "Time") {

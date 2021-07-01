@@ -8,11 +8,14 @@
 import Foundation
 import Cocoa
 import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 
-class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
+class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource, NSCollectionViewDataSource, NSCollectionViewDelegate {
     
     //MARK: Properties
+    var cImage: NSImage?
+    
     var currentVenue: RawJSON?
     var currentBusiness: BusinessFullData?
     var image: NSImage?
@@ -24,12 +27,16 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     @IBOutlet weak var tableView: NSTableView!
     var currentBusinessShows: [Show]?
     
+    @IBOutlet weak var collectionView: NSCollectionView!
+    
+    
     //Text Fields
     @IBOutlet weak var nameTextField: NSTextField!
     @IBOutlet weak var addressTextField: NSTextField!
     @IBOutlet weak var phoneTextField: NSTextField!
     @IBOutlet weak var starsTextField: NSTextField!
     @IBOutlet weak var websiteTextField: NSTextField!
+    @IBOutlet weak var photoDeleteTextField: NSTextField!
     
     //Schedule:
     @IBOutlet weak var mondayOpenTextField: NSTextField!
@@ -47,9 +54,22 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     @IBOutlet weak var saveButton: NSButton!
     @IBOutlet weak var deleteButton: NSButton!
     @IBOutlet weak var ohmPick: NSButton!
-    @IBOutlet weak var loadPictureButton: NSButton!
-    @IBOutlet weak var resetSaveButton: NSButton!
+    @IBOutlet weak var loadLogoButton: NSButton!
+    @IBOutlet weak var loadPicturesButton: NSButton!
+    @IBOutlet weak var deletePicsButton: NSButton!
+    @IBOutlet weak var pushBusinessButton: NSButton!
+    
+    @IBOutlet weak var resturantButton: NSButton!
+    @IBOutlet weak var barButton: NSButton!
+    @IBOutlet weak var clubButton: NSButton!
+    @IBOutlet weak var outdoorsButton: NSButton!
+    @IBOutlet weak var liveMusicButton: NSButton!
+    @IBOutlet weak var familyButton: NSButton!
+    
+    
+    //Pictures
     @IBOutlet weak var logoImageView: NSImageView!
+    
     //Genre
     @IBOutlet weak var resturantGenreButton: NSButton!
     @IBOutlet weak var barGenreButton: NSButton!
@@ -79,7 +99,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     }
     
     //MARK: Buttons Tapped
-    @IBAction func loadPictureButtonTapped(_ sender: Any) {
+    @IBAction func loadLogoButtonTapped(_ sender: Any) {
         let dialog = NSOpenPanel();
         dialog.title                   = "Choose a file| Our Code World"
         dialog.showsResizeIndicator    = true
@@ -87,7 +107,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         dialog.allowsMultipleSelection = false
         dialog.canChooseDirectories = false
         dialog.allowsMultipleSelection = false
-        dialog.allowedFileTypes = ["png", "jpeg"]
+        dialog.allowedFileTypes = ["png", "jpeg", "jpg", "tiff"]
         
         if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
             let result = dialog.url // Pathname of the file
@@ -95,10 +115,45 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
             logoImageView.image = image
             
             let imageData = NSData(contentsOf: result!)
-            self.imageData = imageData as! Data
+            self.imageData = imageData as Data?
         } else {
             // User clicked on "Cancel"
             return
+        }
+    }
+    
+    @IBAction func loadPicturesButtonTapped(_ sender: Any) {
+        let dialog = NSOpenPanel();
+        dialog.title                   = "Choose a file| Our Code World"
+        dialog.showsResizeIndicator    = true
+        dialog.showsHiddenFiles        = false
+        dialog.allowsMultipleSelection = false
+        dialog.canChooseDirectories = false
+        dialog.allowsMultipleSelection = false
+        dialog.allowedFileTypes = ["png", "jpeg", "jpg", "tiff"]
+        
+        if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
+            guard let result = dialog.url else {return} // Pathname of the file
+            let imageData = NSData(contentsOf: result)
+            let data = imageData! as Data
+            currentBusiness?.pics.append(data)
+            
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
+            
+            
+        } else {
+            // User clicked on "Cancel"
+            return
+        }
+    }
+    
+    @IBAction func photoDeleteButtonTapped(_ sender: Any) {
+        guard let index = collectionView.selectionIndexes.first else {return}
+        currentBusiness?.pics.remove(at: index)
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
         }
     }
     
@@ -129,26 +184,9 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
             currentBusiness?.ohmPick = false
         }
         
-        var day = 1
-        var type = 1
+        let hours = Hours(mon: mondayOpenTextField.stringValue, tues: tuesdayOpenTextField.stringValue, wed: wednesdayOpenTextField.stringValue, thur: thursdayOpenTextField.stringValue, fri: fridayOpenTextField.stringValue, sat: saturdayOpenTextField.stringValue, sun: sundayOpenTextField.stringValue)
         
-        for dateHours in self.scheduleTextFieldsArray {
-            currentBusiness?.addBusinessHours(textField: dateHours, textFieldNumber: day)
-            print("\(dateHours.stringValue)")
-            print("day added")
-            day += 1
-        }
-        
-        for businessTypeButton in self.businessTypeButtonsArray {
-            currentBusiness?.addAndRemoveBusinessType(button: businessTypeButton, typeNumber: type)
-            type += 1
-            print("genre added")
-        }
-        
-        guard let index = localDataController.businessArray.firstIndex(where: {$0.venueID == currentBusiness?.venueID}) else {return}
-        localDataController.businessBasicArray[index].name = name
-        localDataController.businessBasicArray[index].stars = stars
-        //localDataController.businessBasicArray[index].logo = logo /*Preparing for logo*/
+        currentBusiness?.hours = hours
         
         localDataController.saveBusinessData()
         localDataController.saveBusinessBasicData()
@@ -158,7 +196,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     @IBAction func makeBusinessButtonTapped(_ sender: Any) {
         DispatchQueue.main.async {
             self.saveButton.isEnabled = false
-            self.resetSaveButton.isEnabled = true
+            self.pushBusinessButton.isEnabled = true
         }
         let name = nameTextField.stringValue
         let address = addressTextField.stringValue
@@ -173,26 +211,15 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         
         
         
-        var newBusiness = BusinessFullData(name: name, address: address, phoneNumber: phoneNumber, website: website)
+        let newBusiness = BusinessFullData(name: name, address: address, phoneNumber: phoneNumber, website: website)
         print("Business Created")
         
         newBusiness.stars = Int(stars)!
         
-        var day = 1
-        var type = 1
         
-        for dateHours in self.scheduleTextFieldsArray {
-            newBusiness.addBusinessHours(textField: dateHours, textFieldNumber: day)
-            print("\(dateHours.stringValue)")
-            print("day added")
-            day += 1
-        }
+        let hours = Hours(mon: mondayOpenTextField.stringValue, tues: tuesdayOpenTextField.stringValue, wed: wednesdayOpenTextField.stringValue, thur: thursdayOpenTextField.stringValue, fri: fridayOpenTextField.stringValue, sat: saturdayOpenTextField.stringValue, sun: sundayOpenTextField.stringValue)
         
-        for businessTypeButton in self.businessTypeButtonsArray {
-            newBusiness.addAndRemoveBusinessType(button: businessTypeButton, typeNumber: type)
-            type += 1
-            print("genre added")
-        }
+        newBusiness.hours = hours
         
         let newBusinessBasic = BusinessBasicData(venueID: newBusiness.venueID!, name: newBusiness.name!, logo: newBusiness.logo, stars: newBusiness.stars)
         
@@ -204,12 +231,24 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         activateDelete()
         notificationCenter.post(name: NSNotification.Name("showsUpdated"), object: nil)
         print("Save Button Tapped")
+        
+        
+        //Adding Shows To Local Data
+        guard let shows = currentVenue?.shows else {return}
+        for show in shows {
+            let newShow: Show = Show(band: show.bandName!, venue: currentVenue!.venueName!, dateString: show.showTime!)
+            
+            localDataController.showArray.append(newShow)
+        }
     }
     
-    @IBAction func resetSaveButtonTapped(_ sender: Any) {
-        DispatchQueue.main.async {
-            self.saveButton.isEnabled = true
-            self.resetSaveButton.isEnabled = false
+    @IBAction func pushBusinessButtonTapped(_ sender: Any) {
+        let ref = FireStoreReferenceManager.businessFullDataPath
+        
+        do {
+            try ref.document(currentBusiness!.venueID ?? UUID.init().uuidString).setData(from: currentBusiness)
+        } catch let error {
+                NSLog(error.localizedDescription)
         }
     }
     
@@ -252,6 +291,51 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         
     }
     
+    //MARK: Genre CheckkBox Buttons
+    @IBAction func resturantButtonTapped(_ sender: Any) {
+        if resturantButton.state == .on {
+            currentBusiness?.businessType.append(BusinessType.Resturant)
+        } else {
+            currentBusiness?.businessType.removeAll(where: {$0 == BusinessType.Resturant})
+        }
+    }
+    @IBAction func barButtonTapped(_ sender: Any) {
+        if barButton.state == .on {
+            currentBusiness?.businessType.append(BusinessType.Bar)
+        } else {
+            currentBusiness?.businessType.removeAll(where: {$0 == BusinessType.Bar})
+        }
+    }
+    @IBAction func clubButtonTapped(_ sender: Any) {
+        if clubButton.state == .on {
+            currentBusiness?.businessType.append(BusinessType.Club)
+        } else {
+            currentBusiness?.businessType.removeAll(where: {$0 == BusinessType.Club})
+        }
+    }
+    @IBAction func outdoorsButtonTapped(_ sender: Any) {
+        if outdoorsButton.state == .on {
+            currentBusiness?.businessType.append(BusinessType.Outdoors)
+        } else {
+            currentBusiness?.businessType.removeAll(where: {$0 == BusinessType.Outdoors})
+        }
+    }
+    @IBAction func liveMusicButtonTapped(_ sender: Any) {
+        if liveMusicButton.state == .on {
+            currentBusiness?.businessType.append(BusinessType.LiveMusic)
+        } else {
+            currentBusiness?.businessType.removeAll(where: {$0 == BusinessType.LiveMusic})
+        }
+    }
+    @IBAction func familyButtonTapped(_ sender: Any) {
+        if familyButton.state == .on {
+            currentBusiness?.businessType.append(BusinessType.Family)
+        } else {
+            currentBusiness?.businessType.removeAll(where: {$0 == BusinessType.Family})
+        }
+    }
+    
+    
     private func activateDelete() {
         DispatchQueue.main.async {
             self.deleteButton.isEnabled = true
@@ -262,19 +346,27 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     func updateViews() {
         tableView.delegate = self
         tableView.dataSource = self
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
         logoImageView.imageAlignment = .alignCenter
         logoImageView.imageScaling = .scaleProportionallyDown
         
         if currentVenue != nil {
             updateBusinessButton.isEnabled = false
             nameTextField.stringValue = currentVenue!.venueName!
-            makeBusinessButton.isEnabled = true
             deleteButton.isEnabled = false
+            pushBusinessButton.isEnabled = false
+            updateBusinessButton.isEnabled = false
+            loadPicturesButton.isEnabled = false
+            deletePicsButton.isEnabled = false
+            pushBusinessButton.isEnabled = false
+            
         } else if currentBusiness != nil {
-            addBusinessHours()
+            inputBusinessHours()
             addBusinessType()
-            updateBusinessButton.isEnabled = true
             makeBusinessButton.isEnabled = false
+            pushBusinessButton.isEnabled = true
             nameTextField.stringValue = currentBusiness!.name!
             addressTextField.stringValue = currentBusiness!.address!
             phoneTextField.stringValue = String(currentBusiness!.phoneNumber!)
@@ -289,6 +381,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
             saturdayOpenTextField.stringValue = currentBusiness?.hours?.saturday ?? "No Hours"
             sundayOpenTextField.stringValue = currentBusiness?.hours?.sunday ?? "No Hours"
             
+            
             //Initializing currentBusinessShows Array
             currentBusinessShows = localDataController.showArray.filter({$0.venue == currentBusiness?.name})
             
@@ -300,10 +393,11 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
             
             //Image Handling Should Happen Last
             guard let logo = currentBusiness?.logo else {return}
-            image = NSImage(data: logo)
+            imageData = logo
+            image = NSImage(data: imageData!)
             logoImageView.image = image
         }
-        
+            
         //Text and Button Arrays
         scheduleTextFieldsArray = [
             mondayOpenTextField,
@@ -315,18 +409,30 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
             sundayOpenTextField
         ]
         
-        businessTypeButtonsArray = [
-            resturantGenreButton,
-            barGenreButton,
-            clubGenreButton,
-            outdoorsGenreButton,
-            liveMusicGenreButton,
-            familyGenreButton
-        ]
-        
         deleteButton.isEnabled = false
-        resetSaveButton.isEnabled = false
     }
+}
+
+//MARK: CollectionView
+extension VenueDetailViewController {
+    func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
+        return (currentBusiness?.pics.count) ?? 0
+        }
+        
+        func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
+            
+            let image = NSImage(data: (currentBusiness?.pics[indexPath.item])!)
+            
+            let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier("BusinessPhoto"), for: indexPath)
+            guard let pictureItem = item as? BusinessPhoto else { return item }
+            
+            pictureItem.view.wantsLayer = true
+            //pictureItem.imageView?.imageAlignment = .alignCenter
+            pictureItem.imageView?.imageScaling = .scaleProportionallyDown
+            pictureItem.imageView?.image = image
+            
+            return pictureItem
+        }
 }
 
 //MARK: Tablview
@@ -384,7 +490,7 @@ extension VenueDetailViewController {
     }
     
     
-    private func addBusinessHours() {
+    private func inputBusinessHours() {
         if currentBusiness != nil {
             mondayOpenTextField.stringValue = (currentBusiness?.hours?.monday)!
             tuesdayOpenTextField.stringValue = (currentBusiness?.hours?.tuesday)!
@@ -406,8 +512,8 @@ extension VenueDetailViewController {
     
     private func addBusinessType() {
         if currentBusiness != nil {
-            for genre in currentBusiness!.businessType {
-                switch genre {
+            for businessType in currentBusiness!.businessType {
+                switch businessType {
                 case .Resturant:
                     resturantGenreButton.state = .on
                 case .Bar:

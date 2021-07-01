@@ -14,7 +14,7 @@ class RemoteDataController {
     //Properties
     var remoteBusinessArray: [BusinessFullData] = []
     var remoteBasicBusinessArray: [BusinessBasicData] = []
-    var remoteBandsArray: [Band] = []
+    var remoteBandArray: [Band] = []
     var remoteShowArray: [Show] = []
     
     let db = Firestore.firestore()

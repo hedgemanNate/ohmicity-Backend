@@ -22,7 +22,7 @@ protocol MutatingProtocolForBusinessData {
     //Empty for the purpose adding Hours to a business
 }
 
-struct BusinessFullData: Codable, Equatable {
+class BusinessFullData: Codable, Equatable {
     static func == (lhs: BusinessFullData, rhs: BusinessFullData) -> Bool {
         return lhs.venueID == rhs.venueID
     }
@@ -33,8 +33,7 @@ struct BusinessFullData: Codable, Equatable {
     var phoneNumber: Int?
     var hours: Hours?
     var logo: Data?
-    var shows: [Show] = []
-    var ratings: [Rating] = []
+    var pics: [Data] = []
     var stars: Int = 0
     var customer: Bool = false
     var ohmPick: Bool = false
@@ -53,15 +52,13 @@ struct BusinessFullData: Codable, Equatable {
     }
 
     
-    private init?(venueID: String, dictionary: [String: Any]) {
-        guard let venueID = dictionary["venueID"] as? String,
+    private init?(dictionary: [String: Any]) {
+        guard let venueID = (dictionary["venueID"] as! String?),
               let name = dictionary["name"] as? String,
               let address = dictionary["address"] as? String,
               let phoneNumber = dictionary["phoneNumber"] as? Int,
               let logo = dictionary["logo"] as? Data,
-              let hours = dictionary["hours"] as? Hours,
-              let shows = dictionary["shows"] as? [Show],
-              let ratings = dictionary["ratings"] as? [Rating],
+              let hours = dictionary["hours"] as? Hours?,
               let customer = dictionary["customer"] as? Bool,
               let ohmPick = dictionary["ohmPick"] as? Bool,
               let website = dictionary["website"] as? String,
@@ -73,44 +70,13 @@ struct BusinessFullData: Codable, Equatable {
         self.phoneNumber = phoneNumber
         self.logo = logo
         self.hours = hours
-        self.shows = shows
-        self.ratings = ratings
         self.customer = customer
         self.ohmPick = ohmPick
         self.website = website
         self.businessType = businessType
     }
     
-    mutating func addBusinessHours(textField: NSTextField, textFieldNumber: Int) {
-            
-        switch textFieldNumber {
-        case 1:
-            self.hours?.monday = textField.stringValue
-            print("Monday Set")
-        case 2:
-            self.hours?.tuesday = textField.stringValue
-            print("Tuesday Set")
-        case 3:
-            self.hours?.wednesday = textField.stringValue
-            print("Wednesday Set")
-        case 4:
-            self.hours?.thursday = textField.stringValue
-            print("Thursday Set")
-        case 5:
-            self.hours?.friday = textField.stringValue
-            print("Friday Set")
-        case 6:
-            self.hours?.saturday = textField.stringValue
-            print("Saturday Set")
-        case 7:
-            self.hours?.sunday = textField.stringValue
-            print("Sunday Set")
-        default:
-            return print("No Schedule Set")
-        }
-    }
-    
-    mutating func addAndRemoveBusinessType(button: NSButton, typeNumber: Int) {
+    func addAndRemoveBusinessType(button: NSButton, typeNumber: Int) {
         //NOTES: Used with a loop function and number counter to check the state (on/off) of all buttons in the array. The loop adds the next button into this function along with the Business Type current number on the counter. Which decides which Business Type is added/removed to/from the Businesses BusinessType Array.
         switch typeNumber {
         case 1:
@@ -227,5 +193,34 @@ struct Hours: Codable, Equatable {
         self.friday = fri
         self.saturday = sat
         self.sunday = sun
+    }
+    
+    mutating func addBusinessHours(textField: NSTextField, textFieldNumber: Int) {
+            
+        switch textFieldNumber {
+        case 1:
+            self.monday = textField.stringValue
+            print("Monday Set")
+        case 2:
+            self.tuesday = textField.stringValue
+            print("Tuesday Set")
+        case 3:
+            self.wednesday = textField.stringValue
+            print("Wednesday Set")
+        case 4:
+            self.thursday = textField.stringValue
+            print("Thursday Set")
+        case 5:
+            self.friday = textField.stringValue
+            print("Friday Set")
+        case 6:
+            self.saturday = textField.stringValue
+            print("Saturday Set")
+        case 7:
+            self.sunday = textField.stringValue
+            print("Sunday Set")
+        default:
+            return print("No Schedule Set")
+        }
     }
 }

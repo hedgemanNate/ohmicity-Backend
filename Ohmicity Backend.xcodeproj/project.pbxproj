@@ -7,29 +7,33 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C83EE2F6A3B334C43E8F01FA /* libPods-Ohmicity Backend.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 26ECA2BD6C3C38F1513A7428 /* libPods-Ohmicity Backend.a */; };
 		D8092A0F26681C0000560A97 /* Venue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8092A0E26681C0000560A97 /* Venue.swift */; };
 		D8092A1226682D4E00560A97 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8092A1126682D4E00560A97 /* User.swift */; };
 		D83B32CD267A5D800065948E /* ImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83B32CC267A5D800065948E /* ImageController.swift */; };
-		D84E0041267BBA2400596C6A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D84E0040267BBA2400596C6A /* GoogleService-Info.plist */; };
-		D851048D267BCBA1002365F6 /* Pods_Ohmicity_Backend.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0510E24CFF24417E831AB32A /* Pods_Ohmicity_Backend.framework */; };
 		D851048E267BCBA1002365F6 /* Pods_Ohmicity_Backend.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0510E24CFF24417E831AB32A /* Pods_Ohmicity_Backend.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D85AC754267BB02B00CEA95B /* RemoteDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85AC753267BB02B00CEA95B /* RemoteDataController.swift */; };
 		D85F3D1D267CF2FC001BCFCA /* FireStoreReferenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85F3D1C267CF2FC001BCFCA /* FireStoreReferenceManager.swift */; };
 		F610AA3A2669309100EC2E8A /* VenueDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610AA382669309100EC2E8A /* VenueDetailViewController.swift */; };
 		F610AA3F26699EE700EC2E8A /* LocalDataStorageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610AA3E26699EE700EC2E8A /* LocalDataStorageController.swift */; };
+		F615064B268E67E200C4B808 /* Ohmicity Logo Banner.png in Resources */ = {isa = PBXBuildFile; fileRef = F615064A268E67E200C4B808 /* Ohmicity Logo Banner.png */; };
+		F615064D268E680B00C4B808 /* 1200px-American_Heart_Association_Logo.svg.png in Resources */ = {isa = PBXBuildFile; fileRef = F615064C268E680B00C4B808 /* 1200px-American_Heart_Association_Logo.svg.png */; };
 		F630FC0726583E5A001D0DA6 /* RawJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = F630FC0626583E5A001D0DA6 /* RawJSON.swift */; };
+		F655439F2689ABA300F823BA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F655439E2689ABA300F823BA /* GoogleService-Info.plist */; };
+		F6578F4A268D032E00AC25CE /* BusinessPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6578F48268D032E00AC25CE /* BusinessPhoto.swift */; };
+		F6578F4B268D032E00AC25CE /* BusinessPhoto.xib in Resources */ = {isa = PBXBuildFile; fileRef = F6578F49268D032E00AC25CE /* BusinessPhoto.xib */; };
 		F65B06A4266C360F00616BD9 /* BandDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65B06A2266C360F00616BD9 /* BandDetailViewController.swift */; };
 		F65B06A9266C3EC300616BD9 /* ShowDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65B06A7266C3EC300616BD9 /* ShowDetailViewController.swift */; };
 		F65B06AD266C95AF00616BD9 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65B06AC266C95AF00616BD9 /* Helper.swift */; };
 		F6A2D74F2656F05900C50456 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A2D74D2656F05900C50456 /* MainViewController.swift */; };
 		F6A2D7502656F05900C50456 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F6A2D74E2656F05900C50456 /* MainViewController.xib */; };
-		F6A2D75B2656F1D100C50456 /* Ohmicity Logo Banner.png in Resources */ = {isa = PBXBuildFile; fileRef = F6A2D75A2656F1D100C50456 /* Ohmicity Logo Banner.png */; };
 		F6C31F552656E57B004A1BB2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C31F542656E57B004A1BB2 /* AppDelegate.swift */; };
 		F6C31F592656E57B004A1BB2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F6C31F582656E57B004A1BB2 /* Assets.xcassets */; };
 		F6C31F5C2656E57B004A1BB2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6C31F5A2656E57B004A1BB2 /* Main.storyboard */; };
 		F6C5930C26585F1A000E0245 /* ParseDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C5930B26585F1A000E0245 /* ParseDataController.swift */; };
 		F6D80C44266AF93200A18ED2 /* Band.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D80C43266AF93200A18ED2 /* Band.swift */; };
 		F6D80C4B266B0FEF00A18ED2 /* Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D80C4A266B0FEF00A18ED2 /* Show.swift */; };
+		F6F11E8C267FEAFD00E6368A /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = F6F11E8B267FEAFD00E6368A /* Podfile */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -48,24 +52,28 @@
 
 /* Begin PBXFileReference section */
 		0510E24CFF24417E831AB32A /* Pods_Ohmicity_Backend.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ohmicity_Backend.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		26ECA2BD6C3C38F1513A7428 /* libPods-Ohmicity Backend.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Ohmicity Backend.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		74DF8D66E225A721CD277204 /* Pods-Ohmicity Backend.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ohmicity Backend.debug.xcconfig"; path = "Target Support Files/Pods-Ohmicity Backend/Pods-Ohmicity Backend.debug.xcconfig"; sourceTree = "<group>"; };
 		D756B91D473B0E99A41EF7C5 /* Pods-Ohmicity Backend.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ohmicity Backend.release.xcconfig"; path = "Target Support Files/Pods-Ohmicity Backend/Pods-Ohmicity Backend.release.xcconfig"; sourceTree = "<group>"; };
 		D8092A0E26681C0000560A97 /* Venue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Venue.swift; sourceTree = "<group>"; };
 		D8092A1126682D4E00560A97 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		D83B32CC267A5D800065948E /* ImageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageController.swift; sourceTree = "<group>"; };
-		D84E0040267BBA2400596C6A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D85AC753267BB02B00CEA95B /* RemoteDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDataController.swift; sourceTree = "<group>"; };
 		D85F3D1C267CF2FC001BCFCA /* FireStoreReferenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireStoreReferenceManager.swift; sourceTree = "<group>"; };
 		F610AA382669309100EC2E8A /* VenueDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueDetailViewController.swift; sourceTree = "<group>"; };
 		F610AA3E26699EE700EC2E8A /* LocalDataStorageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataStorageController.swift; sourceTree = "<group>"; };
+		F615064A268E67E200C4B808 /* Ohmicity Logo Banner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Ohmicity Logo Banner.png"; sourceTree = "<group>"; };
+		F615064C268E680B00C4B808 /* 1200px-American_Heart_Association_Logo.svg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1200px-American_Heart_Association_Logo.svg.png"; sourceTree = "<group>"; };
 		F6292DD52656F58000DAE6B5 /* PythonTests.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = PythonTests.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		F630FC0626583E5A001D0DA6 /* RawJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawJSON.swift; sourceTree = "<group>"; };
+		F655439E2689ABA300F823BA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F6578F48268D032E00AC25CE /* BusinessPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessPhoto.swift; sourceTree = "<group>"; };
+		F6578F49268D032E00AC25CE /* BusinessPhoto.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BusinessPhoto.xib; sourceTree = "<group>"; };
 		F65B06A2266C360F00616BD9 /* BandDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BandDetailViewController.swift; sourceTree = "<group>"; };
 		F65B06A7266C3EC300616BD9 /* ShowDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDetailViewController.swift; sourceTree = "<group>"; };
 		F65B06AC266C95AF00616BD9 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		F6A2D74D2656F05900C50456 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		F6A2D74E2656F05900C50456 /* MainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
-		F6A2D75A2656F1D100C50456 /* Ohmicity Logo Banner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Ohmicity Logo Banner.png"; sourceTree = "<group>"; };
 		F6C31F512656E57B004A1BB2 /* Ohmicity Backend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Ohmicity Backend.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6C31F542656E57B004A1BB2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F6C31F582656E57B004A1BB2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -75,6 +83,7 @@
 		F6C5930B26585F1A000E0245 /* ParseDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseDataController.swift; sourceTree = "<group>"; };
 		F6D80C43266AF93200A18ED2 /* Band.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Band.swift; sourceTree = "<group>"; };
 		F6D80C4A266B0FEF00A18ED2 /* Show.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Show.swift; sourceTree = "<group>"; };
+		F6F11E8B267FEAFD00E6368A /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D851048D267BCBA1002365F6 /* Pods_Ohmicity_Backend.framework in Frameworks */,
+				C83EE2F6A3B334C43E8F01FA /* libPods-Ohmicity Backend.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,6 +136,8 @@
 			isa = PBXGroup;
 			children = (
 				F6A2D74E2656F05900C50456 /* MainViewController.xib */,
+				F6578F48268D032E00AC25CE /* BusinessPhoto.swift */,
+				F6578F49268D032E00AC25CE /* BusinessPhoto.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -145,7 +156,8 @@
 		F6A2D75D2656F1D500C50456 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				F6A2D75A2656F1D100C50456 /* Ohmicity Logo Banner.png */,
+				F615064A268E67E200C4B808 /* Ohmicity Logo Banner.png */,
+				F615064C268E680B00C4B808 /* 1200px-American_Heart_Association_Logo.svg.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -180,6 +192,7 @@
 				F6C31F5A2656E57B004A1BB2 /* Main.storyboard */,
 				F6C31F5E2656E57B004A1BB2 /* Ohmicity_Backend.entitlements */,
 				F6C31F5D2656E57B004A1BB2 /* Info.plist */,
+				F6F11E8B267FEAFD00E6368A /* Podfile */,
 			);
 			path = "Ohmicity Backend";
 			sourceTree = "<group>";
@@ -187,10 +200,10 @@
 		F6F5C1B32656EB2C0003924A /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				F655439E2689ABA300F823BA /* GoogleService-Info.plist */,
 				F6A2D75D2656F1D500C50456 /* Images */,
 				F6C31F582656E57B004A1BB2 /* Assets.xcassets */,
 				F6C31F542656E57B004A1BB2 /* AppDelegate.swift */,
-				D84E0040267BBA2400596C6A /* GoogleService-Info.plist */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -198,7 +211,7 @@
 		FF53FD3FF9EF3DDEBE5143F7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				0510E24CFF24417E831AB32A /* Pods_Ohmicity_Backend.framework */,
+				26ECA2BD6C3C38F1513A7428 /* libPods-Ohmicity Backend.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -214,8 +227,8 @@
 				F6C31F4D2656E57B004A1BB2 /* Sources */,
 				F6C31F4E2656E57B004A1BB2 /* Frameworks */,
 				F6C31F4F2656E57B004A1BB2 /* Resources */,
-				382F660E0B5D7A809CC681F9 /* [CP] Embed Pods Frameworks */,
 				D851048F267BCBA1002365F6 /* Embed Frameworks */,
+				E22ABA6FBB12713322C6D0AE /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -263,11 +276,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6F11E8C267FEAFD00E6368A /* Podfile in Resources */,
 				F6C31F592656E57B004A1BB2 /* Assets.xcassets in Resources */,
-				F6A2D75B2656F1D100C50456 /* Ohmicity Logo Banner.png in Resources */,
-				D84E0041267BBA2400596C6A /* GoogleService-Info.plist in Resources */,
 				F6C31F5C2656E57B004A1BB2 /* Main.storyboard in Resources */,
+				F6578F4B268D032E00AC25CE /* BusinessPhoto.xib in Resources */,
 				F6A2D7502656F05900C50456 /* MainViewController.xib in Resources */,
+				F615064B268E67E200C4B808 /* Ohmicity Logo Banner.png in Resources */,
+				F615064D268E680B00C4B808 /* 1200px-American_Heart_Association_Logo.svg.png in Resources */,
+				F655439F2689ABA300F823BA /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,21 +312,21 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		382F660E0B5D7A809CC681F9 /* [CP] Embed Pods Frameworks */ = {
+		E22ABA6FBB12713322C6D0AE /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Ohmicity Backend/Pods-Ohmicity Backend-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Ohmicity Backend/Pods-Ohmicity Backend-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Ohmicity Backend/Pods-Ohmicity Backend-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Ohmicity Backend/Pods-Ohmicity Backend-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Ohmicity Backend/Pods-Ohmicity Backend-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Ohmicity Backend/Pods-Ohmicity Backend-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -334,6 +350,7 @@
 				F630FC0726583E5A001D0DA6 /* RawJSON.swift in Sources */,
 				F610AA3A2669309100EC2E8A /* VenueDetailViewController.swift in Sources */,
 				F6C5930C26585F1A000E0245 /* ParseDataController.swift in Sources */,
+				F6578F4A268D032E00AC25CE /* BusinessPhoto.swift in Sources */,
 				F6C31F552656E57B004A1BB2 /* AppDelegate.swift in Sources */,
 				F6D80C4B266B0FEF00A18ED2 /* Show.swift in Sources */,
 			);
@@ -478,14 +495,14 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 6YM99MYWT4;
+				DEVELOPMENT_TEAM = 8492LT54LT;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "Ohmicity Backend/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanhedgeman.Ohmicity-Backend";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -503,14 +520,14 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 6YM99MYWT4;
+				DEVELOPMENT_TEAM = 8492LT54LT;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "Ohmicity Backend/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanhedgeman.Ohmicity-Backend";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
