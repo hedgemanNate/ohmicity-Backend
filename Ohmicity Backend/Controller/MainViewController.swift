@@ -8,6 +8,7 @@
 import Cocoa
 import FirebaseCore
 import FirebaseDatabase
+import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 
@@ -21,6 +22,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     
     @IBOutlet weak var tableView: NSTableView!
     @IBOutlet weak var ohmButton: NSButton!
+    @IBOutlet weak var alertTextField: NSTextField!
     
     
     @IBOutlet weak var loadFileButton: NSButton!
@@ -168,12 +170,15 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                         //New Shows
                         var newShow = Show(band: show.bandName!, venue: venue.venueName!, dateString: show.showTime!)
                         newShow.fixShowTime()
+                        newShow.lastModified = Timestamp()
                         
                         let dateFormat = "MMMM d, yyyy"
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = dateFormat
-                        let date = dateFormatter.date(from: newShow.dateString)
-                        newShow.date = date
+                        if let date = dateFormatter.date(from: newShow.dateString) {
+                            newShow.date = Timestamp(date: date)
+                        }
+                        
                         
                         if localDataController.showArray.contains(newShow) == false {
                             localDataController.showArray.append(newShow)
@@ -242,16 +247,6 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             return
         } else {
             performSegue(withIdentifier: "editShowSegue", sender: self)
-        }
-    }
-    
-    @IBAction func pullDataButtonTapped(_ sender: Any) {
-        if localBusinessesButton.state == .on || remoteBusinessButton.state == .on {
-            getRemoteBusinessData()
-        } else if localBandsButton.state == .on || remoteBandsButton.state == .on {
-            getRemoteBandData()
-        } else if localShowsButton.state == .on || remoteShowsButton.state == .on {
-            getRemoteShowData()
         }
     }
     
@@ -379,6 +374,21 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
+    }
+    
+    //MARK: Remote Data Handling
+    @IBAction func pullDataButtonTapped(_ sender: Any) {
+        if localBusinessesButton.state == .on || remoteBusinessButton.state == .on {
+            getRemoteBusinessData()
+        } else if localBandsButton.state == .on || remoteBandsButton.state == .on {
+            getRemoteBandData()
+        } else if localShowsButton.state == .on || remoteShowsButton.state == .on {
+            getRemoteShowData()
+        }
+    }
+    
+    @IBAction func copyRemoteData(_ sender: Any) {
+        copyRemoteData()
     }
     
     
@@ -529,10 +539,6 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         localDataController.loadShowData()
         localDataController.loadBandData()
         
-        getRemoteBandData()
-        getRemoteBusinessData()
-        getRemoteShowData()
-        
         DispatchQueue.main.async {
             self.tableView.reloadData()
             self.showsUpdated()
@@ -564,6 +570,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             if let err = err {
                 NSLog("Error getting bandData: \(err)")
             } else {
+                self.alertTextField.stringValue = "Got band data"
                 remoteDataController.remoteBandArray = []
                 for band in querySnapshot!.documents {
                     let result = Result {
@@ -579,6 +586,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                         }
                     case .failure(let error):
                         print("Error decoding band: \(error)")
+                        self.alertTextField.stringValue = "Failed to get band data"
                     }
                 }
             }
@@ -594,6 +602,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             if let err = err {
                 NSLog("Error getting bandData: \(err)")
             } else {
+                self.alertTextField.stringValue = "Got business data"
                 remoteDataController.remoteBusinessArray = []
                 for business in querySnapshot!.documents {
                     let result = Result {
@@ -608,7 +617,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                             print("Document does not exist")
                         }
                     case .failure(let error):
-                        print("Error decoding band: \(error)")
+                        print("Error decoding business: \(error)")
+                        self.alertTextField.stringValue = "Failed to get business data"
                     }
                 }
             }
@@ -624,6 +634,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             if let err = err {
                 NSLog("Error getting bandData: \(err)")
             } else {
+                self.alertTextField.stringValue = "Got show data"
                 remoteDataController.remoteShowArray = []
                 for show in querySnapshot!.documents {
                     let result = Result {
@@ -639,12 +650,27 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                         }
                     case .failure(let error):
                         print("Error decoding band: \(error)")
+                        self.alertTextField.stringValue = "Failed to get show data"
                     }
                 }
             }
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
+        }
+    }
+    
+    //MARK: Copy Remote Data
+    private func copyRemoteData() {
+        if localBusinessesButton.state == .on || remoteBusinessButton.state == .on {
+            localDataController.businessArray = remoteDataController.remoteBusinessArray
+            alertTextField.stringValue = "Business Data Copied"
+        } else if localBandsButton.state == .on || remoteBandsButton.state == .on {
+            localDataController.bandArray = remoteDataController.remoteBandArray
+            alertTextField.stringValue = "Band Data Copied"
+        } else if localShowsButton.state == .on || remoteShowsButton.state == .on {
+            localDataController.showArray = remoteDataController.remoteShowArray
+            alertTextField.stringValue = "Show Data Copied"
         }
     }
     
@@ -774,8 +800,8 @@ extension MainViewController {
     }
     
     @objc func showsUpdated() {
-        let currentDate = Date()
-        //Remove Old Shows
+        //MARK: REMOVE OLD SHOWS
+        //let currentDate = Date()
         //localDataController.showArray.removeAll(where: {$0.date! < currentDate})
         
         DispatchQueue.main.async {

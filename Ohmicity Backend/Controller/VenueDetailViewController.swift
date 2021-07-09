@@ -187,6 +187,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         let hours = Hours(mon: mondayOpenTextField.stringValue, tues: tuesdayOpenTextField.stringValue, wed: wednesdayOpenTextField.stringValue, thur: thursdayOpenTextField.stringValue, fri: fridayOpenTextField.stringValue, sat: saturdayOpenTextField.stringValue, sun: sundayOpenTextField.stringValue)
         
         currentBusiness?.hours = hours
+        currentBusiness?.lastModified = Timestamp()
         
         localDataController.saveBusinessData()
         localDataController.saveBusinessBasicData()
@@ -220,13 +221,20 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         let hours = Hours(mon: mondayOpenTextField.stringValue, tues: tuesdayOpenTextField.stringValue, wed: wednesdayOpenTextField.stringValue, thur: thursdayOpenTextField.stringValue, fri: fridayOpenTextField.stringValue, sat: saturdayOpenTextField.stringValue, sun: sundayOpenTextField.stringValue)
         
         newBusiness.hours = hours
+        newBusiness.lastModified = Timestamp()
         
-        let newBusinessBasic = BusinessBasicData(venueID: newBusiness.venueID!, name: newBusiness.name!, logo: newBusiness.logo, stars: newBusiness.stars)
+        
+        //MARK: Basic Business Data: Removed
+        //Is not needed as of yet. Maybe one day
+
+//        let newBusinessBasic = BusinessBasicData(venueID: newBusiness.venueID!, name: newBusiness.name!, logo: newBusiness.logo, stars: newBusiness.stars)
+//        localDataController.businessBasicArray.append(newBusinessBasic)
+//        localDataController.saveBusinessBasicData()
         
         localDataController.businessArray.append(newBusiness)
-        localDataController.businessBasicArray.append(newBusinessBasic)
+        
         localDataController.saveBusinessData()
-        localDataController.saveBusinessBasicData()
+        
         localDataController.saveShowData()
         activateDelete()
         notificationCenter.post(name: NSNotification.Name("showsUpdated"), object: nil)
@@ -244,6 +252,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     
     @IBAction func pushBusinessButtonTapped(_ sender: Any) {
         let ref = FireStoreReferenceManager.businessFullDataPath
+        currentBusiness?.lastModified = Timestamp()
         
         do {
             try ref.document(currentBusiness!.venueID ?? UUID.init().uuidString).setData(from: currentBusiness)
@@ -459,7 +468,7 @@ extension VenueDetailViewController {
                 let currentBusinessShows = localDataController.showArray.filter({$0.venue == currentBusiness?.name})
                 return currentBusinessShows[row]
             }
-            return currentShow
+            return nil
         }
         
         

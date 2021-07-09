@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+import FirebaseFirestore
 
 class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
     
@@ -73,13 +74,15 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
                 localDataController.bandArray.append(currentBand!)
             }
             
+            currentBand?.lastModified = Timestamp()
+            
             localDataController.saveBandData()
             notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
-            
             
         } ifNil: { [self] in
             let newBand = Band(name: bandNameTextField.stringValue, mediaLink: bandMediaLinkTextField.stringValue, ohmPick: ohmPickButton.state)
             newBand.photo = imageData
+            newBand.lastModified = Timestamp()
             localDataController.bandArray.append(newBand)
             localDataController.saveBandData()
             notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
@@ -89,9 +92,9 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     
     @IBAction func pushhButtonTapped(_ sender: Any) {
         let ref = FireStoreReferenceManager.bandDataPath
-        
+        currentBand?.lastModified = Timestamp()
         do {
-            try ref.document(currentBand!.bandID ?? UUID.init().uuidString).setData(from: currentBand)
+            try ref.document(currentBand!.bandID).setData(from: currentBand)
             print("Maybe a good push to database: Wait for error")
         } catch let error {
                 NSLog(error.localizedDescription)
@@ -121,7 +124,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
             logoImageView.image = image
             
             let imageData = NSData(contentsOf: result!)
-            self.imageData = imageData as! Data
+            self.imageData = (imageData! as Data)
         } else {
             // User clicked on "Cancel"
             return

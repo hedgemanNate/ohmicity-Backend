@@ -8,6 +8,7 @@
 import Foundation
 import Cocoa
 import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 enum BusinessType: String, Codable, Equatable {
     case Resturant
@@ -28,6 +29,7 @@ class BusinessFullData: Codable, Equatable {
     }
     
     var venueID: String?
+    var lastModified: Timestamp?
     var name: String?
     var address: String?
     var phoneNumber: Int?
@@ -130,33 +132,6 @@ struct BusinessBasicData: Codable, Equatable, MutatingProtocolForBusinessData {
     //var shows: [Show] //To Query which places has shows today
 }
 
-struct Rating: Codable {
-    var ratingID: String
-    let userID: String
-    var stars: Int
-    var review: String?
-    
-    init(ratingID: String, userID: String, stars: Int, review: String) {
-        
-        let ratingID = Firestore.firestore().collection("ratingData").document().documentID
-        
-        self.ratingID = ratingID
-        self.userID = userID
-        self.stars = stars
-        self.review = review
-    }
-    
-    private init?(ratingID: String, dictionary: [String : Any]) {
-        guard let userID = dictionary["userID"] as? String,
-              let stars = dictionary["stars"] as?  Int,
-              let review = dictionary["review"] as? String else {return nil}
-        
-        self.ratingID = ratingID
-        self.userID = userID
-        self.stars = stars
-        self.review = review
-    }
-}
 
 struct Hours: Codable, Equatable {
     var monday: String = " "

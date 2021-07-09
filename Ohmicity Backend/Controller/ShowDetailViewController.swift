@@ -42,6 +42,7 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
             var editedShow = localDataController.showArray.first(where: {$0 == currentShow!})
             editedShow?.dateString = startDateTextField.stringValue
             editedShow?.time = startTimeTextField.stringValue
+            editedShow?.lastModified = Timestamp()
             
             localDataController.showArray.removeAll(where: {$0.showID == editedShow?.showID})
             localDataController.showArray.append(editedShow!)
@@ -57,6 +58,7 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         } else {
             var newShow = Show(band: bandNameTextField.stringValue, venue: businessNameTextField.stringValue, dateString: startDateTextField.stringValue)
             newShow.time = startTimeTextField.stringValue
+            newShow.lastModified = Timestamp()
             localDataController.showArray.append(newShow)
             localDataController.saveShowData()
             notificationCenter.post(name: NSNotification.Name("showsUpdated"), object: nil)
@@ -65,9 +67,9 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
     
     @IBAction func pushButtonTapped(_ sender: Any) {
         let ref = FireStoreReferenceManager.showDataPath
-        
+        currentShow?.lastModified = Timestamp()
         do {
-            try ref.document(currentShow!.showID ?? UUID.init().uuidString).setData(from: currentShow)
+            try ref.document(currentShow!.showID).setData(from: currentShow)
         } catch let error {
                 NSLog(error.localizedDescription)
         }

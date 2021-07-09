@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseFirestore
 import Cocoa
 
 enum Genre: String, Codable {
@@ -29,6 +30,7 @@ class Band: Codable, Equatable {
     }
     
     var bandID: String = UUID().uuidString
+    var lastModified: Timestamp?
     var name: String
     var photo: Data?
     var genre: [Genre] = []

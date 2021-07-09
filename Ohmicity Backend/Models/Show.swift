@@ -10,10 +10,11 @@ import FirebaseFirestore
 
 struct Show: Codable, Equatable, Hashable {
     var showID: String
+    var lastModified: Timestamp?
     let band: String
     let venue: String
     var dateString: String
-    var date: Date?
+    var date: Timestamp?
     var time: String?
     var ohmPick: Bool = false
     

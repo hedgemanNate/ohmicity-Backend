@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18122"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -903,7 +903,7 @@
                                 </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LDx-du-tX3">
-                                <rect key="frame" x="6" y="106" width="198" height="29"/>
+                                <rect key="frame" x="6" y="94" width="198" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Label" id="5IO-aw-laR">
                                     <font key="font" metaFont="system" size="18"/>
@@ -912,7 +912,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lsn-3g-9JI">
-                                <rect key="frame" x="20" y="93" width="169" height="21"/>
+                                <rect key="frame" x="20" y="81" width="169" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="zjR-6M-87z">
                                     <font key="font" metaFont="system"/>
@@ -921,7 +921,7 @@
                                 </textFieldCell>
                             </textField>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b6i-LO-JJe">
-                                <rect key="frame" x="41" y="60" width="127" height="32"/>
+                                <rect key="frame" x="41" y="48" width="127" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="push" title="remove shows" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UBg-Xc-Ovn">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1107,6 +1107,26 @@
                                     <action selector="breaker:" target="XfG-lQ-9wD" id="yqX-D8-K6T"/>
                                 </connections>
                             </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cuX-JY-rvY">
+                                <rect key="frame" x="2" y="131" width="206" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Copy Remote Data" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="qlW-9I-Y5U">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="copyRemoteData:" target="XfG-lQ-9wD" id="FmO-wB-82Q"/>
+                                </connections>
+                            </button>
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bDa-FC-rp8">
+                                <rect key="frame" x="382" y="20" width="389" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="center" title="Alerts" drawsBackground="YES" id="jAM-ne-5iT">
+                                    <font key="font" metaFont="system" size="22"/>
+                                    <color key="textColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                         <constraints>
                             <constraint firstItem="FqY-00-G8m" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="HVT-YL-Qdq"/>
@@ -1117,6 +1137,7 @@
                         <outlet property="addBandButton" destination="LPX-1l-UFJ" id="8a4-lj-twE"/>
                         <outlet property="addBusinessButton" destination="5q1-2m-29C" id="Ul2-vc-PSM"/>
                         <outlet property="addShowButton" destination="u8D-RX-K57" id="vOD-VT-o4T"/>
+                        <outlet property="alertTextField" destination="bDa-FC-rp8" id="kBL-fE-Cye"/>
                         <outlet property="clearButton" destination="1FZ-jM-Hkx" id="fcc-ct-xqf"/>
                         <outlet property="consolidateButton" destination="eXB-8y-OFs" id="JMR-A3-JxQ"/>
                         <outlet property="deleteBandButton" destination="X3b-70-8Yr" id="I2x-ob-pmH"/>
