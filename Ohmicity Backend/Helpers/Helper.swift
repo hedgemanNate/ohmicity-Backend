@@ -7,7 +7,15 @@
 
 import Foundation
 
+
+//MARK: Singletons
 let notificationCenter = NotificationCenter.default
+
+let dateFormat1 = "E, MMMM d, yyyy ha"
+let dateFormat2 = "MMMM d, yyyy ha"
+let dateFormat3 = "MMMM d, yyyy"
+
+let dateFormatter = DateFormatter()
 
 extension Array where Element: Hashable {
     func removingDuplicates() -> [Element] {
@@ -22,3 +30,4 @@ extension Array where Element: Hashable {
         self = self.removingDuplicates()
     }
 }
+

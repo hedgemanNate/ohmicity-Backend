@@ -22,6 +22,7 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
     @IBOutlet weak var ohmPickButton: NSButton!
     @IBOutlet weak var bandRadioButton: NSButton!
     @IBOutlet weak var businessRadioButton: NSButton!
+    @IBOutlet weak var pushButton: NSButton!
     
     @IBOutlet weak var tableView: NSTableView!
     
@@ -96,7 +97,8 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
             bandNameTextField.stringValue = currentShow!.band
             businessNameTextField.stringValue = currentShow!.venue
             startDateTextField.stringValue = "\(currentShow!.dateString)"
-            startTimeTextField.stringValue = "\(currentShow?.time ?? "No Time")"
+            startTimeTextField.stringValue = "\(currentShow?.time ?? "")"
+            
             deleteButton.isEnabled = true
             
             switch currentShow?.ohmPick {
@@ -112,6 +114,7 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
             }
         } else {
             deleteButton.isEnabled = false
+            pushButton.isEnabled = false
         }
     }
     

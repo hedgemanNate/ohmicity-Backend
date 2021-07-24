@@ -32,6 +32,7 @@ class BusinessFullData: Codable, Equatable {
     var lastModified: Timestamp?
     var name: String?
     var address: String?
+    var city: [City]?
     var phoneNumber: Int?
     var hours: Hours?
     var logo: Data?

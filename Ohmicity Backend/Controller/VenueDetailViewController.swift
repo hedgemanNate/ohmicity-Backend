@@ -70,13 +70,13 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     //Pictures
     @IBOutlet weak var logoImageView: NSImageView!
     
-    //Genre
-    @IBOutlet weak var resturantGenreButton: NSButton!
-    @IBOutlet weak var barGenreButton: NSButton!
-    @IBOutlet weak var clubGenreButton: NSButton!
-    @IBOutlet weak var outdoorsGenreButton: NSButton!
-    @IBOutlet weak var liveMusicGenreButton: NSButton!
-    @IBOutlet weak var familyGenreButton: NSButton!
+    //City
+    @IBOutlet weak var veniceButton: NSButton!
+    @IBOutlet weak var sarasotaButton: NSButton!
+    @IBOutlet weak var bradentonButton: NSButton!
+    @IBOutlet weak var stPeteButton: NSButton!
+    @IBOutlet weak var tampaButton: NSButton!
+    @IBOutlet weak var yborButton: NSButton!
     
     
     override func viewDidLoad() {
@@ -300,7 +300,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         
     }
     
-    //MARK: Genre CheckkBox Buttons
+    //MARK: Business Type CheckBox Buttons
     @IBAction func resturantButtonTapped(_ sender: Any) {
         if resturantButton.state == .on {
             currentBusiness?.businessType.append(BusinessType.Resturant)
@@ -344,6 +344,54 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         }
     }
     
+    //MARK: City CheckBox Buttons
+    @IBAction func veniceButtonTapped(_ sender: Any) {
+        if veniceButton.state == .on {
+            currentBusiness?.city!.append(City.Venice)
+        } else {
+            currentBusiness?.city!.removeAll(where: {$0 == City.Venice})
+        }
+    }
+    @IBAction func sarasotaButtonTapped(_ sender: Any) {
+        if sarasotaButton.state == .on {
+            currentBusiness?.city!.append(City.Sarasota)
+        } else {
+            currentBusiness?.city!.removeAll(where: {$0 == City.Sarasota})
+        }
+    }
+    
+    @IBAction func bradentonButtonTapped(_ sender: Any) {
+        if bradentonButton.state == .on {
+            currentBusiness?.city!.append(City.Bradenton)
+        } else {
+            currentBusiness?.city!.removeAll(where: {$0 == City.Bradenton})
+        }
+    }
+    
+    @IBAction func stPeteButtonTapped(_ sender: Any) {
+        if stPeteButton.state == .on {
+            currentBusiness?.city!.append(City.StPete)
+        } else {
+            currentBusiness?.city!.removeAll(where: {$0 == City.StPete})
+        }
+    }
+    
+    @IBAction func tampaButtonTapped(_ sender: Any) {
+        if tampaButton.state == .on {
+            currentBusiness?.city!.append(City.Tampa)
+        } else {
+            currentBusiness?.city!.removeAll(where: {$0 == City.Tampa})
+        }
+    }
+    
+    @IBAction func yborButtonTapped(_ sender: Any) {
+        if yborButton.state == .on {
+            currentBusiness?.city!.append(City.Ybor)
+        } else {
+            currentBusiness?.city!.removeAll(where: {$0 == City.Ybor})
+        }
+    }
+    
     
     private func activateDelete() {
         DispatchQueue.main.async {
@@ -374,6 +422,15 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         } else if currentBusiness != nil {
             inputBusinessHours()
             addBusinessType()
+            
+            //MARK: TEMP UNTIL DATA MODEL IS UPDATED
+            if currentBusiness?.city == nil {
+                currentBusiness?.city = []
+            }
+            //Remove Above Temp But Keep addCity()
+            addCity()
+            
+            
             makeBusinessButton.isEnabled = false
             pushBusinessButton.isEnabled = true
             nameTextField.stringValue = currentBusiness!.name!
@@ -405,6 +462,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
             imageData = logo
             image = NSImage(data: imageData!)
             logoImageView.image = image
+            
         }
             
         //Text and Button Arrays
@@ -524,20 +582,48 @@ extension VenueDetailViewController {
             for businessType in currentBusiness!.businessType {
                 switch businessType {
                 case .Resturant:
-                    resturantGenreButton.state = .on
+                    resturantButton.state = .on
                 case .Bar:
-                    barGenreButton.state = .on
+                    barButton.state = .on
                 case .Club:
-                    clubGenreButton.state = .on
+                    clubButton.state = .on
                 case .Outdoors:
-                    outdoorsGenreButton.state = .on
+                    outdoorsButton.state = .on
                 case .LiveMusic:
-                    liveMusicGenreButton.state = .on
+                    liveMusicButton.state = .on
                 case .Family:
-                    familyGenreButton.state = .on
+                    familyButton.state = .on
                 }
             }
             
+        }
+    }
+    
+    private func addCity() {
+        veniceButton.state = .off
+        sarasotaButton.state = .off
+        bradentonButton.state = .off
+        stPeteButton.state = .off
+        tampaButton.state = .off
+        yborButton.state = .off
+        
+        if currentBusiness?.city != nil {
+            for city in currentBusiness!.city! {
+                switch city {
+                case .Venice:
+                    veniceButton.state = .on
+                case .Sarasota:
+                    sarasotaButton.state = .on
+                case .Bradenton:
+                    bradentonButton.state = .on
+                case .StPete:
+                    stPeteButton.state = .on
+                case .Tampa:
+                    tampaButton.state = .on
+                case .Ybor:
+                    yborButton.state = .on
+                }
+            }
         }
     }
 }
