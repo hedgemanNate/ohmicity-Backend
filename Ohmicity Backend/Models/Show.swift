@@ -17,6 +17,7 @@ struct Show: Codable, Equatable, Hashable {
     var dateString: String
     var date = Date()
     var time = ""
+    var noTime: Bool?
     var ohmPick: Bool = false
     
     //Equatable Conformity
@@ -128,7 +129,7 @@ extension Show {
             self.time = cleanTime
         } else {
             self.dateString = finalDate + " 8pm"
-            
+            noTime = true
         }
     }
 }

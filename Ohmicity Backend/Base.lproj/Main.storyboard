@@ -754,7 +754,7 @@
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                     <prototypeCellViews>
-                                                        <tableCellView id="0rV-qU-qAZ">
+                                                        <tableCellView id="0rV-qU-qAZ" customClass="MainTableViewCell" customModule="Ohmicity_Backend" customModuleProvider="target">
                                                             <rect key="frame" x="1" y="2" width="676" height="36"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>

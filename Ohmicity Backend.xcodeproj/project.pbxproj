@@ -16,6 +16,7 @@
 		F610AA3F26699EE700EC2E8A /* LocalDataStorageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610AA3E26699EE700EC2E8A /* LocalDataStorageController.swift */; };
 		F615064B268E67E200C4B808 /* Ohmicity Logo Banner.png in Resources */ = {isa = PBXBuildFile; fileRef = F615064A268E67E200C4B808 /* Ohmicity Logo Banner.png */; };
 		F615064D268E680B00C4B808 /* 1200px-American_Heart_Association_Logo.svg.png in Resources */ = {isa = PBXBuildFile; fileRef = F615064C268E680B00C4B808 /* 1200px-American_Heart_Association_Logo.svg.png */; };
+		F61683F626AD0490009CB284 /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61683F526AD0490009CB284 /* MainTableViewCell.swift */; };
 		F630FC0726583E5A001D0DA6 /* RawJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = F630FC0626583E5A001D0DA6 /* RawJSON.swift */; };
 		F655439F2689ABA300F823BA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F655439E2689ABA300F823BA /* GoogleService-Info.plist */; };
 		F6578F4A268D032E00AC25CE /* BusinessPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6578F48268D032E00AC25CE /* BusinessPhoto.swift */; };
@@ -52,6 +53,7 @@
 		F610AA3E26699EE700EC2E8A /* LocalDataStorageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataStorageController.swift; sourceTree = "<group>"; };
 		F615064A268E67E200C4B808 /* Ohmicity Logo Banner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Ohmicity Logo Banner.png"; sourceTree = "<group>"; };
 		F615064C268E680B00C4B808 /* 1200px-American_Heart_Association_Logo.svg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1200px-American_Heart_Association_Logo.svg.png"; sourceTree = "<group>"; };
+		F61683F526AD0490009CB284 /* MainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
 		F6292DD52656F58000DAE6B5 /* PythonTests.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = PythonTests.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		F630FC0626583E5A001D0DA6 /* RawJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawJSON.swift; sourceTree = "<group>"; };
 		F655439E2689ABA300F823BA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 				F6A2D74E2656F05900C50456 /* MainViewController.xib */,
 				F6578F48268D032E00AC25CE /* BusinessPhoto.swift */,
 				F6578F49268D032E00AC25CE /* BusinessPhoto.xib */,
+				F61683F526AD0490009CB284 /* MainTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -339,6 +342,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F61683F626AD0490009CB284 /* MainTableViewCell.swift in Sources */,
 				F676F0E92698DAA400C47599 /* Recommendation.swift in Sources */,
 				F676F0EB2698DB4100C47599 /* Rating.swift in Sources */,
 				F6D80C44266AF93200A18ED2 /* Band.swift in Sources */,

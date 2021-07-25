@@ -62,6 +62,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     @IBOutlet weak var showAmountLabel: NSTextField!
     @IBOutlet weak var removeShowTextField: NSTextField!
     
+    var today = ""
+    
     //MARK: ViewDidLoad
     override func viewDidLoad() {
         FirebaseApp.configure()
@@ -574,6 +576,9 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     
     //MARK: UpdateView Functions
     private func updateViews() {
+        dateFormatter.dateFormat = dateFormat3
+        today = dateFormatter.string(from: Date())
+        
         rawJSONDataButton.state = .on
         localDataController.loadBusinessData()
         localDataController.loadBusinessBasicData()
@@ -605,7 +610,6 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     }
     
     //MARK: Load Remote Data:+ Alerts Here
-
     private func getRemoteBandData() {
         print("Running Remote Band")
         FireStoreReferenceManager.bandDataPath.getDocuments { (querySnapshot, err) in
@@ -756,9 +760,28 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                 }
                 
             } else if localShowsButton.state == .on && localDataController.showArray != [] {
-                let inOrder: [Show] = localDataController.showArray.sorted(by: {$0.date < $1.date})
-                inOrderArray = inOrder
-                cell.textField?.stringValue = "\(row + 1): \(inOrderArray[row].venue): \(inOrderArray[row].dateString): *\(inOrder[row].band)*"
+                inOrderArray = localDataController.showArray.sorted(by: {$0.date < $1.date})
+
+                cell.textField?.stringValue = "\(row + 1): \(inOrderArray[row].venue): \(inOrderArray[row].dateString): *\(inOrderArray[row].band)*"
+                
+                //Color Coding
+                let show = inOrderArray[row]
+                dateFormatter.dateFormat = dateFormat3
+                let showDate = dateFormatter.string(from: show.date)
+                
+                if showDate == today {
+                    cell.textField?.textColor = .purple
+                }
+                
+                if show.noTime == true {
+                    cell.textField?.textColor = .red
+                }
+                
+                if show.ohmPick == true {
+                    cell.layer?.backgroundColor = NSColor.yellow.cgColor
+                }
+                
+                
                 
             } else if remoteBusinessButton.state == .on {
                 cell.textField?.stringValue = "\(row + 1): \(remoteDataController.remoteBusinessArray[row].name!)"
