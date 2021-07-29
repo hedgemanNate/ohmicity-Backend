@@ -16,6 +16,6 @@ struct FireStoreReferenceManager {
     static let showDataPath = fireDataBase.collection(environment).document(environment).collection("showData")
     static let businessBasicDataPath = fireDataBase.collection(environment).document(environment).collection("businesBasicData")
 
-    //Functions
-
 }
+
+let ref = FireStoreReferenceManager.self

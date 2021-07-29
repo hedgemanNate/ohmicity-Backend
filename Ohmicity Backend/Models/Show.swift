@@ -17,7 +17,7 @@ struct Show: Codable, Equatable, Hashable {
     var dateString: String
     var date = Date()
     var time = ""
-    var noTime: Bool?
+    var onHold: Bool = false
     var ohmPick: Bool = false
     
     //Equatable Conformity
@@ -114,11 +114,11 @@ extension Show {
             let almostTime = simiCleanDateArray[2]
             var simiCleanTime = almostTime.replacingOccurrences(of: "[\n:pmPMAa]", with: "", options: .regularExpression, range: nil)
 
-            let timeNumber = Int(simiCleanTime)
+            guard let timeNumber = Int(simiCleanTime) else {return NSLog("Not Time Found: TimeNumber")}
 
-            switch timeNumber! {
+            switch timeNumber {
             case 1...12:
-                cleanTime = "\(timeNumber!)pm"
+                cleanTime = "\(timeNumber)pm"
             case 100...1200:
                 simiCleanTime.removeLast(2)
                 cleanTime = "\(simiCleanTime)pm"
@@ -127,9 +127,10 @@ extension Show {
             }
             self.dateString = finalDate
             self.time = cleanTime
+            
         } else {
             self.dateString = finalDate + " 8pm"
-            noTime = true
+            onHold = true
         }
     }
 }

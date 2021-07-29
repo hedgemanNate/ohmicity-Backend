@@ -19,7 +19,8 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
     @IBOutlet weak var startTimeTextField: NSTextField!
     
     @IBOutlet weak var deleteButton: NSButton!
-    @IBOutlet weak var ohmPickButton: NSButton!
+    @IBOutlet weak var ohmPickCheckbox: NSButton!
+    @IBOutlet weak var showOnHoldCheckbox: NSButton!
     @IBOutlet weak var bandRadioButton: NSButton!
     @IBOutlet weak var businessRadioButton: NSButton!
     @IBOutlet weak var pushButton: NSButton!
@@ -40,19 +41,30 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
     
     @IBAction func savedButtonTapped(_ sender: Any) {
         if currentShow != nil {
-            var editedShow = localDataController.showArray.first(where: {$0 == currentShow!})
+            currentShow?.dateString = startDateTextField.stringValue
+            setTime()
+            
+            var editedShow = currentShow
             editedShow?.dateString = startDateTextField.stringValue
             editedShow?.time = startTimeTextField.stringValue
+
+            
             editedShow?.lastModified = Timestamp()
+            
+            if ohmPickCheckbox.state == .on {
+                editedShow?.ohmPick = true
+            } else {
+                editedShow?.ohmPick = false
+            }
+            
+            if showOnHoldCheckbox.state == .on {
+                editedShow?.onHold = true
+            } else {
+                editedShow?.onHold = false
+            }
             
             localDataController.showArray.removeAll(where: {$0.showID == editedShow?.showID})
             localDataController.showArray.append(editedShow!)
-            
-            if ohmPickButton.state == .on {
-                currentShow?.ohmPick = true
-            } else {
-                currentShow?.ohmPick = false
-            }
             
             notificationCenter.post(name: NSNotification.Name("showsUpdated"), object: nil)
             localDataController.saveShowData()
@@ -66,6 +78,24 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         }
     }
     
+    private func setTime() {
+        dateFormatter.dateFormat = dateFormat1
+        if let date = dateFormatter.date(from: currentShow!.dateString) {
+            currentShow!.date = date
+        } else {
+            dateFormatter.dateFormat = dateFormat2
+            if let date = dateFormatter.date(from: currentShow!.dateString) {
+                currentShow!.date = date
+            } else {
+                dateFormatter.dateFormat = dateFormat3
+                if let date = dateFormatter.date(from: currentShow!.dateString) {
+                    currentShow!.date = date
+                }
+            }
+        }
+    }
+    
+    
     @IBAction func pushButtonTapped(_ sender: Any) {
         let ref = FireStoreReferenceManager.showDataPath
         currentShow?.lastModified = Timestamp()
@@ -76,6 +106,8 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         }
     }
     
+    
+    
     //MARK: Radio Buttons
     
     @IBAction func radioButtonsTapped(_ sender: Any) {
@@ -84,7 +116,6 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         }
     }
     
-        
     
     //MARK: UpdateViews
     private func updateViews() {
@@ -104,17 +135,32 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
             switch currentShow?.ohmPick {
             
             case false:
-                ohmPickButton.state = .off
+                ohmPickCheckbox.state = .off
             case true:
-                ohmPickButton.state = .on
+                ohmPickCheckbox.state = .on
             case .none:
                 return
             case .some(_):
                 return
             }
+            
+            switch currentShow?.onHold {
+            case false:
+                showOnHoldCheckbox.state = .off
+            case true:
+                showOnHoldCheckbox.state = .on
+            case .none:
+                return
+            case .some(_):
+                return
+            }
+            
+            
         } else {
             deleteButton.isEnabled = false
             pushButton.isEnabled = false
+            showOnHoldCheckbox.isEnabled = false
+            ohmPickCheckbox.isEnabled = false
         }
     }
     

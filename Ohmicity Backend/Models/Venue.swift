@@ -11,7 +11,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 enum BusinessType: String, Codable, Equatable {
-    case Resturant
+    case Restaurant
     case Bar
     case Club
     case Outdoors
@@ -84,9 +84,9 @@ class BusinessFullData: Codable, Equatable {
         switch typeNumber {
         case 1:
             if button.state == .on {
-                businessType.append(BusinessType.Resturant)
+                businessType.append(BusinessType.Restaurant)
             } else if button.state == .off {
-                businessType.removeAll(where: {$0 == BusinessType.Resturant})
+                businessType.removeAll(where: {$0 == BusinessType.Restaurant})
             }
         case 2:
             if button.state == .on {

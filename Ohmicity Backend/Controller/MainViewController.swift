@@ -166,6 +166,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         }
     }
     
+    
+    //MARK: Save New Shows
     @IBAction func saveNewShowsButtonTapped(_ sender: Any) {
         var cleanedJSONArray: [RawJSON] = []
         
@@ -324,13 +326,13 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     
     @IBAction func pushShowButtonTapped(_ sender: Any) {
         let showData = localDataController.showArray
-        let ref = FireStoreReferenceManager.showDataPath
+         //ref = FireStoreReferenceManager.showDataPath
         for show in showData {
             
             var pushedShow = show
             pushedShow.lastModified = Timestamp()
             do {
-                try ref.document(pushedShow.showID ).setData(from: pushedShow)
+                try ref.showDataPath.document(pushedShow.showID ).setData(from: pushedShow)
                 self.alertTextField.stringValue = "Push Successfull"
             } catch let error {
                     NSLog(error.localizedDescription)
@@ -395,13 +397,13 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     
     @IBAction func deleteShowButtonTapped(_ sender: Any) {
         let index = tableView.selectedRow
-        let show = remoteDataController.remoteShowArray[index]
+        let show = inOrderArray[index]
         
         if localShowsButton.state == .on {
-            localDataController.showArray.remove(at: index)
+            inOrderArray.remove(at: index)
             localDataController.saveShowData()
         } else if remoteShowsButton.state == .on {
-            remoteDataController.remoteShowArray.remove(at: index)
+            inOrderArray.remove(at: index)
             FireStoreReferenceManager.showDataPath.document(show.showID).delete
             { (err) in
                 if let err = err {
@@ -411,6 +413,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                 } else {
                     NSLog("Delete Successfull")
                     self.alertTextField.stringValue = "Delete Successfull"
+                    print("\(show)")
                 }
             }
         }
@@ -419,6 +422,22 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             self.tableView.reloadData()
         }
     }
+    
+    //MARK: Show On Hold
+    @IBAction func showHoldButtonTapped(_ sender: Any) {
+        let index = tableView.selectedRow
+        var show = inOrderArray[index]
+        show.onHold = true
+        show.lastModified = Timestamp()
+        do {
+            try ref.showDataPath.document(show.showID).setData(from: show)
+        } catch {
+            NSLog("Error Pushing Updated Show")
+            alertTextField.stringValue = "Error Pushing Updated Show"
+        }
+        
+    }
+    
     
     //MARK: Remote Data Handling
     @IBAction func pullDataButtonTapped(_ sender: Any) {
@@ -773,7 +792,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                     cell.textField?.textColor = .purple
                 }
                 
-                if show.noTime == true {
+                if show.onHold == true {
                     cell.textField?.textColor = .red
                 }
                 
