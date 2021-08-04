@@ -100,7 +100,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         
     }
     
-    private func buttonIndication(color: NSColor) {
+    private func buttonIndication2(color: NSColor) {
         var counter = 0
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { time in
             if counter < 2 {
@@ -244,7 +244,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         }
         
         localDataController.saveBusinessData()
-        buttonIndication(color: .green)
+        buttonIndication2(color: .green)
         
     }
     
@@ -336,13 +336,8 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
                               loadPicturesButton,
                               deletePicsButton])
         
-        //Adding Shows To Local Data
-        guard let shows = currentVenue?.shows else {return}
-        for show in shows {
-            let newShow: Show = Show(band: show.bandName!, venue: currentVenue!.venueName!, dateString: show.showTime!)
-            localDataController.showArray.append(newShow)
-            buttonIndication(color: .green)
-        }
+        //Function Light Notification Of Action Acknowleged
+        buttonIndication2(color: .green)
     }
     
     @IBAction func pushBusinessButtonTapped(_ sender: Any) {
@@ -351,10 +346,10 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         
         do {
             try ref.document(currentBusiness!.venueID ?? UUID.init().uuidString).setData(from: currentBusiness)
-            buttonIndication(color: .green)
+            buttonIndication2(color: .green)
         } catch let error {
             NSLog(error.localizedDescription)
-            buttonIndication(color: .red)
+            buttonIndication2(color: .red)
         }
     }
     
