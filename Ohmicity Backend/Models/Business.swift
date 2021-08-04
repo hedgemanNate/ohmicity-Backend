@@ -31,16 +31,16 @@ class BusinessFullData: Codable, Equatable {
     var venueID: String?
     var lastModified: Timestamp?
     var name: String?
-    var address: String?
-    var city: [City]?
-    var phoneNumber: Int?
+    var address: String = ""
+    var city: [City] = []
+    var phoneNumber: Int = 0
     var hours: Hours?
     var logo: Data?
     var pics: [Data] = []
     var stars: Int = 0
     var customer: Bool = false
     var ohmPick: Bool = false
-    var website: String?
+    var website: String = ""
     var businessType: [BusinessType] = []
     
     init(name: String, address: String, phoneNumber: Int, website: String) {

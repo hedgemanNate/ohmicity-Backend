@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct Recommendation {
     let name: String
     let website: String

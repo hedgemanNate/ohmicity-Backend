@@ -19,7 +19,9 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     //MARK: Properties
     var originalArray: [Band] = []
     var filteredArray: [Band] = []
-    var inOrderArray: [Show] = []
+    var showsInOrderArray: [Show] = []
+    var bandsInOrderArray: [Band] = []
+    var businessesInOrderArray: [BusinessFullData] = []
     
     @IBOutlet weak var tableView: NSTableView!
     @IBOutlet weak var ohmButton: NSButton!
@@ -397,13 +399,13 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     
     @IBAction func deleteShowButtonTapped(_ sender: Any) {
         let index = tableView.selectedRow
-        let show = inOrderArray[index]
+        let show = showsInOrderArray[index]
         
         if localShowsButton.state == .on {
-            inOrderArray.remove(at: index)
+            showsInOrderArray.remove(at: index)
             localDataController.saveShowData()
         } else if remoteShowsButton.state == .on {
-            inOrderArray.remove(at: index)
+            showsInOrderArray.remove(at: index)
             FireStoreReferenceManager.showDataPath.document(show.showID).delete
             { (err) in
                 if let err = err {
@@ -426,7 +428,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     //MARK: Show On Hold
     @IBAction func showHoldButtonTapped(_ sender: Any) {
         let index = tableView.selectedRow
-        var show = inOrderArray[index]
+        var show = showsInOrderArray[index]
         show.onHold = true
         show.lastModified = Timestamp()
         do {
@@ -764,32 +766,41 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         
         if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "VenueCell"), owner: nil) as? NSTableCellView {
             
+            //RawJSON
             if rawJSONDataButton.state == .on {
                 cell.textField?.stringValue = "\(row + 1): \(parseDataController.jsonDataArray[row].venueName ?? "CORRUPTED")"
-                
+            //Local Businesses
             } else if localBusinessesButton.state == .on && localDataController.businessArray != [] {
-                cell.textField?.stringValue = "\(row + 1): \(localDataController.businessArray[row].name!)"
+                businessesInOrderArray = localDataController.businessArray.sorted(by: {$0.name! < $1.name!})
                 
+                cell.textField?.stringValue = "\(row + 1): \(businessesInOrderArray[row].name!)"
+            //Local Bands
             }  else if localBandsButton.state == .on && localDataController.bandArray != [] {
-                if localDataController.bandArray[row].ohmPick == true {
-                    cell.textField?.stringValue = "\(row + 1): \(localDataController.bandArray[row].name): !OHM!"
-                    
+                bandsInOrderArray = localDataController.bandArray.sorted(by: {$0.name < $1.name})
+                
+                if bandsInOrderArray[row].ohmPick == true {
+                    cell.textField?.stringValue = "\(row + 1): \(bandsInOrderArray[row].name): !OHM!"
                 } else {
-                    cell.textField?.stringValue = "\(row + 1): \(localDataController.bandArray[row].name)"
+                    cell.textField?.stringValue = "\(row + 1): \(bandsInOrderArray[row].name)"
                 }
                 
+                if bandsInOrderArray[row].photo != nil {
+                    cell.textField?.textColor = .orange
+                }
+                
+            //Local Shows
             } else if localShowsButton.state == .on && localDataController.showArray != [] {
-                inOrderArray = localDataController.showArray.sorted(by: {$0.date < $1.date})
+                showsInOrderArray = localDataController.showArray.sorted(by: {$0.date < $1.date})
 
-                cell.textField?.stringValue = "\(row + 1): \(inOrderArray[row].venue): \(inOrderArray[row].dateString): *\(inOrderArray[row].band)*"
+                cell.textField?.stringValue = "\(row + 1): \(showsInOrderArray[row].venue): \(showsInOrderArray[row].dateString): *\(showsInOrderArray[row].band)*"
                 
                 //Color Coding
-                let show = inOrderArray[row]
+                let show = showsInOrderArray[row]
                 dateFormatter.dateFormat = dateFormat3
                 let showDate = dateFormatter.string(from: show.date)
                 
                 if showDate == today {
-                    cell.textField?.textColor = .purple
+                    cell.textField?.textColor = .orange
                 }
                 
                 if show.onHold == true {
@@ -799,24 +810,25 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                 if show.ohmPick == true {
                     cell.layer?.backgroundColor = NSColor.yellow.cgColor
                 }
-                
-                
-                
+            //Remote Businesses
             } else if remoteBusinessButton.state == .on {
-                cell.textField?.stringValue = "\(row + 1): \(remoteDataController.remoteBusinessArray[row].name!)"
+                businessesInOrderArray = remoteDataController.remoteBusinessArray.sorted(by: {$0.name! < $1.name!})
                 
+                cell.textField?.stringValue = "\(row + 1): \(businessesInOrderArray[row].name!)"
+            //Remote Bands
             } else if remoteBandsButton.state == .on {
-                if remoteDataController.remoteBandArray[row].ohmPick == true {
-                    cell.textField?.stringValue = "\(row + 1): \(remoteDataController.remoteBandArray[row].name): !OHM!"
-                    
+                bandsInOrderArray = remoteDataController.remoteBandArray.sorted(by: {$0.name < $1.name})
+                
+                if bandsInOrderArray[row].ohmPick == true {
+                    cell.textField?.stringValue = "\(row + 1): \(bandsInOrderArray[row].name): !OHM!"
                 } else {
-                    cell.textField?.stringValue = "\(row + 1): \(remoteDataController.remoteBandArray[row].name)"
-                    
+                    cell.textField?.stringValue = "\(row + 1): \(bandsInOrderArray[row].name)"
                 }
+            //Remote Shows
             } else if remoteShowsButton.state == .on {
                 let inOrder: [Show] = remoteDataController.remoteShowArray.sorted(by: {$0.date < $1.date})
-                inOrderArray = inOrder
-                cell.textField?.stringValue = "\(row + 1): \(inOrderArray[row].venue): \(inOrderArray[row].dateString): *\(inOrder[row].band)*"
+                showsInOrderArray = inOrder
+                cell.textField?.stringValue = "\(row + 1): \(showsInOrderArray[row].venue): \(showsInOrderArray[row].dateString): *\(inOrder[row].band)*"
             }
             
             return cell
@@ -838,17 +850,17 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             //Local Business Handling:
         } else if segue.identifier == "editBusinessSegue" && localBusinessesButton.state == .on {
             guard let businessVC = segue.destinationController as? VenueDetailViewController else {return}
-            businessVC.currentBusiness = localDataController.businessArray[indexPath]
+            businessVC.currentBusiness = businessesInOrderArray[indexPath]
             
             //Remote Business Handling:
         } else if segue.identifier == "editBusinessSegue" && remoteBusinessButton.state == .on {
             guard let businessVC = segue.destinationController as? VenueDetailViewController else {return}
-            businessVC.currentBusiness = remoteDataController.remoteBusinessArray[indexPath]
+            businessVC.currentBusiness = businessesInOrderArray[indexPath]
             
             //Local Band Handling:
         } else if segue.identifier == "editBandSegue" && localBandsButton.state == .on {
             guard let bandVC = segue.destinationController as? BandDetailViewController else {return}
-            bandVC.currentBand = localDataController.bandArray[indexPath]
+            bandVC.currentBand = bandsInOrderArray[indexPath]
             
             //Remote Band Handling:
         } else if segue.identifier == "editBandSegue" && remoteBandsButton.state == .on {
@@ -858,12 +870,12 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             //Local Show Handling
         } else if segue.identifier == "editShowSegue" && localShowsButton.state == .on {
             guard let showVC = segue.destinationController as? ShowDetailViewController else {return}
-            showVC.currentShow = inOrderArray[indexPath]
+            showVC.currentShow = showsInOrderArray[indexPath]
             
             //Remote Show Handling
         } else if segue.identifier == "editShowSegue" && remoteShowsButton.state == .on {
             guard let showVC = segue.destinationController as? ShowDetailViewController else {return}
-            showVC.currentShow = inOrderArray[indexPath]
+            showVC.currentShow = showsInOrderArray[indexPath]
         }
         
         

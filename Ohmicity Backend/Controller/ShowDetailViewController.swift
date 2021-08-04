@@ -42,11 +42,12 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
     @IBAction func savedButtonTapped(_ sender: Any) {
         if currentShow != nil {
             currentShow?.dateString = startDateTextField.stringValue
-            setTime()
+            let date = setTime()
             
             var editedShow = currentShow
             editedShow?.dateString = startDateTextField.stringValue
             editedShow?.time = startTimeTextField.stringValue
+            editedShow?.date = date
 
             
             editedShow?.lastModified = Timestamp()
@@ -78,21 +79,13 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         }
     }
     
-    private func setTime() {
-        dateFormatter.dateFormat = dateFormat1
-        if let date = dateFormatter.date(from: currentShow!.dateString) {
-            currentShow!.date = date
-        } else {
-            dateFormatter.dateFormat = dateFormat2
-            if let date = dateFormatter.date(from: currentShow!.dateString) {
-                currentShow!.date = date
-            } else {
-                dateFormatter.dateFormat = dateFormat3
-                if let date = dateFormatter.date(from: currentShow!.dateString) {
-                    currentShow!.date = date
-                }
-            }
-        }
+    //Makes a Date out of Start Date And Time
+    private func setTime() -> Date {
+        let dateString = "\(startDateTextField.stringValue) \(startTimeTextField.stringValue)"
+        
+        dateFormatter.dateFormat = dateFormat2
+        guard let date = dateFormatter.date(from: dateString) else {return Date()}
+        return date
     }
     
     
@@ -125,9 +118,18 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         bandRadioButton.state = .on
         
         if currentShow != nil {
+            self.title = "Edit Show"
             bandNameTextField.stringValue = currentShow!.band
             businessNameTextField.stringValue = currentShow!.venue
-            startDateTextField.stringValue = "\(currentShow!.dateString)"
+            
+//            let date = currentShow!.dateString
+//            if let index = (date.range(of: "2021")?.upperBound) {
+//
+//                let newDate = String(date.prefix(upTo: index))
+//                startDateTextField.stringValue = newDate
+//            }
+            
+            startDateTextField.stringValue = "\(currentShow?.dateString ?? "")"
             startTimeTextField.stringValue = "\(currentShow?.time ?? "")"
             
             deleteButton.isEnabled = true

@@ -13,17 +13,23 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     //Properties
     var currentBand: Band?
     var shows: [Show] = []
+    var genreButtonArray: [NSButton] = []
+    
     var image: NSImage?
     var imageData: Data?
     
+    var timer = Timer()
+    
+    //Views
     @IBOutlet weak var tableView: NSTableView!
     @IBOutlet weak var logoImageView: NSImageView!
     
     //TextFields
     @IBOutlet weak var bandNameTextField: NSTextField!
     @IBOutlet weak var bandMediaLinkTextField: NSTextField!
+    @IBOutlet weak var buttonBoxView: NSBox!
     
-    //Buttons
+    //Genre Buttons
     @IBOutlet weak var rockButton: NSButton!
     @IBOutlet weak var bluesButton: NSButton!
     @IBOutlet weak var jazzButton: NSButton!
@@ -35,17 +41,20 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     @IBOutlet weak var hiphopButton: NSButton!
     @IBOutlet weak var djButton: NSButton!
     @IBOutlet weak var popButton: NSButton!
+    @IBOutlet weak var easyListeningButton: NSButton!
+    @IBOutlet weak var gospelButton: NSButton!
+    @IBOutlet weak var jamBandButton: NSButton!
+    @IBOutlet weak var experimentalButton: NSButton!
     @IBOutlet weak var metalButton: NSButton!
     
-    
-    var genreButtonArray: [NSButton] = []
-    
+    //Buttons
+    @IBOutlet weak var pushBandButton: NSButton!
+    @IBOutlet weak var saveBandButton: NSButton!
     @IBOutlet weak var loadPictureButton: NSButton!
-    @IBOutlet weak var saveButton: NSButton!
-    @IBOutlet weak var deleteButton: NSButton!
-    
     @IBOutlet weak var ohmPickButton: NSButtonCell!
 
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
@@ -57,27 +66,59 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         
     }
     
+    private func buttonIndication(color: NSColor) {
+        var counter = 0
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { time in
+            if counter < 2 {
+                DispatchQueue.main.async {
+                    self.buttonBoxView.fillColor = color
+                }
+                counter += 1
+            } else if counter == 2{
+                DispatchQueue.main.async {
+                    self.buttonBoxView.fillColor = .black
+                }
+                counter = 0
+                self.timer.invalidate()
+            }
+        })
+    }
+    
     
     //MARK: Buttons Tapped Functions
     @IBAction func saveButtonTapped(_ sender: Any) {
+        
+        
         checkCurrentObject { [self] in
-            currentBand?.name = bandNameTextField.stringValue
-            currentBand?.mediaLink = bandMediaLinkTextField.stringValue
-            currentBand?.photo = imageData
-            if ohmPickButton.state == .on {
-                currentBand?.ohmPick = true
+            
+            
+            if localDataController.bandArray.contains(currentBand!) {
+                
+                currentBand?.name = bandNameTextField.stringValue
+                currentBand?.mediaLink = bandMediaLinkTextField.stringValue
+                currentBand?.photo = imageData
+                if ohmPickButton.state == .on {
+                    currentBand?.ohmPick = true
+                } else {
+                    currentBand?.ohmPick = false
+                }
+                
+                if localDataController.bandArray.contains(currentBand!) == false {
+                    localDataController.bandArray.append(currentBand!)
+                }
+                
+                currentBand?.lastModified = Timestamp()
+                
+                localDataController.saveBandData()
+                notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
+                buttonIndication(color: .green)
+                
             } else {
-                currentBand?.ohmPick = false
-            }
-            
-            if localDataController.bandArray.contains(currentBand!) == false {
                 localDataController.bandArray.append(currentBand!)
+                localDataController.saveBandData()
+                notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
+                buttonIndication(color: .green)
             }
-            
-            currentBand?.lastModified = Timestamp()
-            
-            localDataController.saveBandData()
-            notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
             
         } ifNil: { [self] in
             let newBand = Band(name: bandNameTextField.stringValue, mediaLink: bandMediaLinkTextField.stringValue, ohmPick: ohmPickButton.state)
@@ -86,26 +127,22 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
             localDataController.bandArray.append(newBand)
             localDataController.saveBandData()
             notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
+            buttonIndication(color: .green)
         }
 
     }
     
-    @IBAction func pushhButtonTapped(_ sender: Any) {
+    @IBAction func pushButtonTapped(_ sender: Any) {
         let ref = FireStoreReferenceManager.bandDataPath
         currentBand?.lastModified = Timestamp()
         do {
             try ref.document(currentBand!.bandID).setData(from: currentBand)
             print("Maybe a good push to database: Wait for error")
+            buttonIndication(color: .green)
         } catch let error {
                 NSLog(error.localizedDescription)
+            buttonIndication(color: .red)
         }
-    }
-    
-    
-    @IBAction func deleteButtonTapped(_ sender: Any) {
-        localDataController.bandArray.removeAll(where: {$0 == currentBand})
-        localDataController.saveBandData()
-        notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
     }
     
     @IBAction func loadPictureButtonTapped(_ sender: Any) {
@@ -218,6 +255,38 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         }
     }
     
+    @IBAction func experimentalButtonTapped(_ sender: Any) {
+        if experimentalButton.state == .on {
+            currentBand?.genre.append(Genre.Experimental)
+        } else {
+            currentBand?.genre.removeAll(where: {$0 == Genre.Experimental})
+        }
+    }
+    
+    @IBAction func easyListeningButtonTapped(_ sender: Any) {
+        if easyListeningButton.state == .on {
+            currentBand?.genre.append(Genre.EasyListening)
+        } else {
+            currentBand?.genre.removeAll(where: {$0 == Genre.EasyListening})
+        }
+    }
+    
+    @IBAction func gospelButtonTapped(_ sender: Any) {
+        if gospelButton.state == .on {
+            currentBand?.genre.append(Genre.Gospel)
+        } else {
+            currentBand?.genre.removeAll(where: {$0 == Genre.Gospel})
+        }
+    }
+    
+    @IBAction func jamBandButtonTapped(_ sender: Any) {
+        if jamBandButton.state == .on {
+            currentBand?.genre.append(Genre.JamBand)
+        } else {
+            currentBand?.genre.removeAll(where: {$0 == Genre.JamBand})
+        }
+    }
+    
     
     
     //MARK: UpdateViews
@@ -230,7 +299,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         logoImageView.imageScaling = .scaleProportionallyDown
         
         checkCurrentObject { [self] in
-            deleteButton.isEnabled = true
+            title = "Edit \(currentBand!.name)"
             if currentBand?.ohmPick == true {
                 ohmPickButton.state = .on
             }
@@ -242,7 +311,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
             }
             
         } ifNil: { [self] in
-            deleteButton.isEnabled = false
+            
         }
 
     }
@@ -272,7 +341,7 @@ extension BandDetailViewController {
     private func fillData() {
         checkCurrentObject() { [self] in
             bandNameTextField.stringValue = currentBand!.name
-            bandMediaLinkTextField.stringValue = currentBand!.mediaLink ?? "This musician doesn have anything for you to listen to..."
+            bandMediaLinkTextField.stringValue = currentBand!.mediaLink ?? ""
             
             if currentBand != nil {
                 for genre in currentBand!.genre {
@@ -301,6 +370,14 @@ extension BandDetailViewController {
                         popButton.state = .on
                     case .Metal:
                         metalButton.state = .on
+                    case .Experimental:
+                        experimentalButton.state = .on
+                    case .JamBand:
+                        jamBandButton.state = .on
+                    case .Gospel:
+                        gospelButton.state = .on
+                    case .EasyListening:
+                        easyListeningButton.state = .on
                     }
                 }
             }

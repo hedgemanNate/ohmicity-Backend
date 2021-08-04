@@ -15,19 +15,22 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     
     //MARK: Properties
     var cImage: NSImage?
+    @IBOutlet weak var buttonBoxView: NSBox!
     
+    
+    var currentBusinessShows: [Show]?
     var currentVenue: RawJSON?
     var currentBusiness: BusinessFullData?
     var image: NSImage?
     var logoData: Data?
     var businessPicsData: [Data] = []
     
+    var timer = Timer()
+    
     var scheduleTextFieldsArray: [NSTextField] = []
     var businessTypeButtonsArray: [NSButton] = []
     
     @IBOutlet weak var tableView: NSTableView!
-    var currentBusinessShows: [Show]?
-    
     @IBOutlet weak var collectionView: NSCollectionView!
     
     
@@ -37,7 +40,6 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     @IBOutlet weak var phoneTextField: NSTextField!
     @IBOutlet weak var starsTextField: NSTextField!
     @IBOutlet weak var websiteTextField: NSTextField!
-    @IBOutlet weak var photoDeleteTextField: NSTextField!
     
     //Schedule:
     @IBOutlet weak var mondayOpenTextField: NSTextField!
@@ -50,9 +52,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     
     //Buttons
     @IBOutlet weak var makeBusinessButton: NSButton!
-    @IBOutlet weak var deleteShowButton: NSButton!
     @IBOutlet weak var saveButton: NSButton!
-    @IBOutlet weak var deleteButton: NSButton!
     @IBOutlet weak var ohmPick: NSButton!
     @IBOutlet weak var loadLogoButton: NSButton!
     @IBOutlet weak var loadPicturesButton: NSButton!
@@ -98,6 +98,24 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     
     @IBAction func breaker(_ sender: Any) {
         
+    }
+    
+    private func buttonIndication(color: NSColor) {
+        var counter = 0
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { time in
+            if counter < 2 {
+                DispatchQueue.main.async {
+                    self.buttonBoxView.fillColor = color
+                }
+                counter += 1
+            } else if counter == 2{
+                DispatchQueue.main.async {
+                    self.buttonBoxView.fillColor = .black
+                }
+                counter = 0
+                self.timer.invalidate()
+            }
+        })
     }
     
     //MARK: Load Buttons Tapped
@@ -226,10 +244,12 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         }
         
         localDataController.saveBusinessData()
-        localDataController.saveBusinessBasicData()
+        buttonIndication(color: .green)
         
     }
     
+    
+    //MARK: Make Business
     @IBAction func makeBusinessButtonTapped(_ sender: Any) {
         
         let name = nameTextField.stringValue
@@ -257,17 +277,17 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
             if button.state == .on {
                 switch button {
                 case veniceButton:
-                    newBusiness.city?.append(.Venice)
+                    newBusiness.city.append(.Venice)
                 case sarasotaButton:
-                    newBusiness.city?.append(.Sarasota)
+                    newBusiness.city.append(.Sarasota)
                 case bradentonButton:
-                    newBusiness.city?.append(.Bradenton)
+                    newBusiness.city.append(.Bradenton)
                 case stPeteButton:
-                    newBusiness.city?.append(.StPete)
+                    newBusiness.city.append(.StPete)
                 case tampaButton:
-                    newBusiness.city?.append(.Tampa)
+                    newBusiness.city.append(.Tampa)
                 case yborButton:
-                    newBusiness.city?.append(.Ybor)
+                    newBusiness.city.append(.Ybor)
                 default:
                     break
                 }
@@ -320,8 +340,8 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         guard let shows = currentVenue?.shows else {return}
         for show in shows {
             let newShow: Show = Show(band: show.bandName!, venue: currentVenue!.venueName!, dateString: show.showTime!)
-            
             localDataController.showArray.append(newShow)
+            buttonIndication(color: .green)
         }
     }
     
@@ -331,8 +351,10 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         
         do {
             try ref.document(currentBusiness!.venueID ?? UUID.init().uuidString).setData(from: currentBusiness)
+            buttonIndication(color: .green)
         } catch let error {
             NSLog(error.localizedDescription)
+            buttonIndication(color: .red)
         }
     }
     
@@ -409,48 +431,48 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     //MARK: City CheckBox Buttons
     @IBAction func veniceButtonTapped(_ sender: Any) {
         if veniceButton.state == .on {
-            currentBusiness?.city!.append(City.Venice)
+            currentBusiness?.city.append(City.Venice)
         } else {
-            currentBusiness?.city!.removeAll(where: {$0 == City.Venice})
+            currentBusiness?.city.removeAll(where: {$0 == City.Venice})
         }
     }
     @IBAction func sarasotaButtonTapped(_ sender: Any) {
         if sarasotaButton.state == .on {
-            currentBusiness?.city!.append(City.Sarasota)
+            currentBusiness?.city.append(City.Sarasota)
         } else {
-            currentBusiness?.city!.removeAll(where: {$0 == City.Sarasota})
+            currentBusiness?.city.removeAll(where: {$0 == City.Sarasota})
         }
     }
     
     @IBAction func bradentonButtonTapped(_ sender: Any) {
         if bradentonButton.state == .on {
-            currentBusiness?.city!.append(City.Bradenton)
+            currentBusiness?.city.append(City.Bradenton)
         } else {
-            currentBusiness?.city!.removeAll(where: {$0 == City.Bradenton})
+            currentBusiness?.city.removeAll(where: {$0 == City.Bradenton})
         }
     }
     
     @IBAction func stPeteButtonTapped(_ sender: Any) {
         if stPeteButton.state == .on {
-            currentBusiness?.city!.append(City.StPete)
+            currentBusiness?.city.append(City.StPete)
         } else {
-            currentBusiness?.city!.removeAll(where: {$0 == City.StPete})
+            currentBusiness?.city.removeAll(where: {$0 == City.StPete})
         }
     }
     
     @IBAction func tampaButtonTapped(_ sender: Any) {
         if tampaButton.state == .on {
-            currentBusiness?.city!.append(City.Tampa)
+            currentBusiness?.city.append(City.Tampa)
         } else {
-            currentBusiness?.city!.removeAll(where: {$0 == City.Tampa})
+            currentBusiness?.city.removeAll(where: {$0 == City.Tampa})
         }
     }
     
     @IBAction func yborButtonTapped(_ sender: Any) {
         if yborButton.state == .on {
-            currentBusiness?.city!.append(City.Ybor)
+            currentBusiness?.city.append(City.Ybor)
         } else {
-            currentBusiness?.city!.removeAll(where: {$0 == City.Ybor})
+            currentBusiness?.city.removeAll(where: {$0 == City.Ybor})
         }
     }
     
@@ -467,9 +489,11 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         logoImageView.imageScaling = .scaleProportionallyDown
         
         if currentVenue != nil {
+            self.title = "Edit \(currentVenue!.venueName!)"
             nameTextField.stringValue = currentVenue!.venueName!
             
         } else if currentBusiness != nil {
+            self.title = "Edit \(currentBusiness!.name!)"
             inputBusinessHours()
             addBusinessType()
             buttonEnable(buttons:[saveButton,
@@ -478,21 +502,20 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
                                   loadPicturesButton,
                                   deletePicsButton])
             
-            //MARK: TEMP UNTIL DATA MODEL IS UPDATED
-            if currentBusiness?.city == nil {
-                currentBusiness?.city = []
-            }
+//            //MARK: TEMP UNTIL DATA MODEL IS UPDATED
+//            if currentBusiness?.city == nil {
+//                currentBusiness?.city = []
+//            }
+            
             //Remove Above Temp But Keep addCity()
             addCity()
             
             
-            
-            
             nameTextField.stringValue = currentBusiness!.name!
-            addressTextField.stringValue = currentBusiness!.address!
-            phoneTextField.stringValue = String(currentBusiness!.phoneNumber!)
+            addressTextField.stringValue = currentBusiness!.address
+            phoneTextField.stringValue = String(currentBusiness!.phoneNumber)
             starsTextField.stringValue = String(currentBusiness?.stars ?? 0)
-            websiteTextField.stringValue = currentBusiness!.website!
+            websiteTextField.stringValue = currentBusiness!.website
             
             mondayOpenTextField.stringValue = currentBusiness?.hours?.monday ?? "No Hours"
             tuesdayOpenTextField.stringValue = currentBusiness?.hours?.tuesday ?? "No Hours"
@@ -531,7 +554,6 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
             sundayOpenTextField
         ]
         
-        deleteButton.isEnabled = false
     }
 }
 
@@ -632,9 +654,7 @@ extension VenueDetailViewController {
     
     func buttonEnable(buttons: [NSButton]) {
         makeBusinessButton.isEnabled = false
-        deleteShowButton.isEnabled = false
         saveButton.isEnabled = false
-        deleteButton.isEnabled = false
         loadLogoButton.isEnabled = false
         loadPicturesButton.isEnabled = false
         deletePicsButton.isEnabled = false
@@ -642,9 +662,7 @@ extension VenueDetailViewController {
         
         let buttonArray = [
             makeBusinessButton,
-            deleteShowButton,
             saveButton,
-            deleteButton,
             loadLogoButton,
             loadPicturesButton,
             deletePicsButton,
@@ -715,7 +733,7 @@ extension VenueDetailViewController {
         yborButton.state = .off
         
         if currentBusiness?.city != nil {
-            for city in currentBusiness!.city! {
+            for city in currentBusiness!.city {
                 switch city {
                 case .Venice:
                     veniceButton.state = .on

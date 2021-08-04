@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D8092A0F26681C0000560A97 /* Venue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8092A0E26681C0000560A97 /* Venue.swift */; };
+		D8092A0F26681C0000560A97 /* Business.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8092A0E26681C0000560A97 /* Business.swift */; };
 		D8092A1226682D4E00560A97 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8092A1126682D4E00560A97 /* User.swift */; };
 		D83B32CD267A5D800065948E /* ImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83B32CC267A5D800065948E /* ImageController.swift */; };
 		D85AC754267BB02B00CEA95B /* RemoteDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85AC753267BB02B00CEA95B /* RemoteDataController.swift */; };
@@ -37,6 +37,7 @@
 		F6D80C44266AF93200A18ED2 /* Band.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D80C43266AF93200A18ED2 /* Band.swift */; };
 		F6D80C4B266B0FEF00A18ED2 /* Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D80C4A266B0FEF00A18ED2 /* Show.swift */; };
 		F6F11E8C267FEAFD00E6368A /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = F6F11E8B267FEAFD00E6368A /* Podfile */; };
+		F6F6828D26B9F185005B35A1 /* BannerAd.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F6828C26B9F185005B35A1 /* BannerAd.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,7 +45,7 @@
 		3AB066B199F8732B4AC206AC /* Pods_Ohmicity_Backend.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ohmicity_Backend.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		74DF8D66E225A721CD277204 /* Pods-Ohmicity Backend.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ohmicity Backend.debug.xcconfig"; path = "Target Support Files/Pods-Ohmicity Backend/Pods-Ohmicity Backend.debug.xcconfig"; sourceTree = "<group>"; };
 		D756B91D473B0E99A41EF7C5 /* Pods-Ohmicity Backend.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ohmicity Backend.release.xcconfig"; path = "Target Support Files/Pods-Ohmicity Backend/Pods-Ohmicity Backend.release.xcconfig"; sourceTree = "<group>"; };
-		D8092A0E26681C0000560A97 /* Venue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Venue.swift; sourceTree = "<group>"; };
+		D8092A0E26681C0000560A97 /* Business.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Business.swift; sourceTree = "<group>"; };
 		D8092A1126682D4E00560A97 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		D83B32CC267A5D800065948E /* ImageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageController.swift; sourceTree = "<group>"; };
 		D85AC753267BB02B00CEA95B /* RemoteDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDataController.swift; sourceTree = "<group>"; };
@@ -78,6 +79,7 @@
 		F6D80C43266AF93200A18ED2 /* Band.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Band.swift; sourceTree = "<group>"; };
 		F6D80C4A266B0FEF00A18ED2 /* Show.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Show.swift; sourceTree = "<group>"; };
 		F6F11E8B267FEAFD00E6368A /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
+		F6F6828C26B9F185005B35A1 /* BannerAd.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerAd.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,13 +120,14 @@
 			isa = PBXGroup;
 			children = (
 				F630FC0626583E5A001D0DA6 /* RawJSON.swift */,
-				D8092A0E26681C0000560A97 /* Venue.swift */,
+				D8092A0E26681C0000560A97 /* Business.swift */,
 				F676F0EA2698DB4100C47599 /* Rating.swift */,
 				F6D80C4A266B0FEF00A18ED2 /* Show.swift */,
 				F6D80C43266AF93200A18ED2 /* Band.swift */,
 				D8092A1126682D4E00560A97 /* User.swift */,
 				F676F0E82698DAA400C47599 /* Recommendation.swift */,
 				F676F0EC2698DD5900C47599 /* Message.swift */,
+				F6F6828C26B9F185005B35A1 /* BannerAd.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -348,7 +351,7 @@
 				F6D80C44266AF93200A18ED2 /* Band.swift in Sources */,
 				F65B06AD266C95AF00616BD9 /* Helper.swift in Sources */,
 				F6A2D74F2656F05900C50456 /* MainViewController.swift in Sources */,
-				D8092A0F26681C0000560A97 /* Venue.swift in Sources */,
+				D8092A0F26681C0000560A97 /* Business.swift in Sources */,
 				D85AC754267BB02B00CEA95B /* RemoteDataController.swift in Sources */,
 				F65B06A9266C3EC300616BD9 /* ShowDetailViewController.swift in Sources */,
 				D8092A1226682D4E00560A97 /* User.swift in Sources */,
@@ -361,6 +364,7 @@
 				F610AA3A2669309100EC2E8A /* VenueDetailViewController.swift in Sources */,
 				F6C5930C26585F1A000E0245 /* ParseDataController.swift in Sources */,
 				F6578F4A268D032E00AC25CE /* BusinessPhoto.swift in Sources */,
+				F6F6828D26B9F185005B35A1 /* BannerAd.swift in Sources */,
 				F676F0ED2698DD5900C47599 /* Message.swift in Sources */,
 				F6C31F552656E57B004A1BB2 /* AppDelegate.swift in Sources */,
 				F6D80C4B266B0FEF00A18ED2 /* Show.swift in Sources */,
