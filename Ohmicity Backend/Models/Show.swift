@@ -65,7 +65,8 @@ extension Show {
         var day = ""
         var date = self.dateString
         let date2 = date.replacingOccurrences(of: "\n", with: " ")
-        var modifiedDate = date2.components(separatedBy: " ")
+        let date3 = date2.replacingOccurrences(of: "->—>", with: "")
+        var modifiedDate = date3.components(separatedBy: " ")
 
         let hasDay: Bool = !Set(modifiedDate).isDisjoint(with: Set(daysArray))
         let hasYear: Bool = !Set(modifiedDate).isDisjoint(with: Set(yearArray))
