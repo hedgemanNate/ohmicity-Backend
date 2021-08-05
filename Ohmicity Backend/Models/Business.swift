@@ -8,9 +8,10 @@
 import Foundation
 import Cocoa
 import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 enum BusinessType: String, Codable, Equatable {
-    case Resturant
+    case Restaurant
     case Bar
     case Club
     case Outdoors
@@ -28,16 +29,18 @@ class BusinessFullData: Codable, Equatable {
     }
     
     var venueID: String?
+    var lastModified: Timestamp?
     var name: String?
-    var address: String?
-    var phoneNumber: Int?
+    var address: String = ""
+    var city: [City] = []
+    var phoneNumber: Int = 0
     var hours: Hours?
     var logo: Data?
     var pics: [Data] = []
     var stars: Int = 0
     var customer: Bool = false
     var ohmPick: Bool = false
-    var website: String?
+    var website: String = ""
     var businessType: [BusinessType] = []
     
     init(name: String, address: String, phoneNumber: Int, website: String) {
@@ -81,9 +84,9 @@ class BusinessFullData: Codable, Equatable {
         switch typeNumber {
         case 1:
             if button.state == .on {
-                businessType.append(BusinessType.Resturant)
+                businessType.append(BusinessType.Restaurant)
             } else if button.state == .off {
-                businessType.removeAll(where: {$0 == BusinessType.Resturant})
+                businessType.removeAll(where: {$0 == BusinessType.Restaurant})
             }
         case 2:
             if button.state == .on {
@@ -130,33 +133,6 @@ struct BusinessBasicData: Codable, Equatable, MutatingProtocolForBusinessData {
     //var shows: [Show] //To Query which places has shows today
 }
 
-struct Rating: Codable {
-    var ratingID: String
-    let userID: String
-    var stars: Int
-    var review: String?
-    
-    init(ratingID: String, userID: String, stars: Int, review: String) {
-        
-        let ratingID = Firestore.firestore().collection("ratingData").document().documentID
-        
-        self.ratingID = ratingID
-        self.userID = userID
-        self.stars = stars
-        self.review = review
-    }
-    
-    private init?(ratingID: String, dictionary: [String : Any]) {
-        guard let userID = dictionary["userID"] as? String,
-              let stars = dictionary["stars"] as?  Int,
-              let review = dictionary["review"] as? String else {return nil}
-        
-        self.ratingID = ratingID
-        self.userID = userID
-        self.stars = stars
-        self.review = review
-    }
-}
 
 struct Hours: Codable, Equatable {
     var monday: String = " "

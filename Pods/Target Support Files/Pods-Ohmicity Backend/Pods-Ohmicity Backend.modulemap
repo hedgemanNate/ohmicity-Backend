@@ -1,4 +1,4 @@
-module Pods_Ohmicity_Backend {
+framework module Pods_Ohmicity_Backend {
   umbrella header "Pods-Ohmicity Backend-umbrella.h"
 
   export *

@@ -10,11 +10,14 @@ import FirebaseFirestore
 
 struct Show: Codable, Equatable, Hashable {
     var showID: String
+    var lastModified = Timestamp()
     let band: String
     let venue: String
+    var city: [City]?
     var dateString: String
-    var date: Date?
-    var time: String?
+    var date = Date()
+    var time = ""
+    var onHold: Bool = false
     var ohmPick: Bool = false
     
     //Equatable Conformity
@@ -55,13 +58,15 @@ extension Show {
     mutating func fixShowTime() {
         //        let monthArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
         //        let dayNumberArray = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"]
-        let daysArray = ["Sun,", "Mon,", "Tues,", "Wed,", "Thurs,", "Fri,", "Sat,", "Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"]
+        let daysArray = ["Sun,", "Mon,", "Tues,", "Wed,", "Thurs,", "Fri,", "Sat,", "Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Thu,", "Thu", "Tue", "Tue,"]
         let yearArray = ["2017","2018","2019", "2020", "2021"]
         let seperatorArray = ["to", "till", "-"]
-
+        
+        var day = ""
         var date = self.dateString
         let date2 = date.replacingOccurrences(of: "\n", with: " ")
-        var modifiedDate = date2.components(separatedBy: " ")
+        let date3 = date2.replacingOccurrences(of: "->—>", with: "")
+        var modifiedDate = date3.components(separatedBy: " ")
 
         let hasDay: Bool = !Set(modifiedDate).isDisjoint(with: Set(daysArray))
         let hasYear: Bool = !Set(modifiedDate).isDisjoint(with: Set(yearArray))
@@ -70,6 +75,7 @@ extension Show {
         if hasDay {
             let set = Set(modifiedDate).intersection(daysArray)
             let setResult = Array(set)
+            day = setResult[0]
             modifiedDate.removeAll(where: {$0 == setResult[0]})
             date = modifiedDate.joined(separator: " ")
         }
@@ -102,25 +108,30 @@ extension Show {
         almostDate.append("2021")
 
         let cleanDate = almostDate.joined(separator: " ")
-        var cleanTime = "No Time"
+        let finalDate = "\(day) \(cleanDate)"
 
         if simiCleanDateArray.count >= 3 {
+            var cleanTime = "No Time"
             let almostTime = simiCleanDateArray[2]
             var simiCleanTime = almostTime.replacingOccurrences(of: "[\n:pmPMAa]", with: "", options: .regularExpression, range: nil)
 
-            let timeNumber = Int(simiCleanTime)
+            guard let timeNumber = Int(simiCleanTime) else {return NSLog("Not Time Found: TimeNumber")}
 
-            switch timeNumber! {
+            switch timeNumber {
             case 1...12:
-                cleanTime = "\(timeNumber!)pm"
+                cleanTime = "\(timeNumber)pm"
             case 100...1200:
                 simiCleanTime.removeLast(2)
                 cleanTime = "\(simiCleanTime)pm"
             default:
                 break
             }
-            self.dateString = cleanDate
+            self.dateString = finalDate
             self.time = cleanTime
+            
+        } else {
+            self.dateString = finalDate + " 8pm"
+            onHold = true
         }
     }
 }

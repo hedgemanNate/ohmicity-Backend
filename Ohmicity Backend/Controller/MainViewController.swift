@@ -8,6 +8,7 @@
 import Cocoa
 import FirebaseCore
 import FirebaseDatabase
+import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 
@@ -18,9 +19,13 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     //MARK: Properties
     var originalArray: [Band] = []
     var filteredArray: [Band] = []
+    var showsInOrderArray: [Show] = []
+    var bandsInOrderArray: [Band] = []
+    var businessesInOrderArray: [BusinessFullData] = []
     
     @IBOutlet weak var tableView: NSTableView!
     @IBOutlet weak var ohmButton: NSButton!
+    @IBOutlet weak var alertTextField: NSTextField!
     
     
     @IBOutlet weak var loadFileButton: NSButton!
@@ -59,6 +64,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     @IBOutlet weak var showAmountLabel: NSTextField!
     @IBOutlet weak var removeShowTextField: NSTextField!
     
+    var today = ""
+    
     //MARK: ViewDidLoad
     override func viewDidLoad() {
         FirebaseApp.configure()
@@ -67,6 +74,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.target = self
+        tableView.doubleAction = #selector(doubleClicked)
         
         notificationCenter.addObserver(self, selector: #selector(businessUpdatedAlertRecieved), name: NSNotification.Name("businessUpdated"), object: nil)
         notificationCenter.addObserver(self, selector: #selector(showsUpdated), name: NSNotification.Name("showsUpdated"), object: nil)
@@ -103,7 +112,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                 parseDataController.path = url
                 parseDataController.loadPath {
                     DispatchQueue.main.async {
-                        self.clearButton.isEnabled = true
+                        self.tableView.reloadData()
                     }
                 }
                 
@@ -117,30 +126,36 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                 self.saveVenuesButton.isEnabled = true
             }
             
-            print("table reloaded")
+            print("table reloaded1")
         } else {
             // User clicked on "Cancel"
             return
         }
         DispatchQueue.main.async {
             self.tableView.reloadData()
+            self.clearButton.isEnabled = true
         }
-        print("table reloaded")
+        print("table reloaded2")
         
     }
     
-    //MARK: Venue Buttons Tapped
+    //MARK: Venue/JSON Buttons Tapped
     @IBAction func consolidateButtonTapped(_ sender: Any) {
+        let was = parseDataController.jsonDataArray.count
+        
         let reduce = parseDataController.jsonDataArray.reduce(into: [:], {$0[$1, default: 0] += 1})
         let sorted = reduce.sorted(by: {$0.value > $1.value})
         let map    = sorted.map({$0.key})
         let orderedArray = map.sorted { $0.venueName ?? "CORRUPTED" < $1.venueName ?? "CORRUPTED" }
         parseDataController.jsonDataArray = orderedArray
         parseDataController.jsonDataArray.removeAll(where: {$0.venueName == nil})
+        let now = parseDataController.jsonDataArray.count
         
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
+        
+        self.alertTextField.stringValue = "Shows were: \(was). And are now: \(now)"
     }
     
     @IBAction func clearButtonTapped(_ sender: Any) {
@@ -155,6 +170,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         }
     }
     
+    
+    //MARK: Save New Shows
     @IBAction func saveNewShowsButtonTapped(_ sender: Any) {
         var cleanedJSONArray: [RawJSON] = []
         
@@ -162,30 +179,70 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         for venue in parseDataController.jsonDataArray {
             for business in localDataController.businessArray {
                 if venue.venueName == business.name && venue.shows != nil {
-                    print("Found Matching Venues")
+                    NSLog("Found Matching Venues")
+                    
                     for show in venue.shows! {
-                        
-                        //New Shows
-                        var newShow = Show(band: show.bandName!, venue: venue.venueName!, dateString: show.showTime!)
-                        newShow.fixShowTime()
-                        
-                        let dateFormat = "MMMM d, yyyy"
-                        let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = dateFormat
-                        let date = dateFormatter.date(from: newShow.dateString)
-                        newShow.date = date
-                        
-                        if localDataController.showArray.contains(newShow) == false {
-                            localDataController.showArray.append(newShow)
+                        if show.showTime!.contains("2021") || show.showTime!.contains("2020") ||
+                            show.showTime!.contains("2019") || show.showTime!.contains("2018") ||
+                            show.showTime!.contains("2016") || show.showTime!.contains("2021") {
+                            
+                            NSLog("\(show) IS OLD")
+                        } else {
+                            
+                            //New Shows
+                            
+                            //Remove Problem Band Names from Data
+                            var bandName = ""
+                            
+                            switch show.bandName {
+                            case "- Jack'D Up -":
+                                bandName = "Jack'D Up"
+                            case "-22N-":
+                                bandName = "22N"
+                            default:
+                                bandName = show.bandName!
+                            }
+                            
+                            let showTime = show.showTime!.replacingOccurrences(of: "—>", with: "", options: .regularExpression)
+                            
+                            var newShow = Show(band: bandName, venue: venue.venueName!, dateString: showTime)
+                            newShow.fixShowTime()
+                            
+                            let dts = newShow.dateString
+                            newShow.dateString = "\(dts)" + " \(newShow.time)"
+                            newShow.city = business.city
+                            
+                            //Checks two date formatts to create a date and time for the shows
+                            dateFormatter.dateFormat = dateFormat1
+                            if let date = dateFormatter.date(from: newShow.dateString) {
+                                newShow.date = date
+                            } else {
+                                dateFormatter.dateFormat = dateFormat2
+                                if let date = dateFormatter.date(from: newShow.dateString) {
+                                    newShow.date = date
+                                } else {
+                                    dateFormatter.dateFormat = dateFormat3
+                                    if let date = dateFormatter.date(from: newShow.dateString) {
+                                        newShow.date = date
+                                    }
+                                }
+                            }
+                            
+                            
+                            if localDataController.showArray.contains(newShow) == false {
+                                localDataController.showArray.append(newShow)
+                                self.alertTextField.stringValue = "\(newShow.venue): \(newShow.dateString) Show Added"
+                            }
+                            
+                            
+                            //New Bands
+                            let newBand = Band(name: bandName)
+                            if localDataController.bandArray.contains(newBand) == false {
+                                localDataController.bandArray.append(newBand)
+                            }
+                            
+                            cleanedJSONArray.append(venue)
                         }
-                        
-                        //New Bands
-                        let newBand = Band(name: show.bandName!)
-                        if localDataController.bandArray.contains(newBand) == false {
-                            localDataController.bandArray.append(newBand)
-                        }
-                        
-                        cleanedJSONArray.append(venue)
                     }
                 }
             }
@@ -245,16 +302,6 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         }
     }
     
-    @IBAction func pullDataButtonTapped(_ sender: Any) {
-        if localBusinessesButton.state == .on || remoteBusinessButton.state == .on {
-            getRemoteBusinessData()
-        } else if localBandsButton.state == .on || remoteBandsButton.state == .on {
-            getRemoteBandData()
-        } else if localShowsButton.state == .on || remoteShowsButton.state == .on {
-            getRemoteShowData()
-        }
-    }
-    
     @IBAction func removeShowButtonTapped(_ sender: Any) {
         localDataController.showArray = []
         
@@ -274,8 +321,10 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             
             do {
                 try ref.document(business.venueID ?? UUID.init().uuidString).setData(from: business)
+                self.alertTextField.stringValue = "Push Successful"
             } catch let error {
                     NSLog(error.localizedDescription)
+                self.alertTextField.stringValue = "Error pushing Business"
             }
         }
     }
@@ -286,21 +335,27 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         for band in bandData {
             do {
                 try ref.document(band.bandID ).setData(from: band)
+                self.alertTextField.stringValue = "Push Successful"
             } catch let error {
                     NSLog(error.localizedDescription)
+                self.alertTextField.stringValue = "Error pushing Band"
             }
         }
     }
     
     @IBAction func pushShowButtonTapped(_ sender: Any) {
         let showData = localDataController.showArray
-        let ref = FireStoreReferenceManager.showDataPath
+         //ref = FireStoreReferenceManager.showDataPath
         for show in showData {
             
+            var pushedShow = show
+            pushedShow.lastModified = Timestamp()
             do {
-                try ref.document(show.showID ).setData(from: show)
+                try ref.showDataPath.document(pushedShow.showID ).setData(from: pushedShow)
+                self.alertTextField.stringValue = "Push Successful"
             } catch let error {
                     NSLog(error.localizedDescription)
+                self.alertTextField.stringValue = "Error pushing Show"
             }
         }
     }
@@ -308,20 +363,22 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     //MARK: Delete Buttons Tapped
     @IBAction func deleteBusinessButtonTapped(_ sender: Any) {
         let index = tableView.selectedRow
-        let business = remoteDataController.remoteBusinessArray[index]
+        let business = businessesInOrderArray[index]
         
-        if localBusinessesButton.state == .on {
-            localDataController.businessArray.remove(at: index)
+        if localBusinessesButton.state == .on && tableView.selectedRow != -1 {
+            localDataController.businessArray.removeAll(where: {$0 == business})
             localDataController.saveBusinessData()
-        } else if remoteBusinessButton.state == .on {
-            remoteDataController.remoteBusinessArray.remove(at: index)
+        } else if remoteBusinessButton.state == .on && remoteDataController.remoteBusinessArray != [] {
+            remoteDataController.remoteBusinessArray.removeAll(where: {$0 == business})
             FireStoreReferenceManager.businessFullDataPath.document(business.venueID!).delete
             { (err) in
                 if let err = err {
                     //MARK: Alert Here
                   NSLog("Error deleting Business: \(err)")
+                    self.alertTextField.stringValue = "Error deleting Business"
                 } else {
-                    NSLog("Delete Successfull")
+                    NSLog("Delete Successful")
+                    self.alertTextField.stringValue = "Delete Successful"
                 }
             }
         }
@@ -333,20 +390,22 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     
     @IBAction func deleteBandButtonTapped(_ sender: Any) {
         let index = tableView.selectedRow
-        let band = remoteDataController.remoteBandArray[index]
+        let band = bandsInOrderArray[index]
         
         if localBandsButton.state == .on {
-            localDataController.bandArray.remove(at: index)
+            localDataController.bandArray.removeAll(where: {$0 == band})
             localDataController.saveBandData()
         } else if remoteBandsButton.state == .on {
-            remoteDataController.remoteBandArray.remove(at: index)
+            remoteDataController.remoteBandArray.removeAll(where: {$0 == band})
             FireStoreReferenceManager.bandDataPath.document(band.bandID).delete
             { (err) in
                 if let err = err {
                     //MARK: Alert Here
                   NSLog("Error deleting Band: \(err)")
+                    self.alertTextField.stringValue = "Error deleting Band"
                 } else {
-                    NSLog("Delete Successfull")
+                    NSLog("Delete Successful")
+                    self.alertTextField.stringValue = "Delete Successful"
                 }
             }
         }
@@ -358,20 +417,24 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     
     @IBAction func deleteShowButtonTapped(_ sender: Any) {
         let index = tableView.selectedRow
-        let show = remoteDataController.remoteShowArray[index]
+        let show = showsInOrderArray[index]
+        localDataController.showArray.removeAll(where: {$0 == show})
         
         if localShowsButton.state == .on {
-            localDataController.showArray.remove(at: index)
             localDataController.saveShowData()
         } else if remoteShowsButton.state == .on {
-            remoteDataController.remoteShowArray.remove(at: index)
+            remoteDataController.remoteShowArray.removeAll(where: {$0 == show})
+            print(show)
             FireStoreReferenceManager.showDataPath.document(show.showID).delete
             { (err) in
                 if let err = err {
                     //MARK: Alert Here
                   NSLog("Error deleting Band: \(err)")
+                    self.alertTextField.stringValue = "Error deleting Band"
                 } else {
-                    NSLog("Delete Successfull")
+                    NSLog("Delete Successful")
+                    self.alertTextField.stringValue = "Delete Successful"
+                    print("\(show)")
                 }
             }
         }
@@ -379,6 +442,37 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
+    }
+    
+    //MARK: Show On Hold
+    @IBAction func showHoldButtonTapped(_ sender: Any) {
+        let index = tableView.selectedRow
+        var show = showsInOrderArray[index]
+        show.onHold = true
+        show.lastModified = Timestamp()
+        do {
+            try ref.showDataPath.document(show.showID).setData(from: show)
+        } catch {
+            NSLog("Error Pushing Updated Show")
+            alertTextField.stringValue = "Error Pushing Updated Show"
+        }
+        
+    }
+    
+    
+    //MARK: Remote Data Handling
+    @IBAction func pullDataButtonTapped(_ sender: Any) {
+        if localBusinessesButton.state == .on || remoteBusinessButton.state == .on {
+            getRemoteBusinessData()
+        } else if localBandsButton.state == .on || remoteBandsButton.state == .on {
+            getRemoteBandData()
+        } else if localShowsButton.state == .on || remoteShowsButton.state == .on {
+            getRemoteShowData()
+        }
+    }
+    
+    @IBAction func copyRemoteData(_ sender: Any) {
+        copyRemoteData()
     }
     
     
@@ -522,16 +616,15 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     
     //MARK: UpdateView Functions
     private func updateViews() {
+        dateFormatter.dateFormat = dateFormat3
+        today = dateFormatter.string(from: Date())
+        
         rawJSONDataButton.state = .on
         localDataController.loadBusinessData()
         localDataController.loadBusinessBasicData()
         localDataController.loadJsonData()
         localDataController.loadShowData()
         localDataController.loadBandData()
-        
-        getRemoteBandData()
-        getRemoteBusinessData()
-        getRemoteShowData()
         
         DispatchQueue.main.async {
             self.tableView.reloadData()
@@ -557,13 +650,13 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     }
     
     //MARK: Load Remote Data:+ Alerts Here
-
     private func getRemoteBandData() {
         print("Running Remote Band")
         FireStoreReferenceManager.bandDataPath.getDocuments { (querySnapshot, err) in
             if let err = err {
                 NSLog("Error getting bandData: \(err)")
             } else {
+                self.alertTextField.stringValue = "Got band data"
                 remoteDataController.remoteBandArray = []
                 for band in querySnapshot!.documents {
                     let result = Result {
@@ -579,6 +672,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                         }
                     case .failure(let error):
                         print("Error decoding band: \(error)")
+                        self.alertTextField.stringValue = "Failed to get band data"
                     }
                 }
             }
@@ -594,6 +688,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             if let err = err {
                 NSLog("Error getting bandData: \(err)")
             } else {
+                self.alertTextField.stringValue = "Got business data"
                 remoteDataController.remoteBusinessArray = []
                 for business in querySnapshot!.documents {
                     let result = Result {
@@ -608,7 +703,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                             print("Document does not exist")
                         }
                     case .failure(let error):
-                        print("Error decoding band: \(error)")
+                        print("Error decoding business: \(error)")
+                        self.alertTextField.stringValue = "Failed to get business data"
                     }
                 }
             }
@@ -624,6 +720,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             if let err = err {
                 NSLog("Error getting bandData: \(err)")
             } else {
+                self.alertTextField.stringValue = "Got show data"
                 remoteDataController.remoteShowArray = []
                 for show in querySnapshot!.documents {
                     let result = Result {
@@ -639,12 +736,27 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                         }
                     case .failure(let error):
                         print("Error decoding band: \(error)")
+                        self.alertTextField.stringValue = "Failed to get show data"
                     }
                 }
             }
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
+        }
+    }
+    
+    //MARK: Copy Remote Data
+    private func copyRemoteData() {
+        if localBusinessesButton.state == .on || remoteBusinessButton.state == .on {
+            localDataController.businessArray = remoteDataController.remoteBusinessArray
+            alertTextField.stringValue = "Business Data Copied"
+        } else if localBandsButton.state == .on || remoteBandsButton.state == .on {
+            localDataController.bandArray = remoteDataController.remoteBandArray
+            alertTextField.stringValue = "Band Data Copied"
+        } else if localShowsButton.state == .on || remoteShowsButton.state == .on {
+            localDataController.showArray = remoteDataController.remoteShowArray
+            alertTextField.stringValue = "Show Data Copied"
         }
     }
     
@@ -673,28 +785,76 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         
         if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "VenueCell"), owner: nil) as? NSTableCellView {
             
+            //RawJSON
             if rawJSONDataButton.state == .on {
                 cell.textField?.stringValue = "\(row + 1): \(parseDataController.jsonDataArray[row].venueName ?? "CORRUPTED")"
+                
+            //Local Businesses
             } else if localBusinessesButton.state == .on && localDataController.businessArray != [] {
-                cell.textField?.stringValue = "\(row + 1): \(localDataController.businessArray[row].name!)"
+                businessesInOrderArray = localDataController.businessArray.sorted(by: {$0.name! < $1.name!})
+                
+                cell.textField?.stringValue = "\(row + 1): \(businessesInOrderArray[row].name!)"
+                
+                
+            //Local Bands
             }  else if localBandsButton.state == .on && localDataController.bandArray != [] {
-                if localDataController.bandArray[row].ohmPick == true {
-                    cell.textField?.stringValue = "\(row + 1): \(localDataController.bandArray[row].name): !OHM!"
+                bandsInOrderArray = localDataController.bandArray.sorted(by: {$0.name < $1.name})
+                
+                if bandsInOrderArray[row].ohmPick == true {
+                    cell.textField?.stringValue = "\(row + 1): \(bandsInOrderArray[row].name): !OHM!"
                 } else {
-                    cell.textField?.stringValue = "\(row + 1): \(localDataController.bandArray[row].name)"
+                    cell.textField?.stringValue = "\(row + 1): \(bandsInOrderArray[row].name)"
                 }
+                
+                if bandsInOrderArray[row].photo != nil {
+                    cell.textField?.textColor = .orange
+                }
+                
+            //Local Shows
             } else if localShowsButton.state == .on && localDataController.showArray != [] {
-                cell.textField?.stringValue = "\(row + 1): \(localDataController.showArray[row].venue): \(localDataController.showArray[row].dateString): *\(localDataController.showArray[row].band)*"
-            } else if remoteBusinessButton.state == .on {
-                cell.textField?.stringValue = "\(row + 1): \(remoteDataController.remoteBusinessArray[row].name!)"
-            } else if remoteBandsButton.state == .on {
-                if remoteDataController.remoteBandArray[row].ohmPick == true {
-                    cell.textField?.stringValue = "\(row + 1): \(remoteDataController.remoteBandArray[row].name): !OHM!"
-                } else {
-                    cell.textField?.stringValue = "\(row + 1): \(remoteDataController.remoteBandArray[row].name)"
+                showsInOrderArray = localDataController.showArray.sorted(by: {$0.date < $1.date})
+
+                cell.textField?.stringValue = "\(row + 1): \(showsInOrderArray[row].venue): \(showsInOrderArray[row].dateString): *\(showsInOrderArray[row].band)*"
+                
+                //Show Color Coding
+                let show = showsInOrderArray[row]
+                dateFormatter.dateFormat = dateFormat3
+                let showDate = dateFormatter.string(from: show.date)
+                
+                if showDate == today {
+                    cell.textField?.textColor = .orange
                 }
+                
+                if show.onHold == true {
+                    cell.textField?.textColor = .red
+                }
+                
+                if show.ohmPick == true {
+                    cell.layer?.backgroundColor = NSColor.yellow.cgColor
+                }
+                
+            //Remote Businesses
+            } else if remoteBusinessButton.state == .on {
+                businessesInOrderArray = remoteDataController.remoteBusinessArray.sorted(by: {$0.name! < $1.name!})
+                let business = businessesInOrderArray[row]
+                cell.textField?.stringValue = "\(row + 1): \(business.name!): \(business.venueID!)"
+                
+            //Remote Bands
+            } else if remoteBandsButton.state == .on {
+                bandsInOrderArray = remoteDataController.remoteBandArray.sorted(by: {$0.name < $1.name})
+                let band = bandsInOrderArray[row]
+                
+                if bandsInOrderArray[row].ohmPick == true {
+                    cell.textField?.stringValue = "\(row + 1): \(band.name): \(band.bandID)"
+                } else {
+                    cell.textField?.stringValue = "\(row + 1): \(band.name): \(band.bandID)"
+                }
+                
+            //Remote Shows
             } else if remoteShowsButton.state == .on {
-                cell.textField?.stringValue = "\(row + 1): \(remoteDataController.remoteShowArray[row].venue): \(remoteDataController.remoteShowArray[row].dateString): *\(remoteDataController.remoteShowArray[row].band)*"
+                showsInOrderArray = remoteDataController.remoteShowArray.sorted(by: {$0.date < $1.date})
+                let show = showsInOrderArray[row]
+                cell.textField?.stringValue = "\(row + 1): \(show.venue): \(show.dateString): \(show.showID)"
             }
             
             return cell
@@ -702,6 +862,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         
         return  nil
     }
+    
+    
     
     
     //MARK: Segue
@@ -716,32 +878,32 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             //Local Business Handling:
         } else if segue.identifier == "editBusinessSegue" && localBusinessesButton.state == .on {
             guard let businessVC = segue.destinationController as? VenueDetailViewController else {return}
-            businessVC.currentBusiness = localDataController.businessArray[indexPath]
+            businessVC.currentBusiness = businessesInOrderArray[indexPath]
             
             //Remote Business Handling:
         } else if segue.identifier == "editBusinessSegue" && remoteBusinessButton.state == .on {
             guard let businessVC = segue.destinationController as? VenueDetailViewController else {return}
-            businessVC.currentBusiness = remoteDataController.remoteBusinessArray[indexPath]
+            businessVC.currentBusiness = businessesInOrderArray[indexPath]
             
             //Local Band Handling:
         } else if segue.identifier == "editBandSegue" && localBandsButton.state == .on {
             guard let bandVC = segue.destinationController as? BandDetailViewController else {return}
-            bandVC.currentBand = localDataController.bandArray[indexPath]
+            bandVC.currentBand = bandsInOrderArray[indexPath]
             
             //Remote Band Handling:
         } else if segue.identifier == "editBandSegue" && remoteBandsButton.state == .on {
             guard let bandVC = segue.destinationController as? BandDetailViewController else {return}
-            bandVC.currentBand = remoteDataController.remoteBandArray[indexPath]
+            bandVC.currentBand = bandsInOrderArray[indexPath]
             
             //Local Show Handling
         } else if segue.identifier == "editShowSegue" && localShowsButton.state == .on {
             guard let showVC = segue.destinationController as? ShowDetailViewController else {return}
-            showVC.currentShow = localDataController.showArray[indexPath]
+            showVC.currentShow = showsInOrderArray[indexPath]
             
             //Remote Show Handling
         } else if segue.identifier == "editShowSegue" && remoteShowsButton.state == .on {
             guard let showVC = segue.destinationController as? ShowDetailViewController else {return}
-            showVC.currentShow = remoteDataController.remoteShowArray[indexPath]
+            showVC.currentShow = showsInOrderArray[indexPath]
         }
         
         
@@ -770,12 +932,64 @@ extension MainViewController {
         editShowButton.isEnabled = state
         deleteShowButton.isEnabled = state
         pushShowButton.isEnabled = state
-        
+    }
+    
+    //DoubleClickFunctions
+    @objc private func doubleClicked() {
+        if rawJSONDataButton.state == .on {
+            if tableView.selectedRow < 0 {
+                return
+            } else {
+                performSegue(withIdentifier: "editVenueSegue", sender: self)
+            }
+            
+        } else if localBusinessesButton.state == .on {
+            if tableView.selectedRow < 0 {
+                return
+            } else {
+                performSegue(withIdentifier: "editBusinessSegue", sender: self)
+            }
+            
+        } else if remoteBusinessButton.state == .on {
+            if tableView.selectedRow < 0 {
+                return
+            } else {
+                performSegue(withIdentifier: "editBusinessSegue", sender: self)
+            }
+            
+        } else if localBandsButton.state == .on {
+            if tableView.selectedRow < 0 {
+                return
+            } else {
+                performSegue(withIdentifier: "editBandSegue", sender: self)
+            }
+            
+        } else if remoteBandsButton.state == .on {
+            if tableView.selectedRow < 0 {
+                return
+            } else {
+                performSegue(withIdentifier: "editBandSegue", sender: self)
+            }
+            
+        } else if localShowsButton.state == .on {
+            if tableView.selectedRow < 0 {
+                return
+            } else {
+                performSegue(withIdentifier: "editShowSegue", sender: self)
+            }
+            
+        } else if remoteShowsButton.state == .on {
+            if tableView.selectedRow < 0 {
+                return
+            } else {
+                performSegue(withIdentifier: "editShowSegue", sender: self)
+            }
+        }
     }
     
     @objc func showsUpdated() {
-        let currentDate = Date()
-        //Remove Old Shows
+        //MARK: REMOVE OLD SHOWS
+        //let currentDate = Date()
         //localDataController.showArray.removeAll(where: {$0.date! < currentDate})
         
         DispatchQueue.main.async {

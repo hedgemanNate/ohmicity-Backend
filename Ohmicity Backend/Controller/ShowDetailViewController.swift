@@ -19,9 +19,11 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
     @IBOutlet weak var startTimeTextField: NSTextField!
     
     @IBOutlet weak var deleteButton: NSButton!
-    @IBOutlet weak var ohmPickButton: NSButton!
+    @IBOutlet weak var ohmPickCheckbox: NSButton!
+    @IBOutlet weak var showOnHoldCheckbox: NSButton!
     @IBOutlet weak var bandRadioButton: NSButton!
     @IBOutlet weak var businessRadioButton: NSButton!
+    @IBOutlet weak var pushButton: NSButton!
     
     @IBOutlet weak var tableView: NSTableView!
     
@@ -39,39 +41,65 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
     
     @IBAction func savedButtonTapped(_ sender: Any) {
         if currentShow != nil {
-            var editedShow = localDataController.showArray.first(where: {$0 == currentShow!})
+            currentShow?.dateString = startDateTextField.stringValue
+            let date = setTime()
+            
+            var editedShow = currentShow
             editedShow?.dateString = startDateTextField.stringValue
             editedShow?.time = startTimeTextField.stringValue
+            editedShow?.date = date
+
+            
+            editedShow?.lastModified = Timestamp()
+            
+            if ohmPickCheckbox.state == .on {
+                editedShow?.ohmPick = true
+            } else {
+                editedShow?.ohmPick = false
+            }
+            
+            if showOnHoldCheckbox.state == .on {
+                editedShow?.onHold = true
+            } else {
+                editedShow?.onHold = false
+            }
             
             localDataController.showArray.removeAll(where: {$0.showID == editedShow?.showID})
             localDataController.showArray.append(editedShow!)
-            
-            if ohmPickButton.state == .on {
-                currentShow?.ohmPick = true
-            } else {
-                currentShow?.ohmPick = false
-            }
             
             notificationCenter.post(name: NSNotification.Name("showsUpdated"), object: nil)
             localDataController.saveShowData()
         } else {
             var newShow = Show(band: bandNameTextField.stringValue, venue: businessNameTextField.stringValue, dateString: startDateTextField.stringValue)
             newShow.time = startTimeTextField.stringValue
+            newShow.lastModified = Timestamp()
             localDataController.showArray.append(newShow)
             localDataController.saveShowData()
             notificationCenter.post(name: NSNotification.Name("showsUpdated"), object: nil)
         }
     }
     
+    //Makes a Date out of Start Date And Time
+    private func setTime() -> Date {
+        let dateString = "\(startDateTextField.stringValue) \(startTimeTextField.stringValue)"
+        
+        dateFormatter.dateFormat = dateFormat2
+        guard let date = dateFormatter.date(from: dateString) else {return Date()}
+        return date
+    }
+    
+    
     @IBAction func pushButtonTapped(_ sender: Any) {
         let ref = FireStoreReferenceManager.showDataPath
-        
+        currentShow?.lastModified = Timestamp()
         do {
-            try ref.document(currentShow!.showID ?? UUID.init().uuidString).setData(from: currentShow)
+            try ref.document(currentShow!.showID).setData(from: currentShow)
         } catch let error {
                 NSLog(error.localizedDescription)
         }
     }
+    
+    
     
     //MARK: Radio Buttons
     
@@ -81,7 +109,6 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         }
     }
     
-        
     
     //MARK: UpdateViews
     private func updateViews() {
@@ -91,25 +118,51 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         bandRadioButton.state = .on
         
         if currentShow != nil {
+            self.title = "Edit Show"
             bandNameTextField.stringValue = currentShow!.band
             businessNameTextField.stringValue = currentShow!.venue
-            startDateTextField.stringValue = "\(currentShow!.dateString)"
-            startTimeTextField.stringValue = "\(currentShow?.time ?? "No Time")"
+            
+//            let date = currentShow!.dateString
+//            if let index = (date.range(of: "2021")?.upperBound) {
+//
+//                let newDate = String(date.prefix(upTo: index))
+//                startDateTextField.stringValue = newDate
+//            }
+            
+            startDateTextField.stringValue = "\(currentShow?.dateString ?? "")"
+            startTimeTextField.stringValue = "\(currentShow?.time ?? "")"
+            
             deleteButton.isEnabled = true
             
             switch currentShow?.ohmPick {
             
             case false:
-                ohmPickButton.state = .off
+                ohmPickCheckbox.state = .off
             case true:
-                ohmPickButton.state = .on
+                ohmPickCheckbox.state = .on
             case .none:
                 return
             case .some(_):
                 return
             }
+            
+            switch currentShow?.onHold {
+            case false:
+                showOnHoldCheckbox.state = .off
+            case true:
+                showOnHoldCheckbox.state = .on
+            case .none:
+                return
+            case .some(_):
+                return
+            }
+            
+            
         } else {
             deleteButton.isEnabled = false
+            pushButton.isEnabled = false
+            showOnHoldCheckbox.isEnabled = false
+            ohmPickCheckbox.isEnabled = false
         }
     }
     

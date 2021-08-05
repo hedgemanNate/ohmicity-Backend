@@ -54,14 +54,13 @@ class ParseDataController {
     private func parse(jsonData: Data) {
         do {
             let serialQueue = DispatchQueue(label: "JsonArrayQueue")
-            jsonDataArray = []
             let decodedData = try JSONDecoder().decode(Venue.self, from: jsonData)
             data = decodedData
             
             
             guard let data = data else {return}
             for show in data.venue {
-                serialQueue.async { [self] in
+                serialQueue.sync { [self] in
                     jsonDataArray.append(show)
                 }
             }
@@ -70,6 +69,8 @@ class ParseDataController {
             print("decode error")
         }
     }
+    
+    
     
 }
 
