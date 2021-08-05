@@ -201,7 +201,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                                 bandName = show.bandName!
                             }
                             
-                            let showTime = show.showTime!.replacingOccurrences(of: "[—> —-_-.><~]", with: " ")
+                            let showTime = show.showTime!.replacingOccurrences(of: "—>", with: "", options: .regularExpression)
                             
                             var newShow = Show(band: bandName, venue: venue.venueName!, dateString: showTime)
                             newShow.fixShowTime()
