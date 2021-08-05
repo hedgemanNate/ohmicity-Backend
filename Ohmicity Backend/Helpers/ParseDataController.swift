@@ -54,7 +54,6 @@ class ParseDataController {
     private func parse(jsonData: Data) {
         do {
             let serialQueue = DispatchQueue(label: "JsonArrayQueue")
-            jsonDataArray = []
             let decodedData = try JSONDecoder().decode(Venue.self, from: jsonData)
             data = decodedData
             

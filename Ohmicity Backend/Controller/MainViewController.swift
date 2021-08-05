@@ -74,6 +74,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.target = self
+        tableView.doubleAction = #selector(doubleClicked)
         
         notificationCenter.addObserver(self, selector: #selector(businessUpdatedAlertRecieved), name: NSNotification.Name("businessUpdated"), object: nil)
         notificationCenter.addObserver(self, selector: #selector(showsUpdated), name: NSNotification.Name("showsUpdated"), object: nil)
@@ -793,6 +795,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                 
                 cell.textField?.stringValue = "\(row + 1): \(businessesInOrderArray[row].name!)"
                 
+                
             //Local Bands
             }  else if localBandsButton.state == .on && localDataController.bandArray != [] {
                 bandsInOrderArray = localDataController.bandArray.sorted(by: {$0.name < $1.name})
@@ -861,6 +864,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     }
     
     
+    
+    
     //MARK: Segue
     override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
         let indexPath = tableView.selectedRow
@@ -927,6 +932,59 @@ extension MainViewController {
         editShowButton.isEnabled = state
         deleteShowButton.isEnabled = state
         pushShowButton.isEnabled = state
+    }
+    
+    //DoubleClickFunctions
+    @objc private func doubleClicked() {
+        if rawJSONDataButton.state == .on {
+            if tableView.selectedRow < 0 {
+                return
+            } else {
+                performSegue(withIdentifier: "editVenueSegue", sender: self)
+            }
+            
+        } else if localBusinessesButton.state == .on {
+            if tableView.selectedRow < 0 {
+                return
+            } else {
+                performSegue(withIdentifier: "editBusinessSegue", sender: self)
+            }
+            
+        } else if remoteBusinessButton.state == .on {
+            if tableView.selectedRow < 0 {
+                return
+            } else {
+                performSegue(withIdentifier: "editBusinessSegue", sender: self)
+            }
+            
+        } else if localBandsButton.state == .on {
+            if tableView.selectedRow < 0 {
+                return
+            } else {
+                performSegue(withIdentifier: "editBandSegue", sender: self)
+            }
+            
+        } else if remoteBandsButton.state == .on {
+            if tableView.selectedRow < 0 {
+                return
+            } else {
+                performSegue(withIdentifier: "editBandSegue", sender: self)
+            }
+            
+        } else if localShowsButton.state == .on {
+            if tableView.selectedRow < 0 {
+                return
+            } else {
+                performSegue(withIdentifier: "editShowSegue", sender: self)
+            }
+            
+        } else if remoteShowsButton.state == .on {
+            if tableView.selectedRow < 0 {
+                return
+            } else {
+                performSegue(withIdentifier: "editShowSegue", sender: self)
+            }
+        }
     }
     
     @objc func showsUpdated() {

@@ -635,7 +635,7 @@ extension VenueDetailViewController {
             let showTimeIdentifier = NSUserInterfaceItemIdentifier("TimeCell")
             guard let cellView = tableView.makeView(withIdentifier: showTimeIdentifier, owner: self) as? NSTableCellView else {return nil}
             //let showTime = currentShow?.dateString.replacingOccurrences(of: "\n", with: " ")
-            cellView.textField?.stringValue = "\(currentShow?.dateString ?? "No Data") \(currentShow?.time ?? "")"
+            cellView.textField?.stringValue = "\(currentShow?.dateString ?? "No Data")"
             return cellView
             
         }
