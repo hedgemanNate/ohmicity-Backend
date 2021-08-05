@@ -61,7 +61,7 @@ class ParseDataController {
             
             guard let data = data else {return}
             for show in data.venue {
-                serialQueue.async { [self] in
+                serialQueue.sync { [self] in
                     jsonDataArray.append(show)
                 }
             }

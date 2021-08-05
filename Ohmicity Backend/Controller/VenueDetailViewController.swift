@@ -244,6 +244,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         }
         
         localDataController.saveBusinessData()
+        notificationCenter.post(Notification(name: Notification.Name(rawValue: "businessUpdated")))
         buttonIndication2(color: .green)
         
     }
