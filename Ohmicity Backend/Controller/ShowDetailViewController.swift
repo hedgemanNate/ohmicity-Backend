@@ -67,6 +67,8 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
             localDataController.showArray.removeAll(where: {$0.showID == editedShow?.showID})
             localDataController.showArray.append(editedShow!)
             
+            currentShow = editedShow
+            
             notificationCenter.post(name: NSNotification.Name("showsUpdated"), object: nil)
             localDataController.saveShowData()
         } else {
@@ -74,6 +76,8 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
             newShow.time = startTimeTextField.stringValue
             newShow.lastModified = Timestamp()
             localDataController.showArray.append(newShow)
+            
+            currentShow = newShow
             localDataController.saveShowData()
             notificationCenter.post(name: NSNotification.Name("showsUpdated"), object: nil)
         }
@@ -129,13 +133,15 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
 //                startDateTextField.stringValue = newDate
 //            }
             
-            startDateTextField.stringValue = "\(currentShow?.dateString ?? "")"
+            dateFormatter.dateFormat = dateFormat3
+            let dateString = dateFormatter.string(from: currentShow!.date)
+            
+            startDateTextField.stringValue = "\(dateString)"
             startTimeTextField.stringValue = "\(currentShow?.time ?? "")"
             
             deleteButton.isEnabled = true
             
             switch currentShow?.ohmPick {
-            
             case false:
                 ohmPickCheckbox.state = .off
             case true:

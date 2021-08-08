@@ -813,11 +813,15 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             //Local Shows
             } else if localShowsButton.state == .on && localDataController.showArray != [] {
                 showsInOrderArray = localDataController.showArray.sorted(by: {$0.date < $1.date})
+                let show = showsInOrderArray[row]
+                
+                dateFormatter.dateFormat = dateFormatDay
+                let showDay = dateFormatter.string(from: show.date)
 
-                cell.textField?.stringValue = "\(row + 1): \(showsInOrderArray[row].venue): \(showsInOrderArray[row].dateString): *\(showsInOrderArray[row].band)*"
+                cell.textField?.stringValue = "\(row + 1): \(showsInOrderArray[row].venue): \(showDay), \(showsInOrderArray[row].dateString): *\(showsInOrderArray[row].band)*"
                 
                 //Show Color Coding
-                let show = showsInOrderArray[row]
+                
                 dateFormatter.dateFormat = dateFormat3
                 let showDate = dateFormatter.string(from: show.date)
                 
