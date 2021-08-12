@@ -28,6 +28,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     @IBOutlet weak var alertTextField: NSTextField!
     
     @IBOutlet weak var showAmountLabel: NSTextField!
+    @IBOutlet weak var versionLabel: NSTextField!
     
     
     @IBOutlet weak var searchBarField: NSSearchField!
@@ -649,6 +650,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     
     //MARK: UpdateView Functions
     private func updateViews() {
+        versionLabel.stringValue = " Version \((Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String)!)" 
         dateFormatter.dateFormat = dateFormat3
         today = dateFormatter.string(from: Date())
         

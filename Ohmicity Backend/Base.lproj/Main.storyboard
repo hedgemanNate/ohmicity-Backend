@@ -729,15 +729,15 @@
                                     <action selector="loadFileButtonTapped:" target="XfG-lQ-9wD" id="efW-yt-71v"/>
                                 </connections>
                             </button>
-                            <scrollView fixedFrame="YES" horizontalLineScroll="50" horizontalPageScroll="10" verticalLineScroll="50" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6tV-ah-eDL">
+                            <scrollView fixedFrame="YES" horizontalLineScroll="50" horizontalPageScroll="10" verticalLineScroll="50" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6tV-ah-eDL">
                                 <rect key="frame" x="210" y="71" width="701" height="684"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <clipView key="contentView" drawsBackground="NO" id="XPn-5y-M9o">
-                                    <rect key="frame" x="1" y="1" width="699" height="682"/>
+                                    <rect key="frame" x="1" y="1" width="684" height="682"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" tableStyle="fullWidth" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="45" viewBased="YES" id="I5g-zz-Oab">
-                                            <rect key="frame" x="0.0" y="0.0" width="699" height="682"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="684" height="682"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="5"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -788,8 +788,8 @@
                                     <rect key="frame" x="-100" y="-100" width="238" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="fEd-oF-WPy">
-                                    <rect key="frame" x="-100" y="-100" width="15" height="102"/>
+                                <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="fEd-oF-WPy">
+                                    <rect key="frame" x="685" y="1" width="15" height="682"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
@@ -1142,6 +1142,15 @@
                                     <action selector="searchBar:" target="XfG-lQ-9wD" id="rks-R5-cDb"/>
                                 </connections>
                             </searchField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GKP-gA-yjf">
+                                <rect key="frame" x="695" y="795" width="216" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Version Label" id="Lat-7I-gOy">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                         <constraints>
                             <constraint firstItem="FqY-00-G8m" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="HVT-YL-Qdq"/>
@@ -1181,6 +1190,7 @@
                         <outlet property="searchBarField" destination="ZdG-jr-Zv2" id="PES-Av-xdJ"/>
                         <outlet property="showAmountLabel" destination="LDx-du-tX3" id="ejc-ut-nPw"/>
                         <outlet property="tableView" destination="I5g-zz-Oab" id="XlB-Jw-TFp"/>
+                        <outlet property="versionLabel" destination="GKP-gA-yjf" id="ZpT-Vq-cuK"/>
                         <segue destination="QaH-ga-u3R" kind="show" identifier="editVenueSegue" id="CsE-1C-13z"/>
                         <segue destination="MNe-r1-lri" kind="show" identifier="editBandSegue" id="SbH-tN-mGM"/>
                         <segue destination="QaH-ga-u3R" kind="show" identifier="editBusinessSegue" id="EEW-w1-tA0"/>
