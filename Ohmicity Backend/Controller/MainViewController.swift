@@ -369,10 +369,11 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     //MARK: Delete Buttons Tapped
     @IBAction func deleteBusinessButtonTapped(_ sender: Any) {
         let index = tableView.selectedRow
-        let business = businessesInOrderArray[index]
+        let business = localDataController.businessResults[index]
         
         if localBusinessButton.state == .on && tableView.selectedRow != -1 {
             localDataController.businessArray.removeAll(where: {$0 == business})
+            
             localDataController.saveBusinessData()
         } else if remoteBusinessButton.state == .on && remoteDataController.remoteBusinessArray != [] {
             remoteDataController.remoteBusinessArray.removeAll(where: {$0 == business})
@@ -390,13 +391,14 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         }
         
         DispatchQueue.main.async {
+            notificationCenter.post(Notification(name: Notification.Name(rawValue: "businessUpdated")))
             self.tableView.reloadData()
         }
     }
     
     @IBAction func deleteBandButtonTapped(_ sender: Any) {
         let index = tableView.selectedRow
-        let band = bandsInOrderArray[index]
+        let band = localDataController.bandResults[index]
         
         if localBandsButton.state == .on {
             localDataController.bandArray.removeAll(where: {$0 == band})
@@ -417,6 +419,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         }
         
         DispatchQueue.main.async {
+            notificationCenter.post(Notification(name: Notification.Name(rawValue: "bandsUpdated")))
             self.tableView.reloadData()
         }
     }
@@ -446,6 +449,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         }
         
         DispatchQueue.main.async {
+            notificationCenter.post(Notification(name: Notification.Name(rawValue: "showsUpdated")))
             self.tableView.reloadData()
         }
     }
@@ -499,6 +503,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     @IBAction func radioButtonChanged(_ sender: AnyObject) {
         searchBarField.isEnabled = true
         searchBarField.stringValue = ""
+        searchBarField.becomeFirstResponder()
         
         if self.rawJSONDataButton.state == .on && parseDataController.jsonDataArray == [] {
             DispatchQueue.main.async {
@@ -967,6 +972,10 @@ extension MainViewController {
         localDataController.businessArray = biz
         localDataController.bandArray = band
         localDataController.showArray = show
+        
+        localDataController.businessResults = localDataController.businessArray
+        localDataController.bandResults = localDataController.bandArray
+        localDataController.showResults = localDataController.showArray
     }
     
     private func buttonController(_ state:Bool) {
@@ -1056,6 +1065,7 @@ extension MainViewController {
     @objc func businessUpdatedAlertReceived() {
         saveVenuesButton.state = .on
         if self.localBusinessButton.state == .on && localDataController.businessArray == [] {
+            inOrderLocalArrays()
             DispatchQueue.main.async {
                 self.tableView.reloadData()
                 self.buttonController(false)
@@ -1063,6 +1073,7 @@ extension MainViewController {
             }
             
         } else if self.localBusinessButton.state == .on {
+            inOrderLocalArrays()
             DispatchQueue.main.async {
                 self.tableView.reloadData()
                 self.buttonController(false)
