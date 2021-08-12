@@ -30,7 +30,7 @@ class BusinessFullData: Codable, Equatable {
     
     var venueID: String?
     var lastModified: Timestamp?
-    var name: String?
+    var name: String
     var address: String = ""
     var city: [City] = []
     var phoneNumber: Int = 0
@@ -55,29 +55,29 @@ class BusinessFullData: Codable, Equatable {
     }
 
     
-    private init?(dictionary: [String: Any]) {
-        guard let venueID = (dictionary["venueID"] as! String?),
-              let name = dictionary["name"] as? String,
-              let address = dictionary["address"] as? String,
-              let phoneNumber = dictionary["phoneNumber"] as? Int,
-              let logo = dictionary["logo"] as? Data,
-              let hours = dictionary["hours"] as? Hours?,
-              let customer = dictionary["customer"] as? Bool,
-              let ohmPick = dictionary["ohmPick"] as? Bool,
-              let website = dictionary["website"] as? String,
-              let businessType = dictionary["businessType"] as? [BusinessType] else {return}
-        
-        self.venueID = venueID
-        self.name = name
-        self.address = address
-        self.phoneNumber = phoneNumber
-        self.logo = logo
-        self.hours = hours
-        self.customer = customer
-        self.ohmPick = ohmPick
-        self.website = website
-        self.businessType = businessType
-    }
+//    private init?(dictionary: [String: Any]) {
+//        guard let venueID = (dictionary["venueID"] as! String?),
+//              let name = dictionary["name"] as? String,
+//              let address = dictionary["address"] as? String,
+//              let phoneNumber = dictionary["phoneNumber"] as? Int,
+//              let logo = dictionary["logo"] as? Data,
+//              let hours = dictionary["hours"] as? Hours?,
+//              let customer = dictionary["customer"] as? Bool,
+//              let ohmPick = dictionary["ohmPick"] as? Bool,
+//              let website = dictionary["website"] as? String,
+//              let businessType = dictionary["businessType"] as? [BusinessType] else {return}
+//        
+//        self.venueID = venueID
+//        self.name = name
+//        self.address = address
+//        self.phoneNumber = phoneNumber
+//        self.logo = logo
+//        self.hours = hours
+//        self.customer = customer
+//        self.ohmPick = ohmPick
+//        self.website = website
+//        self.businessType = businessType
+//    }
     
     func addAndRemoveBusinessType(button: NSButton, typeNumber: Int) {
         //NOTES: Used with a loop function and number counter to check the state (on/off) of all buttons in the array. The loop adds the next button into this function along with the Business Type current number on the counter. Which decides which Business Type is added/removed to/from the Businesses BusinessType Array.

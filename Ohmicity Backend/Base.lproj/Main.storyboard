@@ -729,15 +729,15 @@
                                     <action selector="loadFileButtonTapped:" target="XfG-lQ-9wD" id="efW-yt-71v"/>
                                 </connections>
                             </button>
-                            <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="50" horizontalPageScroll="10" verticalLineScroll="50" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6tV-ah-eDL">
-                                <rect key="frame" x="210" y="71" width="701" height="740"/>
+                            <scrollView fixedFrame="YES" horizontalLineScroll="50" horizontalPageScroll="10" verticalLineScroll="50" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6tV-ah-eDL">
+                                <rect key="frame" x="210" y="71" width="701" height="684"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <clipView key="contentView" drawsBackground="NO" id="XPn-5y-M9o">
-                                    <rect key="frame" x="1" y="1" width="699" height="738"/>
+                                    <rect key="frame" x="1" y="1" width="699" height="682"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" tableStyle="fullWidth" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="45" viewBased="YES" id="I5g-zz-Oab">
-                                            <rect key="frame" x="0.0" y="0.0" width="699" height="738"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="699" height="682"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="5"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -785,11 +785,11 @@
                                     <nil key="backgroundColor"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="atI-Kh-l24">
-                                    <rect key="frame" x="1" y="118" width="238" height="16"/>
+                                    <rect key="frame" x="-100" y="-100" width="238" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="fEd-oF-WPy">
-                                    <rect key="frame" x="224" y="17" width="15" height="102"/>
+                                    <rect key="frame" x="-100" y="-100" width="15" height="102"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
@@ -904,7 +904,7 @@
                                 </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LDx-du-tX3">
-                                <rect key="frame" x="6" y="59" width="198" height="29"/>
+                                <rect key="frame" x="6" y="124" width="198" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Label" id="5IO-aw-laR">
                                     <font key="font" metaFont="system" size="18"/>
@@ -912,19 +912,10 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lsn-3g-9JI">
-                                <rect key="frame" x="20" y="46" width="169" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="zjR-6M-87z">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b6i-LO-JJe">
-                                <rect key="frame" x="41" y="13" width="127" height="32"/>
+                                <rect key="frame" x="2" y="154" width="206" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="push" title="remove shows" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UBg-Xc-Ovn">
+                                <buttonCell key="cell" type="push" title="Remove Shows" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UBg-Xc-Ovn">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -933,7 +924,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fP3-hU-Jce">
-                                <rect key="frame" x="2" y="122" width="206" height="32"/>
+                                <rect key="frame" x="2" y="40" width="206" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="push" title="Pull Data" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="wbd-Rc-CGf">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1021,7 +1012,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ReU-dc-gOb">
-                                <rect key="frame" x="104" y="327" width="106" height="32"/>
+                                <rect key="frame" x="104" y="327" width="104" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="push" title="Push Bands" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="idw-Ve-cKG">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1032,7 +1023,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yJl-cd-OBT">
-                                <rect key="frame" x="103" y="207" width="108" height="32"/>
+                                <rect key="frame" x="106" y="207" width="102" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="push" title="Push Shows" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bLN-zT-bpK">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1098,7 +1089,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cuX-JY-rvY">
-                                <rect key="frame" x="2" y="96" width="206" height="32"/>
+                                <rect key="frame" x="2" y="14" width="206" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="push" title="Copy Remote Data" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="qlW-9I-Y5U">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1139,6 +1130,18 @@
                                     <action selector="showHoldButtonTapped:" target="XfG-lQ-9wD" id="c78-jC-zEo"/>
                                 </connections>
                             </button>
+                            <searchField wantsLayer="YES" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZdG-jr-Zv2">
+                                <rect key="frame" x="210" y="759" width="701" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Search" usesSingleLineMode="YES" bezelStyle="round" sendsSearchStringImmediately="YES" id="bwO-ka-XHx">
+                                    <font key="font" metaFont="system" size="17"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </searchFieldCell>
+                                <connections>
+                                    <action selector="searchBar:" target="XfG-lQ-9wD" id="rks-R5-cDb"/>
+                                </connections>
+                            </searchField>
                         </subviews>
                         <constraints>
                             <constraint firstItem="FqY-00-G8m" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="HVT-YL-Qdq"/>
@@ -1162,7 +1165,7 @@
                         <outlet property="loadBandButton" destination="XXy-ri-YjH" id="co7-F4-VqG"/>
                         <outlet property="loadFileButton" destination="Oed-CL-YVO" id="mwa-52-W3U"/>
                         <outlet property="localBandsButton" destination="myJ-Go-i2Y" id="ufT-1m-iqX"/>
-                        <outlet property="localBusinessesButton" destination="JBw-Kw-nnb" id="iET-FZ-grR"/>
+                        <outlet property="localBusinessButton" destination="JBw-Kw-nnb" id="iET-FZ-grR"/>
                         <outlet property="localShowsButton" destination="M4u-hk-ABn" id="kJR-Hz-CvT"/>
                         <outlet property="ohmButton" destination="fWG-QN-Yey" id="OD5-in-9pr"/>
                         <outlet property="pullDataButton" destination="wbd-Rc-CGf" id="Kp9-py-LVM"/>
@@ -1174,8 +1177,8 @@
                         <outlet property="remoteBusinessButton" destination="ByN-yM-yO3" id="vZs-PD-KUf"/>
                         <outlet property="remoteShowsButton" destination="NJd-G9-awL" id="ks3-c9-UC5"/>
                         <outlet property="removeShowButton" destination="b6i-LO-JJe" id="37c-oG-Xq5"/>
-                        <outlet property="removeShowTextField" destination="lsn-3g-9JI" id="FsM-AJ-udJ"/>
                         <outlet property="saveVenuesButton" destination="XPU-yf-Di1" id="YfA-yy-vQX"/>
+                        <outlet property="searchBarField" destination="ZdG-jr-Zv2" id="PES-Av-xdJ"/>
                         <outlet property="showAmountLabel" destination="LDx-du-tX3" id="ejc-ut-nPw"/>
                         <outlet property="tableView" destination="I5g-zz-Oab" id="XlB-Jw-TFp"/>
                         <segue destination="QaH-ga-u3R" kind="show" identifier="editVenueSegue" id="CsE-1C-13z"/>
@@ -3162,7 +3165,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="CsE-1C-13z"/>
-        <segue reference="23S-EP-GKd"/>
+        <segue reference="Lh3-Il-Oj7"/>
         <segue reference="SbH-tN-mGM"/>
     </inferredMetricsTieBreakers>
     <resources>

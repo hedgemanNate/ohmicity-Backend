@@ -191,7 +191,7 @@ extension ShowDetailViewController {
                 cell.textField?.stringValue = localDataController.bandArray[row].name
                 
             } else if self.businessRadioButton.state == .on {
-                cell.textField?.stringValue = localDataController.businessArray[row].name!
+                cell.textField?.stringValue = localDataController.businessArray[row].name
             }
             
             return cell
@@ -211,7 +211,7 @@ extension ShowDetailViewController {
             let index = tableView.selectedRow
             
             if tableView.isRowSelected(index) {
-                businessNameTextField.stringValue = localDataController.businessArray[index].name!
+                businessNameTextField.stringValue = localDataController.businessArray[index].name
             }
         }
     }

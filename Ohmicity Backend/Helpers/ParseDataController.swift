@@ -12,7 +12,8 @@ class ParseDataController {
     
     var data: Venue?
     var path: URL?
-    var jsonDataArray: [RawJSON] = []
+    var jsonDataArray = [RawJSON]()
+    var resultsArray = [RawJSON]()
     
     
     
@@ -64,6 +65,8 @@ class ParseDataController {
                     jsonDataArray.append(show)
                 }
             }
+            //Search Functionality
+            resultsArray = jsonDataArray
             
         } catch {
             print("decode error")
