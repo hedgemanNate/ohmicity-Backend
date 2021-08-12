@@ -505,6 +505,10 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         searchBarField.stringValue = ""
         searchBarField.becomeFirstResponder()
         
+        notificationCenter.post(Notification(name: Notification.Name(rawValue: "businessUpdated")))
+        notificationCenter.post(Notification(name: Notification.Name(rawValue: "bandsUpdated")))
+        notificationCenter.post(Notification(name: Notification.Name(rawValue: "showsUpdated")))
+        
         if self.rawJSONDataButton.state == .on && parseDataController.jsonDataArray == [] {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -590,6 +594,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             }
             //MARK: Radio Buttons Remote
         } else if self.remoteBusinessButton.state == .on {
+            notificationCenter.post(Notification(name: Notification.Name(rawValue: "businessUpdated")))
             DispatchQueue.main.async {
                 self.tableView.reloadData()
                 self.buttonController(false)
@@ -1055,7 +1060,7 @@ extension MainViewController {
         //MARK: REMOVE OLD SHOWS
         //let currentDate = Date()
         //localDataController.showArray.removeAll(where: {$0.date! < currentDate})
-        
+        inOrderLocalArrays()
         DispatchQueue.main.async {
             self.showAmountLabel.stringValue = "\(localDataController.showArray.count) Shows"
             self.tableView.reloadData()
@@ -1085,6 +1090,7 @@ extension MainViewController {
     }
     
     @objc func bandUpdatedAlertReceived() {
+        inOrderLocalArrays()
         if localBandsButton.state == .on {
             DispatchQueue.main.async { [self] in
                 tableView.reloadData()
