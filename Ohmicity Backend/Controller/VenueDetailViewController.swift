@@ -192,7 +192,6 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     
     @IBAction func deleteBusinessButtonTapped(_ sender: Any) {
         localDataController.businessArray.removeAll(where: {$0 == currentBusiness})
-        localDataController.businessBasicArray.removeAll(where: {$0.venueID == currentBusiness?.venueID})
         
         removeShows {
             localDataController.saveShowData()
@@ -489,7 +488,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
             nameTextField.stringValue = currentVenue!.venueName!
             
         } else if currentBusiness != nil {
-            self.title = "Edit \(currentBusiness!.name!)"
+            self.title = "Edit \(currentBusiness!.name)"
             inputBusinessHours()
             addBusinessType()
             buttonEnable(buttons:[saveButton,
@@ -507,7 +506,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
             addCity()
             
             
-            nameTextField.stringValue = currentBusiness!.name!
+            nameTextField.stringValue = currentBusiness!.name
             addressTextField.stringValue = currentBusiness!.address
             phoneTextField.stringValue = String(currentBusiness!.phoneNumber)
             starsTextField.stringValue = String(currentBusiness?.stars ?? 0)

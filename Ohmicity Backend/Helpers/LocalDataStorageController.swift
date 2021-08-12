@@ -10,25 +10,19 @@ import Foundation
 class LocalDataStorageController {
     
     var businessArray: [BusinessFullData] = []
-    var businessBasicArray: [BusinessBasicData] = []
     var bandArray: [Band] = []
     var showArray: [Show] = []
+    
+    //Search Functionality
+    var businessResults = [BusinessFullData]()
+    var bandResults = [Band]()
+    var showResults = [Show]()
     
 //MARK: Business Data
     func loadBusinessData() {
         if let data = UserDefaults.standard.data(forKey: "SavedBusinessData") {
             if let decoded = try? JSONDecoder().decode([BusinessFullData].self, from: data) {
                 self.businessArray = decoded
-                print("Business Data Loaded")
-                //return
-            }
-        }
-    }
-    
-    func loadBusinessBasicData() {
-        if let data = UserDefaults.standard.data(forKey: "SavedBusinessBasicData") {
-            if let decoded = try? JSONDecoder().decode([BusinessBasicData].self, from: data) {
-                self.businessBasicArray = decoded
                 print("Business Data Loaded")
                 //return
             }
