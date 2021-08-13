@@ -112,8 +112,9 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
                 DispatchQueue.main.async {
                     self.buttonBoxView.fillColor = .black
                 }
-                counter = 0
                 self.timer.invalidate()
+                counter = 0
+               
             }
         })
     }
@@ -336,7 +337,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
                               loadPicturesButton,
                               deletePicsButton])
         
-        //Function Light Notification Of Action Acknowleged
+        //Function Light Notification Of Action Acknowledged
         buttonIndication2(color: .green)
     }
     

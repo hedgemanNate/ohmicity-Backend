@@ -327,6 +327,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         for business in fullBusinessData {
             
             do {
+                business.lastModified = Timestamp()
                 try ref.document(business.venueID ?? UUID.init().uuidString).setData(from: business)
                 self.alertTextField.stringValue = "Push Successful"
             } catch let error {
@@ -341,6 +342,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         let ref = FireStoreReferenceManager.bandDataPath
         for band in bandData {
             do {
+                band.lastModified = Timestamp()
                 try ref.document(band.bandID ).setData(from: band)
                 self.alertTextField.stringValue = "Push Successful"
             } catch let error {
@@ -427,13 +429,14 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     
     @IBAction func deleteShowButtonTapped(_ sender: Any) {
         let index = tableView.selectedRow
-        let show = showsInOrderArray[index]
+        let show = localDataController.showResults[index]
         localDataController.showArray.removeAll(where: {$0 == show})
         
         if localShowsButton.state == .on {
             localDataController.saveShowData()
         } else if remoteShowsButton.state == .on {
             remoteDataController.remoteShowArray.removeAll(where: {$0 == show})
+            remoteDataController.showResults = remoteDataController.remoteShowArray
             print(show)
             FireStoreReferenceManager.showDataPath.document(show.showID).delete
             { (err) in
@@ -834,7 +837,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         } else if remoteBandsButton.state == .on {
             return remoteDataController.bandResults.count
         } else if remoteShowsButton.state == .on {
-            return remoteDataController.remoteShowArray.count
+            return remoteDataController.showResults.count
         }
         return 1
     }
@@ -890,6 +893,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                 
                 if show.ohmPick == true {
                     cell.layer?.backgroundColor = NSColor.yellow.cgColor
+                    cell.textField?.textColor = .black
                 }
                 
                 //Remote Businesses
@@ -909,8 +913,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                 
                 //Remote Shows
             } else if remoteShowsButton.state == .on {
-                showsInOrderArray = remoteDataController.remoteShowArray.sorted(by: {$0.date < $1.date})
-                let show = showsInOrderArray[row]
+                remoteDataController.showResults = remoteDataController.remoteShowArray.sorted(by: {$0.date < $1.date})
+                let show = remoteDataController.showResults[row]
                 cell.textField?.stringValue = "\(row + 1): \(show.venue): \(show.dateString): \(show.showID)"
             }
             
@@ -960,7 +964,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             //Remote Show Handling
         } else if segue.identifier == "editShowSegue" && remoteShowsButton.state == .on {
             guard let showVC = segue.destinationController as? ShowDetailViewController else {return}
-            showVC.currentShow = showsInOrderArray[indexPath]
+            showVC.currentShow = remoteDataController.showResults[indexPath]
         }
         
         
@@ -1060,8 +1064,7 @@ extension MainViewController {
     
     @objc func showsUpdated() {
         //MARK: REMOVE OLD SHOWS
-        //let currentDate = Date()
-        //localDataController.showArray.removeAll(where: {$0.date! < currentDate})
+        
         inOrderLocalArrays()
         DispatchQueue.main.async {
             self.showAmountLabel.stringValue = "\(localDataController.showArray.count) Shows"

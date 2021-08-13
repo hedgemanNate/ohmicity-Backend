@@ -1895,7 +1895,7 @@
                                 </buttonCell>
                                 <color key="contentTintColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
                                 <connections>
-                                    <action selector="deleteBusinessButtonTapped:" target="QaH-ga-u3R" id="SfG-Yp-lwC"/>
+                                    <action selector="deleteButtonTapped:" target="yOJ-ms-d4r" id="0e7-Fe-vaI"/>
                                 </connections>
                             </button>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7uH-lX-sy4">

@@ -134,7 +134,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     
     @IBAction func pushButtonTapped(_ sender: Any) {
         let ref = FireStoreReferenceManager.bandDataPath
-        currentBand?.lastModified = Timestamp()
+        currentBand!.lastModified = Timestamp()
         do {
             try ref.document(currentBand!.bandID).setData(from: currentBand)
             print("Maybe a good push to database: Wait for error")

@@ -104,6 +104,23 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
     }
     
     
+    @IBAction func deleteButtonTapped(_ sender: Any) {
+        //MARK: Dangerous Code. could delete both local and remote data
+//        guard let show = currentShow else {return}
+//        remoteDataController.remoteShowArray.removeAll(where: {$0 == show})
+//
+//        FireStoreReferenceManager.showDataPath.document(show.showID).delete { (err) in
+//            if let err = err {
+//                //MARK: Alert Here
+//                NSLog("Error deleting Band: \(err)")
+//            } else {
+//                NSLog("Delete Successful")
+//                notificationCenter.post(Notification(name: Notification.Name(rawValue: "showsUpdated")))
+//                print("\(show)")
+//            }
+//        }
+    }
+    
     
     //MARK: Radio Buttons
     
