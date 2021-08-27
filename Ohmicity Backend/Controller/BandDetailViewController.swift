@@ -157,7 +157,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         
         if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
             let result = dialog.url // Pathname of the file
-            image = imageController.addBusinessImage(file: result!)
+            image = imageController.addImage(file: result!)
             logoImageView.image = image
             
             let imageData = NSData(contentsOf: result!)

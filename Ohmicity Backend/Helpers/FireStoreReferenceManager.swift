@@ -15,6 +15,7 @@ struct FireStoreReferenceManager {
     static let bandDataPath = fireDataBase.collection(environment).document(environment).collection("bandData")
     static let showDataPath = fireDataBase.collection(environment).document(environment).collection("showData")
     static let businessBasicDataPath = fireDataBase.collection(environment).document(environment).collection("businesBasicData")
+    static let businessBannerAdDataPath = fireDataBase.collection(environment).document(environment).collection("businessBannerAdData")
 
 }
 
