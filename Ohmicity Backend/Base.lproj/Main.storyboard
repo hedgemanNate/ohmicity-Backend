@@ -1287,7 +1287,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="BusinessCell" id="e3E-Ir-udT">
-                                                            <rect key="frame" x="8" y="0.0" width="294" height="45"/>
+                                                            <rect key="frame" x="18" y="0.0" width="294" height="45"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0vR-mG-nrk">
@@ -1366,8 +1366,8 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <datePickerCell key="cell" borderStyle="bezel" alignment="left" useCurrentDate="YES" id="U6u-Ac-yGh">
                                     <font key="font" metaFont="system"/>
-                                    <date key="date" timeIntervalSinceReferenceDate="651709499.41450405">
-                                        <!--2021-08-26 22:24:59 +0000-->
+                                    <date key="date" timeIntervalSinceReferenceDate="651784014.28249097">
+                                        <!--2021-08-27 19:06:54 +0000-->
                                     </date>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1378,8 +1378,8 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <datePickerCell key="cell" borderStyle="bezel" alignment="left" useCurrentDate="YES" id="g7o-Ed-NvT">
                                     <font key="font" metaFont="system"/>
-                                    <date key="date" timeIntervalSinceReferenceDate="651709527.27970505">
-                                        <!--2021-08-26 22:25:27 +0000-->
+                                    <date key="date" timeIntervalSinceReferenceDate="651784014.28604102">
+                                        <!--2021-08-27 19:06:54 +0000-->
                                     </date>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1559,7 +1559,7 @@
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="newAdButtonTapped:" target="U7k-SJ-bwO" id="Q3q-M2-p74"/>
+                                    <action selector="clearButtonTapped:" target="U7k-SJ-bwO" id="Vxh-dZ-Omw"/>
                                 </connections>
                             </button>
                         </subviews>

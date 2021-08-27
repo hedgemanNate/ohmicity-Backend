@@ -202,6 +202,7 @@ class BannerAdsViewController: NSViewController {
             
             pushBusinessAd(currentBannerAd!)
             messageCenterTextField.stringValue = "Banner Ad Updated"
+            tableView.reloadData()
         }
     }
     
