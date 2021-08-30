@@ -200,10 +200,18 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                             var bandName = ""
                             
                             switch show.bandName {
-                            case "- Jack'D Up -":
+                            case "! — Jack'D Up — ! Fun, Live, Dance Rock":
                                 bandName = "Jack'D Up"
                             case "-22N-":
                                 bandName = "22N"
+                            case "! All Maria !":
+                                bandName = "All Maria"
+                            case "! MORE is MORE ™":
+                                bandName = "MORE is MORE"
+                            case "! Scarlet Drive !":
+                                bandName = "Scarlet Drive"
+                            case "! Smudgekitten !":
+                                bandName = "Smudgekitten"
                             default:
                                 bandName = show.bandName!
                             }
@@ -212,6 +220,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                             
                             var newShow = Show(band: bandName, venue: venue.venueName!, dateString: showTime)
                             newShow.fixShowTime()
+                            newShow.lastModified = Timestamp()
                             
                             let dts = newShow.dateString
                             newShow.dateString = "\(dts)" + " \(newShow.time)"
@@ -358,7 +367,6 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         for show in showData {
             
             var pushedShow = show
-            pushedShow.lastModified = Timestamp()
             do {
                 try ref.showDataPath.document(pushedShow.showID ).setData(from: pushedShow)
                 self.alertTextField.stringValue = "Push Successful"

@@ -8,6 +8,7 @@
 import Cocoa
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import SwiftUI
 
 class BannerAdsViewController: NSViewController {
     
@@ -298,5 +299,11 @@ extension BannerAdsViewController: NSTableViewDelegate, NSTableViewDataSource {
             return cell
         }
         return nil
+    }
+}
+
+struct BannerAdsViewController_Previews: PreviewProvider {
+    static var previews: some View {
+        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
     }
 }
