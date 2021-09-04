@@ -34,7 +34,7 @@ class Band: Codable, Equatable {
     }
     
     var bandID: String = UUID().uuidString
-    var lastModified: Timestamp?
+    var lastModified = Timestamp()
     var name: String
     var photo: Data?
     var genre: [Genre] = []

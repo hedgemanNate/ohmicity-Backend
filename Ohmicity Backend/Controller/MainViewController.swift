@@ -334,9 +334,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         let fullBusinessData = localDataController.businessArray
         let ref = FireStoreReferenceManager.businessFullDataPath
         for business in fullBusinessData {
-            
             do {
-                business.lastModified = Timestamp()
                 try ref.document(business.venueID ?? UUID.init().uuidString).setData(from: business)
                 self.alertTextField.stringValue = "Push Successful"
             } catch let error {
@@ -351,7 +349,6 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         let ref = FireStoreReferenceManager.bandDataPath
         for band in bandData {
             do {
-                band.lastModified = Timestamp()
                 try ref.document(band.bandID ).setData(from: band)
                 self.alertTextField.stringValue = "Push Successful"
             } catch let error {
