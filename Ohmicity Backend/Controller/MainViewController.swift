@@ -318,7 +318,9 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         }
     }
     
-    @IBAction func removeShowButtonTapped(_ sender: Any) {
+    
+    //MARK: Remove/Delete Shows
+    @IBAction func removeAllShowsButtonTapped(_ sender: Any) {
         localDataController.showArray = []
         
         DispatchQueue.main.async { [self] in
@@ -328,6 +330,28 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         
         localDataController.saveShowData()
     }
+    
+    @IBAction func removeOldShowsButtonTapped(_ sender: Any) {
+        let threeHoursAgo = Date().addingTimeInterval(-10800)
+        var showsToDeleteArray = [Show]()
+        
+        for show in localDataController.showArray {
+            if show.date < threeHoursAgo {
+                showsToDeleteArray.append(show)
+            }
+        }
+        print(showsToDeleteArray.count)
+        for show in showsToDeleteArray {
+            localDataController.showArray.removeAll(where: {$0 == show})
+            ref.showDataPath.document(show.showID).delete()
+        }
+        
+        localDataController.saveShowData()
+        alertTextField.stringValue = "\(showsToDeleteArray.count) Shows Deleted"
+        tableView.reloadData()
+    }
+    
+    
     
     //MARK: Push Buttons Tapped
     @IBAction func pushBusinessButtonTapped(_ sender: Any) {
