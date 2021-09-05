@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		686594060426C63DB82E38E5 /* Pods_Ohmicity_Backend.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AB066B199F8732B4AC206AC /* Pods_Ohmicity_Backend.framework */; };
 		D8092A0F26681C0000560A97 /* Business.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8092A0E26681C0000560A97 /* Business.swift */; };
 		D8092A1226682D4E00560A97 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8092A1126682D4E00560A97 /* User.swift */; };
 		D83B32CD267A5D800065948E /* ImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83B32CC267A5D800065948E /* ImageController.swift */; };
@@ -89,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				686594060426C63DB82E38E5 /* Pods_Ohmicity_Backend.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

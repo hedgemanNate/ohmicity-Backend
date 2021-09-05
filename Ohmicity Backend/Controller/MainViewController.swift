@@ -360,16 +360,28 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     
     @IBAction func pushShowButtonTapped(_ sender: Any) {
         let showData = localDataController.showArray
-        //ref = FireStoreReferenceManager.showDataPath
+        let bandData = localDataController.bandArray
         for show in showData {
-            
-            var pushedShow = show
+            var num = 0
             do {
-                try ref.showDataPath.document(pushedShow.showID ).setData(from: pushedShow)
-                self.alertTextField.stringValue = "Push Successful"
+                try ref.showDataPath.document(show.showID ).setData(from: show)
+                num += 1
+                self.alertTextField.stringValue = "Show Push Success: Number \(num)"
             } catch let error {
                 NSLog(error.localizedDescription)
                 self.alertTextField.stringValue = "Error pushing Show"
+            }
+        }
+        
+        for band in bandData {
+            var num = 0
+            do {
+                try ref.bandDataPath.document(band.bandID).setData(from: band)
+                num += 1
+                self.alertTextField.stringValue = "Band Push Success: Number \(num)"
+            } catch {
+                NSLog(error.localizedDescription)
+                self.alertTextField.stringValue = "Error pushing Band: \(band.name)"
             }
         }
     }
