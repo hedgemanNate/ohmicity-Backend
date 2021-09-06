@@ -90,10 +90,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         
         
         checkCurrentObject { [self] in
-            
-            
             if localDataController.bandArray.contains(currentBand!) {
-                
                 currentBand?.name = bandNameTextField.stringValue
                 currentBand?.mediaLink = bandMediaLinkTextField.stringValue
                 currentBand?.photo = imageData
@@ -124,6 +121,13 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
             let newBand = Band(name: bandNameTextField.stringValue, mediaLink: bandMediaLinkTextField.stringValue, ohmPick: ohmPickButton.state)
             newBand.photo = imageData
             newBand.lastModified = Timestamp()
+            
+            if localDataController.bandArray.contains(newBand) {
+                return
+                    buttonIndication(color: .orange)
+            }
+            
+            currentBand = newBand
             localDataController.bandArray.append(newBand)
             localDataController.saveBandData()
             notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
@@ -134,8 +138,8 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     
     @IBAction func pushButtonTapped(_ sender: Any) {
         let ref = FireStoreReferenceManager.bandDataPath
-        currentBand!.lastModified = Timestamp()
         do {
+            currentBand?.lastModified = Timestamp()
             try ref.document(currentBand!.bandID).setData(from: currentBand)
             print("Maybe a good push to database: Wait for error")
             buttonIndication(color: .green)
