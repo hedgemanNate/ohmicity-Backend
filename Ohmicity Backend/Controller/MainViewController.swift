@@ -225,6 +225,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                             let dts = newShow.dateString
                             newShow.dateString = "\(dts)" + " \(newShow.time)"
                             newShow.city = business.city
+                            newShow.city?.append(City.All)
                             
                             //Checks two date formats to create a date and time for the shows
                             dateFormatter.dateFormat = dateFormat1
@@ -476,6 +477,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         if localShowsButton.state == .on {
             localDataController.saveShowData()
         } else if remoteShowsButton.state == .on {
+            let index = tableView.selectedRow
+            let show = remoteDataController.remoteShowArray[index]
             remoteDataController.remoteShowArray.removeAll(where: {$0 == show})
             remoteDataController.showResults = remoteDataController.remoteShowArray
             print(show)

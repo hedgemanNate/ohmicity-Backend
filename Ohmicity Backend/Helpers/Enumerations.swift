@@ -14,4 +14,5 @@ enum City: String, Codable {
     case StPete
     case Tampa
     case Ybor
+    case All
 }

@@ -743,6 +743,8 @@ extension VenueDetailViewController {
                     tampaButton.state = .on
                 case .Ybor:
                     yborButton.state = .on
+                case .All:
+                    break
                 }
             }
         }
