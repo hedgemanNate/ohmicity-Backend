@@ -13,6 +13,8 @@ import FirebaseFirestoreSwift
 class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     //Properties
     var currentShow: Show?
+    var timer = Timer()
+    var lastMessage = ""
     
     @IBOutlet weak var bandNameTextField: NSTextField!
     @IBOutlet weak var businessNameTextField: NSTextField!
@@ -36,24 +38,39 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         dateFormatter.dateFormat = dateFormat1
     }
     
-    
     @IBAction func breaker(_ sender: Any) {
         
     }
     
+    @IBAction func messageCenterFunction(_ sender: Any) {
+        timer.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(clear), userInfo: nil, repeats: false)
+    }
+    
+    private func startMessageCenterTimer() {
+        timer.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(clear), userInfo: nil, repeats: false)
+    }
+    
+    @objc private func clear() {
+        lastMessage = messageCenter.stringValue
+        messageCenter.stringValue = ""
+    }
+    
+    @IBAction func lastMessageButtonTapped(_ sender: Any) {
+        messageCenter.stringValue = lastMessage
+    }
+    
+    
+    
     @IBAction func savedButtonTapped(_ sender: Any) {
         if currentShow != nil {
-            
-            
             currentShow?.dateString = dateFormatter.string(from: datePicker.dateValue)
-           
             
             var editedShow = currentShow
             editedShow?.dateString = dateFormatter.string(from: datePicker.dateValue)
             editedShow?.time = dateFormatter.string(from: datePicker.dateValue)
             editedShow?.date = datePicker.dateValue
-
-            
             editedShow?.lastModified = Timestamp()
             
             if ohmPickCheckbox.state == .on {
@@ -76,6 +93,7 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
             notificationCenter.post(name: NSNotification.Name("showsUpdated"), object: nil)
             localDataController.saveShowData()
             self.messageCenter.stringValue = "Show Updated"
+            startMessageCenterTimer()
         } else {
             var newShow = Show(band: bandNameTextField.stringValue, venue: businessNameTextField.stringValue, dateString: dateFormatter.string(from: datePicker.dateValue))
             newShow.lastModified = Timestamp()
@@ -85,6 +103,7 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
             localDataController.saveShowData()
             notificationCenter.post(name: NSNotification.Name("showsUpdated"), object: nil)
             self.messageCenter.stringValue = "Show Created And Saved"
+            startMessageCenterTimer()
         }
     }
     
@@ -95,9 +114,11 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         do {
             try ref.document(currentShow!.showID).setData(from: currentShow)
             self.messageCenter.stringValue = "Show Pushed"
+            startMessageCenterTimer()
         } catch let error {
             NSLog(error.localizedDescription)
             self.messageCenter.stringValue = "\(error.localizedDescription)"
+            startMessageCenterTimer()
         }
     }
     
@@ -111,9 +132,11 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
                 //MARK: Alert Here
                 NSLog("Error deleting Band: \(err)")
                 self.messageCenter.stringValue = "Error deleting Band: \(err)"
+                self.startMessageCenterTimer()
             } else {
                 NSLog("Delete Successful")
                 self.messageCenter.stringValue = "Delete Successful"
+                self.startMessageCenterTimer()
                 notificationCenter.post(Notification(name: Notification.Name(rawValue: "showsUpdated")))
                 print("\(show)")
             }

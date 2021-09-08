@@ -225,7 +225,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                             let dts = newShow.dateString
                             newShow.dateString = "\(dts)" + " \(newShow.time)"
                             newShow.city = business.city
-                            newShow.city?.append(City.All)
+                            newShow.city?.append(.All)
                             
                             //Checks two date formats to create a date and time for the shows
                             dateFormatter.dateFormat = dateFormat1

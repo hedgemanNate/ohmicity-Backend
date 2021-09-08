@@ -115,41 +115,49 @@ class BulkShowCreationViewController: NSViewController {
         
         if show1CheckBoxButton.state == .on {
             let dateString = dateFormatter.string(from: calendar1.dateValue)
-            let show1 = Show(band: band!.name, venue: venue!.name, dateString: dateString, date: calendar1.dateValue)
-            if localDataController.showArray.contains(show1) {
+            var show = Show(band: band!.name, venue: venue!.name, dateString: dateString, date: calendar1.dateValue)
+            show.city = venue?.city
+            show.city?.append(.All)
+            if localDataController.showArray.contains(show) {
                 messageCenterTextField.stringValue.append("Show1 already exists")
             }
-            localDataController.showArray.append(show1)
+            localDataController.showArray.append(show)
             bulkShowCreationCounter += 1
         }
         
         if show2CheckBoxButton.state == .on {
             let dateString = dateFormatter.string(from: calendar2.dateValue)
-            let show2 = Show(band: band!.name, venue: venue!.name, dateString: dateString, date: calendar2.dateValue)
-            if localDataController.showArray.contains(show2) {
+            var show = Show(band: band!.name, venue: venue!.name, dateString: dateString, date: calendar2.dateValue)
+            show.city = venue?.city
+            show.city?.append(.All)
+            if localDataController.showArray.contains(show) {
                 messageCenterTextField.stringValue.append("Show2 already exists")
             }
-            localDataController.showArray.append(show2)
+            localDataController.showArray.append(show)
             bulkShowCreationCounter += 1
         }
         
         if show3CheckBoxButton.state == .on {
             let dateString = dateFormatter.string(from: calendar3.dateValue)
-            let show3 = Show(band: band!.name, venue: venue!.name, dateString: dateString, date: calendar3.dateValue)
-            if localDataController.showArray.contains(show3) {
+            var show = Show(band: band!.name, venue: venue!.name, dateString: dateString, date: calendar3.dateValue)
+            show.city = venue?.city
+            show.city?.append(.All)
+            if localDataController.showArray.contains(show) {
                 messageCenterTextField.stringValue.append("Show3 already exists")
             }
-            localDataController.showArray.append(show3)
+            localDataController.showArray.append(show)
             bulkShowCreationCounter += 1
         }
         
         if show4CheckBoxButton.state == .on {
             let dateString = dateFormatter.string(from: calendar4.dateValue)
-            let show4 = Show(band: band!.name, venue: venue!.name, dateString: dateString, date: calendar4.dateValue)
-            if localDataController.showArray.contains(show4) {
+            var show = Show(band: band!.name, venue: venue!.name, dateString: dateString, date: calendar4.dateValue)
+            show.city = venue?.city
+            show.city?.append(.All)
+            if localDataController.showArray.contains(show) {
                 messageCenterTextField.stringValue.append("Show4 already exists")
             }
-            localDataController.showArray.append(show4)
+            localDataController.showArray.append(show)
             bulkShowCreationCounter += 1
         }
         
