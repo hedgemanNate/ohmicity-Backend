@@ -920,7 +920,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                 dateFormatter.dateFormat = dateFormatDay
                 let showDay = dateFormatter.string(from: show.date)
                 
-                cell.textField?.stringValue = "\(row + 1): \(showsInOrderArray[row].venue): \(showDay), \(showsInOrderArray[row].dateString): *\(showsInOrderArray[row].band)*"
+                cell.textField?.stringValue = "\(row + 1): \(showDay) \(showsInOrderArray[row].dateString): \(showsInOrderArray[row].venue):  *\(showsInOrderArray[row].band)*"
                 
                 //Show Color Coding
                 
@@ -959,7 +959,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             } else if remoteShowsButton.state == .on {
                 remoteDataController.showResults = remoteDataController.remoteShowArray.sorted(by: {$0.date < $1.date})
                 let show = remoteDataController.showResults[row]
-                cell.textField?.stringValue = "\(row + 1): \(show.venue): \(show.dateString): \(show.showID)"
+                cell.textField?.stringValue = "\(row + 1): \(show.dateString): \(show.venue): \(show.showID)"
             }
             
             return cell
