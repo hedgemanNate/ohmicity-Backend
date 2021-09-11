@@ -136,7 +136,11 @@ class BannerAdsViewController: NSViewController {
             adLinkTextField.stringValue = ""
             promotionalTextField.stringValue = ""
             publishedButton.state = .off
-            bannerAdImageView.image = NSImage.init(systemSymbolName: "photo", accessibilityDescription: "system photo")
+            if #available(macOS 11.0, *) {
+                bannerAdImageView.image = NSImage.init(systemSymbolName: "photo", accessibilityDescription: "system photo")
+            } else {
+                // Fallback on earlier versions
+            }
             bannerAdImageData = nil
             messageCenterTextField.stringValue = "Cleared"
         }
