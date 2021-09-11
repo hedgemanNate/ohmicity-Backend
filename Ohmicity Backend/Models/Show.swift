@@ -44,6 +44,16 @@ extension Show {
         self.dateString = dateString
     }
     
+    init(band: String, venue: String, dateString: String, date: Date) {
+        
+        let showID = Firestore.firestore().collection("showData").document().documentID
+        self.showID = showID
+        self.band = band
+        self.venue = venue
+        self.dateString = dateString
+        self.date = date
+    }
+    
     private init?(showID: String, dictionary: [String: Any]) {
         guard let band = dictionary["band"] as? String,
               let venue = dictionary["venue"] as? String,

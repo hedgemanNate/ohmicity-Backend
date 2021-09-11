@@ -200,10 +200,18 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                             var bandName = ""
                             
                             switch show.bandName {
-                            case "- Jack'D Up -":
+                            case "! — Jack'D Up — ! Fun, Live, Dance Rock":
                                 bandName = "Jack'D Up"
                             case "-22N-":
                                 bandName = "22N"
+                            case "! All Maria !":
+                                bandName = "All Maria"
+                            case "! MORE is MORE ™":
+                                bandName = "MORE is MORE"
+                            case "! Scarlet Drive !":
+                                bandName = "Scarlet Drive"
+                            case "! Smudgekitten !":
+                                bandName = "Smudgekitten"
                             default:
                                 bandName = show.bandName!
                             }
@@ -212,10 +220,12 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                             
                             var newShow = Show(band: bandName, venue: venue.venueName!, dateString: showTime)
                             newShow.fixShowTime()
+                            newShow.lastModified = Timestamp()
                             
                             let dts = newShow.dateString
                             newShow.dateString = "\(dts)" + " \(newShow.time)"
                             newShow.city = business.city
+                            newShow.city?.append(.All)
                             
                             //Checks two date formats to create a date and time for the shows
                             dateFormatter.dateFormat = dateFormat1
@@ -309,7 +319,9 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         }
     }
     
-    @IBAction func removeShowButtonTapped(_ sender: Any) {
+    
+    //MARK: Remove/Delete Shows
+    @IBAction func removeAllShowsButtonTapped(_ sender: Any) {
         localDataController.showArray = []
         
         DispatchQueue.main.async { [self] in
@@ -320,14 +332,34 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         localDataController.saveShowData()
     }
     
+    @IBAction func removeOldShowsButtonTapped(_ sender: Any) {
+        let threeHoursAgo = Date().addingTimeInterval(-10800)
+        var showsToDeleteArray = [Show]()
+        
+        for show in localDataController.showArray {
+            if show.date < threeHoursAgo {
+                showsToDeleteArray.append(show)
+            }
+        }
+        print(showsToDeleteArray.count)
+        for show in showsToDeleteArray {
+            localDataController.showArray.removeAll(where: {$0 == show})
+            ref.showDataPath.document(show.showID).delete()
+        }
+        
+        localDataController.saveShowData()
+        alertTextField.stringValue = "\(showsToDeleteArray.count) Shows Deleted"
+        tableView.reloadData()
+    }
+    
+    
+    
     //MARK: Push Buttons Tapped
     @IBAction func pushBusinessButtonTapped(_ sender: Any) {
         let fullBusinessData = localDataController.businessArray
         let ref = FireStoreReferenceManager.businessFullDataPath
         for business in fullBusinessData {
-            
             do {
-                business.lastModified = Timestamp()
                 try ref.document(business.venueID ?? UUID.init().uuidString).setData(from: business)
                 self.alertTextField.stringValue = "Push Successful"
             } catch let error {
@@ -342,7 +374,6 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         let ref = FireStoreReferenceManager.bandDataPath
         for band in bandData {
             do {
-                band.lastModified = Timestamp()
                 try ref.document(band.bandID ).setData(from: band)
                 self.alertTextField.stringValue = "Push Successful"
             } catch let error {
@@ -354,17 +385,28 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     
     @IBAction func pushShowButtonTapped(_ sender: Any) {
         let showData = localDataController.showArray
-        //ref = FireStoreReferenceManager.showDataPath
+        let bandData = localDataController.bandArray
         for show in showData {
-            
-            var pushedShow = show
-            pushedShow.lastModified = Timestamp()
+            var num = 0
             do {
-                try ref.showDataPath.document(pushedShow.showID ).setData(from: pushedShow)
-                self.alertTextField.stringValue = "Push Successful"
+                try ref.showDataPath.document(show.showID ).setData(from: show)
+                num += 1
+                self.alertTextField.stringValue = "Show Push Success: Number \(num)"
             } catch let error {
                 NSLog(error.localizedDescription)
                 self.alertTextField.stringValue = "Error pushing Show"
+            }
+        }
+        
+        for band in bandData {
+            var num = 0
+            do {
+                try ref.bandDataPath.document(band.bandID).setData(from: band)
+                num += 1
+                self.alertTextField.stringValue = "Band Push Success: Number \(num)"
+            } catch {
+                NSLog(error.localizedDescription)
+                self.alertTextField.stringValue = "Error pushing Band: \(band.name)"
             }
         }
     }
@@ -435,6 +477,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         if localShowsButton.state == .on {
             localDataController.saveShowData()
         } else if remoteShowsButton.state == .on {
+            let index = tableView.selectedRow
+            let show = remoteDataController.remoteShowArray[index]
             remoteDataController.remoteShowArray.removeAll(where: {$0 == show})
             remoteDataController.showResults = remoteDataController.remoteShowArray
             print(show)
@@ -876,7 +920,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                 dateFormatter.dateFormat = dateFormatDay
                 let showDay = dateFormatter.string(from: show.date)
                 
-                cell.textField?.stringValue = "\(row + 1): \(showsInOrderArray[row].venue): \(showDay), \(showsInOrderArray[row].dateString): *\(showsInOrderArray[row].band)*"
+                cell.textField?.stringValue = "\(row + 1): \(showDay) \(showsInOrderArray[row].dateString): \(showsInOrderArray[row].venue):  *\(showsInOrderArray[row].band)*"
                 
                 //Show Color Coding
                 
@@ -915,7 +959,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             } else if remoteShowsButton.state == .on {
                 remoteDataController.showResults = remoteDataController.remoteShowArray.sorted(by: {$0.date < $1.date})
                 let show = remoteDataController.showResults[row]
-                cell.textField?.stringValue = "\(row + 1): \(show.venue): \(show.dateString): \(show.showID)"
+                cell.textField?.stringValue = "\(row + 1): \(show.dateString): \(show.venue): \(show.showID)"
             }
             
             return cell

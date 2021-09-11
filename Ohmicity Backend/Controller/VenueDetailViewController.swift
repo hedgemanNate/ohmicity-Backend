@@ -132,7 +132,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         
         if (dialog.runModal() ==  NSApplication.ModalResponse.OK) {
             let result = dialog.url // Pathname of the file
-            image = imageController.addBusinessImage(file: result!)
+            image = imageController.addImage(file: result!)
             logoImageView.image = image
             
             let imageData = NSData(contentsOf: result!)
@@ -743,6 +743,8 @@ extension VenueDetailViewController {
                     tampaButton.state = .on
                 case .Ybor:
                     yborButton.state = .on
+                case .All:
+                    break
                 }
             }
         }

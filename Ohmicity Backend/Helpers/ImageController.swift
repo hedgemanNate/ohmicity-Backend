@@ -10,7 +10,7 @@ import Cocoa
 
 class ImageController {
     
-    func addBusinessImage(file: URL) -> NSImage{
+    func addImage(file: URL) -> NSImage{
         let imageData = NSData(contentsOf: file)!
         let image = NSImage(data: imageData as Data)
         return image!

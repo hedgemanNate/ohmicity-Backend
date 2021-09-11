@@ -30,11 +30,11 @@ enum Genre: String, Codable {
 
 class Band: Codable, Equatable {
     static func == (lhs: Band, rhs: Band) -> Bool {
-        return lhs.bandID == rhs.bandID || lhs.name == rhs.name
+        return lhs.name == rhs.name
     }
     
     var bandID: String = UUID().uuidString
-    var lastModified: Timestamp?
+    var lastModified = Timestamp()
     var name: String
     var photo: Data?
     var genre: [Genre] = []

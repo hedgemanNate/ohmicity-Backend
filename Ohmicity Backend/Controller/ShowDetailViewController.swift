@@ -6,17 +6,18 @@
 //
 
 import Cocoa
+import AppKit
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     //Properties
     var currentShow: Show?
+    var timer = Timer()
+    var lastMessage = ""
     
     @IBOutlet weak var bandNameTextField: NSTextField!
     @IBOutlet weak var businessNameTextField: NSTextField!
-    @IBOutlet weak var startDateTextField: NSTextField!
-    @IBOutlet weak var startTimeTextField: NSTextField!
     
     @IBOutlet weak var deleteButton: NSButton!
     @IBOutlet weak var ohmPickCheckbox: NSButton!
@@ -25,31 +26,51 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
     @IBOutlet weak var businessRadioButton: NSButton!
     @IBOutlet weak var pushButton: NSButton!
     
-    @IBOutlet weak var tableView: NSTableView!
+    //@IBOutlet weak var tableView: NSTableView!
     
+    @IBOutlet weak var datePicker: NSDatePicker!
     
+    @IBOutlet weak var messageCenter: NSTextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         updateViews()
+        dateFormatter.dateFormat = dateFormat1
     }
-    
     
     @IBAction func breaker(_ sender: Any) {
         
     }
     
+    @IBAction func messageCenterFunction(_ sender: Any) {
+        timer.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(clear), userInfo: nil, repeats: false)
+    }
+    
+    private func startMessageCenterTimer() {
+        timer.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(clear), userInfo: nil, repeats: false)
+    }
+    
+    @objc private func clear() {
+        lastMessage = messageCenter.stringValue
+        messageCenter.stringValue = ""
+    }
+    
+    @IBAction func lastMessageButtonTapped(_ sender: Any) {
+        messageCenter.stringValue = lastMessage
+    }
+    
+    
+    
     @IBAction func savedButtonTapped(_ sender: Any) {
         if currentShow != nil {
-            currentShow?.dateString = startDateTextField.stringValue
-            let date = setTime()
+            currentShow?.dateString = dateFormatter.string(from: datePicker.dateValue)
             
             var editedShow = currentShow
-            editedShow?.dateString = startDateTextField.stringValue
-            editedShow?.time = startTimeTextField.stringValue
-            editedShow?.date = date
-
-            
+            editedShow?.dateString = dateFormatter.string(from: datePicker.dateValue)
+            editedShow?.time = dateFormatter.string(from: datePicker.dateValue)
+            editedShow?.date = datePicker.dateValue
             editedShow?.lastModified = Timestamp()
             
             if ohmPickCheckbox.state == .on {
@@ -71,25 +92,19 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
             
             notificationCenter.post(name: NSNotification.Name("showsUpdated"), object: nil)
             localDataController.saveShowData()
+            self.messageCenter.stringValue = "Show Updated"
+            startMessageCenterTimer()
         } else {
-            var newShow = Show(band: bandNameTextField.stringValue, venue: businessNameTextField.stringValue, dateString: startDateTextField.stringValue)
-            newShow.time = startTimeTextField.stringValue
+            var newShow = Show(band: bandNameTextField.stringValue, venue: businessNameTextField.stringValue, dateString: dateFormatter.string(from: datePicker.dateValue))
             newShow.lastModified = Timestamp()
             localDataController.showArray.append(newShow)
             
             currentShow = newShow
             localDataController.saveShowData()
             notificationCenter.post(name: NSNotification.Name("showsUpdated"), object: nil)
+            self.messageCenter.stringValue = "Show Created And Saved"
+            startMessageCenterTimer()
         }
-    }
-    
-    //Makes a Date out of Start Date And Time
-    private func setTime() -> Date {
-        let dateString = "\(startDateTextField.stringValue) \(startTimeTextField.stringValue)"
-        
-        dateFormatter.dateFormat = dateFormat2
-        guard let date = dateFormatter.date(from: dateString) else {return Date()}
-        return date
     }
     
     
@@ -98,27 +113,42 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         currentShow?.lastModified = Timestamp()
         do {
             try ref.document(currentShow!.showID).setData(from: currentShow)
+            self.messageCenter.stringValue = "Show Pushed"
+            startMessageCenterTimer()
         } catch let error {
-                NSLog(error.localizedDescription)
+            NSLog(error.localizedDescription)
+            self.messageCenter.stringValue = "\(error.localizedDescription)"
+            startMessageCenterTimer()
         }
     }
     
     
-    @IBAction func deleteButtonTapped(_ sender: Any) {
-        //MARK: Dangerous Code. could delete both local and remote data
-//        guard let show = currentShow else {return}
-//        remoteDataController.remoteShowArray.removeAll(where: {$0 == show})
-//
-//        FireStoreReferenceManager.showDataPath.document(show.showID).delete { (err) in
-//            if let err = err {
-//                //MARK: Alert Here
-//                NSLog("Error deleting Band: \(err)")
-//            } else {
-//                NSLog("Delete Successful")
-//                notificationCenter.post(Notification(name: Notification.Name(rawValue: "showsUpdated")))
-//                print("\(show)")
-//            }
-//        }
+    @IBAction func deleteRemotelyButtonTapped(_ sender: Any) {
+        guard let show = currentShow else {return}
+        remoteDataController.remoteShowArray.removeAll(where: {$0 == show})
+        
+        FireStoreReferenceManager.showDataPath.document(show.showID).delete { (err) in
+            if let err = err {
+                //MARK: Alert Here
+                NSLog("Error deleting Band: \(err)")
+                self.messageCenter.stringValue = "Error deleting Band: \(err)"
+                self.startMessageCenterTimer()
+            } else {
+                NSLog("Delete Successful")
+                self.messageCenter.stringValue = "Delete Successful"
+                self.startMessageCenterTimer()
+                notificationCenter.post(Notification(name: Notification.Name(rawValue: "showsUpdated")))
+                print("\(show)")
+            }
+        }
+    }
+    
+    @IBAction func deleteLocallyButtonTapped(_ sender: Any) {
+        guard let show = currentShow else {return}
+        localDataController.showArray.removeAll(where: {$0 == show})
+        notificationCenter.post(Notification(name: Notification.Name(rawValue: "showsUpdated")))
+        localDataController.saveShowData()
+        self.view.window?.close()
     }
     
     
@@ -126,15 +156,15 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
     
     @IBAction func radioButtonsTapped(_ sender: Any) {
         DispatchQueue.main.async {
-            self.tableView.reloadData()
+            //self.tableView.reloadData()
         }
     }
     
     
     //MARK: UpdateViews
     private func updateViews() {
-        tableView.delegate = self
-        tableView.dataSource = self
+        //tableView.delegate = self
+        //tableView.dataSource = self
         
         bandRadioButton.state = .on
         
@@ -143,18 +173,9 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
             bandNameTextField.stringValue = currentShow!.band
             businessNameTextField.stringValue = currentShow!.venue
             
-//            let date = currentShow!.dateString
-//            if let index = (date.range(of: "2021")?.upperBound) {
-//
-//                let newDate = String(date.prefix(upTo: index))
-//                startDateTextField.stringValue = newDate
-//            }
+            datePicker.dateValue = currentShow!.date
             
             dateFormatter.dateFormat = dateFormat3
-            let dateString = dateFormatter.string(from: currentShow!.date)
-            
-            startDateTextField.stringValue = "\(dateString)"
-            startTimeTextField.stringValue = "\(currentShow?.time ?? "")"
             
             deleteButton.isEnabled = true
             
@@ -216,20 +237,21 @@ extension ShowDetailViewController {
         return nil
     }
     
-    func tableViewSelectionDidChange(_ notification: Notification) {
-        if self.bandRadioButton.state == .on {
-            let index = tableView.selectedRow
-            
-            if tableView.isRowSelected(index) {
-                bandNameTextField.stringValue = localDataController.bandArray[index].name
-            }
-            
-        } else if self.businessRadioButton.state == .on {
-            let index = tableView.selectedRow
-            
-            if tableView.isRowSelected(index) {
-                businessNameTextField.stringValue = localDataController.businessArray[index].name
-            }
-        }
-    }
+    //MARK: TABLEVIEW CODE - Just add a new tableview and uncomment
+//    func tableViewSelectionDidChange(_ notification: Notification) {
+//        if self.bandRadioButton.state == .on {
+//            let index = tableView.selectedRow
+//
+//            if tableView.isRowSelected(index) {
+//                bandNameTextField.stringValue = localDataController.bandArray[index].name
+//            }
+//
+//        } else if self.businessRadioButton.state == .on {
+//            let index = tableView.selectedRow
+//
+//            if tableView.isRowSelected(index) {
+//                businessNameTextField.stringValue = localDataController.businessArray[index].name
+//            }
+//        }
+//    }
 }
