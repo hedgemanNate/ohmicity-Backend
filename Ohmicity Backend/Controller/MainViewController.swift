@@ -341,10 +341,26 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                 showsToDeleteArray.append(show)
             }
         }
+        
+        for show in remoteDataController.remoteShowArray {
+            if show.date < threeHoursAgo {
+                showsToDeleteArray.append(show)
+            }
+        }
+        
         print(showsToDeleteArray.count)
         for show in showsToDeleteArray {
             localDataController.showArray.removeAll(where: {$0 == show})
-            ref.showDataPath.document(show.showID).delete()
+            
+            ref.showDataPath.document(show.showID).delete { [self] err in
+                if let err = err {
+                    alertTextField.stringValue = err.localizedDescription
+                    NSLog(err.localizedDescription)
+                } else {
+                    alertTextField.stringValue = "\(showsToDeleteArray.count) Shows Deleting From Local And Remote"
+                }
+            }
+            
         }
         
         localDataController.saveShowData()
@@ -442,13 +458,15 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     }
     
     @IBAction func deleteBandButtonTapped(_ sender: Any) {
-        let index = tableView.selectedRow
-        let band = localDataController.bandResults[index]
+        var index = tableView.selectedRow
+        var band = localDataController.bandResults[index]
         
         if localBandsButton.state == .on {
             localDataController.bandArray.removeAll(where: {$0 == band})
             localDataController.saveBandData()
         } else if remoteBandsButton.state == .on {
+            index = tableView.selectedRow
+            band = remoteDataController.bandResults[index]
             remoteDataController.remoteBandArray.removeAll(where: {$0 == band})
             FireStoreReferenceManager.bandDataPath.document(band.bandID).delete
             { (err) in
@@ -470,24 +488,23 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     }
     
     @IBAction func deleteShowButtonTapped(_ sender: Any) {
-        let index = tableView.selectedRow
-        let show = localDataController.showResults[index]
-        localDataController.showArray.removeAll(where: {$0 == show})
-        
         if localShowsButton.state == .on {
+            let index = tableView.selectedRow
+            let show = localDataController.showResults[index]
+            localDataController.showArray.removeAll(where: {$0 == show})
             localDataController.saveShowData()
         } else if remoteShowsButton.state == .on {
             let index = tableView.selectedRow
-            let show = remoteDataController.remoteShowArray[index]
+            let show = remoteDataController.showResults[index]
             remoteDataController.remoteShowArray.removeAll(where: {$0 == show})
             remoteDataController.showResults = remoteDataController.remoteShowArray
             print(show)
-            FireStoreReferenceManager.showDataPath.document(show.showID).delete
+            ref.showDataPath.document(show.showID).delete
             { (err) in
                 if let err = err {
                     //MARK: Alert Here
-                    NSLog("Error deleting Band: \(err)")
-                    self.alertTextField.stringValue = "Error deleting Band"
+                    NSLog(err.localizedDescription)
+                    self.alertTextField.stringValue = err.localizedDescription
                 } else {
                     NSLog("Delete Successful")
                     self.alertTextField.stringValue = "Delete Successful"
@@ -1107,11 +1124,13 @@ extension MainViewController {
     }
     
     @objc func showsUpdated() {
-        //MARK: REMOVE OLD SHOWS
-        
         inOrderLocalArrays()
         DispatchQueue.main.async {
-            self.showAmountLabel.stringValue = "\(localDataController.showArray.count) Shows"
+            if self.localShowsButton.state == .on {
+                self.showAmountLabel.stringValue = "\(localDataController.showArray.count) Shows"
+            } else if self.remoteShowsButton.state == .on {
+                self.showAmountLabel.stringValue = "\(remoteDataController.remoteShowArray.count) Shows"
+            }
             self.tableView.reloadData()
         }
     }
