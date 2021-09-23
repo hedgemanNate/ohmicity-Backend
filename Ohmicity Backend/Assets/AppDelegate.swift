@@ -25,6 +25,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Insert code here to tear down your application
     }
 
-
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        var terminate = true
+        //add a NSAlert popUp to remind us to push data
+        
+        return terminate
+    }
 }
 
