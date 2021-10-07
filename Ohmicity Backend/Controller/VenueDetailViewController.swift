@@ -84,9 +84,8 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     override func viewDidLoad() {
         super.viewDidLoad()
         updateViews()
-        
+        tableView.doubleAction = #selector(doubleClicked)
         cityArray = [veniceButton, sarasotaButton, bradentonButton, stPeteButton, tampaButton, yborButton]
-        
         venueTypeArray = [resturantButton, barButton, clubButton, outdoorsButton, liveMusicButton, familyButton]
         
     }
@@ -641,12 +640,28 @@ extension VenueDetailViewController {
         }
         return nil
     }
+    
+    override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
+        let indexPath = tableView.selectedRow
+        if currentBusinessShows != nil {
+            guard let show = currentBusinessShows?[indexPath] else {return}
+            let destinationVC = segue.destinationController as? ShowDetailViewController
+            destinationVC?.currentShow = show
+        } else {
+            return
+        }
+        
+    }
 }
 
 
 
 //MARK: Helper Functions
 extension VenueDetailViewController {
+    
+    @objc private func doubleClicked() {
+        performSegue(withIdentifier: "editShowSegue", sender: self)
+    }
     
     func buttonEnable(buttons: [NSButton]) {
         makeBusinessButton.isEnabled = false

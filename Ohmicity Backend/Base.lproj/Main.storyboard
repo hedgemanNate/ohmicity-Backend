@@ -1285,8 +1285,8 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="277" height="148"/>
                                                             <datePickerCell key="cell" controlSize="large" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="R2s-zw-K34">
                                                                 <font key="font" metaFont="system"/>
-                                                                <date key="date" timeIntervalSinceReferenceDate="654047009.01327598">
-                                                                    <!--2021-09-22 23:43:29 +0000-->
+                                                                <date key="date" timeIntervalSinceReferenceDate="655336715.97041404">
+                                                                    <!--2021-10-07 21:58:35 +0000-->
                                                                 </date>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1330,8 +1330,8 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="277" height="148"/>
                                                             <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="503-Ty-Gdc">
                                                                 <font key="font" metaFont="system"/>
-                                                                <date key="date" timeIntervalSinceReferenceDate="654047009.01962602">
-                                                                    <!--2021-09-22 23:43:29 +0000-->
+                                                                <date key="date" timeIntervalSinceReferenceDate="655336715.97897398">
+                                                                    <!--2021-10-07 21:58:35 +0000-->
                                                                 </date>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1375,8 +1375,8 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="277" height="148"/>
                                                             <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="7jY-Qv-i7V">
                                                                 <font key="font" metaFont="system"/>
-                                                                <date key="date" timeIntervalSinceReferenceDate="654047009.02536201">
-                                                                    <!--2021-09-22 23:43:29 +0000-->
+                                                                <date key="date" timeIntervalSinceReferenceDate="655336715.98629797">
+                                                                    <!--2021-10-07 21:58:35 +0000-->
                                                                 </date>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1420,8 +1420,8 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="277" height="148"/>
                                                             <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="tXN-jR-RxO">
                                                                 <font key="font" metaFont="system"/>
-                                                                <date key="date" timeIntervalSinceReferenceDate="654047009.03086996">
-                                                                    <!--2021-09-22 23:43:29 +0000-->
+                                                                <date key="date" timeIntervalSinceReferenceDate="655336715.99363101">
+                                                                    <!--2021-10-07 21:58:35 +0000-->
                                                                 </date>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1910,8 +1910,8 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <datePickerCell key="cell" borderStyle="bezel" alignment="left" useCurrentDate="YES" id="U6u-Ac-yGh">
                                     <font key="font" metaFont="system"/>
-                                    <date key="date" timeIntervalSinceReferenceDate="654047009.09929299">
-                                        <!--2021-09-22 23:43:29 +0000-->
+                                    <date key="date" timeIntervalSinceReferenceDate="655336716.03431296">
+                                        <!--2021-10-07 21:58:36 +0000-->
                                     </date>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1922,8 +1922,8 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <datePickerCell key="cell" borderStyle="bezel" alignment="left" useCurrentDate="YES" id="g7o-Ed-NvT">
                                     <font key="font" metaFont="system"/>
-                                    <date key="date" timeIntervalSinceReferenceDate="654047009.10283601">
-                                        <!--2021-09-22 23:43:29 +0000-->
+                                    <date key="date" timeIntervalSinceReferenceDate="655336716.03934801">
+                                        <!--2021-10-07 21:58:36 +0000-->
                                     </date>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -2862,8 +2862,8 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <datePickerCell key="cell" controlSize="large" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="Xe0-eP-c9f">
                                     <font key="font" metaFont="system"/>
-                                    <date key="date" timeIntervalSinceReferenceDate="654047009.23064005">
-                                        <!--2021-09-22 23:43:29 +0000-->
+                                    <date key="date" timeIntervalSinceReferenceDate="655336716.101807">
+                                        <!--2021-10-07 21:58:36 +0000-->
                                     </date>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -2871,9 +2871,9 @@
                                 </datePickerCell>
                             </datePicker>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Dh-TH-Ys7">
-                                <rect key="frame" x="108" y="343" width="144" height="38"/>
+                                <rect key="frame" x="108" y="343" width="188" height="38"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="bevel" title="Delete Remotely" bezelStyle="regularSquare" image="buttonCell:pdw-6k-Op2:image" imagePosition="overlaps" alignment="center" inset="2" id="pdw-6k-Op2">
+                                <buttonCell key="cell" type="bevel" title="Put On Hold Remotely" bezelStyle="regularSquare" image="buttonCell:pdw-6k-Op2:image" imagePosition="overlaps" alignment="left" inset="2" id="pdw-6k-Op2">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="systemHeavy" size="17"/>
                                 </buttonCell>
@@ -2942,7 +2942,7 @@
                 </viewController>
                 <customObject id="hnZ-rD-GqN" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2938" y="842"/>
+            <point key="canvasLocation" x="2906" y="842"/>
         </scene>
         <!--Venue Detail View Controller-->
         <scene sceneID="BAM-xc-FPk">
@@ -4010,6 +4010,7 @@
                         <outlet property="websiteTextField" destination="vjP-26-l1c" id="gL1-fe-ZMa"/>
                         <outlet property="wednesdayOpenTextField" destination="Kfg-i3-bdM" id="Xzm-fF-dnk"/>
                         <outlet property="yborButton" destination="evI-Xl-9NR" id="XSf-XE-APs"/>
+                        <segue destination="yOJ-ms-d4r" kind="show" identifier="editShowSegue" id="Giz-8l-S5D"/>
                     </connections>
                 </viewController>
                 <customObject id="IhT-cj-z8P" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -4032,7 +4033,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="Lod-BE-eDt"/>
-        <segue reference="Lh3-Il-Oj7"/>
+        <segue reference="Giz-8l-S5D"/>
         <segue reference="1Cm-5h-QKw"/>
         <segue reference="bv4-8W-wTL"/>
     </inferredMetricsTieBreakers>

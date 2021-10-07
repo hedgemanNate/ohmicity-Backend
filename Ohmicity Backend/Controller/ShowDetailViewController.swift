@@ -36,6 +36,7 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         super.viewDidLoad()
         updateViews()
         dateFormatter.dateFormat = dateFormat1
+        
     }
     
     @IBAction func breaker(_ sender: Any) {
@@ -124,21 +125,22 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
     
     
     @IBAction func deleteRemotelyButtonTapped(_ sender: Any) {
-        guard let show = currentShow else {return}
-        remoteDataController.remoteShowArray.removeAll(where: {$0 == show})
+        remoteDataController.remoteShowArray.removeAll(where: {$0 == currentShow})
+        currentShow!.onHold = true
         
-        FireStoreReferenceManager.showDataPath.document(show.showID).delete { (err) in
+        guard let show = currentShow else {return}
+        
+        FireStoreReferenceManager.showDataPath.document(show.showID).updateData(["onHold" : true]) { err in
             if let err = err {
                 //MARK: Alert Here
-                NSLog("Error deleting Band: \(err)")
-                self.messageCenter.stringValue = "Error deleting Band: \(err)"
+                NSLog("Error Putting Show On Hold: \(err)")
+                self.messageCenter.stringValue = "Error Puttig Show On Hold: \(err)"
                 self.startMessageCenterTimer()
             } else {
-                NSLog("Delete Successful")
-                self.messageCenter.stringValue = "Delete Successful"
-                self.startMessageCenterTimer()
-                notificationCenter.post(Notification(name: Notification.Name(rawValue: "showsUpdated")))
-                print("\(show)")
+            NSLog("Show is on hold")
+            self.messageCenter.stringValue = "Show is on hold"
+            self.startMessageCenterTimer()
+            notificationCenter.post(Notification(name: Notification.Name(rawValue: "showsUpdated")))
             }
         }
     }
