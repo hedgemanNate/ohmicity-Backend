@@ -13,6 +13,9 @@ class BulkShowCreationViewController: NSViewController {
     var bandResultsArray = [Band]()
     var venueResultsArray = [BusinessFullData]()
     
+    var addedShowsToBePushedArray = [Show]()
+    
+    
     @IBOutlet weak var bandsTableView: NSTableView!
     @IBOutlet weak var venueTableView: NSTableView!
     
@@ -25,15 +28,19 @@ class BulkShowCreationViewController: NSViewController {
     @IBOutlet weak var show3CheckBoxButton: NSButton!
     @IBOutlet weak var show4CheckBoxButton: NSButton!
     
+    @IBOutlet weak var addShowsButton: NSButton!
+    var defualtColor: CGColor?
+    @IBOutlet weak var pushShowsButton: NSButton!
+    
     //Calendars
     @IBOutlet weak var calendar1: NSDatePicker!
     @IBOutlet weak var calendar2: NSDatePicker!
     @IBOutlet weak var calendar3: NSDatePicker!
     @IBOutlet weak var calendar4: NSDatePicker!
     
-    
     //MessageCenter
     @IBOutlet weak var messageCenterTextField: NSTextField!
+    var timer = Timer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,6 +58,11 @@ class BulkShowCreationViewController: NSViewController {
         venueTableView.reloadData()
         show1CheckBoxButton.resignFirstResponder()
         bandSearchField.becomeFirstResponder()
+        
+        checkBoxLogic()
+        
+        //UI For Buttons
+        defualtColor = addShowsButton.layer?.backgroundColor
     }
     
     private func setUpTableViews() {
@@ -62,9 +74,7 @@ class BulkShowCreationViewController: NSViewController {
     
     private func resetCheckBoxes() {
         show1CheckBoxButton.state = .off
-        show2CheckBoxButton.state = .off
-        show3CheckBoxButton.state = .off
-        show4CheckBoxButton.state = .off
+        checkBoxLogic()
     }
     
     private func clearTextFields() {
@@ -73,21 +83,30 @@ class BulkShowCreationViewController: NSViewController {
         messageCenterTextField.stringValue = ""
     }
     
+    private func checkBoxLogic() {
+        if show1CheckBoxButton.state == .on {
+            show2CheckBoxButton.isEnabled = true
+        } else {
+            show2CheckBoxButton.state = .off
+            show2CheckBoxButton.isEnabled = false
+        }
+        
+        if show2CheckBoxButton.state == .on {
+            show3CheckBoxButton.isEnabled = true
+        } else {
+            show3CheckBoxButton.state = .off
+            show3CheckBoxButton.isEnabled = false
+        }
+        
+        if show3CheckBoxButton.state == .on {
+            show4CheckBoxButton.isEnabled = true
+        } else {
+            show4CheckBoxButton.state = .off
+            show4CheckBoxButton.isEnabled = false
+        }
+    }
+    
     //MARK: Button Actions
-    @IBAction func resetButtonTapped(_ sender: Any) {
-        resetCheckBoxes()
-        clearTextFields()
-        bandsTableView.reloadData()
-        venueTableView.reloadData()
-    }
-    
-    @IBAction func refreshButtonTapped(_ sender: Any) {
-        bandResultsArray = localDataController.bandArray
-        venueResultsArray = localDataController.businessArray
-        bandsTableView.reloadData()
-        venueTableView.reloadData()
-    }
-    
     
     @IBAction func addShowsButtonTapped(_ sender: Any) {
         dateFormatter.dateFormat = dateFormat1
@@ -122,6 +141,7 @@ class BulkShowCreationViewController: NSViewController {
                 messageCenterTextField.stringValue.append("Show1 already exists")
             }
             localDataController.showArray.append(show)
+            addedShowsToBePushedArray.append(show)
             bulkShowCreationCounter += 1
         }
         
@@ -134,6 +154,7 @@ class BulkShowCreationViewController: NSViewController {
                 messageCenterTextField.stringValue.append("Show2 already exists")
             }
             localDataController.showArray.append(show)
+            addedShowsToBePushedArray.append(show)
             bulkShowCreationCounter += 1
         }
         
@@ -146,6 +167,7 @@ class BulkShowCreationViewController: NSViewController {
                 messageCenterTextField.stringValue.append("Show3 already exists")
             }
             localDataController.showArray.append(show)
+            addedShowsToBePushedArray.append(show)
             bulkShowCreationCounter += 1
         }
         
@@ -158,13 +180,92 @@ class BulkShowCreationViewController: NSViewController {
                 messageCenterTextField.stringValue.append("Show4 already exists")
             }
             localDataController.showArray.append(show)
+            addedShowsToBePushedArray.append(show)
             bulkShowCreationCounter += 1
         }
         
         resetCheckBoxes()
         messageCenterTextField.stringValue = "\(bulkShowCreationCounter) Shows Added"
+        
+        //Color Indication
+        DispatchQueue.main.async {
+            self.addShowsButton.layer?.backgroundColor = NSColor.green.cgColor
+            self.timer.invalidate()
+            self.timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: false, block: { _ in
+                self.addShowsButton.layer?.backgroundColor = self.defualtColor
+            })
+        }
+        
         localDataController.saveShowData()
     }
+    
+    @IBAction func pushShowsButtonTapped(_ sender: Any) {
+        for show in addedShowsToBePushedArray {
+            do {
+                try ref.showDataPath.document(show.showID).setData(from: show, encoder: .init(), completion: { error in
+                    if let err = error {
+                        NSLog(err.localizedDescription)
+                        DispatchQueue.main.async {
+                            self.pushShowsButton.layer?.backgroundColor = NSColor.red.cgColor
+                            self.messageCenterTextField.stringValue = err.localizedDescription
+                            self.timer.invalidate()
+                            self.timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: false, block: { _ in
+                                self.pushShowsButton.layer?.backgroundColor = self.defualtColor
+                            })
+                        }
+                    } else {
+                        self.show1CheckBoxButton.state = .off
+                        self.checkBoxLogic()
+                        self.addedShowsToBePushedArray.removeAll(where:{ $0 == show})
+                        DispatchQueue.main.async {
+                            self.pushShowsButton.layer?.backgroundColor = NSColor.green.cgColor
+                            self.timer.invalidate()
+                            self.timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: false, block: { _ in
+                                self.pushShowsButton.layer?.backgroundColor = self.defualtColor
+                            })
+                        }
+                    }
+                })
+            } catch {
+                NSLog("Error pushing shows in BulkShowCreationViewController")
+            }
+        }
+    }
+    
+    
+    
+    @IBAction func resetButtonTapped(_ sender: Any) {
+        resetCheckBoxes()
+        clearTextFields()
+        bandsTableView.reloadData()
+        venueTableView.reloadData()
+    }
+    
+    @IBAction func refreshButtonTapped(_ sender: Any) {
+        bandResultsArray = localDataController.bandArray
+        venueResultsArray = localDataController.businessArray
+        bandsTableView.reloadData()
+        venueTableView.reloadData()
+    }
+    
+    
+    //Checkbox Actions--------------------------------
+    @IBAction func checkbox1Toggled(_ sender: Any) {
+        checkBoxLogic()
+    }
+    
+    @IBAction func checkbox2Toggled(_ sender: Any) {
+        checkBoxLogic()
+    }
+    
+    @IBAction func checkbox3Toggled(_ sender: Any) {
+        checkBoxLogic()
+    }
+    
+    @IBAction func checkbox4Toggled(_ sender: Any) {
+        checkBoxLogic()
+    }
+    //Checkbox Actions End----------------------------
     
     //MARK: SearchBars
     @IBAction func bandSearchFieldActive(_ sender: NSSearchField) {
