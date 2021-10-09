@@ -10,6 +10,8 @@
 		686594060426C63DB82E38E5 /* Pods_Ohmicity_Backend.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AB066B199F8732B4AC206AC /* Pods_Ohmicity_Backend.framework */; };
 		D8092A0F26681C0000560A97 /* Business.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8092A0E26681C0000560A97 /* Business.swift */; };
 		D8092A1226682D4E00560A97 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8092A1126682D4E00560A97 /* User.swift */; };
+		D81FCF9327113DAC0070B4CF /* orange.png in Resources */ = {isa = PBXBuildFile; fileRef = D81FCF9127113DAB0070B4CF /* orange.png */; };
+		D81FCF9427113DAC0070B4CF /* yellow.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D81FCF9227113DAC0070B4CF /* yellow.jpg */; };
 		D83B32CD267A5D800065948E /* ImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83B32CC267A5D800065948E /* ImageController.swift */; };
 		D85AC754267BB02B00CEA95B /* RemoteDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85AC753267BB02B00CEA95B /* RemoteDataController.swift */; };
 		D85F3D1D267CF2FC001BCFCA /* FireStoreReferenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85F3D1C267CF2FC001BCFCA /* FireStoreReferenceManager.swift */; };
@@ -50,6 +52,8 @@
 		D756B91D473B0E99A41EF7C5 /* Pods-Ohmicity Backend.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ohmicity Backend.release.xcconfig"; path = "Target Support Files/Pods-Ohmicity Backend/Pods-Ohmicity Backend.release.xcconfig"; sourceTree = "<group>"; };
 		D8092A0E26681C0000560A97 /* Business.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Business.swift; sourceTree = "<group>"; };
 		D8092A1126682D4E00560A97 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		D81FCF9127113DAB0070B4CF /* orange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orange.png; sourceTree = "<group>"; };
+		D81FCF9227113DAC0070B4CF /* yellow.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = yellow.jpg; sourceTree = "<group>"; };
 		D83B32CC267A5D800065948E /* ImageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageController.swift; sourceTree = "<group>"; };
 		D85AC753267BB02B00CEA95B /* RemoteDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDataController.swift; sourceTree = "<group>"; };
 		D85F3D1C267CF2FC001BCFCA /* FireStoreReferenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireStoreReferenceManager.swift; sourceTree = "<group>"; };
@@ -173,6 +177,8 @@
 		F6A2D75D2656F1D500C50456 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				D81FCF9127113DAB0070B4CF /* orange.png */,
+				D81FCF9227113DAC0070B4CF /* yellow.jpg */,
 				F615064A268E67E200C4B808 /* Ohmicity Logo Banner.png */,
 				F615064C268E680B00C4B808 /* 1200px-American_Heart_Association_Logo.svg.png */,
 			);
@@ -298,6 +304,8 @@
 				F6C31F5C2656E57B004A1BB2 /* Main.storyboard in Resources */,
 				F6578F4B268D032E00AC25CE /* BusinessPhoto.xib in Resources */,
 				F6A2D7502656F05900C50456 /* MainViewController.xib in Resources */,
+				D81FCF9427113DAC0070B4CF /* yellow.jpg in Resources */,
+				D81FCF9327113DAC0070B4CF /* orange.png in Resources */,
 				F615064B268E67E200C4B808 /* Ohmicity Logo Banner.png in Resources */,
 				F615064D268E680B00C4B808 /* 1200px-American_Heart_Association_Logo.svg.png in Resources */,
 				F655439F2689ABA300F823BA /* GoogleService-Info.plist in Resources */,
@@ -528,7 +536,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.351;
+				MARKETING_VERSION = 1.36;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanhedgeman.Ohmicity-Backend";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -554,7 +562,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.351;
+				MARKETING_VERSION = 1.36;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanhedgeman.Ohmicity-Backend";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -1285,8 +1285,8 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="277" height="148"/>
                                                             <datePickerCell key="cell" controlSize="large" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="R2s-zw-K34">
                                                                 <font key="font" metaFont="system"/>
-                                                                <date key="date" timeIntervalSinceReferenceDate="655336715.97041404">
-                                                                    <!--2021-10-07 21:58:35 +0000-->
+                                                                <date key="date" timeIntervalSinceReferenceDate="655435280.18549204">
+                                                                    <!--2021-10-09 01:21:20 +0000-->
                                                                 </date>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1330,8 +1330,8 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="277" height="148"/>
                                                             <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="503-Ty-Gdc">
                                                                 <font key="font" metaFont="system"/>
-                                                                <date key="date" timeIntervalSinceReferenceDate="655336715.97897398">
-                                                                    <!--2021-10-07 21:58:35 +0000-->
+                                                                <date key="date" timeIntervalSinceReferenceDate="655435280.19403994">
+                                                                    <!--2021-10-09 01:21:20 +0000-->
                                                                 </date>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1375,8 +1375,8 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="277" height="148"/>
                                                             <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="7jY-Qv-i7V">
                                                                 <font key="font" metaFont="system"/>
-                                                                <date key="date" timeIntervalSinceReferenceDate="655336715.98629797">
-                                                                    <!--2021-10-07 21:58:35 +0000-->
+                                                                <date key="date" timeIntervalSinceReferenceDate="655435280.20221806">
+                                                                    <!--2021-10-09 01:21:20 +0000-->
                                                                 </date>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1420,8 +1420,8 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="277" height="148"/>
                                                             <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="tXN-jR-RxO">
                                                                 <font key="font" metaFont="system"/>
-                                                                <date key="date" timeIntervalSinceReferenceDate="655336715.99363101">
-                                                                    <!--2021-10-07 21:58:35 +0000-->
+                                                                <date key="date" timeIntervalSinceReferenceDate="655435280.21061206">
+                                                                    <!--2021-10-09 01:21:20 +0000-->
                                                                 </date>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1674,8 +1674,49 @@
                                     <segue destination="QaH-ga-u3R" kind="modal" id="Lod-BE-eDt"/>
                                 </connections>
                             </button>
+                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9pp-uy-dao">
+                                <rect key="frame" x="618" y="92" width="143" height="89"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="square" title="Reset" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="KrP-hl-lNa">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system" size="19"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="resetButtonTapped:" target="ZUI-rB-Ygw" id="fCL-SF-bP2"/>
+                                </connections>
+                            </button>
+                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dE6-4m-H1O">
+                                <rect key="frame" x="792" y="92" width="143" height="90"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="square" title="Refresh Tables" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="vUR-wB-MXO">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system" size="19"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="refreshButtonTapped:" target="ZUI-rB-Ygw" id="662-83-8Su"/>
+                                </connections>
+                            </button>
+                            <textField verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bjm-wm-fSz">
+                                <rect key="frame" x="451" y="20" width="484" height="54"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="Message Center" placeholderString="Message Center" drawsBackground="YES" id="zGn-Oe-hwN">
+                                    <font key="font" metaFont="system" size="18"/>
+                                    <color key="textColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lDc-ng-394">
+                                <rect key="frame" x="451" y="142" width="143" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="square" title="Add Shows" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="LBD-o5-KbQ">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system" size="19"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="addShowsButtonTapped:" target="ZUI-rB-Ygw" id="4Rc-Ho-a9U"/>
+                                </connections>
+                            </button>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yr1-W1-1Gj">
-                                <rect key="frame" x="451" y="197" width="143" height="65"/>
+                                <rect key="frame" x="451" y="92" width="143" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="square" title="Push Shows" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="kIE-vr-fe8">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1685,68 +1726,105 @@
                                     <action selector="pushShowsButtonTapped:" target="ZUI-rB-Ygw" id="xo8-yV-n61"/>
                                 </connections>
                             </button>
-                            <button translatesAutoresizingMaskIntoConstraints="NO" id="9pp-uy-dao">
-                                <rect key="frame" x="618" y="197" width="143" height="147"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="143" id="10H-yd-z7f"/>
-                                    <constraint firstAttribute="height" constant="147" id="3xG-wf-maF"/>
-                                </constraints>
-                                <buttonCell key="cell" type="square" title="Reset" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="KrP-hl-lNa">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system" size="19"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="resetButtonTapped:" target="ZUI-rB-Ygw" id="fCL-SF-bP2"/>
-                                </connections>
-                            </button>
-                            <button translatesAutoresizingMaskIntoConstraints="NO" id="dE6-4m-H1O">
-                                <rect key="frame" x="792" y="197" width="143" height="148"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="143" id="QpR-AW-dUV"/>
-                                    <constraint firstAttribute="height" constant="148" id="Ux4-j2-PcZ"/>
-                                </constraints>
-                                <buttonCell key="cell" type="square" title="Refresh Tables" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="vUR-wB-MXO">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system" size="19"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="refreshButtonTapped:" target="ZUI-rB-Ygw" id="662-83-8Su"/>
-                                </connections>
-                            </button>
-                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bjm-wm-fSz">
-                                <rect key="frame" x="451" y="20" width="484" height="148"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" title="Message Center" placeholderString="Message Center" drawsBackground="YES" id="zGn-Oe-hwN">
-                                    <font key="font" metaFont="system" size="18"/>
-                                    <color key="textColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
+                            <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="30" horizontalPageScroll="10" verticalLineScroll="30" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jUE-Bs-dwH">
+                                <rect key="frame" x="451" y="204" width="484" height="122"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <clipView key="contentView" id="7mM-Rn-sbR">
+                                    <rect key="frame" x="1" y="1" width="482" height="120"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="none" alternatingRowBackgroundColors="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="30" rowSizeStyle="automatic" viewBased="YES" id="wZr-d7-tnW">
+                                            <rect key="frame" x="0.0" y="0.0" width="482" height="120"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <size key="intercellSpacing" width="17" height="0.0"/>
+                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                            <tableColumns>
+                                                <tableColumn width="469" minWidth="40" maxWidth="1000" id="RrB-W6-YbK">
+                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
+                                                        <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                                    </tableHeaderCell>
+                                                    <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" title="Text Cell" id="T4h-hO-OR5">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                    <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                    <prototypeCellViews>
+                                                        <tableCellView identifier="ShowCell" id="icV-TW-v6J">
+                                                            <rect key="frame" x="8" y="0.0" width="464" height="30"/>
+                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                            <subviews>
+                                                                <textField identifier="ShowCell" horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EMu-9W-KkZ">
+                                                                    <rect key="frame" x="0.0" y="7" width="464" height="16"/>
+                                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" identifier="ShowCell" title="Table View Cell" id="TSo-5l-iVm">
+                                                                        <font key="font" metaFont="system" size="14"/>
+                                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                    </textFieldCell>
+                                                                </textField>
+                                                            </subviews>
+                                                            <connections>
+                                                                <outlet property="textField" destination="EMu-9W-KkZ" id="EXw-Si-VON"/>
+                                                            </connections>
+                                                        </tableCellView>
+                                                    </prototypeCellViews>
+                                                </tableColumn>
+                                            </tableColumns>
+                                        </tableView>
+                                    </subviews>
+                                </clipView>
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="KMb-Zj-yoG">
+                                    <rect key="frame" x="1" y="119" width="223" height="15"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="ic6-YA-NP8">
+                                    <rect key="frame" x="224" y="17" width="15" height="102"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pdY-0R-9yV">
+                                <rect key="frame" x="451" y="328" width="35" height="15"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="orange" id="207-yT-jDn"/>
+                                <color key="contentTintColor" name="systemYellowColor" catalog="System" colorSpace="catalog"/>
+                            </imageView>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uwa-YS-fkD">
+                                <rect key="frame" x="614" y="328" width="35" height="15"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" image="yellow" id="z0F-k4-hGf"/>
+                                <color key="contentTintColor" name="systemYellowColor" catalog="System" colorSpace="catalog"/>
+                            </imageView>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AHV-h2-JUw">
+                                <rect key="frame" x="491" y="328" width="108" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Show is today" id="XED-gD-oNG">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <button translatesAutoresizingMaskIntoConstraints="NO" id="lDc-ng-394">
-                                <rect key="frame" x="451" y="279" width="143" height="65"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="65" id="guz-Lf-ux6"/>
-                                    <constraint firstAttribute="width" constant="143" id="xbf-tQ-wzS"/>
-                                </constraints>
-                                <buttonCell key="cell" type="square" title="Add Shows" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="LBD-o5-KbQ">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system" size="19"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="addShowsButtonTapped:" target="ZUI-rB-Ygw" id="4Rc-Ho-a9U"/>
-                                </connections>
-                            </button>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QSd-SP-GRh">
+                                <rect key="frame" x="652" y="328" width="138" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Show is an Ohm Pick" id="Ef7-Qy-LRi">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                         <constraints>
                             <constraint firstItem="WQr-Ml-o5A" firstAttribute="top" secondItem="SvG-XC-L3b" secondAttribute="bottom" constant="7" id="0yx-JE-8CI"/>
                             <constraint firstAttribute="trailing" secondItem="SvG-XC-L3b" secondAttribute="trailing" constant="13" id="30Y-KC-9pc"/>
-                            <constraint firstItem="lDc-ng-394" firstAttribute="top" secondItem="9oA-Zd-Pc1" secondAttribute="bottom" constant="25" id="4Yn-N7-Na0"/>
                             <constraint firstItem="WQr-Ml-o5A" firstAttribute="leading" secondItem="MP5-fy-G7p" secondAttribute="leading" id="4vJ-tT-I03"/>
                             <constraint firstItem="bLD-pl-kZN" firstAttribute="top" secondItem="WQr-Ml-o5A" secondAttribute="bottom" constant="19" id="6qf-EO-Brn"/>
                             <constraint firstItem="0ID-pT-0Lv" firstAttribute="leading" secondItem="2Eq-hH-2If" secondAttribute="trailing" constant="21" id="7eB-8Y-1pQ"/>
                             <constraint firstItem="SvG-XC-L3b" firstAttribute="leading" secondItem="Q8r-fH-NRo" secondAttribute="trailing" constant="27" id="7gq-Bv-KBQ"/>
                             <constraint firstItem="SvG-XC-L3b" firstAttribute="trailing" secondItem="WQr-Ml-o5A" secondAttribute="trailing" id="9bD-uh-exg"/>
                             <constraint firstItem="2Eq-hH-2If" firstAttribute="top" secondItem="bLD-pl-kZN" secondAttribute="bottom" constant="8" id="AVr-i9-bK7"/>
-                            <constraint firstAttribute="bottom" secondItem="9pp-uy-dao" secondAttribute="bottom" constant="197" id="BnD-1o-SCW"/>
                             <constraint firstItem="Q8r-fH-NRo" firstAttribute="leading" secondItem="MP5-fy-G7p" secondAttribute="leading" id="CRx-Mp-AQR"/>
                             <constraint firstItem="CcB-Q4-9kn" firstAttribute="leading" secondItem="lwA-tR-UiS" secondAttribute="leading" constant="13" id="Hyk-tR-t3e"/>
                             <constraint firstItem="CcB-Q4-9kn" firstAttribute="top" secondItem="lwA-tR-UiS" secondAttribute="top" constant="31" id="JZd-eJ-ltX"/>
@@ -1757,18 +1835,13 @@
                             <constraint firstAttribute="bottom" secondItem="CcB-Q4-9kn" secondAttribute="bottom" constant="20" id="Ob9-kj-4WD"/>
                             <constraint firstItem="9oA-Zd-Pc1" firstAttribute="top" secondItem="0ID-pT-0Lv" secondAttribute="bottom" constant="7" id="UJN-gK-bJu"/>
                             <constraint firstItem="WQr-Ml-o5A" firstAttribute="leading" secondItem="lwA-tR-UiS" secondAttribute="leading" constant="451" id="UUf-0z-hIm"/>
-                            <constraint firstItem="dE6-4m-H1O" firstAttribute="trailing" secondItem="9oA-Zd-Pc1" secondAttribute="trailing" id="WKW-Wa-8aJ"/>
-                            <constraint firstItem="bjm-wm-fSz" firstAttribute="top" secondItem="9pp-uy-dao" secondAttribute="bottom" constant="29" id="aRK-i8-4VH"/>
                             <constraint firstItem="bjm-wm-fSz" firstAttribute="trailing" secondItem="WQr-Ml-o5A" secondAttribute="trailing" id="bFk-f7-OP0"/>
                             <constraint firstItem="WQr-Ml-o5A" firstAttribute="top" secondItem="Q8r-fH-NRo" secondAttribute="bottom" constant="6" id="cUT-7Y-2YE"/>
-                            <constraint firstItem="lDc-ng-394" firstAttribute="leading" secondItem="9oA-Zd-Pc1" secondAttribute="leading" id="ccz-Jl-eSE"/>
                             <constraint firstItem="2Eq-hH-2If" firstAttribute="leading" secondItem="MP5-fy-G7p" secondAttribute="leading" id="e2a-oQ-WBh"/>
-                            <constraint firstItem="dE6-4m-H1O" firstAttribute="leading" secondItem="9pp-uy-dao" secondAttribute="trailing" constant="31" id="gBj-m9-dhn"/>
                             <constraint firstItem="bjm-wm-fSz" firstAttribute="leading" secondItem="MP5-fy-G7p" secondAttribute="leading" id="iyD-d7-lUj"/>
                             <constraint firstItem="0ID-pT-0Lv" firstAttribute="trailing" secondItem="WQr-Ml-o5A" secondAttribute="trailing" id="jnq-Gd-bwS"/>
                             <constraint firstItem="Q8r-fH-NRo" firstAttribute="top" secondItem="MP5-fy-G7p" secondAttribute="bottom" constant="4" id="kOU-At-SKq"/>
                             <constraint firstItem="bLD-pl-kZN" firstAttribute="leading" secondItem="MP5-fy-G7p" secondAttribute="leading" id="kT4-cD-j2K"/>
-                            <constraint firstItem="9pp-uy-dao" firstAttribute="baseline" secondItem="dE6-4m-H1O" secondAttribute="baseline" id="nFm-7H-Dk3"/>
                             <constraint firstItem="9oA-Zd-Pc1" firstAttribute="leading" secondItem="MP5-fy-G7p" secondAttribute="leading" id="qpe-Do-waR"/>
                             <constraint firstItem="9oA-Zd-Pc1" firstAttribute="trailing" secondItem="WQr-Ml-o5A" secondAttribute="trailing" id="zk8-09-lVd"/>
                         </constraints>
@@ -1787,9 +1860,11 @@
                         <outlet property="show2CheckBoxButton" destination="2j9-bv-7u4" id="D9e-Ue-Y9Y"/>
                         <outlet property="show3CheckBoxButton" destination="QvK-lV-xYq" id="pAu-1f-Ctv"/>
                         <outlet property="show4CheckBoxButton" destination="SkO-j3-zDI" id="8Ea-54-NQq"/>
+                        <outlet property="showsTableView" destination="wZr-d7-tnW" id="PzL-6E-2PC"/>
                         <outlet property="venueSearchField" destination="2Eq-hH-2If" id="6Hs-SO-V2p"/>
                         <outlet property="venueTableView" destination="P2N-R7-qOj" id="t37-q7-4rc"/>
                         <outlet property="venuesTableView" destination="9oA-Zd-Pc1" id="Cid-Qo-teY"/>
+                        <segue destination="yOJ-ms-d4r" kind="show" identifier="editShowSegue" id="JMb-WV-j47"/>
                     </connections>
                 </viewController>
                 <customObject id="qoR-yj-e5S" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -1910,8 +1985,8 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <datePickerCell key="cell" borderStyle="bezel" alignment="left" useCurrentDate="YES" id="U6u-Ac-yGh">
                                     <font key="font" metaFont="system"/>
-                                    <date key="date" timeIntervalSinceReferenceDate="655336716.03431296">
-                                        <!--2021-10-07 21:58:36 +0000-->
+                                    <date key="date" timeIntervalSinceReferenceDate="655435280.269045">
+                                        <!--2021-10-09 01:21:20 +0000-->
                                     </date>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1922,8 +1997,8 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <datePickerCell key="cell" borderStyle="bezel" alignment="left" useCurrentDate="YES" id="g7o-Ed-NvT">
                                     <font key="font" metaFont="system"/>
-                                    <date key="date" timeIntervalSinceReferenceDate="655336716.03934801">
-                                        <!--2021-10-07 21:58:36 +0000-->
+                                    <date key="date" timeIntervalSinceReferenceDate="655435280.27399004">
+                                        <!--2021-10-09 01:21:20 +0000-->
                                     </date>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -2807,7 +2882,7 @@
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wGR-lx-4dP">
                                 <rect key="frame" x="108" y="692" width="283" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="S2d-ZG-CVB">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="S2d-ZG-CVB">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -2862,8 +2937,8 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <datePickerCell key="cell" controlSize="large" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="Xe0-eP-c9f">
                                     <font key="font" metaFont="system"/>
-                                    <date key="date" timeIntervalSinceReferenceDate="655336716.101807">
-                                        <!--2021-10-07 21:58:36 +0000-->
+                                    <date key="date" timeIntervalSinceReferenceDate="655435280.36410403">
+                                        <!--2021-10-09 01:21:20 +0000-->
                                     </date>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -2942,7 +3017,7 @@
                 </viewController>
                 <customObject id="hnZ-rD-GqN" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2906" y="842"/>
+            <point key="canvasLocation" x="2906" y="848"/>
         </scene>
         <!--Venue Detail View Controller-->
         <scene sceneID="BAM-xc-FPk">
@@ -4033,7 +4108,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="Lod-BE-eDt"/>
-        <segue reference="Giz-8l-S5D"/>
+        <segue reference="JMb-WV-j47"/>
         <segue reference="1Cm-5h-QKw"/>
         <segue reference="bv4-8W-wTL"/>
     </inferredMetricsTieBreakers>
@@ -4570,7 +4645,9 @@ HDwcPhxAHEIcSRxLHE0pwynIKdcp2ynmKe4p+yoIKh0qIiomKigqKiosKjUqOipAKkgqSipMKk4qUDvw
 O/U8AjwFPBI8FzwfPCI8JzwvAAAAAAAAAgEAAAAAAAAAaAAAAAAAAAAAAAAAAAAAPDI
 </mutableData>
         </image>
+        <image name="orange" width="300" height="168"/>
         <image name="photo" catalog="system" width="24" height="17"/>
         <image name="togglepower" catalog="system" width="19" height="19"/>
+        <image name="yellow" width="600" height="600"/>
     </resources>
 </document>

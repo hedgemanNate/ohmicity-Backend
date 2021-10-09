@@ -12,12 +12,19 @@ class BulkShowCreationViewController: NSViewController {
     //TableViews
     var bandResultsArray = [Band]()
     var venueResultsArray = [BusinessFullData]()
+    var showsArray = [Show]() {
+        didSet {
+            showsTableView.reloadData()
+            print("set")
+        }
+    }
     
     var addedShowsToBePushedArray = [Show]()
     
     
     @IBOutlet weak var bandsTableView: NSTableView!
     @IBOutlet weak var venueTableView: NSTableView!
+    @IBOutlet weak var showsTableView: NSTableView!
     
     @IBOutlet weak var bandSearchField: NSSearchField!
     @IBOutlet weak var venueSearchField: NSSearchField!
@@ -70,6 +77,27 @@ class BulkShowCreationViewController: NSViewController {
         bandsTableView.dataSource = self
         venueTableView.delegate = self
         venueTableView.dataSource = self
+        venueTableView.doubleAction = #selector(doubleClickOnVenue)
+        showsTableView.delegate = self
+        showsTableView.dataSource = self
+        showsTableView.doubleAction = #selector(doubleClickOnShow)
+    }
+    
+    @objc private func doubleClickOnVenue() {
+        print("click")
+        let indexPath = venueTableView.selectedRow
+        let venueName = venueResultsArray[indexPath].name
+        showsArray = localDataController.showArray.filter({$0.venue == venueName})
+        showsArray.removeAll(where: {$0.onHold == true})
+        
+        DispatchQueue.main.async {
+            self.showsTableView.reloadData()
+        }
+    }
+    
+    @objc private func doubleClickOnShow() {
+        print("click")
+        performSegue(withIdentifier: "editShowSegue", sender: self)
     }
     
     private func resetCheckBoxes() {
@@ -235,10 +263,10 @@ class BulkShowCreationViewController: NSViewController {
     
     
     @IBAction func resetButtonTapped(_ sender: Any) {
-        resetCheckBoxes()
-        clearTextFields()
-        bandsTableView.reloadData()
-        venueTableView.reloadData()
+//        resetCheckBoxes()
+//        clearTextFields()
+//        bandsTableView.reloadData()
+//        venueTableView.reloadData()
     }
     
     @IBAction func refreshButtonTapped(_ sender: Any) {
@@ -278,6 +306,22 @@ class BulkShowCreationViewController: NSViewController {
 }
 
 
+//MARK: Segue
+extension BulkShowCreationViewController {
+    override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
+        switch segue.identifier {
+        case "editShowSegue":
+            guard let destinationVC = segue.destinationController as? ShowDetailViewController else {return}
+            let indexPath = showsTableView.selectedRow
+            let show = showsArray[indexPath]
+            destinationVC.currentShow = show
+        default:
+            break
+        }
+    }
+}
+
+
 //MARK: TableView
 extension BulkShowCreationViewController: NSTableViewDataSource, NSTableViewDelegate {
     
@@ -287,12 +331,15 @@ extension BulkShowCreationViewController: NSTableViewDataSource, NSTableViewDele
             return bandResultsArray.count
         case venueTableView:
             return venueResultsArray.count
+        case showsTableView:
+            return showsArray.count
         default:
             return 0
         }
     }
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        dateFormatter.dateFormat = dateFormat1
         switch tableView {
         case bandsTableView:
             if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "BandCell"), owner: nil) as? NSTableCellView {
@@ -304,11 +351,37 @@ extension BulkShowCreationViewController: NSTableViewDataSource, NSTableViewDele
                 cell.textField?.stringValue = venueResultsArray[row].name
                 return cell
             }
+        case showsTableView:
+            let show = showsArray[row]
+            let date = dateFormatter.string(from: show.date)
+            if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ShowCell"), owner: nil) as? NSTableCellView {
+                
+                cell.textField?.textColor = .white
+                cell.textField?.backgroundColor = .clear
+                
+                dateFormatter.dateFormat = dateFormat3
+                let showDate = dateFormatter.string(from: show.date)
+                let today = dateFormatter.string(from: Date())
+                
+                if showDate == today {
+                    cell.textField?.textColor = .orange
+                }
+                
+                if show.ohmPick == true {
+                    cell.textField?.textColor = .black
+                    cell.textField?.backgroundColor = .yellow
+                }
+                
+                cell.textField?.stringValue = "\(date) - \(showsArray[row].band)"
+                return cell
+            }
         default:
             return nil
         }
         return NSTableCellView()
     }
+        
+        
 }
 
 //MARK: Search
