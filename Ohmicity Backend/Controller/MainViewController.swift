@@ -482,8 +482,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         }
         
         DispatchQueue.main.async {
-            notificationCenter.post(Notification(name: Notification.Name(rawValue: "bandsUpdated")))
             self.tableView.reloadData()
+            notificationCenter.post(Notification(name: Notification.Name(rawValue: "bandsUpdated")))
         }
     }
     
@@ -725,7 +725,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         localDataController.loadBandData()
         
         //Search Functionality
-        inOrderLocalArrays()
+        inOrderArrays()
         parseDataController.resultsArray = parseDataController.jsonDataArray
         localDataController.businessResults = localDataController.businessArray
         remoteDataController.businessResults = remoteDataController.remoteBusinessArray
@@ -1037,7 +1037,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
 //MARK: Helper Functions
 extension MainViewController {
     
-    private func inOrderLocalArrays() {
+    private func inOrderArrays() {
         let biz = localDataController.businessArray.sorted(by: {$0.name < $1.name})
         let band = localDataController.bandArray.sorted(by: {$0.name < $1.name})
         let show = localDataController.showArray.sorted(by: {$0.date < $1.date})
@@ -1049,6 +1049,18 @@ extension MainViewController {
         localDataController.businessResults = localDataController.businessArray
         localDataController.bandResults = localDataController.bandArray
         localDataController.showResults = localDataController.showArray
+        
+        let bizRemote = remoteDataController.remoteBusinessArray.sorted(by: {$0.name < $1.name})
+        let bandRemote = remoteDataController.remoteBandArray.sorted(by: {$0.name < $1.name})
+        let showRemote = remoteDataController.remoteShowArray.sorted(by: {$0.date < $1.date})
+        
+        remoteDataController.remoteBusinessArray = bizRemote
+        remoteDataController.remoteBandArray = bandRemote
+        remoteDataController.remoteShowArray = showRemote
+        
+        remoteDataController.businessResults = remoteDataController.remoteBusinessArray
+        remoteDataController.bandResults = remoteDataController.remoteBandArray
+        remoteDataController.showResults = remoteDataController.remoteShowArray
     }
     
     private func buttonController(_ state:Bool) {
@@ -1125,7 +1137,7 @@ extension MainViewController {
     }
     
     @objc func showsUpdated() {
-        inOrderLocalArrays()
+        inOrderArrays()
         DispatchQueue.main.async {
             if self.localShowsButton.state == .on {
                 self.showAmountLabel.stringValue = "\(localDataController.showArray.count) Shows"
@@ -1139,7 +1151,7 @@ extension MainViewController {
     @objc func businessUpdatedAlertReceived() {
         saveVenuesButton.state = .on
         if self.localBusinessButton.state == .on && localDataController.businessArray == [] {
-            inOrderLocalArrays()
+            inOrderArrays()
             DispatchQueue.main.async {
                 self.tableView.reloadData()
                 self.buttonController(false)
@@ -1147,7 +1159,7 @@ extension MainViewController {
             }
             
         } else if self.localBusinessButton.state == .on {
-            inOrderLocalArrays()
+            inOrderArrays()
             DispatchQueue.main.async {
                 self.tableView.reloadData()
                 self.buttonController(false)
@@ -1159,12 +1171,11 @@ extension MainViewController {
     }
     
     @objc func bandUpdatedAlertReceived() {
-        inOrderLocalArrays()
-        if localBandsButton.state == .on {
-            DispatchQueue.main.async { [self] in
-                tableView.reloadData()
-            }
+        inOrderArrays()
+        DispatchQueue.main.async { [self] in
+            tableView.reloadData()
         }
+        
     }
 }
 
