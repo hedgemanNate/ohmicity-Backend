@@ -14,6 +14,7 @@ let notificationCenter = NotificationCenter.default
 let dateFormat1 = "E, MMMM d, yyyy ha"
 let dateFormat2 = "MMMM d, yyyy ha"
 let dateFormat3 = "MMMM d, yyyy"
+let dateFormat4 = "MMM d, yyyy h:ma"
 let dateFormatDay = "E"
 
 let dateFormatter = DateFormatter()

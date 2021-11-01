@@ -187,82 +187,60 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                     NSLog("Found Matching Venues")
                     
                     for show in venue.shows! {
-                        if show.showTime!.contains("2021") || show.showTime!.contains("2020") ||
-                            show.showTime!.contains("2019") || show.showTime!.contains("2018") ||
-                            show.showTime!.contains("2016") || show.showTime!.contains("2021") {
-                            
-                            NSLog("\(show) IS OLD")
-                        } else {
-                            
-                            //New Shows
-                            
-                            //Remove Problem Band Names from Data
-                            var bandName = ""
-                            
-                            switch show.bandName {
-                            case "! — Jack'D Up — ! Fun, Live, Dance Rock":
-                                bandName = "Jack'D Up"
-                            case "-22N-":
-                                bandName = "22N"
-                            case "! All Maria !":
-                                bandName = "All Maria"
-                            case "! MORE is MORE ™":
-                                bandName = "MORE is MORE"
-                            case "! Scarlet Drive !":
-                                bandName = "Scarlet Drive"
-                            case "! Smudgekitten !":
-                                bandName = "Smudgekitten"
-                            default:
-                                bandName = show.bandName!
-                            }
-                            
-                            let showTime = show.showTime!.replacingOccurrences(of: "—>", with: "", options: .regularExpression)
-                            
-                            var newShow = Show(band: bandName, venue: venue.venueName!, dateString: showTime)
-                            newShow.fixShowTime()
-                            newShow.lastModified = Timestamp()
-                            
-                            let dts = newShow.dateString
-                            newShow.dateString = "\(dts)" + " \(newShow.time)"
-                            newShow.city = business.city
-                            newShow.city?.append(.All)
-                            
-                            //Checks two date formats to create a date and time for the shows
-                            dateFormatter.dateFormat = dateFormat1
-                            if let date = dateFormatter.date(from: newShow.dateString) {
-                                newShow.date = date
-                            } else {
-                                dateFormatter.dateFormat = dateFormat2
-                                if let date = dateFormatter.date(from: newShow.dateString) {
-                                    newShow.date = date
-                                } else {
-                                    dateFormatter.dateFormat = dateFormat3
-                                    if let date = dateFormatter.date(from: newShow.dateString) {
-                                        newShow.date = date
-                                    }
-                                }
-                            }
-                            
-                            
-                            //Adds a new show and prevents duplicates of shows already added
-                            if localDataController.showArray.contains(newShow) == false {
-                                localDataController.showArray.append(newShow)
-                                self.alertTextField.stringValue = "\(newShow.venue): \(newShow.dateString) Show Added"
-                            }
-                            
-                            
-                            //Adds a new band and prevents duplicates of bands already added
-                            let newBand = Band(name: bandName)
-                            if localDataController.bandArray.contains(newBand) == false {
-                                localDataController.bandArray.append(newBand)
-                            }
-                            
-                            cleanedJSONArray.append(venue)
+                        //New Shows
+                        //Remove Problem Band Names from Data
+                        var bandName = ""
+                        
+                        switch show.band {
+                        case "! — Jack'D Up — ! Fun, Live, Dance Rock":
+                            bandName = "Jack'D Up"
+                        case "-22N-":
+                            bandName = "22N"
+                        case "! All Maria !":
+                            bandName = "All Maria"
+                        case "! MORE is MORE ™":
+                            bandName = "MORE is MORE"
+                        case "! Scarlet Drive !":
+                            bandName = "Scarlet Drive"
+                        case "! Smudgekitten !":
+                            bandName = "Smudgekitten"
+                        default:
+                            bandName = show.band!
                         }
+                        
+                        let showTime = show.dateString!
+                        
+                        var newShow = Show(band: bandName, venue: venue.venueName!, dateString: showTime)
+                        
+                        newShow.lastModified = Timestamp()
+                        newShow.dateString = show.dateString!
+                        newShow.city = business.city
+                        newShow.city?.append(.All)
+                        
+                        //Checks two date formats to create a date and time for the shows
+                        dateFormatter.dateFormat = dateFormat4
+                        if let date = dateFormatter.date(from: newShow.dateString) {
+                            newShow.date = date
+                        }
+                        
+                        //Adds a new show and prevents duplicates of shows already added
+                        if localDataController.showArray.contains(newShow) == false {
+                            localDataController.showArray.append(newShow)
+                            self.alertTextField.stringValue = "\(newShow.venue): \(newShow.dateString) Show Added"
+                        }
+                                 
+                        //Adds a new band and prevents duplicates of bands already added
+                        let newBand = Band(name: bandName)
+                        if localDataController.bandArray.contains(newBand) == false {
+                            localDataController.bandArray.append(newBand)
+                        }
+                        
+                        cleanedJSONArray.append(venue)
                     }
                 }
             }
         }
+        
         
         for venue in cleanedJSONArray {
             parseDataController.jsonDataArray.removeAll(where: {$0 == venue})

@@ -613,7 +613,7 @@ extension VenueDetailViewController {
             if currentVenue != nil {
                 
                 let jsonShow = currentVenue?.shows![row]
-                let convertedShow = Show(band: (jsonShow?.bandName)!, venue: (currentVenue?.venueName!)!, dateString: (jsonShow?.showTime!)!)
+                let convertedShow = Show(band: (jsonShow?.band)!, venue: (currentVenue?.venueName!)!, dateString: (jsonShow?.dateString!)!)
                 return convertedShow
             } else if currentBusiness != nil {
                 

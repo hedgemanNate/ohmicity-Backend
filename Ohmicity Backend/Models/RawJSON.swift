@@ -22,6 +22,6 @@ struct RawJSON: Codable, Equatable, Hashable {
 }
 
 struct ShowJSON: Codable, Hashable {
-    let bandName: String?
-    let showTime: String?
+    let band: String?
+    let dateString: String?
 }
