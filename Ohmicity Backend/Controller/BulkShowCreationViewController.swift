@@ -66,6 +66,7 @@ class BulkShowCreationViewController: NSViewController {
         show1CheckBoxButton.resignFirstResponder()
         bandSearchField.becomeFirstResponder()
         
+        
         checkBoxLogic()
         
         //UI For Buttons

@@ -912,11 +912,11 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                 showsInOrderArray = localDataController.showArray.sorted(by: {$0.date < $1.date})
                 let show = showsInOrderArray[row]
                 
-                dateFormatter.dateFormat = dateFormatDay
-                let showDay = dateFormatter.string(from: show.date)
+                dateFormatter.dateFormat = dateFormatShowInfo
+                var showDay = dateFormatter.string(from: show.date)
                 cell.textField?.textColor = .white
                 
-                cell.textField?.stringValue = "\(row + 1): \(showDay) \(showsInOrderArray[row].dateString): \(showsInOrderArray[row].venue):  *\(showsInOrderArray[row].band)*"
+                cell.textField?.stringValue = "\(row + 1): \(showDay): \(showsInOrderArray[row].venue):  *\(showsInOrderArray[row].band)*"
                 
                 //Show Color Coding
                 
