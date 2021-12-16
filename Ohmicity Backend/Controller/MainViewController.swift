@@ -449,13 +449,15 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         
         if localBandsButton.state == .on {
             localDataController.bandArray.removeAll(where: {$0.bandID == band.bandID})
+            localDataController.bandResults.removeAll(where: {$0.bandID == band.bandID})
             localDataController.saveBandData()
-            notificationCenter.post(Notification(name: Notification.Name(rawValue: "bandsUpdated")))
+            tableView.reloadData()
             
         } else if remoteBandsButton.state == .on {
             index = tableView.selectedRow
             band = remoteDataController.bandResults[index]
             remoteDataController.remoteBandArray.removeAll(where: {$0 == band})
+            remoteDataController.bandResults.removeAll(where: {$0.bandID == band.bandID})
             FireStoreReferenceManager.bandDataPath.document(band.bandID).delete
             { (err) in
                 if let err = err {
@@ -467,13 +469,11 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                     self.alertTextField.stringValue = "Delete Successful"
                 }
             }
-            notificationCenter.post(Notification(name: Notification.Name(rawValue: "bandsUpdated")))
             
         } else if newBandsButton.state == .on {
             localDataController.bandArray.removeAll(where: {$0.bandID == band.bandID})
             localDataController.bandResults.removeAll(where: {$0.bandID == band.bandID})
             localDataController.saveBandData()
-            
             tableView.reloadData()
         }
         
@@ -1029,7 +1029,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             businessVC.currentBusiness = remoteDataController.businessResults[indexPath]
             
             //Local Band Handling:
-        } else if segue.identifier == "editBandSegue" && localBandsButton.state == .on {
+        } else if segue.identifier == "editBandSegue" && localBandsButton.state == .on || newBandsButton.state == .on {
             guard let bandVC = segue.destinationController as? BandDetailViewController else {return}
             bandVC.currentBand = localDataController.bandResults[indexPath]
             
@@ -1138,6 +1138,13 @@ extension MainViewController {
             } else {
                 performSegue(withIdentifier: "editBandSegue", sender: self)
             }
+        
+        } else if newBandsButton.state == .on {
+            if tableView.selectedRow < 0 {
+                return
+            } else {
+                performSegue(withIdentifier: "editBandSegue", sender: self)
+            }
             
         } else if remoteBandsButton.state == .on {
             if tableView.selectedRow < 0 {
@@ -1197,7 +1204,7 @@ extension MainViewController {
     }
     
     @objc func bandUpdatedAlertReceived() {
-        inOrderArrays()
+        //inOrderArrays()
         DispatchQueue.main.async { [self] in
             tableView.reloadData()
         }

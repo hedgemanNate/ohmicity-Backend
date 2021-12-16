@@ -45,6 +45,8 @@ class ParseDataController {
                 
                 if let data = data {
                     completion(.success(data))
+                } else {
+                    return
                 }
             }
             

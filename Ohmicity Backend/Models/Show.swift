@@ -11,7 +11,7 @@ import FirebaseFirestore
 struct Show: Codable, Equatable, Hashable {
     var showID: String
     var lastModified = Timestamp()
-    let band: String
+    var band: String
     let venue: String
     var city: [City]?
     var dateString: String
