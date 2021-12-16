@@ -192,14 +192,19 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                         var bandName = ""
                         
                         for band in localDataController.bandArray {
+                            
                             guard let rawBand = show.band else {
                                 alertTextField.stringValue = "\(venue.venueName ?? "Some Venue") is missing band for \(show.dateString ?? "Some Date") show"
                                 return
-                                
                             }
                             
                             if rawBand.localizedCaseInsensitiveContains(band.name) {
+                                NSLog("\(rawBand) linked to \(band.name)")
                                 bandName = band.name
+                                break
+                            } else if rawBand == "band" {
+                                break
+                                
                             } else {
                                 bandName = rawBand
                             }
