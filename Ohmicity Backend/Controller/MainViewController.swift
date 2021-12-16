@@ -191,21 +191,20 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                         //Remove Problem Band Names from Data
                         var bandName = ""
                         
-                        switch show.band {
-                        case "! — Jack'D Up — ! Fun, Live, Dance Rock":
-                            bandName = "Jack'D Up"
-                        case "-22N-":
-                            bandName = "22N"
-                        case "! All Maria !":
-                            bandName = "All Maria"
-                        case "! MORE is MORE ™":
-                            bandName = "MORE is MORE"
-                        case "! Scarlet Drive !":
-                            bandName = "Scarlet Drive"
-                        case "! Smudgekitten !":
-                            bandName = "Smudgekitten"
-                        default:
-                            bandName = show.band!
+                        for band in localDataController.bandArray {
+                            guard let rawBand = show.band else {
+                                alertTextField.stringValue = "\(venue.venueName ?? "Some Venue") is missing band for \(show.dateString ?? "Some Date") show"
+                                return
+                                
+                            }
+                            
+                            if rawBand.localizedCaseInsensitiveContains(band.name) {
+                                bandName = band.name
+                            } else {
+                                bandName = rawBand
+                            }
+                                
+                            
                         }
                         
                         let showTime = show.dateString!
