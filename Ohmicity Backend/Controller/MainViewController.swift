@@ -63,6 +63,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     
     @IBOutlet weak var localBandsButton: NSButton!
     @IBOutlet weak var remoteBandsButton: NSButton!
+    @IBOutlet weak var newBandsButton: NSButton!
     
     @IBOutlet weak var localShowsButton: NSButton!
     @IBOutlet weak var remoteShowsButton: NSButton!
@@ -441,11 +442,16 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     
     @IBAction func deleteBandButtonTapped(_ sender: Any) {
         var index = tableView.selectedRow
+        if index == -1 {
+            return
+        }
         var band = localDataController.bandResults[index]
         
         if localBandsButton.state == .on {
-            localDataController.bandArray.removeAll(where: {$0 == band})
+            localDataController.bandArray.removeAll(where: {$0.bandID == band.bandID})
             localDataController.saveBandData()
+            notificationCenter.post(Notification(name: Notification.Name(rawValue: "bandsUpdated")))
+            
         } else if remoteBandsButton.state == .on {
             index = tableView.selectedRow
             band = remoteDataController.bandResults[index]
@@ -461,11 +467,19 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                     self.alertTextField.stringValue = "Delete Successful"
                 }
             }
+            notificationCenter.post(Notification(name: Notification.Name(rawValue: "bandsUpdated")))
+            
+        } else if newBandsButton.state == .on {
+            localDataController.bandArray.removeAll(where: {$0.bandID == band.bandID})
+            localDataController.bandResults.removeAll(where: {$0.bandID == band.bandID})
+            localDataController.saveBandData()
+            
+            tableView.reloadData()
         }
         
         DispatchQueue.main.async {
             self.tableView.reloadData()
-            notificationCenter.post(Notification(name: Notification.Name(rawValue: "bandsUpdated")))
+            print("Reloaded")
         }
     }
     
@@ -618,6 +632,20 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                 self.pullDataButton.isEnabled = false
                 self.pullDataButton.title = "Choose Remote Data"
             }
+            
+        } else if self.newBandsButton.state == .on {
+            DispatchQueue.main.async {
+                self.bringNewBandsToTop()
+                self.tableView.reloadData()
+                self.buttonController(false)
+                self.addBandButton.isEnabled = true
+                self.editBandButton.isEnabled = true
+                self.deleteBandButton.isEnabled = true
+                self.pushBandButton.isEnabled = true
+                self.pullDataButton.isEnabled = false
+                self.pullDataButton.title = "Choose Remote Data"
+            }
+            
         } else if self.localShowsButton.state == .on && localDataController.showArray == [] {
             searchBarField.isEnabled = false
             DispatchQueue.main.async {
@@ -881,6 +909,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             return remoteDataController.bandResults.count
         } else if remoteShowsButton.state == .on {
             return remoteDataController.showResults.count
+        } else if newBandsButton.state == .on {
+            return localDataController.bandResults.count
         }
         return 1
     }
@@ -911,13 +941,21 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                     cell.textField?.textColor = .orange
                 }
                 
+                //New Bands
+            } else if newBandsButton.state == .on && localDataController.bandArray != [] {
+                cell.textField?.stringValue = "\(row + 1): \(localDataController.bandResults[row].name)"
+                
+                if localDataController.bandResults[row].photo != nil {
+                    cell.textField?.textColor = .orange
+                }
+                
                 //Local Shows
             } else if localShowsButton.state == .on && localDataController.showArray != [] {
                 showsInOrderArray = localDataController.showArray.sorted(by: {$0.date < $1.date})
                 let show = showsInOrderArray[row]
                 
                 dateFormatter.dateFormat = dateFormatShowInfo
-                var showDay = dateFormatter.string(from: show.date)
+                let showDay = dateFormatter.string(from: show.date)
                 cell.textField?.textColor = .white
                 
                 cell.textField?.stringValue = "\(row + 1): \(showDay): \(showsInOrderArray[row].venue):  *\(showsInOrderArray[row].band)*"
@@ -1043,6 +1081,12 @@ extension MainViewController {
         remoteDataController.businessResults = remoteDataController.remoteBusinessArray
         remoteDataController.bandResults = remoteDataController.remoteBandArray
         remoteDataController.showResults = remoteDataController.remoteShowArray
+    }
+    
+    private func bringNewBandsToTop() {
+        let newBands = localDataController.bandArray.sorted(by: {$0.lastModified.seconds > $1.lastModified.seconds})
+        localDataController.bandArray = newBands
+        localDataController.bandResults = localDataController.bandArray
     }
     
     private func buttonController(_ state:Bool) {
