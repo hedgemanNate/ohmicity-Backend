@@ -52,6 +52,8 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     @IBOutlet weak var saveBandButton: NSButton!
     @IBOutlet weak var loadPictureButton: NSButton!
     @IBOutlet weak var ohmPickButton: NSButtonCell!
+    @IBOutlet weak var capitalize: NSButton!
+    
 
     
     
@@ -186,6 +188,15 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
             return
         }
     }
+    
+    @IBAction func capitalizeButtonTapped(_ sender: Any) {
+        let oldName = bandNameTextField.stringValue
+        let lowerName = oldName.lowercased()
+        let finalName = lowerName.capitalized
+        
+        bandNameTextField.stringValue = finalName
+    }
+    
     
     
     //MARK: Genre CheckBoxes Tapped
