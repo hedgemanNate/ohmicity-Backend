@@ -97,16 +97,21 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
                 let oldBandName = currentBand?.name
                 let newBandName = bandNameTextField.stringValue
                 
-                for var show in localDataController.showArray {
-                    if show.band == oldBandName {
-                        show.band = newBandName
-                        
-                        localDataController.showArray.removeAll(where: {$0 == show})
-                        localDataController.showArray.append(show)
+                
+                if oldBandName != newBandName {
+                    currentBand?.name = newBandName
+                    for var show in localDataController.showArray {
+                        if show.band == oldBandName {
+                            show.band = newBandName
+                            
+                            localDataController.showArray.removeAll(where: {$0 == show})
+                            show.lastModified = Timestamp()
+                            localDataController.showArray.append(show)
+                        }
                     }
+                    localDataController.saveShowData()
                 }
                 
-                currentBand?.name = newBandName
                 currentBand?.mediaLink = bandMediaLinkTextField.stringValue
                 currentBand?.photo = imageData
                 if ohmPickButton.state == .on {

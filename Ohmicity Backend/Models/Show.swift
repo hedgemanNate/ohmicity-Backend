@@ -12,7 +12,7 @@ struct Show: Codable, Equatable, Hashable {
     var showID: String
     var lastModified = Timestamp()
     var band: String
-    let venue: String
+    var venue: String
     var city: [City]?
     var dateString: String
     var date = Date()

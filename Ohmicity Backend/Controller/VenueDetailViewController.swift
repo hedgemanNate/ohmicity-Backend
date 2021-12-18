@@ -218,6 +218,24 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         print(numberString)
         guard let phoneNumber = Int(numberString) else {return print("Return on phone number")}
         
+        //Update Shows For Venue
+        let oldVenueName = currentBusiness?.name
+        let newVenueName = nameTextField.stringValue
+        
+        
+        if oldVenueName != newVenueName {
+            for var show in localDataController.showArray {
+                if show.venue == oldVenueName {
+
+                    localDataController.showArray.removeAll(where: {$0 == show})
+                    show.venue = newVenueName
+                    show.lastModified = Timestamp()
+                    localDataController.showArray.append(show)
+                }
+            }
+            localDataController.saveShowData()
+        }
+        
         
         //Picture Handling
         currentBusiness?.logo = logoData
