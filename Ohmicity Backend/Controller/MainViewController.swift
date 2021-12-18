@@ -63,6 +63,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     
     @IBOutlet weak var localBandsButton: NSButton!
     @IBOutlet weak var remoteBandsButton: NSButton!
+    @IBOutlet weak var newBandsButton: NSButton!
     
     @IBOutlet weak var localShowsButton: NSButton!
     @IBOutlet weak var remoteShowsButton: NSButton!
@@ -187,82 +188,64 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                     NSLog("Found Matching Venues")
                     
                     for show in venue.shows! {
-                        if show.showTime!.contains("2021") || show.showTime!.contains("2020") ||
-                            show.showTime!.contains("2019") || show.showTime!.contains("2018") ||
-                            show.showTime!.contains("2016") || show.showTime!.contains("2021") {
+                        //New Shows
+                        //Remove Problem Band Names from Data
+                        var bandName = ""
+                        
+                        for band in localDataController.bandArray {
                             
-                            NSLog("\(show) IS OLD")
-                        } else {
-                            
-                            //New Shows
-                            
-                            //Remove Problem Band Names from Data
-                            var bandName = ""
-                            
-                            switch show.bandName {
-                            case "! — Jack'D Up — ! Fun, Live, Dance Rock":
-                                bandName = "Jack'D Up"
-                            case "-22N-":
-                                bandName = "22N"
-                            case "! All Maria !":
-                                bandName = "All Maria"
-                            case "! MORE is MORE ™":
-                                bandName = "MORE is MORE"
-                            case "! Scarlet Drive !":
-                                bandName = "Scarlet Drive"
-                            case "! Smudgekitten !":
-                                bandName = "Smudgekitten"
-                            default:
-                                bandName = show.bandName!
+                            guard let rawBand = show.band else {
+                                alertTextField.stringValue = "\(venue.venueName ?? "Some Venue") is missing band for \(show.dateString ?? "Some Date") show"
+                                return
                             }
                             
-                            let showTime = show.showTime!.replacingOccurrences(of: "—>", with: "", options: .regularExpression)
-                            
-                            var newShow = Show(band: bandName, venue: venue.venueName!, dateString: showTime)
-                            newShow.fixShowTime()
-                            newShow.lastModified = Timestamp()
-                            
-                            let dts = newShow.dateString
-                            newShow.dateString = "\(dts)" + " \(newShow.time)"
-                            newShow.city = business.city
-                            newShow.city?.append(.All)
-                            
-                            //Checks two date formats to create a date and time for the shows
-                            dateFormatter.dateFormat = dateFormat1
-                            if let date = dateFormatter.date(from: newShow.dateString) {
-                                newShow.date = date
+                            if rawBand.localizedCaseInsensitiveContains(band.name) {
+                                NSLog("\(rawBand) linked to \(band.name)")
+                                bandName = band.name
+                                break
+                            } else if rawBand == "band" {
+                                break
+                                
                             } else {
-                                dateFormatter.dateFormat = dateFormat2
-                                if let date = dateFormatter.date(from: newShow.dateString) {
-                                    newShow.date = date
-                                } else {
-                                    dateFormatter.dateFormat = dateFormat3
-                                    if let date = dateFormatter.date(from: newShow.dateString) {
-                                        newShow.date = date
-                                    }
-                                }
+                                bandName = rawBand
                             }
+                                
                             
-                            
-                            //Adds a new show and prevents duplicates of shows already added
-                            if localDataController.showArray.contains(newShow) == false {
-                                localDataController.showArray.append(newShow)
-                                self.alertTextField.stringValue = "\(newShow.venue): \(newShow.dateString) Show Added"
-                            }
-                            
-                            
-                            //Adds a new band and prevents duplicates of bands already added
-                            let newBand = Band(name: bandName)
-                            if localDataController.bandArray.contains(newBand) == false {
-                                localDataController.bandArray.append(newBand)
-                            }
-                            
-                            cleanedJSONArray.append(venue)
                         }
+                        
+                        let showTime = show.dateString!
+                        
+                        var newShow = Show(band: bandName, venue: venue.venueName!, dateString: showTime)
+                        
+                        newShow.lastModified = Timestamp()
+                        newShow.dateString = show.dateString!
+                        newShow.city = business.city
+                        newShow.city?.append(.All)
+                        
+                        //Checks two date formats to create a date and time for the shows
+                        dateFormatter.dateFormat = dateFormat4
+                        if let date = dateFormatter.date(from: newShow.dateString) {
+                            newShow.date = date
+                        }
+                        
+                        //Adds a new show and prevents duplicates of shows already added
+                        if localDataController.showArray.contains(newShow) == false {
+                            localDataController.showArray.append(newShow)
+                            self.alertTextField.stringValue = "\(newShow.venue): \(newShow.dateString) Show Added"
+                        }
+                                 
+                        //Adds a new band and prevents duplicates of bands already added
+                        let newBand = Band(name: bandName)
+                        if localDataController.bandArray.contains(newBand) == false {
+                            localDataController.bandArray.append(newBand)
+                        }
+                        
+                        cleanedJSONArray.append(venue)
                     }
                 }
             }
         }
+        
         
         for venue in cleanedJSONArray {
             parseDataController.jsonDataArray.removeAll(where: {$0 == venue})
@@ -459,15 +442,22 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     
     @IBAction func deleteBandButtonTapped(_ sender: Any) {
         var index = tableView.selectedRow
+        if index == -1 {
+            return
+        }
         var band = localDataController.bandResults[index]
         
         if localBandsButton.state == .on {
-            localDataController.bandArray.removeAll(where: {$0 == band})
+            localDataController.bandArray.removeAll(where: {$0.bandID == band.bandID})
+            localDataController.bandResults.removeAll(where: {$0.bandID == band.bandID})
             localDataController.saveBandData()
+            tableView.reloadData()
+            
         } else if remoteBandsButton.state == .on {
             index = tableView.selectedRow
             band = remoteDataController.bandResults[index]
             remoteDataController.remoteBandArray.removeAll(where: {$0 == band})
+            remoteDataController.bandResults.removeAll(where: {$0.bandID == band.bandID})
             FireStoreReferenceManager.bandDataPath.document(band.bandID).delete
             { (err) in
                 if let err = err {
@@ -479,11 +469,17 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                     self.alertTextField.stringValue = "Delete Successful"
                 }
             }
+            
+        } else if newBandsButton.state == .on {
+            localDataController.bandArray.removeAll(where: {$0.bandID == band.bandID})
+            localDataController.bandResults.removeAll(where: {$0.bandID == band.bandID})
+            localDataController.saveBandData()
+            tableView.reloadData()
         }
         
         DispatchQueue.main.async {
             self.tableView.reloadData()
-            notificationCenter.post(Notification(name: Notification.Name(rawValue: "bandsUpdated")))
+            print("Reloaded")
         }
     }
     
@@ -636,6 +632,20 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                 self.pullDataButton.isEnabled = false
                 self.pullDataButton.title = "Choose Remote Data"
             }
+            
+        } else if self.newBandsButton.state == .on {
+            DispatchQueue.main.async {
+                self.bringNewBandsToTop()
+                self.tableView.reloadData()
+                self.buttonController(false)
+                self.addBandButton.isEnabled = true
+                self.editBandButton.isEnabled = true
+                self.deleteBandButton.isEnabled = true
+                self.pushBandButton.isEnabled = true
+                self.pullDataButton.isEnabled = false
+                self.pullDataButton.title = "Choose Remote Data"
+            }
+            
         } else if self.localShowsButton.state == .on && localDataController.showArray == [] {
             searchBarField.isEnabled = false
             DispatchQueue.main.async {
@@ -899,6 +909,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             return remoteDataController.bandResults.count
         } else if remoteShowsButton.state == .on {
             return remoteDataController.showResults.count
+        } else if newBandsButton.state == .on {
+            return localDataController.bandResults.count
         }
         return 1
     }
@@ -929,16 +941,24 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                     cell.textField?.textColor = .orange
                 }
                 
+                //New Bands
+            } else if newBandsButton.state == .on && localDataController.bandArray != [] {
+                cell.textField?.stringValue = "\(row + 1): \(localDataController.bandResults[row].name)"
+                
+                if localDataController.bandResults[row].photo != nil {
+                    cell.textField?.textColor = .orange
+                }
+                
                 //Local Shows
             } else if localShowsButton.state == .on && localDataController.showArray != [] {
                 showsInOrderArray = localDataController.showArray.sorted(by: {$0.date < $1.date})
                 let show = showsInOrderArray[row]
                 
-                dateFormatter.dateFormat = dateFormatDay
+                dateFormatter.dateFormat = dateFormatShowInfo
                 let showDay = dateFormatter.string(from: show.date)
                 cell.textField?.textColor = .white
                 
-                cell.textField?.stringValue = "\(row + 1): \(showDay) \(showsInOrderArray[row].dateString): \(showsInOrderArray[row].venue):  *\(showsInOrderArray[row].band)*"
+                cell.textField?.stringValue = "\(row + 1): \(showDay): \(showsInOrderArray[row].venue):  *\(showsInOrderArray[row].band)*"
                 
                 //Show Color Coding
                 
@@ -1009,7 +1029,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             businessVC.currentBusiness = remoteDataController.businessResults[indexPath]
             
             //Local Band Handling:
-        } else if segue.identifier == "editBandSegue" && localBandsButton.state == .on {
+        } else if segue.identifier == "editBandSegue" && localBandsButton.state == .on || newBandsButton.state == .on {
             guard let bandVC = segue.destinationController as? BandDetailViewController else {return}
             bandVC.currentBand = localDataController.bandResults[indexPath]
             
@@ -1063,6 +1083,12 @@ extension MainViewController {
         remoteDataController.showResults = remoteDataController.remoteShowArray
     }
     
+    private func bringNewBandsToTop() {
+        let newBands = localDataController.bandArray.sorted(by: {$0.lastModified.seconds > $1.lastModified.seconds})
+        localDataController.bandArray = newBands
+        localDataController.bandResults = localDataController.bandArray
+    }
+    
     private func buttonController(_ state:Bool) {
         loadFileButton.isEnabled = state
         consolidateButton.isEnabled = state
@@ -1107,6 +1133,13 @@ extension MainViewController {
             }
             
         } else if localBandsButton.state == .on {
+            if tableView.selectedRow < 0 {
+                return
+            } else {
+                performSegue(withIdentifier: "editBandSegue", sender: self)
+            }
+        
+        } else if newBandsButton.state == .on {
             if tableView.selectedRow < 0 {
                 return
             } else {
@@ -1171,7 +1204,7 @@ extension MainViewController {
     }
     
     @objc func bandUpdatedAlertReceived() {
-        inOrderArrays()
+        //inOrderArrays()
         DispatchQueue.main.async { [self] in
             tableView.reloadData()
         }

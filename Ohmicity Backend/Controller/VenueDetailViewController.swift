@@ -218,6 +218,24 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         print(numberString)
         guard let phoneNumber = Int(numberString) else {return print("Return on phone number")}
         
+        //Update Shows For Venue
+        let oldVenueName = currentBusiness?.name
+        let newVenueName = nameTextField.stringValue
+        
+        
+        if oldVenueName != newVenueName {
+            for var show in localDataController.showArray {
+                if show.venue == oldVenueName {
+
+                    localDataController.showArray.removeAll(where: {$0 == show})
+                    show.venue = newVenueName
+                    show.lastModified = Timestamp()
+                    localDataController.showArray.append(show)
+                }
+            }
+            localDataController.saveShowData()
+        }
+        
         
         //Picture Handling
         currentBusiness?.logo = logoData
@@ -613,7 +631,7 @@ extension VenueDetailViewController {
             if currentVenue != nil {
                 
                 let jsonShow = currentVenue?.shows![row]
-                let convertedShow = Show(band: (jsonShow?.bandName)!, venue: (currentVenue?.venueName!)!, dateString: (jsonShow?.showTime!)!)
+                let convertedShow = Show(band: (jsonShow?.band)!, venue: (currentVenue?.venueName!)!, dateString: (jsonShow?.dateString!)!)
                 return convertedShow
             } else if currentBusiness != nil {
                 

@@ -52,6 +52,8 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     @IBOutlet weak var saveBandButton: NSButton!
     @IBOutlet weak var loadPictureButton: NSButton!
     @IBOutlet weak var ohmPickButton: NSButtonCell!
+    @IBOutlet weak var capitalize: NSButton!
+    
 
     
     
@@ -91,7 +93,25 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         
         checkCurrentObject { [self] in
             if localDataController.bandArray.contains(currentBand!) {
-                currentBand?.name = bandNameTextField.stringValue
+                //Update Shows For Band
+                let oldBandName = currentBand?.name
+                let newBandName = bandNameTextField.stringValue
+                
+                
+                if oldBandName != newBandName {
+                    currentBand?.name = newBandName
+                    for var show in localDataController.showArray {
+                        if show.band == oldBandName {
+                            show.band = newBandName
+                            
+                            localDataController.showArray.removeAll(where: {$0 == show})
+                            show.lastModified = Timestamp()
+                            localDataController.showArray.append(show)
+                        }
+                    }
+                    localDataController.saveShowData()
+                }
+                
                 currentBand?.mediaLink = bandMediaLinkTextField.stringValue
                 currentBand?.photo = imageData
                 if ohmPickButton.state == .on {
@@ -109,6 +129,8 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
                 localDataController.saveBandData()
                 notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
                 buttonIndication(color: .green)
+                
+                
                 
             } else {
                 localDataController.bandArray.append(currentBand!)
@@ -171,6 +193,15 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
             return
         }
     }
+    
+    @IBAction func capitalizeButtonTapped(_ sender: Any) {
+        let oldName = bandNameTextField.stringValue
+        let lowerName = oldName.lowercased()
+        let finalName = lowerName.capitalized
+        
+        bandNameTextField.stringValue = finalName
+    }
+    
     
     
     //MARK: Genre CheckBoxes Tapped
