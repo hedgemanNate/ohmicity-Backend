@@ -54,7 +54,8 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     @IBOutlet weak var ohmPickButton: NSButtonCell!
     @IBOutlet weak var capitalize: NSButton!
     
-
+    @IBOutlet weak var lastUpdatedLabel: NSTextField!
+    
     
     
     override func viewDidLoad() {
@@ -344,6 +345,11 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
                 image = NSImage(data: imageData! as Data)
                 logoImageView.image = image
             }
+            
+            dateFormatter.dateFormat = dateFormat4
+            guard let lastDate = currentBand?.lastModified.dateValue() else {return NSLog("No lastModified for \(currentBand?.name ?? "This Band")")}
+            
+            lastUpdatedLabel.stringValue = "\(dateFormatter.string(from: lastDate))"
             
         } ifNil: { [self] in
             
