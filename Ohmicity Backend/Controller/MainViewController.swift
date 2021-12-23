@@ -187,7 +187,9 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                 if venue.venueName == business.name && venue.shows != nil {
                     NSLog("Found Matching Venues")
                     
-                    for show in venue.shows! {
+                    guard let shows = venue.shows else {continue}
+                    
+                    for show in shows {
                         //New Shows
                         //Remove Problem Band Names from Data
                         var bandName = ""
@@ -196,7 +198,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                             
                             guard let rawBand = show.band else {
                                 alertTextField.stringValue = "\(venue.venueName ?? "Some Venue") is missing band for \(show.dateString ?? "Some Date") show"
-                                return
+                                continue
                             }
                             
                             if rawBand.localizedCaseInsensitiveContains(band.name) {
@@ -537,6 +539,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             alertTextField.stringValue = "Error Pushing Updated Show"
         }
         
+        localDataController.saveShowData()
+                
     }
     
     
@@ -557,6 +561,35 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     @IBAction func copyRemoteData(_ sender: Any) {
         copyRemoteData()
     }
+    
+    @IBAction func removeDoubleBandsButtonTapped(_ sender: Any) {
+        var newDuplicatedBands = [Band]()
+        var similarBandName = [Band]()
+        
+        
+        //Finds exactly spelled double bands
+        for band1 in localDataController.bandArray {
+            for band2 in localDataController.bandArray {
+                if band1.name == band2.name && band1.lastModified.dateValue() > band2.lastModified.dateValue() {
+                    newDuplicatedBands.append(band1)
+                }
+                
+                if band2.name.localizedCaseInsensitiveContains(band1.name) && band2.name.count > band1.name.count {
+                    similarBandName.append(band2)
+                    print("Better Name: \(band1.name) \n Worse Name: \(band2.name)")
+                }
+            }
+        }
+        
+        for band1 in newDuplicatedBands {
+            localDataController.bandArray.removeAll(where: {$0.bandID == band1.bandID})
+            
+        }
+        
+        localDataController.bandResults = localDataController.bandArray
+        tableView.reloadData()
+    }
+    
     
     
     
@@ -891,6 +924,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             alertTextField.stringValue = "Show Data Copied"
         }
     }
+    
+    
     
     
     //MARK: TableView
