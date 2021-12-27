@@ -128,12 +128,26 @@ class RecommendationsViewController: NSViewController, NSTableViewDelegate, NSTa
         }
         ref.recommendationDataDataPath.document(currentRecommendation.recommendationID).delete { [self] error in
             if let err = error {
-                messageTextView.stringValue = err.localizedDescription
+                alertTextView.stringValue = err.localizedDescription
             } else {
                 recommendationArray.removeAll(where: {$0 == currentRecommendation})
-                self.currentRecommendation = recommendationArray[0]
-                DispatchQueue.main.async {
-                    self.messageTextView.stringValue = "\(currentRecommendation.recommendationID) was deleted"
+                
+                if recommendationArray.count == 0 {
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                        self.uidLabel.stringValue = ""
+                        self.messageTextView.stringValue = ""
+                        self.alertTextView.stringValue = "\(currentRecommendation.recommendationID) was deleted"
+                    }
+                    
+                } else {
+                    self.currentRecommendation = recommendationArray[0]
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                        self.uidLabel.stringValue = ""
+                        self.messageTextView.stringValue = ""
+                        self.alertTextView.stringValue = "\(currentRecommendation.recommendationID) was deleted"
+                    }
                 }
             }
         }
