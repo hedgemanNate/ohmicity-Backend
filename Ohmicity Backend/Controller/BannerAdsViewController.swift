@@ -8,7 +8,6 @@
 import Cocoa
 import FirebaseFirestore
 import FirebaseFirestoreSwift
-import SwiftUI
 
 class BannerAdsViewController: NSViewController {
     
@@ -47,7 +46,7 @@ class BannerAdsViewController: NSViewController {
     var clientResultsArray = [BusinessBannerAd]()
     var clientFullArray = [BusinessBannerAd]()
     
-    //MessageCneter
+    //MessageCenter
     @IBOutlet weak var messageCenterTextField: NSTextField!
     
     
@@ -306,8 +305,3 @@ extension BannerAdsViewController: NSTableViewDelegate, NSTableViewDataSource {
     }
 }
 
-struct BannerAdsViewController_Previews: PreviewProvider {
-    static var previews: some View {
-        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
-    }
-}

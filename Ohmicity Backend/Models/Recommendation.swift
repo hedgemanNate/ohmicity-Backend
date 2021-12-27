@@ -16,6 +16,6 @@ struct Recommendation: Codable, Equatable {
     let explanation: String
     let recommendationID: String
     let user: String
-    var save: Bool?
+    var tag: Int?
     
 }
