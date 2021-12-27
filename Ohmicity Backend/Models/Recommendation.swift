@@ -7,8 +7,14 @@
 
 import Foundation
 
-struct Recommendation {
-    let name: String
-    let website: String
-    let reason: String
+struct Recommendation: Codable, Equatable {
+    static func == (lhs: Recommendation, rhs: Recommendation) -> Bool {
+        return lhs.recommendationID == rhs.recommendationID
+    }
+    
+    let businessName: String
+    let explanation: String
+    let recommendationID: String
+    let user: String
+    
 }
