@@ -3242,7 +3242,7 @@
         <!--Recommendations-->
         <scene sceneID="AWe-ry-ZIq">
             <objects>
-                <viewController title="Recommendations" id="xfd-7V-F3z" sceneMemberID="viewController">
+                <viewController title="Recommendations" id="xfd-7V-F3z" customClass="RecommendationsViewController" customModule="Ohmicity_Backend" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="aCE-eE-Kzv">
                         <rect key="frame" x="0.0" y="0.0" width="889" height="683"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -3273,7 +3273,7 @@
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
-                                                        <tableCellView identifier="BusinessCell" id="1aO-Kc-ieK">
+                                                        <tableCellView identifier="RecomendationCell" id="1aO-Kc-ieK">
                                                             <rect key="frame" x="8" y="0.0" width="311" height="50"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
@@ -3307,20 +3307,11 @@
                                 </scroller>
                             </scrollView>
                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dUX-sx-aIv">
-                                <rect key="frame" x="344" y="212" width="525" height="236"/>
+                                <rect key="frame" x="345" y="212" width="525" height="236"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="Message" drawsBackground="YES" id="DKX-vT-R9v">
+                                <textFieldCell key="cell" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="Message" drawsBackground="YES" id="DKX-vT-R9v">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x5c-Im-y7I">
-                                <rect key="frame" x="611" y="456" width="260" height="16"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" title="Email" id="m2e-ai-X5E">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
@@ -3333,13 +3324,13 @@
                                 </buttonCell>
                                 <color key="contentTintColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
                                 <connections>
-                                    <action selector="deleteButtonTapped:" target="U7k-SJ-bwO" id="47k-Ko-ahP"/>
+                                    <action selector="deleteButtonTapped:" target="xfd-7V-F3z" id="hSH-qn-Ez8"/>
                                 </connections>
                             </button>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yw6-R5-oyl">
-                                <rect key="frame" x="342" y="456" width="204" height="16"/>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="avO-ia-2B6">
+                                <rect key="frame" x="344" y="456" width="190" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" title="UID" id="loP-wf-uXI">
+                                <textFieldCell key="cell" lineBreakMode="clipping" selectable="YES" title="Label" id="RWK-Ve-B9g">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -3347,6 +3338,11 @@
                             </textField>
                         </subviews>
                     </view>
+                    <connections>
+                        <outlet property="messageTextView" destination="dUX-sx-aIv" id="agw-pM-XeL"/>
+                        <outlet property="tableView" destination="sZv-Od-W5n" id="bkr-hR-LWU"/>
+                        <outlet property="uidLabel" destination="avO-ia-2B6" id="kdG-Wl-aIV"/>
+                    </connections>
                 </viewController>
                 <customObject id="t2a-9Q-uc5" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>

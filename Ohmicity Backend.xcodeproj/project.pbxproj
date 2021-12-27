@@ -33,6 +33,8 @@
 		F676F0E92698DAA400C47599 /* Recommendation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F676F0E82698DAA400C47599 /* Recommendation.swift */; };
 		F676F0EB2698DB4100C47599 /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = F676F0EA2698DB4100C47599 /* Rating.swift */; };
 		F676F0ED2698DD5900C47599 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = F676F0EC2698DD5900C47599 /* Message.swift */; };
+		F68A6CF027794A0B009DCB8F /* RecommendationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68A6CEE27794A0B009DCB8F /* RecommendationsViewController.swift */; };
+		F68A6CF127794A0B009DCB8F /* RecommendationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F68A6CEF27794A0B009DCB8F /* RecommendationsViewController.xib */; };
 		F6936DC426A0DA6C00E5FA7F /* Enumerations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6936DC326A0DA6C00E5FA7F /* Enumerations.swift */; };
 		F6A2D74F2656F05900C50456 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A2D74D2656F05900C50456 /* MainViewController.swift */; };
 		F6A2D7502656F05900C50456 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F6A2D74E2656F05900C50456 /* MainViewController.xib */; };
@@ -76,6 +78,8 @@
 		F676F0E82698DAA400C47599 /* Recommendation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recommendation.swift; sourceTree = "<group>"; };
 		F676F0EA2698DB4100C47599 /* Rating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rating.swift; sourceTree = "<group>"; };
 		F676F0EC2698DD5900C47599 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		F68A6CEE27794A0B009DCB8F /* RecommendationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationsViewController.swift; sourceTree = "<group>"; };
+		F68A6CEF27794A0B009DCB8F /* RecommendationsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecommendationsViewController.xib; sourceTree = "<group>"; };
 		F6936DC326A0DA6C00E5FA7F /* Enumerations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enumerations.swift; sourceTree = "<group>"; };
 		F6A2D74D2656F05900C50456 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		F6A2D74E2656F05900C50456 /* MainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
@@ -170,6 +174,8 @@
 				F65B06A7266C3EC300616BD9 /* ShowDetailViewController.swift */,
 				F65B06A2266C360F00616BD9 /* BandDetailViewController.swift */,
 				F617385C26D858A40084B2CB /* BannerAdsViewController.swift */,
+				F68A6CEE27794A0B009DCB8F /* RecommendationsViewController.swift */,
+				F68A6CEF27794A0B009DCB8F /* RecommendationsViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -307,6 +313,7 @@
 				D81FCF9427113DAC0070B4CF /* yellow.jpg in Resources */,
 				D81FCF9327113DAC0070B4CF /* orange.png in Resources */,
 				F615064B268E67E200C4B808 /* Ohmicity Logo Banner.png in Resources */,
+				F68A6CF127794A0B009DCB8F /* RecommendationsViewController.xib in Resources */,
 				F615064D268E680B00C4B808 /* 1200px-American_Heart_Association_Logo.svg.png in Resources */,
 				F655439F2689ABA300F823BA /* GoogleService-Info.plist in Resources */,
 			);
@@ -386,6 +393,7 @@
 				F676F0ED2698DD5900C47599 /* Message.swift in Sources */,
 				F6C31F552656E57B004A1BB2 /* AppDelegate.swift in Sources */,
 				F6D80C4B266B0FEF00A18ED2 /* Show.swift in Sources */,
+				F68A6CF027794A0B009DCB8F /* RecommendationsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
