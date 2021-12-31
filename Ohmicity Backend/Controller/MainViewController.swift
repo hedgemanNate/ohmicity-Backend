@@ -231,9 +231,11 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                         }
                         
                         //Adds a new show and prevents duplicates of shows already added
-                        if localDataController.showArray.contains(newShow) == false {
+                        if localDataController.showArray.contains(newShow) == true {
+                            localDataController.showArray.removeAll(where: {$0 == newShow})
                             localDataController.showArray.append(newShow)
-                            self.alertTextField.stringValue = "\(newShow.venue): \(newShow.dateString) Show Added"
+                        } else {
+                            localDataController.showArray.append(newShow)
                         }
                                  
                         //Adds a new band and prevents duplicates of bands already added
