@@ -17,11 +17,12 @@ import FirebaseFirestoreSwift
 class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     
     //MARK: Properties
-    var originalArray: [Band] = []
-    var filteredArray: [Band] = []
-    var showsInOrderArray: [Show] = []
-    var bandsInOrderArray: [Band] = []
-    var businessesInOrderArray: [BusinessFullData] = []
+    var originalArray = [Band]()
+    var filteredArray = [Band]()
+    var removeBandsArray = [Band]()
+    var showsInOrderArray = [Show]()
+    var bandsInOrderArray = [Band]()
+    var businessesInOrderArray = [BusinessFullData]()
     
     @IBOutlet weak var tableView: NSTableView!
     @IBOutlet weak var ohmButton: NSButton!
@@ -95,6 +96,14 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         
     }
     
+    //MARK: Function Buttons
+    @IBAction func removeDoubleBandsButtonTapped(_ sender: Any) {
+        removeDoubleBands()
+    }
+    
+    @IBAction func removeBandsWithNoShowsButtonTapped(_ sender: Any) {
+        removeBandsWithNoShows()
+    }
     
     //MARK: Buttons Tapped Functions
     
@@ -230,14 +239,21 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                             newShow.date = date
                         }
                         
-                        //Adds a new show and prevents duplicates of shows already added
+                        //Adds a new show and checks if old shows exist to put them on hold
                         if localDataController.showArray.contains(newShow) == true {
+                            
+                            guard var holdShow = localDataController.showArray.first(where: {$0 == newShow}) else { continue }
+                            holdShow.onHold = true
+                            holdShow.lastModified = Timestamp()
+                            
                             localDataController.showArray.removeAll(where: {$0 == newShow})
+                            
+                            localDataController.showArray.append(holdShow)
                             localDataController.showArray.append(newShow)
                         } else {
                             localDataController.showArray.append(newShow)
                         }
-                                 
+                        
                         //Adds a new band and prevents duplicates of bands already added
                         let newBand = Band(name: bandName)
                         if localDataController.bandArray.contains(newBand) == false {
@@ -563,35 +579,6 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     @IBAction func copyRemoteData(_ sender: Any) {
         copyRemoteData()
     }
-    
-    @IBAction func removeDoubleBandsButtonTapped(_ sender: Any) {
-        var newDuplicatedBands = [Band]()
-        var similarBandName = [Band]()
-        
-        
-        //Finds exactly spelled double bands
-        for band1 in localDataController.bandArray {
-            for band2 in localDataController.bandArray {
-                if band1.name == band2.name && band1.lastModified.dateValue() > band2.lastModified.dateValue() {
-                    newDuplicatedBands.append(band1)
-                }
-                
-                if band2.name.localizedCaseInsensitiveContains(band1.name) && band2.name.count > band1.name.count {
-                    similarBandName.append(band2)
-                    print("Better Name: \(band1.name) \n Worse Name: \(band2.name)")
-                }
-            }
-        }
-        
-        for band1 in newDuplicatedBands {
-            localDataController.bandArray.removeAll(where: {$0.bandID == band1.bandID})
-            
-        }
-        
-        localDataController.bandResults = localDataController.bandArray
-        tableView.reloadData()
-    }
-    
     
     
     
@@ -1340,6 +1327,57 @@ extension MainViewController {
                 }
             }
         }
+    }
+}
+
+
+//MARK: Function Buttons
+extension MainViewController {
+    
+    private func removeDoubleBands() {
+        var newDuplicatedBands = [Band]()
+        var similarBandName = [Band]()
+        
+        
+        //Finds exactly spelled double bands
+        for band1 in localDataController.bandArray {
+            for band2 in localDataController.bandArray {
+                if band1.name == band2.name && band1.lastModified.dateValue() > band2.lastModified.dateValue() {
+                    newDuplicatedBands.append(band1)
+                }
+                
+                if band2.name.localizedCaseInsensitiveContains(band1.name) && band2.name.count > band1.name.count {
+                    similarBandName.append(band2)
+                    print("Better Name: \(band1.name) \n Worse Name: \(band2.name)")
+                }
+            }
+        }
+        
+        for band1 in newDuplicatedBands {
+            localDataController.bandArray.removeAll(where: {$0.bandID == band1.bandID})
+            
+        }
+        
+        localDataController.bandResults = localDataController.bandArray
+        tableView.reloadData()
+    }
+    
+    private func removeBandsWithNoShows() {
+        
+        for band in localDataController.bandArray {
+            var bandShowNumbers = 0
+            for show in localDataController.showArray {
+                if show.band == band.name {
+                    bandShowNumbers += 1
+                }
+            }
+            if bandShowNumbers == 0 && band.photo == nil { removeBandsArray.append(band); print(band.name) } else { continue }
+        }
+        
+        for band in removeBandsArray {
+            localDataController.bandArray.removeAll(where: {$0 == band})
+        }
+        
     }
 }
 
