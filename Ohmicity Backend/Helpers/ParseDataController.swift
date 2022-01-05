@@ -10,30 +10,12 @@ import Foundation
 
 class ParseDataController {
     
-    var data: Venue?
+    var data: Shows?
     var path: URL?
-    var jsonDataArray = [RawJSON]()
-    var resultsArray = [RawJSON]()
+    var rawShowsArray = [ShowData]()
+    var rawShowsResultsArray = [ShowData]()
     
     
-    
-    func loadPath(completion: @escaping () -> Void) {
-        guard let path = path else {return NSLog("No file loaded")}
-        loadJson(fromURLString: path.absoluteString) { (result) in
-            print(path)
-            switch result {
-            case .success(let data):
-                print("loadJson worked")
-                self.parse(jsonData: data)
-                completion()
-                
-            case .failure(let error):
-                print(error)
-                print("loadJson failed")
-                return
-            }
-        }
-    }
     
     func loadShowsPath(completion: @escaping () -> Void) {
         guard let path = path else {return NSLog("No file loaded")}
@@ -75,19 +57,21 @@ class ParseDataController {
     private func parse(jsonData: Data) {
         do {
             let serialQueue = DispatchQueue(label: "JsonArrayQueue")
-            let decodedData = try JSONDecoder().decode(Venue.self, from: jsonData)
+            let decodedData = try JSONDecoder().decode(Shows.self, from: jsonData)
             data = decodedData
             
             
             guard let data = data else {return}
-            for show in data.venue {
+            for show in data.shows {
                 serialQueue.sync { [self] in
-                    jsonDataArray.append(show)
+                    rawShowsArray.append(show)
                 }
             }
+            print(rawShowsArray)
             //Search Functionality
-            resultsArray = []
-            resultsArray = jsonDataArray
+            
+            rawShowsResultsArray = []
+            rawShowsResultsArray = rawShowsArray
             
         } catch {
             print("decode error")
@@ -98,4 +82,4 @@ class ParseDataController {
     
 }
 
-let parseDataController = ParseDataController()
+let rawShowDataController = ParseDataController()

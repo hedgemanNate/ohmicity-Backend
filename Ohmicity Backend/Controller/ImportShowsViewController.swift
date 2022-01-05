@@ -22,7 +22,7 @@ class ImportShowsViewController: NSViewController, NSTableViewDelegate, NSTableV
         super.viewDidLoad()
         showsTableView.dataSource = self
         showsTableView.delegate = self
-        
+        localDataController.loadShowData()
     }
     
     //MARK: Buttons
@@ -40,10 +40,12 @@ class ImportShowsViewController: NSViewController, NSTableViewDelegate, NSTableV
             
             for result in results {
                 let url = URL(fileURLWithPath: result.path)
-                parseDataController.path = url
-                parseDataController.loadPath {
+                rawShowDataController.path = url
+                rawShowDataController.loadShowsPath {
+                    localDataController.saveJsonData()
                     DispatchQueue.main.async {
                         self.showsTableView.reloadData()
+                        self.numberOfNewShowsLabel.stringValue = "\(rawShowDataController.rawShowsArray.count)"
                     }
                 }
             }
@@ -51,6 +53,8 @@ class ImportShowsViewController: NSViewController, NSTableViewDelegate, NSTableV
     }
     
     @IBAction func clearButtonTapped(_ sender: Any) {
+        rawShowDataController.rawShowsArray = []
+        showsTableView.reloadData()
     }
     
     @IBAction func assignButtonTapped(_ sender: Any) {
@@ -58,6 +62,25 @@ class ImportShowsViewController: NSViewController, NSTableViewDelegate, NSTableV
     
     @IBAction func doubleCheckButtonTapped(_ sender: Any) {
     }
+}
+
+extension ImportShowsViewController {
     
+    func numberOfRows(in tableView: NSTableView) -> Int {
+        return rawShowDataController.rawShowsArray.count
+    }
+    
+    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        
+        let show = rawShowDataController.rawShowsArray[row]
+        
+        if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier("RawShowCell"), owner: nil) as? NSTableCellView {
+            
+            cell.textField?.stringValue = "\(row + 1): \(show.venue) | \(show.band) | \(show.dateString)"
+            
+            return cell
+        }
+        return nil
+    }
     
 }

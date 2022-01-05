@@ -36,12 +36,6 @@ class LocalDataStorageController {
         }
     }
     
-    func saveBusinessBasicData() {
-        if let encoded = try? JSONEncoder().encode(businessArray) {
-            UserDefaults.standard.set(encoded, forKey: "SavedBusinessBasicData")
-            print("Business Data Saved")
-        }
-    }
 }
 
 //MARK: Band Data
@@ -64,12 +58,12 @@ extension LocalDataStorageController {
     }
 }
 
-//MARK: Raw JSON data
+//MARK: Scrapped Data
 extension LocalDataStorageController {
     func loadJsonData() {
         if let data = UserDefaults.standard.data(forKey: "SavedJsonData") {
-            if let decoded = try? JSONDecoder().decode([RawJSON].self, from: data) {
-                parseDataController.jsonDataArray = decoded
+            if let decoded = try? JSONDecoder().decode([ShowData].self, from: data) {
+                rawShowDataController.rawShowsArray = decoded
                 print("JSON Data Loaded")
                 return
             }
@@ -77,14 +71,14 @@ extension LocalDataStorageController {
     }
     
     func saveJsonData() {
-        if let encoded = try? JSONEncoder().encode(parseDataController.jsonDataArray) {
+        if let encoded = try? JSONEncoder().encode(rawShowDataController.rawShowsArray) {
             UserDefaults.standard.set(encoded, forKey: "SavedJsonData")
             print("Json Data Saved")
         }
     }
 }
     
-//MARK: Raw Show data
+//MARK: Show data
 extension LocalDataStorageController {
     func loadShowData() {
         if let data = UserDefaults.standard.data(forKey: "SavedShowData") {

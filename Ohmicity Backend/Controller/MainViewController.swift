@@ -122,8 +122,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             
             for result in results {
                 let url = URL(fileURLWithPath: result.path)
-                parseDataController.path = url
-                parseDataController.loadPath {
+                rawShowDataController.path = url
+                rawShowDataController.loadShowsPath {
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
                     }
@@ -154,27 +154,27 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     
     //MARK: Venue/JSON Buttons Tapped
     @IBAction func consolidateButtonTapped(_ sender: Any) {
-        let was = parseDataController.jsonDataArray.count
-        
-        let reduce = parseDataController.jsonDataArray.reduce(into: [:], {$0[$1, default: 0] += 1})
-        let sorted = reduce.sorted(by: {$0.value > $1.value})
-        let map    = sorted.map({$0.key})
-        let orderedArray = map.sorted { $0.venueName ?? "CORRUPTED" < $1.venueName ?? "CORRUPTED" }
-        parseDataController.jsonDataArray = orderedArray
-        parseDataController.jsonDataArray.removeAll(where: {$0.venueName == nil})
-        parseDataController.resultsArray = parseDataController.jsonDataArray
-        let now = parseDataController.resultsArray.count
-        
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
-        
-        self.alertTextField.stringValue = "Shows were: \(was). And are now: \(now)"
+//        let was = parseDataController.jsonDataArray.count
+//
+//        let reduce = parseDataController.jsonDataArray.reduce(into: [:], {$0[$1, default: 0] += 1})
+//        let sorted = reduce.sorted(by: {$0.value > $1.value})
+//        let map    = sorted.map({$0.key})
+//        let orderedArray = map.sorted { $0.venueName ?? "CORRUPTED" < $1.venueName ?? "CORRUPTED" }
+//        parseDataController.jsonDataArray = orderedArray
+//        parseDataController.jsonDataArray.removeAll(where: {$0.venueName == nil})
+//        parseDataController.resultsArray = parseDataController.jsonDataArray
+//        let now = parseDataController.resultsArray.count
+//
+//        DispatchQueue.main.async {
+//            self.tableView.reloadData()
+//        }
+//
+//        self.alertTextField.stringValue = "Shows were: \(was). And are now: \(now)"
     }
     
     @IBAction func clearButtonTapped(_ sender: Any) {
-        parseDataController.jsonDataArray = []
-        parseDataController.resultsArray = parseDataController.jsonDataArray
+        rawShowDataController.rawShowsArray = []
+        rawShowDataController.rawShowsResultsArray = rawShowDataController.rawShowsArray
         localDataController.saveJsonData()
         DispatchQueue.main.async {
             self.tableView.reloadData()
@@ -188,104 +188,104 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     
     //MARK: Save New Shows
     @IBAction func saveNewShowsButtonTapped(_ sender: Any) {
-        var cleanedJSONArray: [RawJSON] = []
-        
-        //Parsing to make Shows based on Businesses
-        for venue in parseDataController.jsonDataArray {
-            for business in localDataController.businessArray {
-                if venue.venueName == business.name && venue.shows != nil {
-                    NSLog("Found Matching Venues")
-                    
-                    guard let shows = venue.shows else {continue}
-                    
-                    for show in shows {
-                        //New Shows
-                        //Remove Problem Band Names from Data
-                        var bandName = ""
-                        
-                        for band in localDataController.bandArray {
-                            
-                            guard let rawBand = show.band else {
-                                alertTextField.stringValue = "\(venue.venueName ?? "Some Venue") is missing band for \(show.dateString ?? "Some Date") show"
-                                continue
-                            }
-                            
-                            if rawBand.localizedCaseInsensitiveContains(band.name) {
-                                NSLog("\(rawBand) linked to \(band.name)")
-                                bandName = band.name
-                                break
-                            } else if rawBand == "band" {
-                                break
-                                
-                            } else {
-                                bandName = rawBand
-                            }
-                                
-                            
-                        }
-                        
-                        let showTime = show.dateString!
-                        
-                        var newShow = Show(band: bandName, venue: venue.venueName!, dateString: showTime)
-                        
-                        newShow.lastModified = Timestamp()
-                        newShow.dateString = show.dateString!
-                        newShow.city = business.city
-                        newShow.city?.append(.All)
-                        
-                        //Checks two date formats to create a date and time for the shows
-                        dateFormatter.dateFormat = dateFormat4
-                        if let date = dateFormatter.date(from: newShow.dateString) {
-                            newShow.date = date
-                        }
-                        
-                        //Adds a new show and checks if old shows exist to put them on hold
-                        if localDataController.showArray.contains(newShow) == true {
-                            
-                            guard var holdShow = localDataController.showArray.first(where: {$0 == newShow}) else { continue }
-                            holdShow.onHold = true
-                            holdShow.lastModified = Timestamp()
-                            
-                            localDataController.showArray.removeAll(where: {$0 == newShow})
-                            
-                            localDataController.showArray.append(holdShow)
-                            localDataController.showArray.append(newShow)
-                        } else {
-                            localDataController.showArray.append(newShow)
-                        }
-                        
-                        //Adds a new band and prevents duplicates of bands already added
-                        let newBand = Band(name: bandName)
-                        if localDataController.bandArray.contains(newBand) == false {
-                            localDataController.bandArray.append(newBand)
-                        }
-                        
-                        cleanedJSONArray.append(venue)
-                    }
-                }
-            }
-        }
-        
-        
-        for venue in cleanedJSONArray {
-            parseDataController.jsonDataArray.removeAll(where: {$0 == venue})
-        }
-        parseDataController.resultsArray = parseDataController.jsonDataArray
-        
-        localDataController.showArray.removeDuplicates()
-        
-        localDataController.saveJsonData()
-        print("All Raw Shows Saved")
-        localDataController.saveShowData()
-        print("All Relevant Shows Saved")
-        localDataController.saveBandData()
-        print("All Bands Saved")
-        
-        DispatchQueue.main.async { [self] in
-            tableView.reloadData()
-        }
-        
-        notificationCenter.post(Notification(name: Notification.Name(rawValue: "showsUpdated")))
+//        var cleanedJSONArray: [RawJSON] = []
+//
+//        //Parsing to make Shows based on Businesses
+//        for venue in parseDataController.jsonDataArray {
+//            for business in localDataController.businessArray {
+//                if venue.venueName == business.name && venue.shows != nil {
+//                    NSLog("Found Matching Venues")
+//
+//                    guard let shows = venue.shows else {continue}
+//
+//                    for show in shows {
+//                        //New Shows
+//                        //Remove Problem Band Names from Data
+//                        var bandName = ""
+//
+//                        for band in localDataController.bandArray {
+//
+//                            guard let rawBand = show.band else {
+//                                alertTextField.stringValue = "\(venue.venueName ?? "Some Venue") is missing band for \(show.dateString ?? "Some Date") show"
+//                                continue
+//                            }
+//
+//                            if rawBand.localizedCaseInsensitiveContains(band.name) {
+//                                NSLog("\(rawBand) linked to \(band.name)")
+//                                bandName = band.name
+//                                break
+//                            } else if rawBand == "band" {
+//                                break
+//
+//                            } else {
+//                                bandName = rawBand
+//                            }
+//
+//
+//                        }
+//
+//                        let showTime = show.dateString!
+//
+//                        //var newShow = Show(band: bandName, venue: venue.venueName!, dateString: showTime)
+//
+//                        newShow.lastModified = Timestamp()
+//                        newShow.dateString = show.dateString!
+//                        newShow.city = business.city
+//                        newShow.city?.append(.All)
+//
+//                        //Checks two date formats to create a date and time for the shows
+//                        dateFormatter.dateFormat = dateFormat4
+//                        if let date = dateFormatter.date(from: newShow.dateString) {
+//                            newShow.date = date
+//                        }
+//
+//                        //Adds a new show and checks if old shows exist to put them on hold
+//                        if localDataController.showArray.contains(newShow) == true {
+//
+//                            guard var holdShow = localDataController.showArray.first(where: {$0 == newShow}) else { continue }
+//                            holdShow.onHold = true
+//                            holdShow.lastModified = Timestamp()
+//
+//                            localDataController.showArray.removeAll(where: {$0 == newShow})
+//
+//                            localDataController.showArray.append(holdShow)
+//                            localDataController.showArray.append(newShow)
+//                        } else {
+//                            localDataController.showArray.append(newShow)
+//                        }
+//
+//                        //Adds a new band and prevents duplicates of bands already added
+//                        let newBand = Band(name: bandName)
+//                        if localDataController.bandArray.contains(newBand) == false {
+//                            localDataController.bandArray.append(newBand)
+//                        }
+//
+//                        cleanedJSONArray.append(venue)
+//                    }
+//                }
+//            }
+//        }
+//
+//
+//        for venue in cleanedJSONArray {
+//            //parseDataController.jsonDataArray.removeAll(where: {$0 == venue})
+//        }
+//        parseDataController.resultsArray = parseDataController.jsonDataArray
+//
+//        localDataController.showArray.removeDuplicates()
+//
+//        localDataController.saveJsonData()
+//        print("All Raw Shows Saved")
+//        localDataController.saveShowData()
+//        print("All Relevant Shows Saved")
+//        localDataController.saveBandData()
+//        print("All Bands Saved")
+//
+//        DispatchQueue.main.async { [self] in
+//            tableView.reloadData()
+//        }
+//
+//        notificationCenter.post(Notification(name: Notification.Name(rawValue: "showsUpdated")))
     }
     
     //MARK: Edit Buttons Tapped
@@ -613,7 +613,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         notificationCenter.post(Notification(name: Notification.Name(rawValue: "bandsUpdated")))
         notificationCenter.post(Notification(name: Notification.Name(rawValue: "showsUpdated")))
         
-        if self.rawJSONDataButton.state == .on && parseDataController.jsonDataArray == [] {
+        if self.rawJSONDataButton.state == .on && rawShowDataController.rawShowsArray == [] {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
                 self.buttonController(false)
@@ -779,7 +779,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         
         //Search Functionality
         inOrderArrays()
-        parseDataController.resultsArray = parseDataController.jsonDataArray
+        rawShowDataController.rawShowsResultsArray = rawShowDataController.rawShowsArray
         localDataController.businessResults = localDataController.businessArray
         remoteDataController.businessResults = remoteDataController.remoteBusinessArray
         localDataController.bandResults = localDataController.bandArray
@@ -792,12 +792,12 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             self.showsUpdated()
         }
         
-        if parseDataController.jsonDataArray == [] {
+        if rawShowDataController.rawShowsArray == [] {
             DispatchQueue.main.async {
                 self.buttonController(false)
                 self.loadFileButton.isEnabled = true
             }
-        } else if parseDataController.jsonDataArray != [] {
+        } else if rawShowDataController.rawShowsArray != [] {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
                 self.buttonController(false)
@@ -941,7 +941,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     //MARK: TableView
     func numberOfRows(in tableView: NSTableView) -> Int {
         if rawJSONDataButton.state == .on {
-            return parseDataController.resultsArray.count
+            return rawShowDataController.rawShowsResultsArray.count
         } else if localBusinessButton.state == .on {
             return localDataController.businessResults.count
         } else if localBandsButton.state == .on {
@@ -966,8 +966,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             
             //RawJSON
             if rawJSONDataButton.state == .on {
-                guard ((cell.textField?.stringValue = "\(row + 1): \(parseDataController.resultsArray[row].venueName ?? "CORRUPTED")") != nil) else {return NSTableCellView()}
-                
+//                guard ((cell.textField?.stringValue = "\(row + 1): \(parseDataController.resultsArray[row].venueName ?? "CORRUPTED")") != nil) else {return NSTableCellView()}
+//
                 //Local Businesses
             } else if localBusinessButton.state == .on && localDataController.businessArray != [] {
                 cell.textField?.stringValue = "\(row + 1): \(localDataController.businessResults[row].name)"
@@ -1060,8 +1060,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         
         if segue.identifier == "editVenueSegue" {
             
-            guard let venueVC = segue.destinationController as? VenueDetailViewController else {return}
-            venueVC.currentVenue = parseDataController.resultsArray[indexPath]
+//            guard let venueVC = segue.destinationController as? VenueDetailViewController else {return}
+//            venueVC.currentVenue = parseDataController.resultsArray[indexPath]
             
             //Local Business Handling:
         } else if segue.identifier == "editBusinessSegue" && localBusinessButton.state == .on {
@@ -1263,22 +1263,22 @@ extension MainViewController {
     
     private func search() {
         if rawJSONDataButton.state == .on {
-            if searchBarField.stringValue != "" {
-                let json = parseDataController.jsonDataArray
-                parseDataController.resultsArray = json.filter({($0.venueName?.localizedCaseInsensitiveContains(searchBarField.stringValue))!})
-                
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                    let index = NSIndexSet(index: 0)
-                    self.tableView.selectRowIndexes(index as IndexSet, byExtendingSelection: false)
-                    self.tableView.scrollRowToVisible(0)
-                }
-            } else {
-                parseDataController.resultsArray = parseDataController.jsonDataArray
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-            }
+//            if searchBarField.stringValue != "" {
+//                let json = parseDataController.jsonDataArray
+//                parseDataController.resultsArray = json.filter({($0.venueName?.localizedCaseInsensitiveContains(searchBarField.stringValue))!})
+//
+//                DispatchQueue.main.async {
+//                    self.tableView.reloadData()
+//                    let index = NSIndexSet(index: 0)
+//                    self.tableView.selectRowIndexes(index as IndexSet, byExtendingSelection: false)
+//                    self.tableView.scrollRowToVisible(0)
+//                }
+//            } else {
+//                parseDataController.resultsArray = parseDataController.jsonDataArray
+//                DispatchQueue.main.async {
+//                    self.tableView.reloadData()
+//                }
+//            }
         } else if localBusinessButton.state == .on {
             if searchBarField.stringValue != "" {
                 let business = localDataController.businessArray

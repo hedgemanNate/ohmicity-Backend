@@ -19,7 +19,6 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     
     
     var currentBusinessShows: [Show]?
-    var currentVenue: RawJSON?
     var currentBusiness: BusinessFullData?
     var image: NSImage?
     var logoData: Data?
@@ -200,7 +199,6 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         }
         
         localDataController.saveBusinessData()
-        localDataController.saveBusinessBasicData()
         
     }
     
@@ -501,11 +499,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         logoImageView.imageAlignment = .alignCenter
         logoImageView.imageScaling = .scaleProportionallyDown
         
-        if currentVenue != nil {
-            self.title = "Edit \(currentVenue!.venueName!)"
-            nameTextField.stringValue = currentVenue!.venueName!
-            
-        } else if currentBusiness != nil {
+        if currentBusiness != nil {
             self.title = "Edit \(currentBusiness!.name)"
             inputBusinessHours()
             addBusinessType()
@@ -618,9 +612,7 @@ extension VenueDetailViewController {
 extension VenueDetailViewController {
     
     func numberOfRows(in tableView: NSTableView) -> Int {
-        if currentVenue != nil {
-            return (currentVenue?.shows?.count) ?? 0
-        } else if currentBusiness != nil {
+        if currentBusiness != nil {
             return currentBusinessShows?.count ?? 0
         }
         return 0
@@ -628,12 +620,7 @@ extension VenueDetailViewController {
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         var currentShow: Show? {
-            if currentVenue != nil {
-                
-                let jsonShow = currentVenue?.shows![row]
-                let convertedShow = Show(band: (jsonShow?.band)!, venue: (currentVenue?.venueName!)!, dateString: (jsonShow?.dateString!)!)
-                return convertedShow
-            } else if currentBusiness != nil {
+            if currentBusiness != nil {
                 
                 let currentBusinessShows = localDataController.showArray.filter({$0.venue == currentBusiness?.name})
                 return currentBusinessShows[row]
