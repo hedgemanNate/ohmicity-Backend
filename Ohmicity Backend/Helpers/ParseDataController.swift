@@ -35,6 +35,24 @@ class ParseDataController {
         }
     }
     
+    func loadShowsPath(completion: @escaping () -> Void) {
+        guard let path = path else {return NSLog("No file loaded")}
+        loadJson(fromURLString: path.absoluteString) { (result) in
+            print(path)
+            switch result {
+            case .success(let data):
+                print("loadJson worked")
+                self.parse(jsonData: data)
+                completion()
+                
+            case .failure(let error):
+                print(error)
+                print("loadJson failed")
+                return
+            }
+        }
+    }
+    
     func loadJson(fromURLString urlString: String,
                           completion: @escaping (Result<Data, Error>) -> Void) {
         if let url = URL(string: urlString) {

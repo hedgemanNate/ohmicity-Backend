@@ -25,3 +25,9 @@ struct ShowJSON: Codable, Hashable {
     let band: String?
     let dateString: String?
 }
+
+struct ShowData: Codable, Hashable {
+    let venue: String
+    let band: String
+    let dateString: String
+}

@@ -393,8 +393,17 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         let ref = FireStoreReferenceManager.bandDataPath
         for band in bandData {
             do {
-                try ref.document(band.bandID ).setData(from: band)
-                self.alertTextField.stringValue = "Push Successful"
+                try ref.document(band.bandID).setData(from: band) { err in
+                    if let err = err {
+                        self.alertTextField.stringValue = "\(err.localizedDescription)"
+                        NSLog(err.localizedDescription)
+                    } else {
+                        self.alertTextField.stringValue = "Push Successful"
+                    }
+                }
+                
+                
+                
             } catch let error {
                 NSLog(error.localizedDescription)
                 self.alertTextField.stringValue = "Error pushing Band"
@@ -408,9 +417,15 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         for show in showData {
             var num = 0
             do {
-                try ref.showDataPath.document(show.showID ).setData(from: show)
-                num += 1
-                self.alertTextField.stringValue = "Show Push Success: Number \(num)"
+                try ref.showDataPath.document(show.showID ).setData(from: show) { err in
+                    if let err = err {
+                        self.alertTextField.stringValue = "\(err.localizedDescription)"
+                        NSLog(err.localizedDescription)
+                    } else {
+                        num += 1
+                        self.alertTextField.stringValue = "Show Push Success: Number \(num)"
+                    }
+                }
             } catch let error {
                 NSLog(error.localizedDescription)
                 self.alertTextField.stringValue = "Error pushing Show"
@@ -420,9 +435,15 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         for band in bandData {
             var num = 0
             do {
-                try ref.bandDataPath.document(band.bandID).setData(from: band)
-                num += 1
-                self.alertTextField.stringValue = "Band Push Success: Number \(num)"
+                try ref.bandDataPath.document(band.bandID).setData(from: band) { err in
+                    if let err = err {
+                        self.alertTextField.stringValue = "\(err.localizedDescription)"
+                        NSLog(err.localizedDescription)
+                    } else {
+                        num += 1
+                        self.alertTextField.stringValue = "Band Push Success: Number \(num)"
+                    }
+                }
             } catch {
                 NSLog(error.localizedDescription)
                 self.alertTextField.stringValue = "Error pushing Band: \(band.name)"
