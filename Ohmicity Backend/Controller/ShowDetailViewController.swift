@@ -96,9 +96,11 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
             self.messageCenter.stringValue = "Show Updated"
             startMessageCenterTimer()
         } else {
+            
             var newShow = Show(band: bandNameTextField.stringValue, venue: businessNameTextField.stringValue, dateString: dateFormatter.string(from: datePicker.dateValue))
-            newShow.lastModified = Timestamp()
-            localDataController.showArray.append(newShow)
+            
+            newShow?.lastModified = Timestamp()
+            localDataController.showArray.append(newShow!)
             
             currentShow = newShow
             localDataController.saveShowData()

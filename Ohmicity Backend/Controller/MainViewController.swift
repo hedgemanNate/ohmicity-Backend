@@ -462,7 +462,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             localDataController.saveBusinessData()
         } else if remoteBusinessButton.state == .on && remoteDataController.remoteBusinessArray != [] {
             remoteDataController.remoteBusinessArray.removeAll(where: {$0 == business})
-            FireStoreReferenceManager.businessFullDataPath.document(business.venueID!).delete
+            FireStoreReferenceManager.businessFullDataPath.document(business.venueID).delete
             { (err) in
                 if let err = err {
                     //MARK: Alert Here
@@ -776,6 +776,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         localDataController.loadJsonData()
         localDataController.loadShowData()
         localDataController.loadBandData()
+        localDataController.loadBandTagData()
+        localDataController.loadVenueTagData()
         
         //Search Functionality
         inOrderArrays()
@@ -1026,7 +1028,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                 //Remote Businesses
             } else if remoteBusinessButton.state == .on {
                 let business = remoteDataController.businessResults[row]
-                cell.textField?.stringValue = "\(row + 1): \(business.name): \(business.venueID!)"
+                cell.textField?.stringValue = "\(row + 1): \(business.name): \(business.venueID)"
                 
                 //Remote Bands
             } else if remoteBandsButton.state == .on {

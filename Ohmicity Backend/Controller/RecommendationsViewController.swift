@@ -31,11 +31,12 @@ class RecommendationsViewController: NSViewController, NSTableViewDelegate, NSTa
         super.viewDidLoad()
         print("View Load")
         setupTableView()
+        updateViews()
     }
     
     
     private func updateViews() {
-        
+        self.preferredContentSize = NSSize(width: 1320, height: 780)
     }
     
     private func setupTableView() {

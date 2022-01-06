@@ -119,7 +119,7 @@ class BannerAdsViewController: NSViewController {
     
     //MARK: UpdateViews
     private func updateViews() {
-        self.preferredContentSize = NSSize(width: 889, height: 654)
+        self.preferredContentSize = NSSize(width: 1320, height: 780)
         getBusinessAdData()
         DispatchQueue.main.async {
             self.tableView.reloadData()

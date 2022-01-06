@@ -23,6 +23,12 @@ class ImportShowsViewController: NSViewController, NSTableViewDelegate, NSTableV
         showsTableView.dataSource = self
         showsTableView.delegate = self
         localDataController.loadShowData()
+        updateViews()
+    }
+    
+    private func updateViews() {
+        self.preferredContentSize = NSSize(width: 1320, height: 780)
+        numberOfNewShowsLabel.stringValue = "\(rawShowDataController.rawShowsArray.count)"
     }
     
     //MARK: Buttons
@@ -58,12 +64,49 @@ class ImportShowsViewController: NSViewController, NSTableViewDelegate, NSTableV
     }
     
     @IBAction func assignButtonTapped(_ sender: Any) {
+        
+        let rawShowsArray = rawShowDataController.rawShowsArray
+        
+        for rawShow in rawShowsArray {
+            let band = tagController.scanBandTags(band: rawShow.band)
+            let venue = tagController.scanVenueTags(venue: rawShow.venue)
+            
+            let newShow = Show(band: band.bandID, venue: venue.venueID, dateString: rawShow.dateString)
+            
+            guard let newShow = newShow else { continue }
+            if newShow.venue == "Blank" {continue}
+            
+            localDataController.showArray.append(newShow)
+            
+        }
+        
     }
     
     @IBAction func doubleCheckButtonTapped(_ sender: Any) {
+        let bandArray = localDataController.bandArray
+        
+        for band in bandArray {
+            let newTag = BandTags(bandID: band.bandID, variations: [band.name])
+            tagController.bandTags.append(newTag)
+        }
+        
+        localDataController.saveBandTagData()
     }
 }
 
+
+//MARK: Functions
+extension ImportShowsViewController {
+    
+    private func doubleCheck(show: Show) {
+        
+    }
+}
+
+
+
+
+//MARK: TableView
 extension ImportShowsViewController {
     
     func numberOfRows(in tableView: NSTableView) -> Int {

@@ -98,4 +98,41 @@ extension LocalDataStorageController {
     }
 }
 
+//MARK: Tag Data
+extension LocalDataStorageController {
+    func loadBandTagData() {
+        if let data = UserDefaults.standard.data(forKey: "SavedBandTagData") {
+            if let decoded = try? JSONDecoder().decode([BandTags].self, from: data) {
+                tagController.bandTags = decoded
+                print("Band Tags Loaded")
+                //return
+            }
+        }
+    }
+    
+    func saveBandTagData() {
+        if let encoded = try? JSONEncoder().encode(tagController.bandTags) {
+            UserDefaults.standard.set(encoded, forKey: "SavedBandTagData")
+            print("Band Tags Saved")
+        }
+    }
+    
+    func loadVenueTagData() {
+        if let data = UserDefaults.standard.data(forKey: "SavedVenueTagData") {
+            if let decoded = try? JSONDecoder().decode([VenueTags].self, from: data) {
+                tagController.venueTags = decoded
+                print("Venue Tags Loaded")
+                //return
+            }
+        }
+    }
+    
+    func saveVenueTagData() {
+        if let encoded = try? JSONEncoder().encode(tagController.venueTags) {
+            UserDefaults.standard.set(encoded, forKey: "SavedVenueTagData")
+            print("Venue Tags Saved")
+        }
+    }
+}
+
 let localDataController = LocalDataStorageController()

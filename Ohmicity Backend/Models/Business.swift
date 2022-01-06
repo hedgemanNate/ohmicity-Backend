@@ -28,7 +28,7 @@ class BusinessFullData: Codable, Equatable {
         return lhs.venueID == rhs.venueID
     }
     
-    var venueID: String?
+    let venueID: String
     var lastModified: Timestamp?
     var name: String
     var address: String = ""
