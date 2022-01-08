@@ -30,7 +30,7 @@ enum Genre: String, Codable {
 
 class Band: Codable, Equatable {
     static func == (lhs: Band, rhs: Band) -> Bool {
-        return lhs.name == rhs.name
+        return lhs.bandID == rhs.bandID
     }
     
     var bandID: String = UUID().uuidString

@@ -8,7 +8,7 @@
 import Foundation
 
 
-class ParseDataController {
+class RawShowDataController {
     
     var data: Shows?
     var path: URL?
@@ -82,4 +82,4 @@ class ParseDataController {
     
 }
 
-let rawShowDataController = ParseDataController()
+let rawShowDataController = RawShowDataController()

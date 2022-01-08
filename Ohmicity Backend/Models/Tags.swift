@@ -7,7 +7,7 @@
 
 import Foundation
 
-class BandTags: Codable {
+class BandTag: Codable {
     let bandID: String
     var variations: [String]
     
@@ -17,7 +17,12 @@ class BandTags: Codable {
     }
 }
 
-class VenueTags: Codable {
+class VenueTag: Codable {
     let venueID: String
     var variations: [String]
+    
+    init(venueID: String, variations: [String]) {
+        self.venueID = venueID
+        self.variations = variations
+    }
 }

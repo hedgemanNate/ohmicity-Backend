@@ -22,7 +22,7 @@
 		F61683F626AD0490009CB284 /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61683F526AD0490009CB284 /* MainTableViewCell.swift */; };
 		F617385D26D858A40084B2CB /* BannerAdsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617385C26D858A40084B2CB /* BannerAdsViewController.swift */; };
 		F617385F26D85C8E0084B2CB /* BusinessBannerAd.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617385E26D85C8E0084B2CB /* BusinessBannerAd.swift */; };
-		F630FC0726583E5A001D0DA6 /* RawJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = F630FC0626583E5A001D0DA6 /* RawJSON.swift */; };
+		F630FC0726583E5A001D0DA6 /* ShowData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F630FC0626583E5A001D0DA6 /* ShowData.swift */; };
 		F6334C0E2786504D00CD0A4F /* Tags.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6334C0D2786504D00CD0A4F /* Tags.swift */; };
 		F6334C102786511100CD0A4F /* TagController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6334C0F2786511100CD0A4F /* TagController.swift */; };
 		F651C91C278605F600FCD0AA /* ImportShowsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F651C91B278605F600FCD0AA /* ImportShowsViewController.swift */; };
@@ -33,6 +33,8 @@
 		F65B06A9266C3EC300616BD9 /* ShowDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65B06A7266C3EC300616BD9 /* ShowDetailViewController.swift */; };
 		F65B06AD266C95AF00616BD9 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65B06AC266C95AF00616BD9 /* Helper.swift */; };
 		F65DC07726E5DBA300340C07 /* BulkShowCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65DC07526E5DBA300340C07 /* BulkShowCreationViewController.swift */; };
+		F66E7018278901C700C11B18 /* OpeningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E7016278901C700C11B18 /* OpeningViewController.swift */; };
+		F66E7019278901C700C11B18 /* OpeningViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F66E7017278901C700C11B18 /* OpeningViewController.xib */; };
 		F676F0E92698DAA400C47599 /* Recommendation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F676F0E82698DAA400C47599 /* Recommendation.swift */; };
 		F676F0EB2698DB4100C47599 /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = F676F0EA2698DB4100C47599 /* Rating.swift */; };
 		F676F0ED2698DD5900C47599 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = F676F0EC2698DD5900C47599 /* Message.swift */; };
@@ -47,7 +49,7 @@
 		F6C31F552656E57B004A1BB2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C31F542656E57B004A1BB2 /* AppDelegate.swift */; };
 		F6C31F592656E57B004A1BB2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F6C31F582656E57B004A1BB2 /* Assets.xcassets */; };
 		F6C31F5C2656E57B004A1BB2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6C31F5A2656E57B004A1BB2 /* Main.storyboard */; };
-		F6C5930C26585F1A000E0245 /* ParseDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C5930B26585F1A000E0245 /* ParseDataController.swift */; };
+		F6C5930C26585F1A000E0245 /* RawShowDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C5930B26585F1A000E0245 /* RawShowDataController.swift */; };
 		F6D80C44266AF93200A18ED2 /* Band.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D80C43266AF93200A18ED2 /* Band.swift */; };
 		F6D80C4B266B0FEF00A18ED2 /* Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D80C4A266B0FEF00A18ED2 /* Show.swift */; };
 		F6F11E8C267FEAFD00E6368A /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = F6F11E8B267FEAFD00E6368A /* Podfile */; };
@@ -73,7 +75,7 @@
 		F617385C26D858A40084B2CB /* BannerAdsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerAdsViewController.swift; sourceTree = "<group>"; };
 		F617385E26D85C8E0084B2CB /* BusinessBannerAd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessBannerAd.swift; sourceTree = "<group>"; };
 		F6292DD52656F58000DAE6B5 /* PythonTests.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = PythonTests.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		F630FC0626583E5A001D0DA6 /* RawJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawJSON.swift; sourceTree = "<group>"; };
+		F630FC0626583E5A001D0DA6 /* ShowData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowData.swift; sourceTree = "<group>"; };
 		F6334C0D2786504D00CD0A4F /* Tags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tags.swift; sourceTree = "<group>"; };
 		F6334C0F2786511100CD0A4F /* TagController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagController.swift; sourceTree = "<group>"; };
 		F651C91B278605F600FCD0AA /* ImportShowsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportShowsViewController.swift; sourceTree = "<group>"; };
@@ -84,6 +86,8 @@
 		F65B06A7266C3EC300616BD9 /* ShowDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDetailViewController.swift; sourceTree = "<group>"; };
 		F65B06AC266C95AF00616BD9 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		F65DC07526E5DBA300340C07 /* BulkShowCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulkShowCreationViewController.swift; sourceTree = "<group>"; };
+		F66E7016278901C700C11B18 /* OpeningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpeningViewController.swift; sourceTree = "<group>"; };
+		F66E7017278901C700C11B18 /* OpeningViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OpeningViewController.xib; sourceTree = "<group>"; };
 		F676F0E82698DAA400C47599 /* Recommendation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recommendation.swift; sourceTree = "<group>"; };
 		F676F0EA2698DB4100C47599 /* Rating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rating.swift; sourceTree = "<group>"; };
 		F676F0EC2698DD5900C47599 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -101,7 +105,7 @@
 		F6C31F5B2656E57B004A1BB2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F6C31F5D2656E57B004A1BB2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F6C31F5E2656E57B004A1BB2 /* Ohmicity_Backend.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Ohmicity_Backend.entitlements; sourceTree = "<group>"; };
-		F6C5930B26585F1A000E0245 /* ParseDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseDataController.swift; sourceTree = "<group>"; };
+		F6C5930B26585F1A000E0245 /* RawShowDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawShowDataController.swift; sourceTree = "<group>"; };
 		F6D80C43266AF93200A18ED2 /* Band.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Band.swift; sourceTree = "<group>"; };
 		F6D80C4A266B0FEF00A18ED2 /* Show.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Show.swift; sourceTree = "<group>"; };
 		F6F11E8B267FEAFD00E6368A /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
@@ -126,7 +130,7 @@
 				D85AC753267BB02B00CEA95B /* RemoteDataController.swift */,
 				D85F3D1C267CF2FC001BCFCA /* FireStoreReferenceManager.swift */,
 				F610AA3E26699EE700EC2E8A /* LocalDataStorageController.swift */,
-				F6C5930B26585F1A000E0245 /* ParseDataController.swift */,
+				F6C5930B26585F1A000E0245 /* RawShowDataController.swift */,
 				D83B32CC267A5D800065948E /* ImageController.swift */,
 				F6936DC326A0DA6C00E5FA7F /* Enumerations.swift */,
 				F6334C0F2786511100CD0A4F /* TagController.swift */,
@@ -146,7 +150,7 @@
 		F6292DD32656F2E000DAE6B5 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				F630FC0626583E5A001D0DA6 /* RawJSON.swift */,
+				F630FC0626583E5A001D0DA6 /* ShowData.swift */,
 				D8092A0E26681C0000560A97 /* Business.swift */,
 				F676F0EA2698DB4100C47599 /* Rating.swift */,
 				F6D80C4A266B0FEF00A18ED2 /* Show.swift */,
@@ -187,6 +191,8 @@
 				F610AA382669309100EC2E8A /* VenueDetailViewController.swift */,
 				F65B06A7266C3EC300616BD9 /* ShowDetailViewController.swift */,
 				F65B06A2266C360F00616BD9 /* BandDetailViewController.swift */,
+				F66E7016278901C700C11B18 /* OpeningViewController.swift */,
+				F66E7017278901C700C11B18 /* OpeningViewController.xib */,
 				F651C91B278605F600FCD0AA /* ImportShowsViewController.swift */,
 				F69F94A12786868A00D060D3 /* BandTagViewController.swift */,
 				F69F94A5278692B700D060D3 /* VenueTagViewController.swift */,
@@ -334,6 +340,7 @@
 				D81FCF9327113DAC0070B4CF /* orange.png in Resources */,
 				F615064B268E67E200C4B808 /* Ohmicity Logo Banner.png in Resources */,
 				F615064D268E680B00C4B808 /* 1200px-American_Heart_Association_Logo.svg.png in Resources */,
+				F66E7019278901C700C11B18 /* OpeningViewController.xib in Resources */,
 				F655439F2689ABA300F823BA /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -392,6 +399,7 @@
 				F676F0E92698DAA400C47599 /* Recommendation.swift in Sources */,
 				F617385F26D85C8E0084B2CB /* BusinessBannerAd.swift in Sources */,
 				F676F0EB2698DB4100C47599 /* Rating.swift in Sources */,
+				F66E7018278901C700C11B18 /* OpeningViewController.swift in Sources */,
 				F6D80C44266AF93200A18ED2 /* Band.swift in Sources */,
 				F65B06AD266C95AF00616BD9 /* Helper.swift in Sources */,
 				F69F94A32786868A00D060D3 /* BandTagViewController.swift in Sources */,
@@ -407,10 +415,10 @@
 				D83B32CD267A5D800065948E /* ImageController.swift in Sources */,
 				F617385D26D858A40084B2CB /* BannerAdsViewController.swift in Sources */,
 				F610AA3F26699EE700EC2E8A /* LocalDataStorageController.swift in Sources */,
-				F630FC0726583E5A001D0DA6 /* RawJSON.swift in Sources */,
+				F630FC0726583E5A001D0DA6 /* ShowData.swift in Sources */,
 				F6936DC426A0DA6C00E5FA7F /* Enumerations.swift in Sources */,
 				F610AA3A2669309100EC2E8A /* VenueDetailViewController.swift in Sources */,
-				F6C5930C26585F1A000E0245 /* ParseDataController.swift in Sources */,
+				F6C5930C26585F1A000E0245 /* RawShowDataController.swift in Sources */,
 				F6334C0E2786504D00CD0A4F /* Tags.swift in Sources */,
 				F6578F4A268D032E00AC25CE /* BusinessPhoto.swift in Sources */,
 				F651C91C278605F600FCD0AA /* ImportShowsViewController.swift in Sources */,

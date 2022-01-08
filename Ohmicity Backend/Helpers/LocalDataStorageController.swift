@@ -102,7 +102,7 @@ extension LocalDataStorageController {
 extension LocalDataStorageController {
     func loadBandTagData() {
         if let data = UserDefaults.standard.data(forKey: "SavedBandTagData") {
-            if let decoded = try? JSONDecoder().decode([BandTags].self, from: data) {
+            if let decoded = try? JSONDecoder().decode([BandTag].self, from: data) {
                 tagController.bandTags = decoded
                 print("Band Tags Loaded")
                 //return
@@ -119,7 +119,7 @@ extension LocalDataStorageController {
     
     func loadVenueTagData() {
         if let data = UserDefaults.standard.data(forKey: "SavedVenueTagData") {
-            if let decoded = try? JSONDecoder().decode([VenueTags].self, from: data) {
+            if let decoded = try? JSONDecoder().decode([VenueTag].self, from: data) {
                 tagController.venueTags = decoded
                 print("Venue Tags Loaded")
                 //return

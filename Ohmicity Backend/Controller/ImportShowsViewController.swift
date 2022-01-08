@@ -71,22 +71,31 @@ class ImportShowsViewController: NSViewController, NSTableViewDelegate, NSTableV
             let band = tagController.scanBandTags(band: rawShow.band)
             let venue = tagController.scanVenueTags(venue: rawShow.venue)
             
-            let newShow = Show(band: band.bandID, venue: venue.venueID, dateString: rawShow.dateString)
+            if !localDataController.businessArray.contains(venue) {
+                  continue
+            } else {
             
-            guard let newShow = newShow else { continue }
-            if newShow.venue == "Blank" {continue}
-            
-            localDataController.showArray.append(newShow)
-            
+                let newShow = Show(band: band.bandID, venue: venue.venueID, dateString: rawShow.dateString)
+                guard let newShow = newShow else { continue }
+                
+                localDataController.showArray.append(newShow)
+                localDataController.bandArray.append(band)
+                
+                rawShowDataController.rawShowsArray.removeAll(where: {$0 == rawShow})
+                numberOfNewShowsLabel.stringValue = "\(rawShowDataController.rawShowsArray.count)"
+            }
         }
         
+        localDataController.saveBandData()
+        localDataController.saveShowData()
+        showsTableView.reloadData()
     }
     
     @IBAction func doubleCheckButtonTapped(_ sender: Any) {
         let bandArray = localDataController.bandArray
         
         for band in bandArray {
-            let newTag = BandTags(bandID: band.bandID, variations: [band.name])
+            let newTag = BandTag(bandID: band.bandID, variations: [band.name])
             tagController.bandTags.append(newTag)
         }
         

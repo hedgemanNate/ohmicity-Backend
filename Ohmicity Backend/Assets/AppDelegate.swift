@@ -17,7 +17,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
-        
+        FirebaseApp.configure()
+        Database.database().isPersistenceEnabled = true
         
     }
 
@@ -26,10 +27,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-        var terminate = true
         //add a NSAlert popUp to remind us to push data
         
-        return terminate
+        return true
     }
 }
 

@@ -18,7 +18,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
     
     //MARK: Properties
     var originalArray = [Band]()
-    var filteredArray = [Band]()
+    var filteredBandArray = [Band]()
     var removeBandsArray = [Band]()
     var showsInOrderArray = [Show]()
     var bandsInOrderArray = [Band]()
@@ -751,8 +751,8 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         
         if ohmButton.state == .on {
             originalArray = localDataController.bandArray
-            filteredArray = localDataController.bandArray.filter({$0.ohmPick == true})
-            localDataController.bandArray = filteredArray
+            filteredBandArray = localDataController.bandArray.filter({$0.ohmPick == true})
+            localDataController.bandArray = filteredBandArray
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -1359,20 +1359,17 @@ extension MainViewController {
     
     private func removeDoubleBands() {
         var newDuplicatedBands = [Band]()
-        var similarBandName = [Band]()
+        
+        
         
         
         //Finds exactly spelled double bands
         for band1 in localDataController.bandArray {
             for band2 in localDataController.bandArray {
-                if band1.name == band2.name && band1.lastModified.dateValue() > band2.lastModified.dateValue() {
-                    newDuplicatedBands.append(band1)
-                }
+//                if band1.name == band2.name && band1.lastModified.dateValue() > band2.lastModified.dateValue() {
+//                    newDuplicatedBands.append(band1)
+//                }
                 
-                if band2.name.localizedCaseInsensitiveContains(band1.name) && band2.name.count > band1.name.count {
-                    similarBandName.append(band2)
-                    print("Better Name: \(band1.name) \n Worse Name: \(band2.name)")
-                }
             }
         }
         
