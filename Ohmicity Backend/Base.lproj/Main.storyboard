@@ -1949,8 +1949,8 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="277" height="148"/>
                                                             <datePickerCell key="cell" controlSize="large" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="R2s-zw-K34">
                                                                 <font key="font" metaFont="system"/>
-                                                                <date key="date" timeIntervalSinceReferenceDate="663305265.05593896">
-                                                                    <!--2022-01-08 03:27:45 +0000-->
+                                                                <date key="date" timeIntervalSinceReferenceDate="663355611.27473402">
+                                                                    <!--2022-01-08 17:26:51 +0000-->
                                                                 </date>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1994,8 +1994,8 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="277" height="148"/>
                                                             <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="503-Ty-Gdc">
                                                                 <font key="font" metaFont="system"/>
-                                                                <date key="date" timeIntervalSinceReferenceDate="663305265.06215501">
-                                                                    <!--2022-01-08 03:27:45 +0000-->
+                                                                <date key="date" timeIntervalSinceReferenceDate="663355611.28104997">
+                                                                    <!--2022-01-08 17:26:51 +0000-->
                                                                 </date>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -2039,8 +2039,8 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="277" height="148"/>
                                                             <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="7jY-Qv-i7V">
                                                                 <font key="font" metaFont="system"/>
-                                                                <date key="date" timeIntervalSinceReferenceDate="663305265.06750202">
-                                                                    <!--2022-01-08 03:27:45 +0000-->
+                                                                <date key="date" timeIntervalSinceReferenceDate="663355611.28657103">
+                                                                    <!--2022-01-08 17:26:51 +0000-->
                                                                 </date>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -2084,8 +2084,8 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="277" height="148"/>
                                                             <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="tXN-jR-RxO">
                                                                 <font key="font" metaFont="system"/>
-                                                                <date key="date" timeIntervalSinceReferenceDate="663305265.07276201">
-                                                                    <!--2022-01-08 03:27:45 +0000-->
+                                                                <date key="date" timeIntervalSinceReferenceDate="663355611.291852">
+                                                                    <!--2022-01-08 17:26:51 +0000-->
                                                                 </date>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -2657,8 +2657,8 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <datePickerCell key="cell" borderStyle="bezel" alignment="left" useCurrentDate="YES" id="U6u-Ac-yGh">
                                     <font key="font" metaFont="system"/>
-                                    <date key="date" timeIntervalSinceReferenceDate="663305265.15071797">
-                                        <!--2022-01-08 03:27:45 +0000-->
+                                    <date key="date" timeIntervalSinceReferenceDate="663355611.32983601">
+                                        <!--2022-01-08 17:26:51 +0000-->
                                     </date>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -2669,8 +2669,8 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <datePickerCell key="cell" borderStyle="bezel" alignment="left" useCurrentDate="YES" id="g7o-Ed-NvT">
                                     <font key="font" metaFont="system"/>
-                                    <date key="date" timeIntervalSinceReferenceDate="663305265.15417898">
-                                        <!--2022-01-08 03:27:45 +0000-->
+                                    <date key="date" timeIntervalSinceReferenceDate="663355611.33333397">
+                                        <!--2022-01-08 17:26:51 +0000-->
                                     </date>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -3294,8 +3294,8 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <datePickerCell key="cell" controlSize="large" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="Xe0-eP-c9f">
                                     <font key="font" metaFont="system"/>
-                                    <date key="date" timeIntervalSinceReferenceDate="663305265.22607601">
-                                        <!--2022-01-08 03:27:45 +0000-->
+                                    <date key="date" timeIntervalSinceReferenceDate="663355611.36700594">
+                                        <!--2022-01-08 17:26:51 +0000-->
                                     </date>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -3950,7 +3950,7 @@
                                     </subviews>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="5lw-hf-HOz">
-                                    <rect key="frame" x="1" y="444" width="523" height="15"/>
+                                    <rect key="frame" x="1" y="347" width="523" height="15"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="P4G-MW-r5f">
@@ -4058,6 +4058,9 @@
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="deleteTagButtonTapped:" target="ldx-N6-Uzb" id="CGU-gA-tFg"/>
+                                </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qkS-Gg-CoL">
                                 <rect key="frame" x="568" y="173" width="99" height="32"/>
@@ -4066,6 +4069,9 @@
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="addTagButtonTapped:" target="ldx-N6-Uzb" id="6s3-fL-18B"/>
+                                </connections>
                             </button>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tlg-JR-r9t">
                                 <rect key="frame" x="35" y="428" width="244" height="48"/>
@@ -4299,7 +4305,7 @@
                                     <font key="font" metaFont="system" size="18"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="makeSelectedButtonTapped:" target="ldx-N6-Uzb" id="l0q-MZ-6sr"/>
+                                    <action selector="removeBandDoubleButtonTapped:" target="ldx-N6-Uzb" id="jpU-c0-gSn"/>
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OvS-KF-sFn">
@@ -4309,6 +4315,9 @@
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="copyAllBandsFromRemoteButtonTapped:" target="ldx-N6-Uzb" id="ddg-lZ-DcO"/>
+                                </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PSL-Ya-hFY">
                                 <rect key="frame" x="847" y="141" width="242" height="32"/>
@@ -4317,6 +4326,9 @@
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="copySelectedBandFromRemoteButtonTapped:" target="ldx-N6-Uzb" id="Lfj-Mf-HAd"/>
+                                </connections>
                             </button>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K3b-Yi-swX">
                                 <rect key="frame" x="1019" y="661" width="271" height="48"/>

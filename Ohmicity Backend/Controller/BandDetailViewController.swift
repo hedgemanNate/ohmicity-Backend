@@ -212,6 +212,14 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     
     
     //MARK: Buttons Tapped Functions
+    @IBAction func capitalizeButtonTapped(_ sender: Any) {
+        let oldName = bandNameTextField.stringValue
+        let lowerName = oldName.lowercased()
+        let finalName = lowerName.capitalized
+        
+        bandNameTextField.stringValue = finalName
+    }
+    
     @IBAction func saveButtonTapped(_ sender: Any) {
         checkCurrentObject { [self] in
             if localDataController.bandArray.contains(currentBand!) {
@@ -302,10 +310,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         } ifNil: {
             self.alertTextField.stringValue = "COULD NOT DELETE BECAUSE NO BAND IS LOADED"
         }
-
-        
     }
-    
     
     @IBAction func loadPictureButtonTapped(_ sender: Any) {
         let dialog = NSOpenPanel();
@@ -330,14 +335,15 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         }
     }
     
-    @IBAction func capitalizeButtonTapped(_ sender: Any) {
-        let oldName = bandNameTextField.stringValue
-        let lowerName = oldName.lowercased()
-        let finalName = lowerName.capitalized
-        
-        bandNameTextField.stringValue = finalName
+    //MARK: Tag Buttons Functions
+    @IBAction func addTagButtonTapped(_ sender: Any) {
     }
     
+    @IBAction func deleteTagButtonTapped(_ sender: Any) {
+    }
+    
+    
+    //MARK: Band List Buttons Functions
     @IBAction func makeSelectedButtonTapped(_ sender: Any) {
         guard let currentBand = currentBand else { return }
         
@@ -355,11 +361,60 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         }
     }
     
+    @IBAction func removeBandDoubleButtonTapped(_ sender: Any) {
+        if filteredBandArray.count == localDataController.bandArray.count {
+            for band1 in filteredBandArray {
+                for band2 in filteredBandArray {
+                    let nameResult = band1.name.localizedCaseInsensitiveCompare(band2.name)
+                    
+                    if nameResult == .orderedSame {
+                        let ageResult = band1.lastModified.compare(band2.lastModified)
+                        
+                        switch ageResult {
+                        case .orderedAscending:
+                            let index = filteredBandArray.firstIndex(of: band1)
+                            guard let index = index else {return}
+                            filteredBandArray.remove(at: index)
+                            continue
+                        case .orderedDescending:
+                            let index = filteredBandArray.firstIndex(of: band2)
+                            guard let index = index else {return}
+                            filteredBandArray.remove(at: index)
+                            continue
+                        case .orderedSame:
+                            let index = filteredBandArray.firstIndex(of: band2)
+                            guard let index = index else {return}
+                            filteredBandArray.remove(at: index)
+                            continue
+                        }
+                    } else {
+                        continue
+                    }
+                }
+            }
+            
+        } else {
+            alertTextField.stringValue = "Clear out search field before removing duplicate bands"
+        }
+    }
+    
+    
     @IBAction func deleteSelectedBand(_ sender: Any) {
         let tempBand = selectedBand
         if remoteButton.state == .on {
-            remoteDataController.remoteBandArray.removeAll(where: {$0 == tempBand})
-            filteredBandArray.removeAll(where: {$0 == tempBand})
+//            remoteDataController.remoteBandArray.removeAll(where: {$0 == tempBand})
+//            filteredBandArray.removeAll(where: {$0 == tempBand})
+            
+            let remoteIndex = remoteDataController.remoteBandArray.firstIndex(of: tempBand)
+            guard let remoteIndex = remoteIndex else {return}
+            
+            let filteredIndex = filteredBandArray.firstIndex(of: tempBand)
+            guard let filteredIndex = filteredIndex else {return}
+            
+            remoteDataController.remoteBandArray.remove(at: remoteIndex)
+            filteredBandArray.remove(at: filteredIndex)
+
+
             ref.bandDataPath.document(tempBand.bandID).delete { err in
                 if let err = err {
                     self.alertTextField.stringValue = "\(err.localizedDescription)"
@@ -368,19 +423,55 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
                 }
             }
         } else {
-            localDataController.bandArray.removeAll(where: {$0 == tempBand})
-            filteredBandArray.removeAll(where: {$0 == tempBand})
+            //localDataController.bandArray.removeAll(where: {$0 == tempBand})
+            //filteredBandArray.removeAll(where: {$0 == tempBand})
+            
+            let filteredIndex = filteredBandArray.firstIndex(of: tempBand)
+            guard let filteredIndex = filteredIndex else {return}
+            
+            let localIndex = localDataController.bandArray.firstIndex(of: tempBand)
+            guard let localIndex = localIndex else {return}
+            
+            localDataController.bandArray.remove(at: localIndex)
+            filteredBandArray.remove(at: filteredIndex)
+            
             self.alertTextField.stringValue = "\(tempBand.name) deleted"
             localDataController.saveBandData()
         }
     }
     
     
+    @IBAction func copySelectedBandFromRemoteButtonTapped(_ sender: Any) {
+        if remoteButton.state == .on {
+            let tempBand = selectedBand
+            localDataController.bandArray.removeAll(where: {$0 == tempBand})
+            filteredBandArray.removeAll(where: {$0 == tempBand})
+            
+            localDataController.bandArray.append(tempBand)
+            filteredBandArray.append(tempBand)
+            alertTextField.stringValue = "Bands Copied From Remote"
+            localDataController.saveBandData()
+            
+        } else {
+            alertTextField.stringValue = "Switch to remote data before copying"
+        }
+    }
+    
+    @IBAction func copyAllBandsFromRemoteButtonTapped(_ sender: Any) {
+        if remoteButton.state == .on {
+            localDataController.bandArray = remoteDataController.remoteBandArray
+            filteredBandArray = localDataController.bandArray
+            alertTextField.stringValue = "Bands Copied From Remote"
+            localDataController.saveBandData()
+        } else {
+            alertTextField.stringValue = "Switch to remote data before copying"
+        }
+    }
+    
     
     //MARK: Radio Buttons
     
     @IBAction func radioButtonsChanged(_ sender: Any) {
-        
         if newButton.state == .on {
             if searchTextField.stringValue == "" {
                 filteredBandArray = localDataController.bandArray.sorted(by: {$0.lastModified.seconds < $1.lastModified.seconds})
