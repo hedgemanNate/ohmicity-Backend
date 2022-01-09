@@ -12,19 +12,30 @@ class BandTagViewController: NSViewController, NSTableViewDelegate, NSTableViewD
     //MARK: Properties
     
     //Table Views
-    @IBOutlet weak var bandTableView: NSTableView!
-    @IBOutlet weak var tagsTableView: NSTableView!
+    @IBOutlet weak var tagTableView: NSTableView!
+    @IBOutlet weak var variationsTableView: NSTableView!
     @IBOutlet weak var lastImportTableView: NSTableView!
     
     
-    var bandTableIndex: Int {
-        var bandTableIndex = bandTableView.selectedRow
-        if bandTableIndex < 0 {
-            bandTableIndex = 0
+    var tagTableIndex: Int {
+        var tagTableIndex = tagTableView.selectedRow
+        if tagTableIndex < 0 {
+            tagTableIndex = 0
         }
-        return bandTableIndex
+        return tagTableIndex
     }
     
+    var selectedTag: BandTag {
+        return filterArray[tagTableView.selectedRow]
+    }
+    
+    var selectedVariation: String {
+        return selectedTag.variations[variationsTableView.selectedRow]
+    }
+    
+    var variationsTableViewCount = 0
+    
+    //Arrays
     var filterArray = [BandTag]()
     var newBandArray = [String]()
     
@@ -36,13 +47,13 @@ class BandTagViewController: NSViewController, NSTableViewDelegate, NSTableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         updateViews()
-        bandTableView.delegate = self
-        bandTableView.dataSource = self
-        bandTableView.doubleAction = #selector(venueTableClick)
+        tagTableView.delegate = self
+        tagTableView.dataSource = self
+        tagTableView.doubleAction = #selector(tagsTableClick)
         
-        tagsTableView.delegate = self
-        tagsTableView.dataSource = self
-        tagsTableView.doubleAction = #selector(tagsTableClick)
+        variationsTableView.delegate = self
+        variationsTableView.dataSource = self
+        variationsTableView.doubleAction = #selector(variationsTableClick)
         
         lastImportTableView.delegate = self
         lastImportTableView.dataSource = self
@@ -50,20 +61,52 @@ class BandTagViewController: NSViewController, NSTableViewDelegate, NSTableViewD
         
     }
     
+    //MARK: UpdateViews
+    private func updateViews() {
+        self.preferredContentSize = NSSize(width: 1320, height: 780)
+        getNewBands()
+        setFilterArray()
+    }
     
     //MARK: Button Functions
-    
-    @IBAction func deleteButtonTapped(_ sender: Any) {
-        let tag = filterArray[bandTableIndex].variations[tagsTableView.selectedRow]
-        filterArray[bandTableIndex].variations.removeAll(where: {$0 == tag})
-        tagsTableView.reloadData()
+    @IBAction func deleteTagButtonTapped(_ sender: Any) {
+        let tempTag = filterArray[tagTableView.selectedRow]
+        
+        let tagIndex = tagController.bandTags.firstIndex(where: {$0.bandID == tempTag.bandID})
+        guard let tagIndex = tagIndex else {return}
+        tagController.bandTags.remove(at: tagIndex)
+        
+        let tagIndex2 = filterArray.firstIndex(where: {$0.bandID == tempTag.bandID})
+        guard let tagIndex2 = tagIndex2 else {return}
+        filterArray.remove(at: tagIndex2)
+
+        tagTableView.reloadData()
+        variationsTableView.reloadData()
+        localDataController.saveBandTagData()
     }
+    
+    
+    
+    @IBAction func deleteVariationButtonTapped(_ sender: Any) {
+        let tempVariation = filterArray[tagTableIndex].variations[variationsTableView.selectedRow]
+        
+        let neededTag = tagController.bandTags.first(where: {$0.bandID == selectedTag.bandID})
+        neededTag?.variations.removeAll(where: {$0 == tempVariation})
+        
+        filterArray[tagTableIndex].variations.removeAll(where: {$0 == tempVariation})
+        variationsTableView.reloadData()
+        
+        localDataController.saveBandTagData()
+        
+    }
+    
+    
 
     @IBAction func addTagButtonTapped(_ sender: Any) {
-        let tag = filterArray[bandTableIndex]
+        let tag = filterArray[tagTableIndex]
         let newTag = newTagTextField.stringValue
         tag.variations.append(newTag)
-        tagsTableView.reloadData()
+        variationsTableView.reloadData()
         localDataController.saveBandTagData()
         newTagTextField.stringValue = ""
     }
@@ -72,8 +115,8 @@ class BandTagViewController: NSViewController, NSTableViewDelegate, NSTableViewD
         filterArray = tagController.bandTags.filter({$0.variations.contains(where: {$0.localizedCaseInsensitiveContains(searchTextField.stringValue)})})
         
         DispatchQueue.main.async {
-            self.bandTableView.reloadData()
-            self.tagsTableView.reloadData()
+            self.tagTableView.reloadData()
+            self.variationsTableView.reloadData()
         }
         
         if searchTextField.stringValue == "" {
@@ -83,15 +126,6 @@ class BandTagViewController: NSViewController, NSTableViewDelegate, NSTableViewD
     
     @IBAction func breaker(_ sender: Any) {
         
-    }
-    
-    
-    //MARK: UpdateViews
-    private func updateViews() {
-        self.preferredContentSize = NSSize(width: 1320, height: 780)
-        //newTagTextField.becomeFirstResponder()
-        getNewBands()
-        setFilterArray()
     }
     
     
@@ -112,17 +146,19 @@ class BandTagViewController: NSViewController, NSTableViewDelegate, NSTableViewD
     private func setFilterArray() {
         filterArray = tagController.bandTags
         DispatchQueue.main.async {
-            self.bandTableView.reloadData()
+            self.tagTableView.reloadData()
             //self.tagsTableView.reloadData()
         }
     }
     
-    @objc private func venueTableClick() {
-        self.tagsTableView.reloadData()
+    @objc private func tagsTableClick() {
+        variationsTableViewCount = selectedTag.variations.count
+        self.variationsTableView.reloadData()
+        print("Clicked")
     }
     
-    @objc private func tagsTableClick() {
-        self.newTagTextField.stringValue = "\(filterArray[self.bandTableView.selectedRow].variations[self.tagsTableView.selectedRow])"
+    @objc private func variationsTableClick() {
+        self.newTagTextField.stringValue = "\(selectedVariation)"
     }
     
     @objc private func importTableClick() {
@@ -136,10 +172,10 @@ extension BandTagViewController {
     func numberOfRows(in tableView: NSTableView) -> Int {
     
         switch tableView {
-        case bandTableView:
+        case tagTableView:
             return filterArray.count
-        case tagsTableView:
-            return filterArray[bandTableIndex].variations.count
+        case variationsTableView:
+            return filterArray[tagTableIndex].variations.count
         case lastImportTableView:
             return newBandArray.count
         default:
@@ -150,14 +186,14 @@ extension BandTagViewController {
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         
         switch tableView {
-        case bandTableView:
+        case tagTableView:
             if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier("BandTagCell"), owner: nil) as? NSTableCellView {
                 cell.textField?.stringValue = "\(row + 1): \(filterArray[row].variations[0])"
                 return cell
             }
             
-        case tagsTableView:
-            let bandTag = filterArray[bandTableIndex]
+        case variationsTableView:
+            let bandTag = filterArray[tagTableIndex]
             if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier("VariationCell"), owner: nil) as? NSTableCellView {
                 cell.textField?.stringValue = "\(row + 1): \(bandTag.variations[row])"
                 return cell

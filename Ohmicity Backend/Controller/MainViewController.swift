@@ -1359,23 +1359,17 @@ extension MainViewController {
     
     private func removeDoubleBands() {
         var newDuplicatedBands = [Band]()
-        
-        
-        
-        
         //Finds exactly spelled double bands
         for band1 in localDataController.bandArray {
             for band2 in localDataController.bandArray {
-//                if band1.name == band2.name && band1.lastModified.dateValue() > band2.lastModified.dateValue() {
-//                    newDuplicatedBands.append(band1)
-//                }
-                
+                if band1.name == band2.name && band1.lastModified.dateValue() > band2.lastModified.dateValue() {
+                    newDuplicatedBands.append(band1)
+                }
             }
         }
         
         for band1 in newDuplicatedBands {
             localDataController.bandArray.removeAll(where: {$0.bandID == band1.bandID})
-            
         }
         
         localDataController.bandResults = localDataController.bandArray

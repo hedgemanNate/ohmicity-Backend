@@ -18,14 +18,21 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     }
     
     var selectedBand: Band {
-        return filteredBandArray[bandsTableView.selectedRow]
+        let tempBand = filteredBandArray[bandsTableView.selectedRow]
+        return tempBand
     }
     
     //Alert
     let alert = NSAlert()
     
     //Arrays
-    var showsArray: [Show] = []
+    
+    var showsArray = [Show]() {
+        didSet {
+            showsTableView.reloadData()
+        }
+    }
+    
     var filteredBandArray = [Band]() {
         didSet {
             bandsTableView.reloadData()
@@ -83,7 +90,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     @IBOutlet weak var pushBandButton: NSButton!
     @IBOutlet weak var saveBandButton: NSButton!
     @IBOutlet weak var loadPictureButton: NSButton!
-    @IBOutlet weak var ohmPickButton: NSButtonCell!
+    @IBOutlet weak var ohmPickButton: NSButton!
     @IBOutlet weak var capitalize: NSButton!
     @IBOutlet weak var makeSelectedTag: NSButton!
     @IBOutlet weak var addTag: NSButton!
@@ -91,6 +98,10 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     @IBOutlet weak var deleteButton: NSButton!
     @IBOutlet weak var copyAllBandsFromRemote: NSButton!
     @IBOutlet weak var copySelectedBandFromRemote: NSButton!
+    @IBOutlet weak var backupSafetySwitch: NSButton!
+    @IBOutlet weak var saveBackupButton: NSButton!
+    @IBOutlet weak var loadBackupButton: NSButton!
+    @IBOutlet weak var filterDropDownButton: NSPopUpButton!
     
     
     
@@ -109,6 +120,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         super.viewDidLoad()
         self.preferredContentSize = NSSize(width: 1320, height: 780)
         initialLoading()
+        
     }
     
     @IBAction func breaker(_ sender: Any) {
@@ -125,6 +137,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         
         logoImageView.imageAlignment = .alignCenter
         logoImageView.imageScaling = .scaleProportionallyDown
+        
         
         checkCurrentObject { [self] in
             if currentBand?.ohmPick == true {
@@ -150,6 +163,9 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     }
     
     private func initialLoading() {
+        backupSafetySwitch.state = .off
+        saveBackupButton.isEnabled = false
+        loadBackupButton.isEnabled = false
         localButton.state = .on
         filteredBandArray = localDataController.bandArray.sorted(by: {$0.name < $1.name})
         getRemoteBandData()
@@ -188,7 +204,8 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
             folkButton,
             americanaButton,
             classicRockButton,
-            classicalButton
+            classicalButton,
+            ohmPickButton
         ]
     }
     
@@ -211,7 +228,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     }
     
     
-    //MARK: Buttons Tapped Functions
+    //MARK: Band  Detail Buttons Functions
     @IBAction func capitalizeButtonTapped(_ sender: Any) {
         let oldName = bandNameTextField.stringValue
         let lowerName = oldName.lowercased()
@@ -288,6 +305,16 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
 
     }
     
+    @IBAction func goToLinkButtonTapped(_ sender: Any) {
+        if bandMediaLinkTextField.stringValue != "" {
+            let url = URL(string: "\(bandMediaLinkTextField.stringValue)")!
+            NSWorkspace.shared.open(url)
+        } else {
+            alertTextField.stringValue = "Band has no media link".capitalized
+        }
+    }
+    
+    
     @IBAction func pushButtonTapped(_ sender: Any) {
         let ref = FireStoreReferenceManager.bandDataPath
         do {
@@ -337,19 +364,30 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     
     //MARK: Tag Buttons Functions
     @IBAction func addTagButtonTapped(_ sender: Any) {
+        let tag = tagController.bandTags.first(where: {$0.bandID == selectedBand.bandID})
+        tag?.variations.append(bandNameTextField.stringValue)
+        tagsTableView.reloadData()
+        localDataController.saveBandTagData()
     }
     
     @IBAction func deleteTagButtonTapped(_ sender: Any) {
+        let tag = tagController.bandTags.first(where: {$0.bandID == selectedBand.bandID})
+        let selectedVariation = tag?.variations[tagsTableView.selectedRow]
+        guard let index = tag?.variations.firstIndex(where: {$0 == selectedVariation}) else {return}
+        tag?.variations.remove(at: index)
+        tagsTableView.reloadData()
+        //localDataController.saveBandTagData()
     }
     
     
     //MARK: Band List Buttons Functions
     @IBAction func makeSelectedButtonTapped(_ sender: Any) {
+        let tempBand = selectedBand
         guard let currentBand = currentBand else { return }
         
         alert.alertStyle = .critical
         alert.messageText = "Are You Sure?"
-        alert.informativeText = "Make \(selectedBand.name) a TAG for \(currentBand.name) and delete \(selectedBand.name) from band list?"
+        alert.informativeText = "Make \(tempBand.name) a TAG for \(currentBand.name) and delete \(tempBand.name) from band list?"
         alert.addButton(withTitle: "Yes. Do it.")
         alert.addButton(withTitle: "Cancel")
         
@@ -363,38 +401,20 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     
     @IBAction func removeBandDoubleButtonTapped(_ sender: Any) {
         if filteredBandArray.count == localDataController.bandArray.count {
+            var newDuplicatedBands = [Band]()
+            //Finds exactly spelled double bands
             for band1 in filteredBandArray {
                 for band2 in filteredBandArray {
-                    let nameResult = band1.name.localizedCaseInsensitiveCompare(band2.name)
-                    
-                    if nameResult == .orderedSame {
-                        let ageResult = band1.lastModified.compare(band2.lastModified)
-                        
-                        switch ageResult {
-                        case .orderedAscending:
-                            let index = filteredBandArray.firstIndex(of: band1)
-                            guard let index = index else {return}
-                            filteredBandArray.remove(at: index)
-                            continue
-                        case .orderedDescending:
-                            let index = filteredBandArray.firstIndex(of: band2)
-                            guard let index = index else {return}
-                            filteredBandArray.remove(at: index)
-                            continue
-                        case .orderedSame:
-                            let index = filteredBandArray.firstIndex(of: band2)
-                            guard let index = index else {return}
-                            filteredBandArray.remove(at: index)
-                            continue
-                        }
-                    } else {
-                        continue
+                    if band1.name == band2.name && band1.lastModified.dateValue() > band2.lastModified.dateValue() {
+                        newDuplicatedBands.append(band1)
                     }
                 }
             }
             
-        } else {
-            alertTextField.stringValue = "Clear out search field before removing duplicate bands"
+            for band1 in newDuplicatedBands {
+                filteredBandArray.removeAll(where: {$0.bandID == band1.bandID})
+                filteredBandArray.append(band1)
+            }
         }
     }
     
@@ -440,6 +460,27 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         }
     }
     
+    @IBAction func filterButtonTapped(_ sender: Any) {
+        switch filterDropDownButton.indexOfSelectedItem {
+        case 0:
+            filteredBandArray = localDataController.bandArray.filter({$0.photo != nil})
+            
+        case 1:
+            filteredBandArray = localDataController.bandArray.filter({$0.photo == nil})
+            
+        case 2: filteredBandArray = localDataController.bandArray.filter({$0.ohmPick == true})
+        
+        default:
+            break
+        }
+    }
+    
+    @IBAction func clearFilterButtonTapped(_ sender: Any) {
+        filteredBandArray = localDataController.bandArray
+    }
+    
+    
+    
     
     @IBAction func copySelectedBandFromRemoteButtonTapped(_ sender: Any) {
         if remoteButton.state == .on {
@@ -467,6 +508,44 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
             alertTextField.stringValue = "Switch to remote data before copying"
         }
     }
+    
+    //MARK: Band Data Backup Functions
+    @IBAction func backupSafetySwitch(_ sender: Any) {
+        switch backupSafetySwitch.state {
+        case .off:
+            saveBackupButton.isEnabled = false
+            loadBackupButton.isEnabled = false
+        case .on:
+            saveBackupButton.isEnabled = true
+            loadBackupButton.isEnabled = true
+        default:
+            break
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) { [self] in
+            backupSafetySwitch.state = .off
+            saveBackupButton.isEnabled = false
+            loadBackupButton.isEnabled = false
+        }
+    }
+    
+    @IBAction func saveBackupButtonTapped(_ sender: Any) {
+        backupSafetySwitch.state = .off
+        saveBackupButton.isEnabled = false
+        loadBackupButton.isEnabled = false
+        localDataController.saveBackupBandData()
+        alertTextField.stringValue = "Band Data Backup Saved"
+    }
+    
+    @IBAction func loadBackupButtonTapped(_ sender: Any) {
+        backupSafetySwitch.state = .off
+        saveBackupButton.isEnabled = false
+        loadBackupButton.isEnabled = false
+        localDataController.loadBackupBandData()
+        alertTextField.stringValue = "Band Data Backup Loaded"
+        filteredBandArray = localDataController.bandArray
+    }
+    
     
     
     //MARK: Radio Buttons
@@ -512,13 +591,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
             filteredBandArray = localDataController.bandArray.filter({$0.name.localizedCaseInsensitiveContains(searchTextField.stringValue)})
         }
         
-        
-        
-        
     }
-    
-    
-    
     
     
     //MARK: Genre CheckBoxes Tapped
@@ -700,17 +773,20 @@ extension BandDetailViewController {
     
     @objc private func loadInBand() {
         currentBand = selectedBand
-//        showsArray = localDataController.showArray.filter({$0.band == selectedBand.name})
+        showsArray = localDataController.showArray.filter({$0.band == selectedBand.name})
         updateViews()
     }
     
     private func makeBandATag() {
+        let tempBand = selectedBand
         guard let currentBand = currentBand else { return }
         guard let currentBandTags = tagController.bandTags.first(where: {$0.bandID == currentBand.bandID}) else { return }
-        currentBandTags.variations.append(selectedBand.name)
+        currentBandTags.variations.append(tempBand.name)
         
-        localDataController.bandArray.removeAll(where: {$0.bandID == selectedBand.bandID})
-        filteredBandArray.removeAll(where: {$0.bandID == selectedBand.bandID})
+        localDataController.bandArray.removeAll(where: {$0.bandID == tempBand.bandID})
+        filteredBandArray.removeAll(where: {$0.bandID == tempBand.bandID})
+        tagController.bandTags.removeAll(where: {$0.bandID == tempBand.bandID})
+        tagsTableView.reloadData()
         
         localDataController.saveBandData()
         localDataController.saveBandTagData()
@@ -870,18 +946,39 @@ extension BandDetailViewController {
             if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "OhmColumn") {
                 let ohmColumnIdentifier = NSUserInterfaceItemIdentifier("OhmCell")
                 guard let cell = tableView.makeView(withIdentifier: ohmColumnIdentifier, owner: self) as? NSTableCellView else {return nil}
+                
                 if filteredBandArray[row].ohmPick == true { cell.textField?.stringValue = "Xity Pick" } else { cell.textField?.stringValue = "" }
+                cell.textField?.textColor = .purple
                 return cell
+                
             } else if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "BandNameColumn") {
-                let ohmColumnIdentifier = NSUserInterfaceItemIdentifier("BandNameCell")
-                guard let cell = tableView.makeView(withIdentifier: ohmColumnIdentifier, owner: self) as? NSTableCellView else {return nil}
+                let bandNameCellIdentifier = NSUserInterfaceItemIdentifier("BandNameCell")
+                guard let cell = tableView.makeView(withIdentifier: bandNameCellIdentifier, owner: self) as? NSTableCellView else {return nil}
+                
                 cell.textField?.stringValue = filteredBandArray[row].name
+                cell.textField?.textColor = .white
+                if filteredBandArray[row].photo != nil { cell.textField?.textColor = .orange}
+                cell.prepareForReuse()
                 return cell
+                
             } else if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "BandIDColumn") {
-                let ohmColumnIdentifier = NSUserInterfaceItemIdentifier("BandIDCell")
-                guard let cell = tableView.makeView(withIdentifier: ohmColumnIdentifier, owner: self) as? NSTableCellView else {return nil}
+                let bandIDCellIdentifier = NSUserInterfaceItemIdentifier("BandIDCell")
+                guard let cell = tableView.makeView(withIdentifier: bandIDCellIdentifier, owner: self) as? NSTableCellView else {return nil}
+                
                 cell.textField?.stringValue = filteredBandArray[row].bandID
                 return cell
+                
+            } else if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "NumberColumn") {
+                let bandNumberCellIdentifier = NSUserInterfaceItemIdentifier("BandNumberCell")
+                guard let cell = tableView.makeView(withIdentifier: bandNumberCellIdentifier, owner: self) as? NSTableCellView else {return nil}
+                
+                cell.textField?.stringValue = "\(row + 1)"
+                cell.textField?.textColor = .white
+                if filteredBandArray[row].photo != nil { cell.textField?.textColor = .orange}
+                if filteredBandArray[row].ohmPick == true { cell.textField?.textColor = .purple}
+                cell.prepareForReuse()
+                return cell
+                
             }
             return nil
             
