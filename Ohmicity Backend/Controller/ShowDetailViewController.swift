@@ -11,34 +11,95 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
-    //Properties
-    var currentShow: Show?
+    //MARK: Properties
+    var currentShow: Show? {didSet {updateViews()}}
     var timer = Timer()
     var lastMessage = ""
     
+    //TableViews
+    @IBOutlet weak var showsTableView: NSTableView!
+    @IBOutlet weak var venueBandTableView: NSTableView!
+    
+    //TextFields
     @IBOutlet weak var bandNameTextField: NSTextField!
     @IBOutlet weak var businessNameTextField: NSTextField!
+    @IBOutlet weak var messageCenter: NSTextField!
     
+    //Buttons
     @IBOutlet weak var deleteButton: NSButton!
     @IBOutlet weak var ohmPickCheckbox: NSButton!
     @IBOutlet weak var showOnHoldCheckbox: NSButton!
-    @IBOutlet weak var bandRadioButton: NSButton!
-    @IBOutlet weak var businessRadioButton: NSButton!
     @IBOutlet weak var pushButton: NSButton!
+    @IBOutlet weak var saveBackupButton: NSButton!
+    @IBOutlet weak var loadBackupButton: NSButton!
+    @IBOutlet weak var enableBackupButton: NSButton!
+    @IBOutlet weak var filterXityPicksButton: NSButton!
+    @IBOutlet weak var filterShowsDropDown: NSComboBox!
     
-    //@IBOutlet weak var tableView: NSTableView!
-    
+    //Date Picker
     @IBOutlet weak var datePicker: NSDatePicker!
     
-    @IBOutlet weak var messageCenter: NSTextField!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        showsTableView.delegate = self
+        showsTableView.dataSource = self
+        venueBandTableView.delegate = self
+        venueBandTableView.dataSource = self
+        
         updateViews()
         dateFormatter.dateFormat = dateFormat1
-        
     }
     
+    //MARK: UpdateViews
+    private func updateViews() {
+        //tableView.delegate = self
+        //tableView.dataSource = self
+        
+        if currentShow != nil {
+            self.title = "Edit Show"
+            bandNameTextField.stringValue = currentShow!.band
+            businessNameTextField.stringValue = currentShow!.venue
+            
+            datePicker.dateValue = currentShow!.date
+            
+            dateFormatter.dateFormat = dateFormat3
+            
+            deleteButton.isEnabled = true
+            
+            switch currentShow?.ohmPick {
+            case false:
+                ohmPickCheckbox.state = .off
+            case true:
+                ohmPickCheckbox.state = .on
+            case .none:
+                return
+            case .some(_):
+                return
+            }
+            
+            switch currentShow?.onHold {
+            case false:
+                showOnHoldCheckbox.state = .off
+            case true:
+                showOnHoldCheckbox.state = .on
+            case .none:
+                return
+            case .some(_):
+                return
+            }
+            
+            
+        } else {
+            deleteButton.isEnabled = false
+            pushButton.isEnabled = false
+            showOnHoldCheckbox.isEnabled = false
+            ohmPickCheckbox.isEnabled = false
+        }
+    }
+    
+    
+    //MARK: Show Editing Button Functions
     @IBAction func breaker(_ sender: Any) {
         
     }
@@ -61,8 +122,6 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
     @IBAction func lastMessageButtonTapped(_ sender: Any) {
         messageCenter.stringValue = lastMessage
     }
-    
-    
     
     @IBAction func savedButtonTapped(_ sender: Any) {
         if currentShow != nil {
@@ -125,8 +184,15 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         }
     }
     
-    
-    @IBAction func deleteRemotelyButtonTapped(_ sender: Any) {
+    @IBAction func deleteLocallyButtonTapped(_ sender: Any) {
+        
+        //Delete Locally
+        guard let show = currentShow else {return}
+        localDataController.showArray.removeAll(where: {$0 == show})
+        notificationCenter.post(Notification(name: Notification.Name(rawValue: "showsUpdated")))
+        localDataController.saveShowData()
+        
+        //Put On Hold Remotely
         remoteDataController.remoteShowArray.removeAll(where: {$0 == currentShow})
         currentShow!.onHold = true
         
@@ -147,94 +213,60 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         }
     }
     
-    @IBAction func deleteLocallyButtonTapped(_ sender: Any) {
-        guard let show = currentShow else {return}
-        localDataController.showArray.removeAll(where: {$0 == show})
-        notificationCenter.post(Notification(name: Notification.Name(rawValue: "showsUpdated")))
-        localDataController.saveShowData()
-        self.view.window?.close()
+    //MARK: Show List Button Functions
+    @IBAction func removeOldShowsButtonTapped(_ sender: Any) {
     }
     
+    @IBAction func removeAllLocalShowsButtonTapped(_ sender: Any) {
+    }
+    
+    @IBAction func saveBackupButtonTapped(_ sender: Any) {
+    }
+    
+    @IBAction func loadBackupButtonTapped(_ sender: Any) {
+    }
+    
+    @IBAction func enableBackupButtonTapped(_ sender: Any) {
+    }
+    
+    @IBAction func showListXityPicksButtonTapped(_ sender: Any) {
+    }
+    
+    @IBAction func pushAllShowsButtonTapped(_ sender: Any) {
+    }
+    
+    @IBAction func copySelectedShowButtonTapped(_ sender: Any) {
+    }
+    
+    @IBAction func copyAllShowsButtonTapped(_ sender: Any) {
+    }
     
     //MARK: Radio Buttons
-    
-    @IBAction func radioButtonsTapped(_ sender: Any) {
-        DispatchQueue.main.async {
-            //self.tableView.reloadData()
-        }
+    @IBAction func searchVenueBandRadioButtonsTapped(_ sender: Any) {
     }
     
     
-    //MARK: UpdateViews
-    private func updateViews() {
-        //tableView.delegate = self
-        //tableView.dataSource = self
+    @IBAction func searchShowsRadioButtonsTapped(_ sender: Any) {
         
-        bandRadioButton.state = .on
-        
-        if currentShow != nil {
-            self.title = "Edit Show"
-            bandNameTextField.stringValue = currentShow!.band
-            businessNameTextField.stringValue = currentShow!.venue
-            
-            datePicker.dateValue = currentShow!.date
-            
-            dateFormatter.dateFormat = dateFormat3
-            
-            deleteButton.isEnabled = true
-            
-            switch currentShow?.ohmPick {
-            case false:
-                ohmPickCheckbox.state = .off
-            case true:
-                ohmPickCheckbox.state = .on
-            case .none:
-                return
-            case .some(_):
-                return
-            }
-            
-            switch currentShow?.onHold {
-            case false:
-                showOnHoldCheckbox.state = .off
-            case true:
-                showOnHoldCheckbox.state = .on
-            case .none:
-                return
-            case .some(_):
-                return
-            }
-            
-            
-        } else {
-            deleteButton.isEnabled = false
-            pushButton.isEnabled = false
-            showOnHoldCheckbox.isEnabled = false
-            ohmPickCheckbox.isEnabled = false
-        }
     }
+    
+    //MARK: Search Fields Functions
+    @IBAction func showListSearchField(_ sender: Any) {
+    }
+    
+    @IBAction func venueBandSearchField(_ sender: Any) {
+    }
+    
     
 }
 
 extension ShowDetailViewController {
     func numberOfRows(in tableView: NSTableView) -> Int {
-        if self.bandRadioButton.state == .on {
-            return localDataController.bandArray.count
-        } else if self.businessRadioButton.state == .on {
-            return localDataController.businessArray.count
-        }
-        return 1
+        return 0
     }
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "NameCell"), owner: nil) as? NSTableCellView {
-            
-            if self.bandRadioButton.state == .on {
-                cell.textField?.stringValue = localDataController.bandArray[row].name
-                
-            } else if self.businessRadioButton.state == .on {
-                cell.textField?.stringValue = localDataController.businessArray[row].name
-            }
             
             return cell
         }

@@ -6,11 +6,16 @@
 //
 
 import Cocoa
+import FirebaseCore
+import FirebaseDatabase
 
 class OpeningViewController: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        FirebaseApp.configure()
+        Database.database().isPersistenceEnabled = true
+        
         localDataController.loadBandData()
         localDataController.loadJsonData()
         localDataController.loadShowData()

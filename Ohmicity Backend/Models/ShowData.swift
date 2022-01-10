@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Shows: Codable {
+struct ShowsData: Codable {
     let shows: [ShowData]
 }
 

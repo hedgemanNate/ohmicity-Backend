@@ -34,16 +34,13 @@
 		F65B06AD266C95AF00616BD9 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65B06AC266C95AF00616BD9 /* Helper.swift */; };
 		F65DC07726E5DBA300340C07 /* BulkShowCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65DC07526E5DBA300340C07 /* BulkShowCreationViewController.swift */; };
 		F66E7018278901C700C11B18 /* OpeningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E7016278901C700C11B18 /* OpeningViewController.swift */; };
-		F66E7019278901C700C11B18 /* OpeningViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F66E7017278901C700C11B18 /* OpeningViewController.xib */; };
 		F676F0E92698DAA400C47599 /* Recommendation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F676F0E82698DAA400C47599 /* Recommendation.swift */; };
 		F676F0EB2698DB4100C47599 /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = F676F0EA2698DB4100C47599 /* Rating.swift */; };
 		F676F0ED2698DD5900C47599 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = F676F0EC2698DD5900C47599 /* Message.swift */; };
 		F68A6CF027794A0B009DCB8F /* RecommendationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68A6CEE27794A0B009DCB8F /* RecommendationsViewController.swift */; };
 		F6936DC426A0DA6C00E5FA7F /* Enumerations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6936DC326A0DA6C00E5FA7F /* Enumerations.swift */; };
 		F69F94A32786868A00D060D3 /* BandTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69F94A12786868A00D060D3 /* BandTagViewController.swift */; };
-		F69F94A42786868A00D060D3 /* BandTagViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F69F94A22786868A00D060D3 /* BandTagViewController.xib */; };
 		F69F94A7278692B700D060D3 /* VenueTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69F94A5278692B700D060D3 /* VenueTagViewController.swift */; };
-		F69F94A8278692B700D060D3 /* VenueTagViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F69F94A6278692B700D060D3 /* VenueTagViewController.xib */; };
 		F6A2D74F2656F05900C50456 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A2D74D2656F05900C50456 /* MainViewController.swift */; };
 		F6A2D7502656F05900C50456 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F6A2D74E2656F05900C50456 /* MainViewController.xib */; };
 		F6C31F552656E57B004A1BB2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C31F542656E57B004A1BB2 /* AppDelegate.swift */; };
@@ -87,16 +84,13 @@
 		F65B06AC266C95AF00616BD9 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		F65DC07526E5DBA300340C07 /* BulkShowCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulkShowCreationViewController.swift; sourceTree = "<group>"; };
 		F66E7016278901C700C11B18 /* OpeningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpeningViewController.swift; sourceTree = "<group>"; };
-		F66E7017278901C700C11B18 /* OpeningViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OpeningViewController.xib; sourceTree = "<group>"; };
 		F676F0E82698DAA400C47599 /* Recommendation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recommendation.swift; sourceTree = "<group>"; };
 		F676F0EA2698DB4100C47599 /* Rating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rating.swift; sourceTree = "<group>"; };
 		F676F0EC2698DD5900C47599 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		F68A6CEE27794A0B009DCB8F /* RecommendationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationsViewController.swift; sourceTree = "<group>"; };
 		F6936DC326A0DA6C00E5FA7F /* Enumerations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enumerations.swift; sourceTree = "<group>"; };
 		F69F94A12786868A00D060D3 /* BandTagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BandTagViewController.swift; sourceTree = "<group>"; };
-		F69F94A22786868A00D060D3 /* BandTagViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BandTagViewController.xib; sourceTree = "<group>"; };
 		F69F94A5278692B700D060D3 /* VenueTagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueTagViewController.swift; sourceTree = "<group>"; };
-		F69F94A6278692B700D060D3 /* VenueTagViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VenueTagViewController.xib; sourceTree = "<group>"; };
 		F6A2D74D2656F05900C50456 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		F6A2D74E2656F05900C50456 /* MainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
 		F6C31F512656E57B004A1BB2 /* Ohmicity Backend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Ohmicity Backend.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -192,12 +186,9 @@
 				F65B06A7266C3EC300616BD9 /* ShowDetailViewController.swift */,
 				F65B06A2266C360F00616BD9 /* BandDetailViewController.swift */,
 				F66E7016278901C700C11B18 /* OpeningViewController.swift */,
-				F66E7017278901C700C11B18 /* OpeningViewController.xib */,
 				F651C91B278605F600FCD0AA /* ImportShowsViewController.swift */,
 				F69F94A12786868A00D060D3 /* BandTagViewController.swift */,
 				F69F94A5278692B700D060D3 /* VenueTagViewController.swift */,
-				F69F94A6278692B700D060D3 /* VenueTagViewController.xib */,
-				F69F94A22786868A00D060D3 /* BandTagViewController.xib */,
 				F617385C26D858A40084B2CB /* BannerAdsViewController.swift */,
 				F68A6CEE27794A0B009DCB8F /* RecommendationsViewController.swift */,
 			);
@@ -334,13 +325,10 @@
 				F6C31F5C2656E57B004A1BB2 /* Main.storyboard in Resources */,
 				F6578F4B268D032E00AC25CE /* BusinessPhoto.xib in Resources */,
 				F6A2D7502656F05900C50456 /* MainViewController.xib in Resources */,
-				F69F94A8278692B700D060D3 /* VenueTagViewController.xib in Resources */,
-				F69F94A42786868A00D060D3 /* BandTagViewController.xib in Resources */,
 				D81FCF9427113DAC0070B4CF /* yellow.jpg in Resources */,
 				D81FCF9327113DAC0070B4CF /* orange.png in Resources */,
 				F615064B268E67E200C4B808 /* Ohmicity Logo Banner.png in Resources */,
 				F615064D268E680B00C4B808 /* 1200px-American_Heart_Association_Logo.svg.png in Resources */,
-				F66E7019278901C700C11B18 /* OpeningViewController.xib in Resources */,
 				F655439F2689ABA300F823BA /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

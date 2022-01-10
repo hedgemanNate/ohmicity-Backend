@@ -1,17 +1,8 @@
 import Cocoa
 
-let this = "this"
-let that = "That"
+let time1 = Date() - 13000
+let time2 = Date()
 
-let result = this.caseInsensitiveCompare(that)
+let this = time1.timeIntervalSinceReferenceDate - time2.timeIntervalSinceReferenceDate
 
-if result == .orderedDescending {
-    print("true")
-} else {
-    print("false")
-}
-
-
-
-
-
+print(this)

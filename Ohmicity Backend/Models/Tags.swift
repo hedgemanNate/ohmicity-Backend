@@ -11,9 +11,9 @@ class BandTag: Codable {
     let bandID: String
     var variations: [String]
     
-    init(bandID: String, variations: [String]) {
-        self.bandID = bandID
-        self.variations = variations
+    init(band: Band) {
+        self.bandID = band.bandID
+        self.variations = [band.name]
     }
 }
 

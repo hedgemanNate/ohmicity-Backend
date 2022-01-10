@@ -14,14 +14,15 @@ class TagController {
     var venueTags = [VenueTag]()
     
     
-    func scanBandTags(band: String) -> Band {
-        let newBand = Band(name: band)
+    func scanBandTags(bandName: String) -> Band {
+        let newBand = Band(name: bandName)
         
         for bandTag in bandTags {
             
-            if bandTag.variations.contains(band) {
-                guard let foundBand = localDataController.bandArray.first(where: {$0.bandID == bandTag.bandID}) else { return newBand }
+            if bandTag.variations.contains(bandName) {
+                guard let foundBand = localDataController.bandArray.first(where: {$0.bandID == bandTag.bandID}) else { continue }
                 
+                print(foundBand.name)
                 return foundBand
             }
         }

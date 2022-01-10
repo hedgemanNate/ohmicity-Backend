@@ -10,7 +10,7 @@ import Foundation
 
 class RawShowDataController {
     
-    var data: Shows?
+    var data: ShowsData?
     var path: URL?
     var rawShowsArray = [ShowData]()
     var rawShowsResultsArray = [ShowData]()
@@ -57,7 +57,7 @@ class RawShowDataController {
     private func parse(jsonData: Data) {
         do {
             let serialQueue = DispatchQueue(label: "JsonArrayQueue")
-            let decodedData = try JSONDecoder().decode(Shows.self, from: jsonData)
+            let decodedData = try JSONDecoder().decode(ShowsData.self, from: jsonData)
             data = decodedData
             
             
@@ -70,8 +70,8 @@ class RawShowDataController {
             print(rawShowsArray)
             //Search Functionality
             
-            rawShowsResultsArray = []
-            rawShowsResultsArray = rawShowsArray
+//            rawShowsResultsArray = []
+//            rawShowsResultsArray = rawShowsArray
             
         } catch {
             print("decode error")

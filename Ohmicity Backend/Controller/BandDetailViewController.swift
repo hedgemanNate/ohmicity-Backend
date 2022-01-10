@@ -22,11 +22,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         return tempBand
     }
     
-    //Alert
-    let alert = NSAlert()
-    
     //Arrays
-    
     var showsArray = [Show]() {
         didSet {
             showsTableView.reloadData()
@@ -118,7 +114,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     //MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.preferredContentSize = NSSize(width: 1320, height: 780)
+        self.preferredContentSize = NSSize(width: 1320, height: 810)
         initialLoading()
         
     }
@@ -292,13 +288,16 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
             newBand.lastModified = Timestamp()
             
             if localDataController.bandArray.contains(newBand) {
+                buttonIndication(color: .orange)
                 return
-                    buttonIndication(color: .orange)
             }
             
+            let newTag = BandTag(band: newBand)
             currentBand = newBand
             localDataController.bandArray.append(newBand)
+            tagController.bandTags.append(newTag)
             localDataController.saveBandData()
+            localDataController.saveBandTagData()
             notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
             buttonIndication(color: .green)
         }
@@ -329,11 +328,13 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     }
     
     @IBAction func deleteLoadedButtonTapped(_ sender: Any) {
+        guard let currentBand = currentBand else {return}
         checkCurrentObject {
             localDataController.bandArray.removeAll(where: {$0 == self.currentBand})
             self.currentBand = nil
             self.updateViews()
-            self.alertTextField.stringValue = "\(self.currentBand!.name) Deleted"
+            self.alertTextField.stringValue = "\(currentBand.name) Deleted"
+            localDataController.saveBandData()
         } ifNil: {
             self.alertTextField.stringValue = "COULD NOT DELETE BECAUSE NO BAND IS LOADED"
         }
@@ -363,6 +364,15 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     }
     
     //MARK: Tag Buttons Functions
+    @IBAction func makeTagButtonTapped(_ sender: Any) {
+        guard let currentBand = currentBand else {return}
+        let newTag = BandTag(band: currentBand)
+        tagController.bandTags.append(newTag)
+        localDataController.saveBandTagData()
+        tagsTableView.reloadData()
+    }
+    
+    
     @IBAction func addTagButtonTapped(_ sender: Any) {
         let tag = tagController.bandTags.first(where: {$0.bandID == selectedBand.bandID})
         tag?.variations.append(bandNameTextField.stringValue)
@@ -382,15 +392,16 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     
     //MARK: Band List Buttons Functions
     @IBAction func makeSelectedButtonTapped(_ sender: Any) {
+        if bandsTableView.numberOfSelectedRows == 0 {return}
         let tempBand = selectedBand
         guard let currentBand = currentBand else { return }
         
+        let alert = NSAlert()
         alert.alertStyle = .critical
         alert.messageText = "Are You Sure?"
-        alert.informativeText = "Make \(tempBand.name) a TAG for \(currentBand.name) and delete \(tempBand.name) from band list?"
         alert.addButton(withTitle: "Yes. Do it.")
         alert.addButton(withTitle: "Cancel")
-        
+        alert.informativeText = "Make \(tempBand.name) a TAG for \(currentBand.name) and delete \(tempBand.name) from band list?"
         let res = alert.runModal()
         
         //Adds functionality to the first button (Yes. Do it")
@@ -787,9 +798,11 @@ extension BandDetailViewController {
         filteredBandArray.removeAll(where: {$0.bandID == tempBand.bandID})
         tagController.bandTags.removeAll(where: {$0.bandID == tempBand.bandID})
         tagsTableView.reloadData()
+        bandsTableView.reloadData()
         
         localDataController.saveBandData()
         localDataController.saveBandTagData()
+        
     }
     
     private func fillData() {

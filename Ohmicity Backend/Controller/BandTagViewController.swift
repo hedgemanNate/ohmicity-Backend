@@ -100,8 +100,22 @@ class BandTagViewController: NSViewController, NSTableViewDelegate, NSTableViewD
         
     }
     
+    @IBAction func clearAllTags(_ sender: Any) {
+        tagController.bandTags = []
+        localDataController.saveBandTagData()
+    }
     
-
+    @IBAction func createAllNewTags(_ sender: Any) {
+        let bandArray = localDataController.bandArray
+        
+        for band in bandArray {
+            let newTag = BandTag(band: band)
+            tagController.bandTags.append(newTag)
+        }
+        
+        localDataController.saveBandTagData()
+    }
+    
     @IBAction func addTagButtonTapped(_ sender: Any) {
         let tag = filterArray[tagTableIndex]
         let newTag = newTagTextField.stringValue
