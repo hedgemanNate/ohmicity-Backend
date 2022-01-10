@@ -411,22 +411,21 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     }
     
     @IBAction func removeBandDoubleButtonTapped(_ sender: Any) {
-        if filteredBandArray.count == localDataController.bandArray.count {
-            var newDuplicatedBands = [Band]()
-            //Finds exactly spelled double bands
-            for band1 in filteredBandArray {
-                for band2 in filteredBandArray {
-                    if band1.name == band2.name && band1.lastModified.dateValue() > band2.lastModified.dateValue() {
-                        newDuplicatedBands.append(band1)
-                    }
+        var newDuplicatedBands = [Band]()
+        //Finds exactly spelled double bands
+        for band1 in localDataController.bandArray {
+            for band2 in localDataController.bandArray {
+                if band1.name == band2.name && band1.lastModified.seconds < band2.lastModified.seconds {
+                    newDuplicatedBands.append(band1)
                 }
             }
-            
-            for band1 in newDuplicatedBands {
-                filteredBandArray.removeAll(where: {$0.bandID == band1.bandID})
-                filteredBandArray.append(band1)
-            }
         }
+        
+        for band1 in newDuplicatedBands {
+            localDataController.bandArray.removeAll(where: {$0.bandID == band1.bandID})
+            localDataController.bandArray.append(band1)
+        }
+        filteredBandArray = localDataController.bandArray
     }
     
     
@@ -590,16 +589,24 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     
     //MARK: Search TextField
     @IBAction func searchingTextField(_ sender: Any) {
-        if remoteButton.state == .on {
+        if localButton.state == .on {
+            if searchTextField.stringValue == "" {
+                filteredBandArray = localDataController.bandArray.sorted(by: {$0.name < $1.name})
+            } else {
+                filteredBandArray = localDataController.bandArray.filter({$0.name.localizedCaseInsensitiveContains(searchTextField.stringValue)})
+            }
+        } else if remoteButton.state == .on {
             if searchTextField.stringValue == "" {
                 filteredBandArray = remoteDataController.remoteBandArray
             } else {
-            filteredBandArray = remoteDataController.remoteBandArray.filter({$0.name.localizedCaseInsensitiveContains(searchTextField.stringValue)})
+                filteredBandArray = remoteDataController.remoteBandArray.filter({$0.name.localizedCaseInsensitiveContains(searchTextField.stringValue)})
             }
-        } else if newButton.state == .on && searchTextField.stringValue == "" {
-            filteredBandArray = localDataController.bandArray.sorted(by: {$0.lastModified.seconds < $1.lastModified.seconds})
-        } else {
-            filteredBandArray = localDataController.bandArray.filter({$0.name.localizedCaseInsensitiveContains(searchTextField.stringValue)})
+        } else if newButton.state == .on {
+            if searchTextField.stringValue == "" {
+                filteredBandArray = localDataController.bandArray.sorted(by: {$0.lastModified.seconds < $1.lastModified.seconds})
+            } else {
+                filteredBandArray = localDataController.bandArray.filter({$0.name.localizedCaseInsensitiveContains(searchTextField.stringValue)})
+            }
         }
         
     }
@@ -769,7 +776,8 @@ extension BandDetailViewController {
     
     private func showArraySetup() {
         checkCurrentObject { [self] in
-            showsArray = localDataController.showArray.filter({$0.band == currentBand!.name})
+            showsArray = localDataController.showArray.filter({$0.band == currentBand!.bandID})
+            showsTableView.reloadData()
         } ifNil: {
             return
         }
@@ -941,15 +949,17 @@ extension BandDetailViewController {
         switch tableView {
         case showsTableView:
             if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "Venue") {
-                let bandIdentifier = NSUserInterfaceItemIdentifier("VenueCell")
-                guard let cell = tableView.makeView(withIdentifier: bandIdentifier, owner: self) as? NSTableCellView else {return nil}
-                cell.textField?.stringValue = showsArray[row].venue
+                guard let venue = localDataController.businessArray.first(where: {$0.venueID == showsArray[row].venue}) else {return NSTableCellView()}
+                
+                let venueIdentifier = NSUserInterfaceItemIdentifier("VenueCell")
+                guard let cell = tableView.makeView(withIdentifier: venueIdentifier, owner: self) as? NSTableCellView else {return nil}
+                cell.textField?.stringValue = venue.name
                 return cell
                 
             } else if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "Time") {
                 let showTimeIdentifier = NSUserInterfaceItemIdentifier("TimeCell")
                 guard let cell = tableView.makeView(withIdentifier: showTimeIdentifier, owner: self) as? NSTableCellView else {return nil}
-                let showTime = showsArray[row].dateString.replacingOccurrences(of: "\n", with: " ")
+                let showTime = showsArray[row].dateString
                 cell.textField?.stringValue = showTime
                 return cell
             }
