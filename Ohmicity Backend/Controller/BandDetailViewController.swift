@@ -14,6 +14,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     var currentBand: Band? {
         didSet {
             updateViews()
+            addVariation.isEnabled = true
         }
     }
     
@@ -89,7 +90,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     @IBOutlet weak var ohmPickButton: NSButton!
     @IBOutlet weak var capitalize: NSButton!
     @IBOutlet weak var makeSelectedTag: NSButton!
-    @IBOutlet weak var addTag: NSButton!
+    @IBOutlet weak var addVariation: NSButton!
     @IBOutlet weak var deleteTag: NSButton!
     @IBOutlet weak var deleteButton: NSButton!
     @IBOutlet weak var copyAllBandsFromRemote: NSButton!
@@ -301,6 +302,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
             notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
             buttonIndication(color: .green)
         }
+        reloadAllTableViews()
 
     }
     
@@ -335,6 +337,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
             self.updateViews()
             self.alertTextField.stringValue = "\(currentBand.name) Deleted"
             localDataController.saveBandData()
+            self.reloadAllTableViews()
         } ifNil: {
             self.alertTextField.stringValue = "COULD NOT DELETE BECAUSE NO BAND IS LOADED"
         }
@@ -373,8 +376,10 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     }
     
     
-    @IBAction func addTagButtonTapped(_ sender: Any) {
-        let tag = tagController.bandTags.first(where: {$0.bandID == selectedBand.bandID})
+    @IBAction func addVariationButtonTapped(_ sender: Any) {
+        guard let currentBand = currentBand else {return}
+
+        let tag = tagController.bandTags.first(where: {$0.bandID == currentBand.bandID})
         tag?.variations.append(bandNameTextField.stringValue)
         tagsTableView.reloadData()
         localDataController.saveBandTagData()
@@ -421,11 +426,20 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
             }
         }
         
+        for band in newDuplicatedBands {
+            print("\(band.name) : \(band.bandID)")
+        }
+        
         for band1 in newDuplicatedBands {
-            localDataController.bandArray.removeAll(where: {$0.bandID == band1.bandID})
+            localDataController.bandArray.removeAll(where: {$0.name == band1.name})
+            bandsTableView.reloadData()
+            
             localDataController.bandArray.append(band1)
+            bandsTableView.reloadData()
+            
         }
         filteredBandArray = localDataController.bandArray
+        //localDataController.saveBandData()
     }
     
     
@@ -783,10 +797,11 @@ extension BandDetailViewController {
         }
     }
     
-    private func reloadTableViews() {
+    private func reloadAllTableViews() {
         DispatchQueue.main.async {
             self.showsTableView.reloadData()
             self.tagsTableView.reloadData()
+            self.bandsTableView.reloadData()
         }
     }
     
