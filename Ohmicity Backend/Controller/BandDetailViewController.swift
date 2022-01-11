@@ -84,7 +84,6 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     @IBOutlet weak var classicalButton: NSButton!
     
     //Buttons
-    @IBOutlet weak var pushBandButton: NSButton!
     @IBOutlet weak var saveBandButton: NSButton!
     @IBOutlet weak var loadPictureButton: NSButton!
     @IBOutlet weak var ohmPickButton: NSButton!
@@ -107,7 +106,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     @IBOutlet weak var bandIDLabel: NSTextField!
     
     @IBOutlet weak var newButton: NSButton!
-    @IBOutlet weak var localButton: NSButton!
+    @IBOutlet weak var backupButton: NSButton!
     @IBOutlet weak var remoteButton: NSButton!
     
     
@@ -163,8 +162,8 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         backupSafetySwitch.state = .off
         saveBackupButton.isEnabled = false
         loadBackupButton.isEnabled = false
-        localButton.state = .on
-        filteredBandArray = localDataController.bandArray.sorted(by: {$0.name < $1.name})
+        backupButton.state = .on
+        filteredBandArray = remoteDataController.bandArray.sorted(by: {$0.name < $1.name})
         getRemoteBandData()
         bandsTableView.doubleAction = #selector(loadInBand)
         bandsTableView.dataSource = self
@@ -174,7 +173,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         tagsTableView.dataSource = self
         tagsTableView.delegate = self
         fillGenreButtonArray()
-        filteredBandArray = localDataController.bandArray.sorted(by: {$0.name < $1.name})
+        filteredBandArray = remoteDataController.bandArray.sorted(by: {$0.name < $1.name})
         
     }
     
@@ -276,76 +275,6 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         default:
             break
         }
-        
-//        checkCurrentObject { [self] in
-//            if localDataController.bandArray.contains(currentBand!) {
-//                //Update Shows For Band
-//                let oldBandName = currentBand?.name
-//                let newBandName = bandNameTextField.stringValue
-//
-//
-//                if oldBandName != newBandName {
-//                    currentBand?.name = newBandName
-//                    for var show in localDataController.showArray {
-//                        if show.band == oldBandName {
-//                            show.band = newBandName
-//
-//                            localDataController.showArray.removeAll(where: {$0 == show})
-//                            show.lastModified = Timestamp()
-//                            localDataController.showArray.append(show)
-//                        }
-//                    }
-//                    localDataController.saveShowData()
-//                }
-//
-//                currentBand?.mediaLink = bandMediaLinkTextField.stringValue
-//                currentBand?.photo = imageData
-//                if ohmPickButton.state == .on {
-//                    currentBand?.ohmPick = true
-//                } else {
-//                    currentBand?.ohmPick = false
-//                }
-//
-//                if localDataController.bandArray.contains(currentBand!) == false {
-//                    localDataController.bandArray.append(currentBand!)
-//                }
-//
-//                currentBand?.lastModified = Timestamp()
-//
-//                localDataController.saveBandData()
-//                notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
-//                buttonIndication(color: .green)
-//
-//
-//
-//            } else {
-//                localDataController.bandArray.append(currentBand!)
-//                localDataController.saveBandData()
-//                notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
-//                buttonIndication(color: .green)
-//            }
-//
-//        } ifNil: { [self] in
-//            let newBand = Band(name: bandNameTextField.stringValue, mediaLink: bandMediaLinkTextField.stringValue, ohmPick: ohmPickButton.state)
-//            newBand.photo = imageData
-//            newBand.lastModified = Timestamp()
-//
-//            if localDataController.bandArray.contains(newBand) {
-//                buttonIndication(color: .orange)
-//                return
-//            }
-//
-//            let newTag = BandTag(band: newBand)
-//            currentBand = newBand
-//            localDataController.bandArray.append(newBand)
-//            tagController.bandTags.append(newTag)
-//            localDataController.saveBandData()
-//            localDataController.saveBandTagData()
-//            notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
-//            buttonIndication(color: .green)
-//        }
-//        reloadAllTableViews()
-
     }
     
     @IBAction func goToLinkButtonTapped(_ sender: Any) {
@@ -357,29 +286,25 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         }
     }
     
-    
-    @IBAction func pushButtonTapped(_ sender: Any) {
-        let ref = FireStoreReferenceManager.bandDataPath
-        do {
-            currentBand?.lastModified = Timestamp()
-            try ref.document(currentBand!.bandID).setData(from: currentBand)
-            print("Maybe a good push to database: Wait for error")
-            buttonIndication(color: .green)
-        } catch let error {
-                NSLog(error.localizedDescription)
-            buttonIndication(color: .red)
-        }
-    }
-    
     @IBAction func deleteLoadedButtonTapped(_ sender: Any) {
         guard let currentBand = currentBand else {return}
         checkCurrentObject {
-            localDataController.bandArray.removeAll(where: {$0 == self.currentBand})
-            self.currentBand = nil
-            self.updateViews()
-            self.alertTextField.stringValue = "\(currentBand.name) Deleted"
-            localDataController.saveBandData()
-            self.reloadAllTableViews()
+            workRef.bandDataPath.document(currentBand.bandID).delete { err in
+                if let err = err {
+                    self.alertTextField.stringValue = err.localizedDescription
+                } else {
+                    remoteDataController.bandArray.removeAll(where: {$0 == self.currentBand})
+                    self.currentBand = nil
+                    self.updateViews()
+                    self.alertTextField.stringValue = "\(currentBand.name) was deleted"
+                    
+                    DispatchQueue.main.async {
+                        self.reloadAllTableViews()
+                    }
+                }
+            }
+            
+            
         } ifNil: {
             self.alertTextField.stringValue = "COULD NOT DELETE BECAUSE NO BAND IS LOADED"
         }
@@ -460,81 +385,52 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     @IBAction func removeBandDoubleButtonTapped(_ sender: Any) {
         var newDuplicatedBands = [Band]()
         //Finds exactly spelled double bands
-        for band1 in localDataController.bandArray {
-            for band2 in localDataController.bandArray {
-                if band1.name == band2.name && band1.lastModified.seconds < band2.lastModified.seconds {
+        for band1 in remoteDataController.bandArray {
+            for band2 in remoteDataController.bandArray {
+                if band1.name == band2.name && band1.lastModified.seconds > band2.lastModified.seconds {
                     newDuplicatedBands.append(band1)
                 }
             }
         }
         
-        for band in newDuplicatedBands {
-            print("\(band.name) : \(band.bandID)")
-        }
-        
         for band1 in newDuplicatedBands {
-            localDataController.bandArray.removeAll(where: {$0.name == band1.name})
-            bandsTableView.reloadData()
-            
-            localDataController.bandArray.append(band1)
-            bandsTableView.reloadData()
-            
+            workRef.bandDataPath.document(band1.bandID).delete { err in
+                self.alertTextField.stringValue = "\(band1.name) was deleted from database"
+                remoteDataController.bandArray.removeAll(where: {$0.bandID == band1.bandID})
+                self.filteredBandArray.removeAll(where: {$0.bandID == band1.bandID})
+                
+                DispatchQueue.main.async {
+                    self.bandsTableView.reloadData()
+                }
+            }
         }
-        filteredBandArray = localDataController.bandArray
-        //localDataController.saveBandData()
     }
     
     
     @IBAction func deleteSelectedBand(_ sender: Any) {
         let tempBand = selectedBand
-        if remoteButton.state == .on {
-//            remoteDataController.remoteBandArray.removeAll(where: {$0 == tempBand})
-//            filteredBandArray.removeAll(where: {$0 == tempBand})
-            
-            let remoteIndex = remoteDataController.remoteBandArray.firstIndex(of: tempBand)
-            guard let remoteIndex = remoteIndex else {return}
-            
-            let filteredIndex = filteredBandArray.firstIndex(of: tempBand)
-            guard let filteredIndex = filteredIndex else {return}
-            
-            remoteDataController.remoteBandArray.remove(at: remoteIndex)
-            filteredBandArray.remove(at: filteredIndex)
-
-
-            ref.bandDataPath.document(tempBand.bandID).delete { err in
-                if let err = err {
-                    self.alertTextField.stringValue = "\(err.localizedDescription)"
-                } else {
-                    self.alertTextField.stringValue = "\(tempBand.name) was deleted from the database."
-                }
+        
+        ref.bandDataPath.document(tempBand.bandID).delete { err in
+            if let err = err {
+                self.alertTextField.stringValue = "\(err.localizedDescription)"
+            } else {
+                self.alertTextField.stringValue = "\(tempBand.name) was deleted from the database."
+                remoteDataController.bandArray.removeAll(where: {$0.bandID == tempBand.bandID})
+                self.reloadAllTableViews()
             }
-        } else {
-            //localDataController.bandArray.removeAll(where: {$0 == tempBand})
-            //filteredBandArray.removeAll(where: {$0 == tempBand})
-            
-            let filteredIndex = filteredBandArray.firstIndex(of: tempBand)
-            guard let filteredIndex = filteredIndex else {return}
-            
-            let localIndex = localDataController.bandArray.firstIndex(of: tempBand)
-            guard let localIndex = localIndex else {return}
-            
-            localDataController.bandArray.remove(at: localIndex)
-            filteredBandArray.remove(at: filteredIndex)
-            
-            self.alertTextField.stringValue = "\(tempBand.name) deleted"
-            localDataController.saveBandData()
         }
     }
+    
     
     @IBAction func filterButtonTapped(_ sender: Any) {
         switch filterDropDownButton.indexOfSelectedItem {
         case 0:
-            filteredBandArray = localDataController.bandArray.filter({$0.photo != nil})
+            filteredBandArray = remoteDataController.bandArray.filter({$0.photo != nil})
             
         case 1:
-            filteredBandArray = localDataController.bandArray.filter({$0.photo == nil})
+            filteredBandArray = remoteDataController.bandArray.filter({$0.photo == nil})
             
-        case 2: filteredBandArray = localDataController.bandArray.filter({$0.ohmPick == true})
+        case 2: filteredBandArray = remoteDataController.bandArray.filter({$0.ohmPick == true})
         
         default:
             break
@@ -542,37 +438,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     }
     
     @IBAction func clearFilterButtonTapped(_ sender: Any) {
-        filteredBandArray = localDataController.bandArray
-    }
-    
-    
-    
-    
-    @IBAction func copySelectedBandFromRemoteButtonTapped(_ sender: Any) {
-        if remoteButton.state == .on {
-            let tempBand = selectedBand
-            localDataController.bandArray.removeAll(where: {$0 == tempBand})
-            filteredBandArray.removeAll(where: {$0 == tempBand})
-            
-            localDataController.bandArray.append(tempBand)
-            filteredBandArray.append(tempBand)
-            alertTextField.stringValue = "Bands Copied From Remote"
-            localDataController.saveBandData()
-            
-        } else {
-            alertTextField.stringValue = "Switch to remote data before copying"
-        }
-    }
-    
-    @IBAction func copyAllBandsFromRemoteButtonTapped(_ sender: Any) {
-        if remoteButton.state == .on {
-            localDataController.bandArray = remoteDataController.remoteBandArray
-            filteredBandArray = localDataController.bandArray
-            alertTextField.stringValue = "Bands Copied From Remote"
-            localDataController.saveBandData()
-        } else {
-            alertTextField.stringValue = "Switch to remote data before copying"
-        }
+        filteredBandArray = remoteDataController.bandArray
     }
     
     //MARK: Band Data Backup Functions
@@ -596,20 +462,32 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     }
     
     @IBAction func saveBackupButtonTapped(_ sender: Any) {
+        if remoteDataController.bandArray == [] {
+            alertTextField.stringValue = "There is no data from the database to backup. Try restarting the program to get data from database. This should not have happened."
+            return
+        }
         backupSafetySwitch.state = .off
         saveBackupButton.isEnabled = false
         loadBackupButton.isEnabled = false
+        localDataController.bandArray = remoteDataController.bandArray
         localDataController.saveBackupBandData()
         alertTextField.stringValue = "Band Data Backup Saved"
     }
     
     @IBAction func loadBackupButtonTapped(_ sender: Any) {
+        if backupButton.state == .on {
+            localDataController.loadBackupBandData()
+            alertTextField.stringValue = "Band Data Backup Loaded"
+        } else {
+            alertTextField.stringValue = "Select Backup Radial before loading Backup"
+        }
         backupSafetySwitch.state = .off
         saveBackupButton.isEnabled = false
         loadBackupButton.isEnabled = false
-        localDataController.loadBackupBandData()
-        alertTextField.stringValue = "Band Data Backup Loaded"
-        filteredBandArray = localDataController.bandArray
+        
+        if backupButton.state == .on {
+            filteredBandArray = localDataController.bandArray
+        }
     }
     
     
@@ -625,7 +503,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
             }
             
             
-        } else if localButton.state == .on {
+        } else if backupButton.state == .on {
             if searchTextField.stringValue == "" {
                 filteredBandArray = localDataController.bandArray.sorted(by: {$0.name < $1.name})
             } else {
@@ -634,9 +512,9 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
             
             
         } else if remoteButton.state == .on {
-            filteredBandArray = remoteDataController.remoteBandArray
+            filteredBandArray = remoteDataController.bandArray
             if searchTextField.stringValue == "" {
-                filteredBandArray = remoteDataController.remoteBandArray
+                filteredBandArray = remoteDataController.bandArray
             } else {
                 filteredBandArray = filteredBandArray.filter({$0.name.localizedCaseInsensitiveContains(searchTextField.stringValue)})
             }
@@ -645,7 +523,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     
     //MARK: Search TextField
     @IBAction func searchingTextField(_ sender: Any) {
-        if localButton.state == .on {
+        if backupButton.state == .on {
             if searchTextField.stringValue == "" {
                 filteredBandArray = localDataController.bandArray.sorted(by: {$0.name < $1.name})
             } else {
@@ -653,9 +531,9 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
             }
         } else if remoteButton.state == .on {
             if searchTextField.stringValue == "" {
-                filteredBandArray = remoteDataController.remoteBandArray
+                filteredBandArray = remoteDataController.bandArray
             } else {
-                filteredBandArray = remoteDataController.remoteBandArray.filter({$0.name.localizedCaseInsensitiveContains(searchTextField.stringValue)})
+                filteredBandArray = remoteDataController.bandArray.filter({$0.name.localizedCaseInsensitiveContains(searchTextField.stringValue)})
             }
         } else if newButton.state == .on {
             if searchTextField.stringValue == "" {
@@ -857,16 +735,25 @@ extension BandDetailViewController {
         let tempBand = selectedBand
         guard let currentBand = currentBand else { return }
         guard let currentBandTags = tagController.bandTags.first(where: {$0.bandID == currentBand.bandID}) else { return }
-        currentBandTags.variations.append(tempBand.name)
         
-        localDataController.bandArray.removeAll(where: {$0.bandID == tempBand.bandID})
-        filteredBandArray.removeAll(where: {$0.bandID == tempBand.bandID})
-        tagController.bandTags.removeAll(where: {$0.bandID == tempBand.bandID})
-        tagsTableView.reloadData()
-        bandsTableView.reloadData()
-        
-        localDataController.saveBandData()
-        localDataController.saveBandTagData()
+        workRef.bandDataPath.document(tempBand.bandID).delete { err in
+            if let err = err {
+                self.alertTextField.stringValue = err.localizedDescription
+            } else {
+                currentBandTags.variations.append(tempBand.name)
+                localDataController.bandArray.removeAll(where: {$0.bandID == tempBand.bandID})
+                remoteDataController.bandArray.removeAll(where: {$0.bandID == tempBand.bandID})
+                self.filteredBandArray.removeAll(where: {$0.bandID == tempBand.bandID})
+                
+                tagController.bandTags.removeAll(where: {$0.bandID == tempBand.bandID})
+                localDataController.saveBandData()
+                localDataController.saveBandTagData()
+                
+                DispatchQueue.main.async {
+                    self.reloadAllTableViews()
+                }
+            }
+        }
     }
     
     private func createNewBand() {
@@ -882,13 +769,33 @@ extension BandDetailViewController {
         
         let newTag = BandTag(band: newBand)
         currentBand = newBand
-        localDataController.bandArray.append(newBand)
-        tagController.bandTags.append(newTag)
-        localDataController.saveBandData()
-        localDataController.saveBandTagData()
-        notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
-        buttonIndication(color: .green)
-        reloadAllTableViews()
+        
+        
+        do {
+            try workRef.bandDataPath.document(newBand.bandID).setData(from: currentBand, completion: { err in
+                if let err = err {
+                    self.alertTextField.stringValue = err.localizedDescription
+                } else {
+                    self.alertTextField.stringValue = "Band added on database"
+                    localDataController.bandArray.append(newBand)
+                    tagController.bandTags.append(newTag)
+                    localDataController.saveBandData()
+                    localDataController.saveBandTagData()
+                    self.buttonIndication(color: .green)
+                    
+                    DispatchQueue.main.async {
+                        self.reloadAllTableViews()
+                    }
+                }
+            })
+        } catch let error {
+            self.alertTextField.stringValue = error.localizedDescription
+            self.buttonIndication(color: .red)
+        }
+        
+        
+        
+        
     }
     
     private func updateBand() {
@@ -908,10 +815,24 @@ extension BandDetailViewController {
         }
         currentBand.lastModified = Timestamp()
         
-        localDataController.saveBandData()
-        notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
-        buttonIndication(color: .green)
-        reloadAllTableViews()
+        do {
+            try workRef.bandDataPath.document(currentBand.bandID).setData(from: currentBand, completion: { err in
+                if let err = err {
+                    self.alertTextField.stringValue = err.localizedDescription
+                } else {
+                    self.alertTextField.stringValue = "Band updated on database"
+                    localDataController.saveBandData()
+                    self.buttonIndication(color: .green)
+                    
+                    DispatchQueue.main.async {
+                        self.reloadAllTableViews()
+                    }
+                }
+            })
+        } catch let error {
+            self.alertTextField.stringValue = error.localizedDescription
+            self.buttonIndication(color: .red)
+        }
     }
     
     private func fillData() {
@@ -997,12 +918,12 @@ extension BandDetailViewController {
 extension BandDetailViewController {
     private func getRemoteBandData() {
         print("Running Remote Band")
-        FireStoreReferenceManager.bandDataPath.getDocuments { (querySnapshot, err) in
+        workRef.bandDataPath.getDocuments { (querySnapshot, err) in
             if let err = err {
                 self.alertTextField.stringValue = "Error getting bandData: \(err)"
             } else {
                 self.alertTextField.stringValue = "Got band data"
-                remoteDataController.remoteBandArray = []
+                remoteDataController.bandArray = []
                 for band in querySnapshot!.documents {
                     let result = Result {
                         try band.data(as: Band.self)
@@ -1010,7 +931,7 @@ extension BandDetailViewController {
                     switch result {
                     case .success(let band):
                         if let band = band {
-                            remoteDataController.remoteBandArray.append(band)
+                            remoteDataController.bandArray.append(band)
                         }
                     case .failure(let error):
                         print("Error decoding band: \(error.localizedDescription)")
@@ -1018,8 +939,8 @@ extension BandDetailViewController {
                     }
                 }
                 
-                let band = remoteDataController.remoteBandArray.sorted(by: {$0.name < $1.name})
-                remoteDataController.remoteBandArray = band
+                let band = remoteDataController.bandArray.sorted(by: {$0.name < $1.name})
+                remoteDataController.bandArray = band
             }
         }
     }

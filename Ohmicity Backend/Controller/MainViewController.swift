@@ -497,7 +497,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
         } else if remoteBandsButton.state == .on {
             index = tableView.selectedRow
             band = remoteDataController.bandResults[index]
-            remoteDataController.remoteBandArray.removeAll(where: {$0 == band})
+            remoteDataController.bandArray.removeAll(where: {$0 == band})
             remoteDataController.bandResults.removeAll(where: {$0.bandID == band.bandID})
             FireStoreReferenceManager.bandDataPath.document(band.bandID).delete
             { (err) in
@@ -820,7 +820,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                 NSLog("Error getting bandData: \(err)")
             } else {
                 self.alertTextField.stringValue = "Got band data"
-                remoteDataController.remoteBandArray = []
+                remoteDataController.bandArray = []
                 for band in querySnapshot!.documents {
                     let result = Result {
                         try band.data(as: Band.self)
@@ -829,7 +829,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                     case .success(let band):
                         print("Success Result: getBandData")
                         if let band = band {
-                            remoteDataController.remoteBandArray.append(band)
+                            remoteDataController.bandArray.append(band)
                         } else {
                             print("Document does not exist")
                         }
@@ -839,9 +839,9 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
                     }
                 }
                 
-                let band = remoteDataController.remoteBandArray.sorted(by: {$0.name < $1.name})
-                remoteDataController.remoteBandArray = band
-                remoteDataController.bandResults = remoteDataController.remoteBandArray
+                let band = remoteDataController.bandArray.sorted(by: {$0.name < $1.name})
+                remoteDataController.bandArray = band
+                remoteDataController.bandResults = remoteDataController.bandArray
             }
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -926,7 +926,7 @@ class MainViewController: NSViewController, NSTableViewDataSource, NSTableViewDe
             localDataController.saveBusinessData()
             alertTextField.stringValue = "Business Data Copied"
         } else if localBandsButton.state == .on || remoteBandsButton.state == .on {
-            localDataController.bandArray = remoteDataController.remoteBandArray
+            localDataController.bandArray = remoteDataController.bandArray
             localDataController.bandResults = localDataController.bandArray
             localDataController.saveBandData()
             alertTextField.stringValue = "Band Data Copied"
@@ -1118,15 +1118,15 @@ extension MainViewController {
         localDataController.showResults = localDataController.showArray
         
         let bizRemote = remoteDataController.remoteBusinessArray.sorted(by: {$0.name < $1.name})
-        let bandRemote = remoteDataController.remoteBandArray.sorted(by: {$0.name < $1.name})
+        let bandRemote = remoteDataController.bandArray.sorted(by: {$0.name < $1.name})
         let showRemote = remoteDataController.remoteShowArray.sorted(by: {$0.date < $1.date})
         
         remoteDataController.remoteBusinessArray = bizRemote
-        remoteDataController.remoteBandArray = bandRemote
+        remoteDataController.bandArray = bandRemote
         remoteDataController.remoteShowArray = showRemote
         
         remoteDataController.businessResults = remoteDataController.remoteBusinessArray
-        remoteDataController.bandResults = remoteDataController.remoteBandArray
+        remoteDataController.bandResults = remoteDataController.bandArray
         remoteDataController.showResults = remoteDataController.remoteShowArray
     }
     
@@ -1334,7 +1334,7 @@ extension MainViewController {
             }
         } else if remoteBandsButton.state == .on {
             if searchBarField.stringValue != "" {
-                let band = remoteDataController.remoteBandArray
+                let band = remoteDataController.bandArray
                 remoteDataController.bandResults = band.filter({($0.name.localizedCaseInsensitiveContains(searchBarField.stringValue))})
                 
                 DispatchQueue.main.async {
@@ -1344,7 +1344,7 @@ extension MainViewController {
                     self.tableView.scrollRowToVisible(0)
                 }
             } else {
-                remoteDataController.bandResults = remoteDataController.remoteBandArray
+                remoteDataController.bandResults = remoteDataController.bandArray
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }

@@ -3195,8 +3195,8 @@
                                                 </connections>
                                             </button>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4Wr-F9-7uQ">
-                                                <rect key="frame" x="-2" y="278" width="43" height="18"/>
-                                                <buttonCell key="cell" type="check" title="DJ" bezelStyle="regularSquare" imagePosition="left" inset="2" id="ngM-p3-v0K">
+                                                <rect key="frame" x="-2" y="278" width="53" height="18"/>
+                                                <buttonCell key="cell" type="check" title="R&amp;B" bezelStyle="regularSquare" imagePosition="left" enabled="NO" inset="2" id="ngM-p3-v0K">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
@@ -3266,7 +3266,7 @@
                                             </button>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qbD-Ny-Rg6">
                                                 <rect key="frame" x="-2" y="61" width="56" height="18"/>
-                                                <buttonCell key="cell" type="check" title="Latin" bezelStyle="regularSquare" imagePosition="left" inset="2" id="4cE-XX-3mg">
+                                                <buttonCell key="cell" type="check" title="Latin" bezelStyle="regularSquare" imagePosition="left" enabled="NO" inset="2" id="4cE-XX-3mg">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
@@ -3276,7 +3276,7 @@
                                             </button>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ns9-Oh-Y1P">
                                                 <rect key="frame" x="-2" y="30" width="52" height="18"/>
-                                                <buttonCell key="cell" type="check" title="Folk" bezelStyle="regularSquare" imagePosition="left" inset="2" id="7ur-pj-WnK">
+                                                <buttonCell key="cell" type="check" title="Folk" bezelStyle="regularSquare" imagePosition="left" enabled="NO" inset="2" id="7ur-pj-WnK">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
@@ -3286,7 +3286,7 @@
                                             </button>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Txg-Le-Hfs">
                                                 <rect key="frame" x="-2" y="-1" width="103" height="18"/>
-                                                <buttonCell key="cell" type="check" title="Classic Rock" bezelStyle="regularSquare" imagePosition="left" inset="2" id="bZx-ge-L4F">
+                                                <buttonCell key="cell" type="check" title="Classic Rock" bezelStyle="regularSquare" imagePosition="left" enabled="NO" inset="2" id="bZx-ge-L4F">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
@@ -3407,7 +3407,7 @@
                                             </button>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kNY-Fb-JIJ">
                                                 <rect key="frame" x="-2" y="61" width="62" height="18"/>
-                                                <buttonCell key="cell" type="check" title="World" bezelStyle="regularSquare" imagePosition="left" inset="2" id="cqH-ae-w7U">
+                                                <buttonCell key="cell" type="check" title="World" bezelStyle="regularSquare" imagePosition="left" enabled="NO" inset="2" id="cqH-ae-w7U">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
@@ -3417,7 +3417,7 @@
                                             </button>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ihl-w7-8GS">
                                                 <rect key="frame" x="-2" y="30" width="91" height="18"/>
-                                                <buttonCell key="cell" type="check" title="Americana" bezelStyle="regularSquare" imagePosition="left" inset="2" id="WsQ-Vx-6sn">
+                                                <buttonCell key="cell" type="check" title="Americana" bezelStyle="regularSquare" imagePosition="left" enabled="NO" inset="2" id="WsQ-Vx-6sn">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
@@ -3427,7 +3427,7 @@
                                             </button>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KIL-o0-ToM">
                                                 <rect key="frame" x="-2" y="-1" width="80" height="18"/>
-                                                <buttonCell key="cell" type="check" title="Classical" bezelStyle="regularSquare" imagePosition="left" inset="2" id="6vo-sT-Cxs">
+                                                <buttonCell key="cell" type="check" title="Classical" bezelStyle="regularSquare" imagePosition="left" enabled="NO" inset="2" id="6vo-sT-Cxs">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
@@ -3956,7 +3956,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ehh-nj-xL2">
-                                <rect key="frame" x="895" y="528" width="73" height="18"/>
+                                <rect key="frame" x="822" y="528" width="73" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="radio" title="Remote" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="SCO-R6-JXr">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -3975,17 +3975,6 @@
                                 </buttonCell>
                                 <connections>
                                     <action selector="radioButtonsChanged:" target="ldx-N6-Uzb" id="qb9-io-NAq"/>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="skc-c3-o5W">
-                                <rect key="frame" x="830" y="528" width="59" height="18"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="radio" title="Local" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="PpR-kV-oeQ">
-                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="radioButtonsChanged:" target="ldx-N6-Uzb" id="o2E-RG-0Cd"/>
                                 </connections>
                             </button>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GFV-jo-ogv">
@@ -4029,12 +4018,12 @@
                                         <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PLb-5P-CnA">
                                             <rect key="frame" x="315" y="9" width="134" height="48"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="square" title="Push" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="FOS-DZ-tDq">
+                                            <buttonCell key="cell" type="square" title="Clear" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="FOS-DZ-tDq">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system" size="20"/>
                                             </buttonCell>
                                             <connections>
-                                                <action selector="pushButtonTapped:" target="ldx-N6-Uzb" id="u1c-Rc-Ide"/>
+                                                <action selector="clearButtonTapped:" target="ldx-N6-Uzb" id="0Ka-EN-jqO"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -4165,15 +4154,15 @@
                                     <action selector="makeTagButtonTapped:" target="ldx-N6-Uzb" id="eep-Ga-CzK"/>
                                 </connections>
                             </button>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lku-ip-Rf4">
-                                <rect key="frame" x="624" y="709" width="140" height="32"/>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="skc-c3-o5W">
+                                <rect key="frame" x="901" y="528" width="72" height="18"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="push" title="Clear Band Fields" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="FbQ-i6-OMm">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <buttonCell key="cell" type="radio" title="Backup" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="PpR-kV-oeQ">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="clearButtonTapped:" target="ldx-N6-Uzb" id="110-5u-qxA"/>
+                                    <action selector="radioButtonsChanged:" target="ldx-N6-Uzb" id="o2E-RG-0Cd"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -4182,6 +4171,7 @@
                         <outlet property="addVariation" destination="qkS-Gg-CoL" id="l0X-yO-qCL"/>
                         <outlet property="alertTextField" destination="GFV-jo-ogv" id="pUv-1D-52B"/>
                         <outlet property="americanaButton" destination="Ihl-w7-8GS" id="NEm-dK-sdC"/>
+                        <outlet property="backupButton" destination="skc-c3-o5W" id="gUM-eu-Sla"/>
                         <outlet property="backupSafetySwitch" destination="zOc-42-Dud" id="vje-NB-Teo"/>
                         <outlet property="bandIDLabel" destination="AOv-Ao-w8M" id="1Zg-Uc-QzT"/>
                         <outlet property="bandMediaLinkTextField" destination="HFn-GR-GAq" id="cMl-qt-BHV"/>
@@ -4213,14 +4203,12 @@
                         <outlet property="latinButton" destination="qbD-Ny-Rg6" id="Spb-UW-zcy"/>
                         <outlet property="loadBackupButton" destination="zxg-SE-lJ1" id="I3n-dn-qhT"/>
                         <outlet property="loadPictureButton" destination="Tlg-JR-r9t" id="ICJ-gd-aNE"/>
-                        <outlet property="localButton" destination="skc-c3-o5W" id="gUM-eu-Sla"/>
                         <outlet property="logoImageView" destination="1CN-Nf-yhB" id="nEL-7b-P64"/>
                         <outlet property="makeSelectedTag" destination="JJd-10-EIK" id="X8S-Cs-8G0"/>
                         <outlet property="metalButton" destination="cWD-nY-i2r" id="0E7-rr-oiM"/>
                         <outlet property="newButton" destination="Q57-xQ-J4W" id="xvv-UQ-Grf"/>
                         <outlet property="ohmPickButton" destination="zRK-55-Leh" id="zUx-o2-OsT"/>
                         <outlet property="popButton" destination="7XN-rJ-swX" id="Y4P-WC-sED"/>
-                        <outlet property="pushBandButton" destination="PLb-5P-CnA" id="rcd-vj-UG2"/>
                         <outlet property="reggaeButton" destination="KDL-ip-qar" id="w9j-tn-XOr"/>
                         <outlet property="remoteButton" destination="ehh-nj-xL2" id="5E0-eB-l9e"/>
                         <outlet property="rockButton" destination="R2q-Bb-s97" id="Mc9-9R-e12"/>
@@ -5308,18 +5296,43 @@
             </objects>
             <point key="canvasLocation" x="-314" y="179"/>
         </scene>
-        <!--Band Support-->
+        <!--Database (DB)-->
         <scene sceneID="T4B-fg-BXK">
             <objects>
-                <viewController title="Band Support" id="YsA-gS-d3u" sceneMemberID="viewController">
+                <viewController title="Database (DB)" id="YsA-gS-d3u" customClass="DatabaseUtilityViewController" customModule="Ohmicity_Backend" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="zOh-S0-1sM">
                         <rect key="frame" x="0.0" y="0.0" width="1310" height="711"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yQk-sL-NzT">
+                                <rect key="frame" x="92" y="573" width="194" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="square" title="Push Bands To Working DB" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="Myx-Uu-HAS">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="pushBandsToDBButtonTapped:" target="YsA-gS-d3u" id="MJ6-ap-pfM"/>
+                                </connections>
+                            </button>
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZYH-8H-FUg">
+                                <rect key="frame" x="132" y="640" width="1047" height="51"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="6nB-xi-dLf">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
                     </view>
+                    <connections>
+                        <outlet property="messageTextField" destination="ZYH-8H-FUg" id="8hP-mP-s3Y"/>
+                    </connections>
                 </viewController>
                 <customObject id="MYO-NR-NhL" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2950" y="3150"/>
+            <point key="canvasLocation" x="-2950" y="3149.5"/>
         </scene>
         <!--Application-->
         <scene sceneID="IbR-3h-V1S">

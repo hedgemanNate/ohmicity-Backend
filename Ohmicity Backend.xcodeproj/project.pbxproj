@@ -37,6 +37,7 @@
 		F676F0E92698DAA400C47599 /* Recommendation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F676F0E82698DAA400C47599 /* Recommendation.swift */; };
 		F676F0EB2698DB4100C47599 /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = F676F0EA2698DB4100C47599 /* Rating.swift */; };
 		F676F0ED2698DD5900C47599 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = F676F0EC2698DD5900C47599 /* Message.swift */; };
+		F67DA271278D2C4000DB0820 /* DatabaseUtilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DA270278D2C4000DB0820 /* DatabaseUtilityViewController.swift */; };
 		F68A6CF027794A0B009DCB8F /* RecommendationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68A6CEE27794A0B009DCB8F /* RecommendationsViewController.swift */; };
 		F6936DC426A0DA6C00E5FA7F /* Enumerations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6936DC326A0DA6C00E5FA7F /* Enumerations.swift */; };
 		F69F94A32786868A00D060D3 /* BandTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69F94A12786868A00D060D3 /* BandTagViewController.swift */; };
@@ -87,6 +88,7 @@
 		F676F0E82698DAA400C47599 /* Recommendation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recommendation.swift; sourceTree = "<group>"; };
 		F676F0EA2698DB4100C47599 /* Rating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rating.swift; sourceTree = "<group>"; };
 		F676F0EC2698DD5900C47599 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		F67DA270278D2C4000DB0820 /* DatabaseUtilityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseUtilityViewController.swift; sourceTree = "<group>"; };
 		F68A6CEE27794A0B009DCB8F /* RecommendationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationsViewController.swift; sourceTree = "<group>"; };
 		F6936DC326A0DA6C00E5FA7F /* Enumerations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enumerations.swift; sourceTree = "<group>"; };
 		F69F94A12786868A00D060D3 /* BandTagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BandTagViewController.swift; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 				F69F94A5278692B700D060D3 /* VenueTagViewController.swift */,
 				F617385C26D858A40084B2CB /* BannerAdsViewController.swift */,
 				F68A6CEE27794A0B009DCB8F /* RecommendationsViewController.swift */,
+				F67DA270278D2C4000DB0820 /* DatabaseUtilityViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -402,6 +405,7 @@
 				F65DC07726E5DBA300340C07 /* BulkShowCreationViewController.swift in Sources */,
 				D83B32CD267A5D800065948E /* ImageController.swift in Sources */,
 				F617385D26D858A40084B2CB /* BannerAdsViewController.swift in Sources */,
+				F67DA271278D2C4000DB0820 /* DatabaseUtilityViewController.swift in Sources */,
 				F610AA3F26699EE700EC2E8A /* LocalDataStorageController.swift in Sources */,
 				F630FC0726583E5A001D0DA6 /* ShowData.swift in Sources */,
 				F6936DC426A0DA6C00E5FA7F /* Enumerations.swift in Sources */,

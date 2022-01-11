@@ -14,7 +14,7 @@ class RemoteDataController {
     //Properties
     var remoteBusinessArray: [BusinessFullData] = []
     var remoteBasicBusinessArray: [BusinessBasicData] = []
-    var remoteBandArray: [Band] = []
+    var bandArray: [Band] = []
     var remoteShowArray: [Show] = []
     
     var businessResults = [BusinessFullData]()

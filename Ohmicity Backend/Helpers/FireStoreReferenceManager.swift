@@ -25,3 +25,13 @@ struct FireStoreReferenceManager {
 }
 
 let ref = FireStoreReferenceManager.self
+
+struct WorkingOffRemoteManager {
+    static let environment = "workingData"
+    static let fireDataBase = Firestore.firestore()
+    
+    static let bandDataPath = fireDataBase.collection(environment).document(environment).collection("workingBandData")
+    static let bandTagDataPath = fireDataBase.collection(environment).document(environment).collection("workingBandTagData")
+}
+
+let workRef = WorkingOffRemoteManager.self
