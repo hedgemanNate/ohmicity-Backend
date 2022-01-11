@@ -234,75 +234,117 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         bandNameTextField.stringValue = finalName
     }
     
-    @IBAction func saveButtonTapped(_ sender: Any) {
-        checkCurrentObject { [self] in
-            if localDataController.bandArray.contains(currentBand!) {
-                //Update Shows For Band
-                let oldBandName = currentBand?.name
-                let newBandName = bandNameTextField.stringValue
-                
-                
-                if oldBandName != newBandName {
-                    currentBand?.name = newBandName
-                    for var show in localDataController.showArray {
-                        if show.band == oldBandName {
-                            show.band = newBandName
-                            
-                            localDataController.showArray.removeAll(where: {$0 == show})
-                            show.lastModified = Timestamp()
-                            localDataController.showArray.append(show)
-                        }
-                    }
-                    localDataController.saveShowData()
-                }
-                
-                currentBand?.mediaLink = bandMediaLinkTextField.stringValue
-                currentBand?.photo = imageData
-                if ohmPickButton.state == .on {
-                    currentBand?.ohmPick = true
-                } else {
-                    currentBand?.ohmPick = false
-                }
-                
-                if localDataController.bandArray.contains(currentBand!) == false {
-                    localDataController.bandArray.append(currentBand!)
-                }
-                
-                currentBand?.lastModified = Timestamp()
-                
-                localDataController.saveBandData()
-                notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
-                buttonIndication(color: .green)
-                
-                
-                
-            } else {
-                localDataController.bandArray.append(currentBand!)
-                localDataController.saveBandData()
-                notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
-                buttonIndication(color: .green)
-            }
-            
-        } ifNil: { [self] in
-            let newBand = Band(name: bandNameTextField.stringValue, mediaLink: bandMediaLinkTextField.stringValue, ohmPick: ohmPickButton.state)
-            newBand.photo = imageData
-            newBand.lastModified = Timestamp()
-            
-            if localDataController.bandArray.contains(newBand) {
-                buttonIndication(color: .orange)
-                return
-            }
-            
-            let newTag = BandTag(band: newBand)
-            currentBand = newBand
-            localDataController.bandArray.append(newBand)
-            tagController.bandTags.append(newTag)
-            localDataController.saveBandData()
-            localDataController.saveBandTagData()
-            notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
-            buttonIndication(color: .green)
+    @IBAction func clearButtonTapped(_ sender: Any) {
+        currentBand = nil
+        bandNameTextField.stringValue = ""
+        bandMediaLinkTextField.stringValue = ""
+        imageData = nil
+        image = nil
+        showsArray = []
+        for genre in genreButtonArray {
+            genre.state = .off
         }
-        reloadAllTableViews()
+        
+    }
+    
+    @IBAction func saveButtonTapped(_ sender: Any) {
+        let alert = NSAlert()
+        alert.alertStyle = .informational
+        
+        if currentBand == nil {
+            alert.messageText = "Create New Band"
+            alert.informativeText = "Creating a new band will use the information filled out on this page."
+            alert.addButton(withTitle: "Cancel")
+            alert.addButton(withTitle: "Create New Band")
+        }
+        
+        if currentBand != nil {
+            alert.messageText = "Create New Band Or Update Current Band"
+            alert.informativeText = "Creating a new band will use the information filled out on this page."
+            alert.addButton(withTitle: "Cancel")
+            alert.addButton(withTitle: "Create New Band")
+            alert.addButton(withTitle: "Update")
+        }
+        
+        let res = alert.runModal()
+        
+        switch res {
+        case .alertSecondButtonReturn:
+            createNewBand()
+        case .alertThirdButtonReturn:
+            updateBand()
+        default:
+            break
+        }
+        
+//        checkCurrentObject { [self] in
+//            if localDataController.bandArray.contains(currentBand!) {
+//                //Update Shows For Band
+//                let oldBandName = currentBand?.name
+//                let newBandName = bandNameTextField.stringValue
+//
+//
+//                if oldBandName != newBandName {
+//                    currentBand?.name = newBandName
+//                    for var show in localDataController.showArray {
+//                        if show.band == oldBandName {
+//                            show.band = newBandName
+//
+//                            localDataController.showArray.removeAll(where: {$0 == show})
+//                            show.lastModified = Timestamp()
+//                            localDataController.showArray.append(show)
+//                        }
+//                    }
+//                    localDataController.saveShowData()
+//                }
+//
+//                currentBand?.mediaLink = bandMediaLinkTextField.stringValue
+//                currentBand?.photo = imageData
+//                if ohmPickButton.state == .on {
+//                    currentBand?.ohmPick = true
+//                } else {
+//                    currentBand?.ohmPick = false
+//                }
+//
+//                if localDataController.bandArray.contains(currentBand!) == false {
+//                    localDataController.bandArray.append(currentBand!)
+//                }
+//
+//                currentBand?.lastModified = Timestamp()
+//
+//                localDataController.saveBandData()
+//                notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
+//                buttonIndication(color: .green)
+//
+//
+//
+//            } else {
+//                localDataController.bandArray.append(currentBand!)
+//                localDataController.saveBandData()
+//                notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
+//                buttonIndication(color: .green)
+//            }
+//
+//        } ifNil: { [self] in
+//            let newBand = Band(name: bandNameTextField.stringValue, mediaLink: bandMediaLinkTextField.stringValue, ohmPick: ohmPickButton.state)
+//            newBand.photo = imageData
+//            newBand.lastModified = Timestamp()
+//
+//            if localDataController.bandArray.contains(newBand) {
+//                buttonIndication(color: .orange)
+//                return
+//            }
+//
+//            let newTag = BandTag(band: newBand)
+//            currentBand = newBand
+//            localDataController.bandArray.append(newBand)
+//            tagController.bandTags.append(newTag)
+//            localDataController.saveBandData()
+//            localDataController.saveBandTagData()
+//            notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
+//            buttonIndication(color: .green)
+//        }
+//        reloadAllTableViews()
 
     }
     
@@ -625,7 +667,6 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         
     }
     
-    
     //MARK: Genre CheckBoxes Tapped
     @IBAction func rockButtonTapped(_ sender: Any) {
         if rockButton.state == .on {
@@ -784,6 +825,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     }
     
 }
+    
 
 //MARK: Helper Functions
 extension BandDetailViewController {
@@ -825,7 +867,51 @@ extension BandDetailViewController {
         
         localDataController.saveBandData()
         localDataController.saveBandTagData()
+    }
+    
+    private func createNewBand() {
+        if bandNameTextField.stringValue.count < 3 {
+            alertTextField.stringValue = "Fill out more information to create a band"
+            return
+        }
         
+        let newBand = Band(name: bandNameTextField.stringValue, mediaLink: bandMediaLinkTextField.stringValue, ohmPick: ohmPickButton.state)
+        newBand.photo = imageData
+        newBand.lastModified = Timestamp()
+        
+        
+        let newTag = BandTag(band: newBand)
+        currentBand = newBand
+        localDataController.bandArray.append(newBand)
+        tagController.bandTags.append(newTag)
+        localDataController.saveBandData()
+        localDataController.saveBandTagData()
+        notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
+        buttonIndication(color: .green)
+        reloadAllTableViews()
+    }
+    
+    private func updateBand() {
+        if bandNameTextField.stringValue.count < 3 {
+            alertTextField.stringValue = "Fill out more information to update this band"
+            return
+        }
+        guard let currentBand = currentBand else {return}
+        
+        currentBand.name = bandNameTextField.stringValue
+        currentBand.mediaLink = bandMediaLinkTextField.stringValue
+        currentBand.photo = imageData
+        if ohmPickButton.state == .on {
+            currentBand.ohmPick = true
+        } else {
+            currentBand.ohmPick = false
+        }
+        currentBand.lastModified = Timestamp()
+        
+        localDataController.saveBandData()
+        notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
+        buttonIndication(color: .green)
+        reloadAllTableViews()
     }
     
     private func fillData() {

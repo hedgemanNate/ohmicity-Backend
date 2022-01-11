@@ -4165,6 +4165,17 @@
                                     <action selector="makeTagButtonTapped:" target="ldx-N6-Uzb" id="eep-Ga-CzK"/>
                                 </connections>
                             </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lku-ip-Rf4">
+                                <rect key="frame" x="624" y="709" width="140" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Clear Band Fields" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="FbQ-i6-OMm">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="clearButtonTapped:" target="ldx-N6-Uzb" id="110-5u-qxA"/>
+                                </connections>
+                            </button>
                         </subviews>
                     </view>
                     <connections>
