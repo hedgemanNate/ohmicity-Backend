@@ -10,14 +10,14 @@ import Foundation
 
 class RawShowDataController {
     
-    var data: ShowsData?
-    var path: URL?
-    var rawShowsArray = [ShowData]()
-    var rawShowsResultsArray = [ShowData]()
+    static var data: ShowsData?
+    static var path: URL?
+    static var rawShowsArray = [ShowData]()
+    static var rawShowsResultsArray = [ShowData]()
     
     
     
-    func loadShowsPath(completion: @escaping () -> Void) {
+    static func loadShowsPath(completion: @escaping () -> Void) {
         guard let path = path else {return NSLog("No file loaded")}
         loadJson(fromURLString: path.absoluteString) { (result) in
             print(path)
@@ -28,14 +28,14 @@ class RawShowDataController {
                 completion()
                 
             case .failure(let error):
-                print(error)
+                print(error.localizedDescription)
                 print("loadJson failed")
                 return
             }
         }
     }
     
-    func loadJson(fromURLString urlString: String,
+    static func loadJson(fromURLString urlString: String,
                           completion: @escaping (Result<Data, Error>) -> Void) {
         if let url = URL(string: urlString) {
             let urlSession = URLSession(configuration: .default).dataTask(with: url) { (data, response, error) in
@@ -54,20 +54,16 @@ class RawShowDataController {
         }
     }
     
-    private func parse(jsonData: Data) {
+    static func parse(jsonData: Data) {
         do {
-            let serialQueue = DispatchQueue(label: "JsonArrayQueue")
             let decodedData = try JSONDecoder().decode(ShowsData.self, from: jsonData)
             data = decodedData
             
             
             guard let data = data else {return}
             for show in data.shows {
-                serialQueue.sync { [self] in
-                    rawShowsArray.append(show)
-                }
+                rawShowsArray.append(show)
             }
-            print(rawShowsArray)
             //Search Functionality
             
 //            rawShowsResultsArray = []
@@ -82,4 +78,4 @@ class RawShowDataController {
     
 }
 
-let rawShowDataController = RawShowDataController()
+

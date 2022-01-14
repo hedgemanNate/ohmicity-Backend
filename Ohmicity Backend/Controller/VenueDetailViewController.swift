@@ -190,15 +190,15 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     }
     
     @IBAction func deleteBusinessButtonTapped(_ sender: Any) {
-        localDataController.businessArray.removeAll(where: {$0 == currentBusiness})
+        LocalDataStorageController.venueArray.removeAll(where: {$0 == currentBusiness})
         
         removeShows {
-            localDataController.saveShowData()
+            LocalDataStorageController.saveShowData()
             notificationCenter.post(name: NSNotification.Name("businessUpdated"), object: nil)
             notificationCenter.post(name: NSNotification.Name("showsUpdated"), object: nil)
         }
         
-        localDataController.saveBusinessData()
+        LocalDataStorageController.saveBusinessData()
         
     }
     
@@ -222,16 +222,16 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         
         
         if oldVenueName != newVenueName {
-            for var show in localDataController.showArray {
+            for var show in LocalDataStorageController.showArray {
                 if show.venue == oldVenueName {
 
-                    localDataController.showArray.removeAll(where: {$0 == show})
+                    LocalDataStorageController.showArray.removeAll(where: {$0 == show})
                     show.venue = newVenueName
                     show.lastModified = Timestamp()
-                    localDataController.showArray.append(show)
+                    LocalDataStorageController.showArray.append(show)
                 }
             }
-            localDataController.saveShowData()
+            LocalDataStorageController.saveShowData()
         }
         
         
@@ -254,11 +254,11 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         currentBusiness?.hours = hours
         currentBusiness?.lastModified = Timestamp()
         
-        if !localDataController.businessArray.contains(currentBusiness!) {
-            localDataController.businessArray.append(currentBusiness!)
+        if !LocalDataStorageController.venueArray.contains(currentBusiness!) {
+            LocalDataStorageController.venueArray.append(currentBusiness!)
         }
         
-        localDataController.saveBusinessData()
+        LocalDataStorageController.saveBusinessData()
         notificationCenter.post(Notification(name: Notification.Name(rawValue: "businessUpdated")))
         buttonIndication2(color: .green)
         
@@ -339,9 +339,9 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         
         currentBusiness = newBusiness
         
-        localDataController.businessArray.append(newBusiness)
-        localDataController.saveBusinessData()
-        localDataController.saveShowData()
+        LocalDataStorageController.venueArray.append(newBusiness)
+        LocalDataStorageController.saveBusinessData()
+        LocalDataStorageController.saveShowData()
         
         notificationCenter.post(name: NSNotification.Name("showsUpdated"), object: nil)
         print("Save Button Tapped")
@@ -534,7 +534,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
             
             
             //Initializing currentBusinessShows Array
-            currentBusinessShows = localDataController.showArray.filter({$0.venue == currentBusiness?.name})
+            currentBusinessShows = LocalDataStorageController.showArray.filter({$0.venue == currentBusiness?.name})
             
             if currentBusiness?.ohmPick == true {
                 ohmPick.state = .on
@@ -622,7 +622,7 @@ extension VenueDetailViewController {
         var currentShow: Show? {
             if currentBusiness != nil {
                 
-                let currentBusinessShows = localDataController.showArray.filter({$0.venue == currentBusiness?.name})
+                let currentBusinessShows = LocalDataStorageController.showArray.filter({$0.venue == currentBusiness?.name})
                 return currentBusinessShows[row]
             }
             return nil
@@ -693,7 +693,7 @@ extension VenueDetailViewController {
     }
     
     private func removeShows(completion: @escaping () -> Void) {
-        localDataController.showArray.removeAll(where: {$0.venue == currentBusiness?.name})
+        LocalDataStorageController.showArray.removeAll(where: {$0.venue == currentBusiness?.name})
         completion()
     }
     

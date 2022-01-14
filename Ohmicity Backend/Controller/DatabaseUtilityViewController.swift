@@ -24,7 +24,7 @@ class DatabaseUtilityViewController: NSViewController {
     
     @IBAction func pushBandsToDBButtonTapped(_ sender: Any) {
         
-        for band in localDataController.bandArray {
+        for band in LocalDataStorageController.bandArray {
             do {
                 try workRef.bandDataPath.document(band.bandID).setData(from: band, completion: { err in
                     if let err = err {

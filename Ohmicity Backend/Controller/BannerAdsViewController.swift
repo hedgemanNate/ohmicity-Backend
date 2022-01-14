@@ -214,7 +214,7 @@ class BannerAdsViewController: NSViewController {
         if showAllBusinessesButton.state == .on {
             let row = tableView.selectedRow
             if row < 0 {return}
-            currentBusiness = localDataController.businessArray[row]
+            currentBusiness = LocalDataStorageController.venueArray[row]
         } else {
             let row = tableView.selectedRow
             if row < 0 {return}
@@ -284,7 +284,7 @@ extension BannerAdsViewController: NSTableViewDelegate, NSTableViewDataSource {
     
     func numberOfRows(in tableView: NSTableView) -> Int {
         if showAllBusinessesButton.state == .on {
-            return localDataController.businessArray.count
+            return LocalDataStorageController.venueArray.count
         } else {
             return clientResultsArray.count
         }
@@ -295,7 +295,7 @@ extension BannerAdsViewController: NSTableViewDelegate, NSTableViewDataSource {
         if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "BusinessCell"), owner: nil) as? NSTableCellView {
             
             if showAllBusinessesButton.state == .on {
-                cell.textField?.stringValue = localDataController.businessArray[row].name
+                cell.textField?.stringValue = LocalDataStorageController.venueArray[row].name
             } else {
                 cell.textField?.stringValue = clientResultsArray[row].businessName
             }

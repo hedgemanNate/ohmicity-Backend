@@ -30,6 +30,7 @@ struct WorkingOffRemoteManager {
     static let environment = "workingData"
     static let fireDataBase = Firestore.firestore()
     
+    static let showDataPath = fireDataBase.collection(environment).document(environment).collection("workingShowData")
     static let bandDataPath = fireDataBase.collection(environment).document(environment).collection("workingBandData")
     static let bandTagDataPath = fireDataBase.collection(environment).document(environment).collection("workingBandTagData")
 }

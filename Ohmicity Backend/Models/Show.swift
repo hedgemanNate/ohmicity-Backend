@@ -14,6 +14,7 @@ struct Show: Codable, Equatable, Hashable {
     var lastModified = Timestamp()
     var createdDate = Timestamp()
     var band: String
+    var bandDisplayName: String
     var venue: String
     var city: [City]?
     var dateString: String
@@ -42,7 +43,7 @@ struct Show: Codable, Equatable, Hashable {
  
 extension Show {
     
-    init?(band: String, venue: String, dateString: String) {
+    init?(band: String, venue: String, dateString: String, displayName: String) {
         
         dateFormatter.dateFormat = dateFormat4
         guard let newDate = dateFormatter.date(from: dateString) else {return nil}
@@ -53,16 +54,7 @@ extension Show {
         self.venue = venue
         self.dateString = dateString
         self.date = newDate
-    }
-    
-    init(band: String, venue: String, dateString: String, date: Date) {
-        
-        let showID = Firestore.firestore().collection("showData").document().documentID
-        self.showID = showID
-        self.band = band
-        self.venue = venue
-        self.dateString = dateString
-        self.date = date
+        self.bandDisplayName = displayName
     }
     
 }

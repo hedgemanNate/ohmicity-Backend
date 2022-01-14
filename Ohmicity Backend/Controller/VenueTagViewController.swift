@@ -64,12 +64,12 @@ class VenueTagViewController: NSViewController, NSTableViewDelegate, NSTableView
         let newTag = newTagTextField.stringValue
         tag.variations.append(newTag)
         tagsTableView.reloadData()
-        localDataController.saveBandTagData()
+        LocalDataStorageController.saveBandTagData()
         newTagTextField.stringValue = ""
     }
     
     @IBAction func searchFieldSearching(_ sender: Any) {
-        filterArray = tagController.venueTags.filter({$0.variations.contains(where: {$0.localizedCaseInsensitiveContains(searchTextField.stringValue)})})
+        filterArray = TagController.venueTags.filter({$0.variations.contains(where: {$0.localizedCaseInsensitiveContains(searchTextField.stringValue)})})
         
         DispatchQueue.main.async {
             self.venueTableView.reloadData()
@@ -83,10 +83,10 @@ class VenueTagViewController: NSViewController, NSTableViewDelegate, NSTableView
     
     @IBAction func breaker(_ sender: Any) {
         
-        for venue in localDataController.businessArray {
+        for venue in LocalDataStorageController.venueArray {
             let newTag = VenueTag(venueID: venue.venueID, variations: [venue.name])
-            tagController.venueTags.append(newTag)
-            localDataController.saveVenueTagData()
+            TagController.venueTags.append(newTag)
+            LocalDataStorageController.saveVenueTagData()
         }
     }
     
@@ -102,8 +102,8 @@ class VenueTagViewController: NSViewController, NSTableViewDelegate, NSTableView
     
     //MARK: Functions
     private func getNewVenues() {
-        let rawShows = rawShowDataController.rawShowsArray
-        let venues = localDataController.businessArray
+        let rawShows = RawShowDataController.rawShowsArray
+        let venues = LocalDataStorageController.venueArray
         
         for show in rawShows {
             if venues.contains(where: {$0.name == show.venue}) {
@@ -115,7 +115,7 @@ class VenueTagViewController: NSViewController, NSTableViewDelegate, NSTableView
     }
     
     private func setFilterArray() {
-        filterArray = tagController.venueTags
+        filterArray = TagController.venueTags
         DispatchQueue.main.async {
             self.venueTableView.reloadData()
             //self.tagsTableView.reloadData()

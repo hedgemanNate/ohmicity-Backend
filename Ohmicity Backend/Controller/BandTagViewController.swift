@@ -72,9 +72,9 @@ class BandTagViewController: NSViewController, NSTableViewDelegate, NSTableViewD
     @IBAction func deleteTagButtonTapped(_ sender: Any) {
         let tempTag = filterArray[tagTableView.selectedRow]
         
-        let tagIndex = tagController.bandTags.firstIndex(where: {$0.bandID == tempTag.bandID})
+        let tagIndex = TagController.bandTags.firstIndex(where: {$0.bandID == tempTag.bandID})
         guard let tagIndex = tagIndex else {return}
-        tagController.bandTags.remove(at: tagIndex)
+        TagController.bandTags.remove(at: tagIndex)
         
         let tagIndex2 = filterArray.firstIndex(where: {$0.bandID == tempTag.bandID})
         guard let tagIndex2 = tagIndex2 else {return}
@@ -82,38 +82,48 @@ class BandTagViewController: NSViewController, NSTableViewDelegate, NSTableViewD
 
         tagTableView.reloadData()
         variationsTableView.reloadData()
-        localDataController.saveBandTagData()
+        LocalDataStorageController.saveBandTagData()
     }
     
+    @IBAction func deleteTagsWithNoBands(_ sender: Any) {
+        for tag in TagController.bandTags {
+            if !RemoteDataController.bandArray.contains(where: {$0.bandID == tag.bandID}) {
+                TagController.bandTags.removeAll(where: {$0.bandID == tag.bandID})
+                tagTableView.reloadData()
+            }
+            
+        }
+        LocalDataStorageController.saveBandTagData()
+    }
     
     
     @IBAction func deleteVariationButtonTapped(_ sender: Any) {
         let tempVariation = filterArray[tagTableIndex].variations[variationsTableView.selectedRow]
         
-        let neededTag = tagController.bandTags.first(where: {$0.bandID == selectedTag.bandID})
+        let neededTag = TagController.bandTags.first(where: {$0.bandID == selectedTag.bandID})
         neededTag?.variations.removeAll(where: {$0 == tempVariation})
         
         filterArray[tagTableIndex].variations.removeAll(where: {$0 == tempVariation})
         variationsTableView.reloadData()
         
-        localDataController.saveBandTagData()
+        LocalDataStorageController.saveBandTagData()
         
     }
     
     @IBAction func clearAllTags(_ sender: Any) {
-        tagController.bandTags = []
-        localDataController.saveBandTagData()
+        TagController.bandTags = []
+        LocalDataStorageController.saveBandTagData()
     }
     
     @IBAction func createAllNewTags(_ sender: Any) {
-        let bandArray = localDataController.bandArray
+        let bandArray = RemoteDataController.bandArray
         
         for band in bandArray {
             let newTag = BandTag(band: band)
-            tagController.bandTags.append(newTag)
+            TagController.bandTags.append(newTag)
         }
         
-        localDataController.saveBandTagData()
+        LocalDataStorageController.saveBandTagData()
     }
     
     @IBAction func addTagButtonTapped(_ sender: Any) {
@@ -121,16 +131,28 @@ class BandTagViewController: NSViewController, NSTableViewDelegate, NSTableViewD
         let newTag = newTagTextField.stringValue
         tag.variations.append(newTag)
         variationsTableView.reloadData()
-        localDataController.saveBandTagData()
+        LocalDataStorageController.saveBandTagData()
         newTagTextField.stringValue = ""
     }
     
+    @IBAction func addVariationButtonTapped(_ sender: Any) {
+        selectedTag.variations.append(newTagTextField.stringValue)
+        variationsTableView.reloadData()
+        LocalDataStorageController.saveBandTagData()
+    }
+    
+    
     @IBAction func searchFieldSearching(_ sender: Any) {
-        filterArray = tagController.bandTags.filter({$0.variations.contains(where: {$0.localizedCaseInsensitiveContains(searchTextField.stringValue)})})
+        var variationArray = [BandTag]()
+        var bandIDArray = [BandTag]()
+    
+        variationArray = TagController.bandTags.filter({$0.variations.contains(where: {$0.localizedCaseInsensitiveContains(searchTextField.stringValue)})})
+        bandIDArray = TagController.bandTags.filter({$0.bandID.localizedCaseInsensitiveContains(searchTextField.stringValue)})
+        
+        filterArray = variationArray + bandIDArray
         
         DispatchQueue.main.async {
             self.tagTableView.reloadData()
-            self.variationsTableView.reloadData()
         }
         
         if searchTextField.stringValue == "" {
@@ -145,8 +167,8 @@ class BandTagViewController: NSViewController, NSTableViewDelegate, NSTableViewD
     
     //MARK: Functions
     private func getNewBands() {
-        let rawShows = rawShowDataController.rawShowsArray
-        let bands = localDataController.bandArray
+        let rawShows = RawShowDataController.rawShowsArray
+        let bands = LocalDataStorageController.bandArray
         
         for show in rawShows {
             if bands.contains(where: {$0.name == show.band}) {
@@ -158,7 +180,7 @@ class BandTagViewController: NSViewController, NSTableViewDelegate, NSTableViewD
     }
     
     private func setFilterArray() {
-        filterArray = tagController.bandTags
+        filterArray = TagController.bandTags
         DispatchQueue.main.async {
             self.tagTableView.reloadData()
             //self.tagsTableView.reloadData()
@@ -168,7 +190,6 @@ class BandTagViewController: NSViewController, NSTableViewDelegate, NSTableViewD
     @objc private func tagsTableClick() {
         variationsTableViewCount = selectedTag.variations.count
         self.variationsTableView.reloadData()
-        print("Clicked")
     }
     
     @objc private func variationsTableClick() {

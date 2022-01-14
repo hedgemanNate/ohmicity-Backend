@@ -9,9 +9,9 @@ import Foundation
 
 class LocalDataStorageController {
     
-    var businessArray: [BusinessFullData] = []
-    var bandArray: [Band] = []
-    var showArray: [Show] = []
+    static var venueArray: [BusinessFullData] = []
+    static var bandArray: [Band] = []
+    static var showArray: [Show] = []
     
     //Search Functionality
     var businessResults = [BusinessFullData]()
@@ -19,18 +19,18 @@ class LocalDataStorageController {
     var showResults = [Show]()
     
 //MARK: Business Data
-    func loadBusinessData() {
+    static func loadBusinessData() {
         if let data = UserDefaults.standard.data(forKey: "SavedBusinessData") {
             if let decoded = try? JSONDecoder().decode([BusinessFullData].self, from: data) {
-                self.businessArray = decoded
+                LocalDataStorageController.venueArray = decoded.sorted(by: {$0.name < $1.name})
                 print("Business Data Loaded")
                 //return
             }
         }
     }
     
-    func saveBusinessData() {
-        if let encoded = try? JSONEncoder().encode(businessArray) {
+    static func saveBusinessData() {
+        if let encoded = try? JSONEncoder().encode(LocalDataStorageController.venueArray) {
             UserDefaults.standard.set(encoded, forKey: "SavedBusinessData")
             print("Business Data Saved")
         }
@@ -40,35 +40,35 @@ class LocalDataStorageController {
 
 //MARK: Band Data
 extension LocalDataStorageController {
-    func loadBandData() {
+    static func loadBandData() {
         if let data = UserDefaults.standard.data(forKey: "SavedBandData") {
             if let decoded = try? JSONDecoder().decode([Band].self, from: data) {
-                self.bandArray = decoded
+                LocalDataStorageController.bandArray = decoded.sorted(by: {$0.name < $1.name})
                 print("Band Data Loaded")
                 return
             }
         }
     }
     
-    func saveBandData() {
-        if let encoded = try? JSONEncoder().encode(bandArray) {
+    static func saveBandData() {
+        if let encoded = try? JSONEncoder().encode(LocalDataStorageController.bandArray) {
             UserDefaults.standard.set(encoded, forKey: "SavedBandData")
             print("Band Data Saved")
         }
     }
     
-    func loadBackupBandData() {
+    static func loadBackupBandData() {
         if let data = UserDefaults.standard.data(forKey: "SavedBackupBandData") {
             if let decoded = try? JSONDecoder().decode([Band].self, from: data) {
-                self.bandArray = decoded
+                LocalDataStorageController.bandArray = decoded.sorted(by: {$0.name < $1.name})
                 print("Backup Band Data Loaded")
                 return
             }
         }
     }
     
-    func saveBackupBandData() {
-        if let encoded = try? JSONEncoder().encode(bandArray) {
+    static func saveBackupBandData() {
+        if let encoded = try? JSONEncoder().encode(LocalDataStorageController.bandArray) {
             UserDefaults.standard.set(encoded, forKey: "SavedBackupBandData")
             print("Backup Band Data Saved")
         }
@@ -78,38 +78,48 @@ extension LocalDataStorageController {
 
 //MARK: Scrapped Data
 extension LocalDataStorageController {
-    func loadJsonData() {
+    static func loadJsonData() {
         if let data = UserDefaults.standard.data(forKey: "SavedJsonData") {
             if let decoded = try? JSONDecoder().decode([ShowData].self, from: data) {
-                rawShowDataController.rawShowsArray = decoded
+                RawShowDataController.rawShowsArray = decoded
                 print("JSON Data Loaded")
                 return
             }
         }
     }
     
-    func saveJsonData() {
-        if let encoded = try? JSONEncoder().encode(rawShowDataController.rawShowsArray) {
+    static func saveJsonData() {
+        
+        if let encoded = try? JSONEncoder().encode(RawShowDataController.rawShowsArray) {
             UserDefaults.standard.set(encoded, forKey: "SavedJsonData")
             print("Json Data Saved")
         }
+    }
+    
+    static func saverJsonData() {
+        
+        if let encoded = try? JSONEncoder().encode(RawShowDataController.rawShowsArray) {
+            UserDefaults.standard.set(encoded, forKey: "SavedJsonData")
+            print("Json Data Saved")
+        }
+        
     }
 }
     
 //MARK: Show data
 extension LocalDataStorageController {
-    func loadShowData() {
+    static func loadShowData() {
         if let data = UserDefaults.standard.data(forKey: "SavedShowData") {
             if let decoded = try? JSONDecoder().decode([Show].self, from: data) {
-                self.showArray = decoded
+                LocalDataStorageController.showArray = decoded.sorted(by: {$0.date < $1.date})
                 print("Show Data Loaded")
                 return
             }
         }
     }
     
-    func saveShowData() {
-        if let encoded = try? JSONEncoder().encode(showArray) {
+    static func saveShowData() {
+        if let encoded = try? JSONEncoder().encode(LocalDataStorageController.showArray) {
             UserDefaults.standard.set(encoded, forKey: "SavedShowData")
             print("Show Data Saved")
         }
@@ -118,57 +128,55 @@ extension LocalDataStorageController {
 
 //MARK: Tag Data
 extension LocalDataStorageController {
-    func loadBandTagData() {
+    static func loadBandTagData() {
         if let data = UserDefaults.standard.data(forKey: "SavedBandTagData") {
             if let decoded = try? JSONDecoder().decode([BandTag].self, from: data) {
-                tagController.bandTags = decoded
+                TagController.bandTags = decoded
                 print("Band Tags Loaded")
                 //return
             }
         }
     }
     
-    func saveBandTagData() {
-        if let encoded = try? JSONEncoder().encode(tagController.bandTags) {
+    static func saveBandTagData() {
+        if let encoded = try? JSONEncoder().encode(TagController.bandTags) {
             UserDefaults.standard.set(encoded, forKey: "SavedBandTagData")
             print("Band Tags Saved")
         }
     }
     
-    func loadBackupBandTagData() {
+    static func loadBackupBandTagData() {
         if let data = UserDefaults.standard.data(forKey: "SavedBackupBandTagData") {
             if let decoded = try? JSONDecoder().decode([BandTag].self, from: data) {
-                tagController.bandTags = decoded
+                TagController.bandTags = decoded
                 print("Band Tags Loaded")
                 //return
             }
         }
     }
     
-    func saveBackupBandTagData() {
-        if let encoded = try? JSONEncoder().encode(tagController.bandTags) {
+    static func saveBackupBandTagData() {
+        if let encoded = try? JSONEncoder().encode(TagController.bandTags) {
             UserDefaults.standard.set(encoded, forKey: "SavedBackupBandTagData")
             print("Band Tags Saved")
         }
     }
     
     
-    func loadVenueTagData() {
+    static func loadVenueTagData() {
         if let data = UserDefaults.standard.data(forKey: "SavedVenueTagData") {
             if let decoded = try? JSONDecoder().decode([VenueTag].self, from: data) {
-                tagController.venueTags = decoded
+                TagController.venueTags = decoded
                 print("Venue Tags Loaded")
                 //return
             }
         }
     }
     
-    func saveVenueTagData() {
-        if let encoded = try? JSONEncoder().encode(tagController.venueTags) {
+    static func saveVenueTagData() {
+        if let encoded = try? JSONEncoder().encode(TagController.venueTags) {
             UserDefaults.standard.set(encoded, forKey: "SavedVenueTagData")
             print("Venue Tags Saved")
         }
     }
 }
-
-let localDataController = LocalDataStorageController()

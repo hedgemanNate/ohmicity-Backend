@@ -12,16 +12,78 @@ import FirebaseFirestore
 class RemoteDataController {
     
     //Properties
-    var remoteBusinessArray: [BusinessFullData] = []
-    var remoteBasicBusinessArray: [BusinessBasicData] = []
-    var bandArray: [Band] = []
-    var remoteShowArray: [Show] = []
+    static var businessArray: [BusinessFullData] = []
+    static var bandArray: [Band] = []
+    static var showArray: [Show] = []
     
     var businessResults = [BusinessFullData]()
     var bandResults = [Band]()
     var showResults = [Show]()
     
     let db = Firestore.firestore()
+    
+    static func getRemoteBandData() {
+        print("Running Remote Band")
+        workRef.bandDataPath.getDocuments { (querySnapshot, err) in
+            if let err = err {
+                NSLog("Error getting bandData: \(err)")
+            } else {
+                NSLog("Got band data")
+                RemoteDataController.bandArray = []
+                for band in querySnapshot!.documents {
+                    let result = Result {
+                        try band.data(as: Band.self)
+                    }
+                    switch result {
+                    case .success(let band):
+                        if let band = band {
+                            RemoteDataController.bandArray.append(band)
+                        }
+                    case .failure(let error):
+                        print("Error decoding band: \(error.localizedDescription)")
+                        NSLog("Failed to get band data")
+                    }
+                }
+                
+                let band = RemoteDataController.bandArray.sorted(by: {$0.name < $1.name})
+                RemoteDataController.bandArray = band
+                NSLog("Band data collection complete.")
+                notificationCenter.post(name: NSNotification.Name("GotBandData"), object: nil)
+            }
+        }
+        
+    }
+    
+    static func getRemoteShowData(){
+        print("Running Remote Show")
+        workRef.showDataPath.getDocuments { (querySnapshot, err) in
+            if let err = err {
+                NSLog("Error getting showData: \(err)")
+            } else {
+                NSLog("Got show data")
+                RemoteDataController.showArray = []
+                for show in querySnapshot!.documents {
+                    let result = Result {
+                        try show.data(as: Show.self)
+                    }
+                    switch result {
+                    case .success(let show):
+                        if let show = show {
+                            RemoteDataController.showArray.append(show)
+                        }
+                    case .failure(let error):
+                        print("Error decoding show: \(error.localizedDescription)")
+                        NSLog("Failed to get show data")
+                    }
+                }
+                
+                let show = RemoteDataController.showArray.sorted(by: {$0.date < $1.date})
+                RemoteDataController.showArray = show
+                NSLog("Show data collection complete.")
+                notificationCenter.post(name: NSNotification.Name("GotShowData"), object: nil)
+            }
+        }
+    }
 }
 
-var remoteDataController = RemoteDataController()
+//var RemoteDataController = RemoteDataController()

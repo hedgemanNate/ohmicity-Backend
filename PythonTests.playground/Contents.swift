@@ -1,8 +1,12 @@
 import Cocoa
 
-let time1 = Date() - 13000
-let time2 = Date()
+var a = [1,2,3,4,5,6,7,8,9]
 
-let this = time1.timeIntervalSinceReferenceDate - time2.timeIntervalSinceReferenceDate
+for var x in a {
+    if x == 3 {
+        print("HIT")
+        x = x + 3
+    }
+}
 
-print(this)
+print(a)
