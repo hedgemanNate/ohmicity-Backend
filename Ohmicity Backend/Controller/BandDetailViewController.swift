@@ -119,14 +119,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     }
     
     @IBAction func breaker(_ sender: Any) {
-        for band in RemoteDataController.bandArray {
-            if band.photo == nil && !RemoteDataController.showArray.contains(where: {$0.band == band.bandID}) {
-                RemoteDataController.bandArray.removeAll(where: {$0 == band})
-                DispatchQueue.main.async {
-                    self.bandsTableView.reloadData()
-                }
-            }
-        }
+        
     }
     
     //MARK: UpdateViews
@@ -310,10 +303,13 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
                 if let err = err {
                     self.alertTextField.stringValue = err.localizedDescription
                 } else {
+                    TagController.bandTags.removeAll(where: {$0.bandID == currentBand.bandID})
+                    LocalDataStorageController.saveBandTagData()
                     RemoteDataController.bandArray.removeAll(where: {$0 == self.currentBand})
                     self.currentBand = nil
                     self.updateViews()
-                    self.alertTextField.stringValue = "\(currentBand.name) was deleted"
+                    self.alertTextField.stringValue = "\(currentBand.name) and there tag was deleted"
+                    
                     
                     DispatchQueue.main.async {
                         self.reloadAllTableViews()
@@ -399,25 +395,19 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         }
     }
     
-    @IBAction func removeBandDoubleButtonTapped(_ sender: Any) {
-        var newDuplicatedBands = [Band]()
-        //Finds exactly spelled double bands
-        for band1 in RemoteDataController.bandArray {
-            for band2 in RemoteDataController.bandArray {
-                if band1.name == band2.name && band1.lastModified.seconds > band2.lastModified.seconds {
-                    newDuplicatedBands.append(band1)
-                }
-            }
-        }
-        
-        for band1 in newDuplicatedBands {
-            workRef.bandDataPath.document(band1.bandID).delete { err in
-                self.alertTextField.stringValue = "\(band1.name) was deleted from database"
-                RemoteDataController.bandArray.removeAll(where: {$0.bandID == band1.bandID})
-                self.filteredBandArray.removeAll(where: {$0.bandID == band1.bandID})
-                
-                DispatchQueue.main.async {
-                    self.bandsTableView.reloadData()
+    @IBAction func removeNoShowBandsButtonTapped(_ sender: Any) {
+        for band in RemoteDataController.bandArray {
+            if band.photo == nil && !RemoteDataController.showArray.contains(where: {$0.band == band.bandID}) {
+                workRef.bandDataPath.document(band.bandID).delete { err in
+                    if let err = err {
+                        self.alertTextField.stringValue = err.localizedDescription
+                    } else {
+                        self.alertTextField.stringValue = "Bands with no shows or pictures were deleted from database."
+                        RemoteDataController.bandArray.removeAll(where: {$0 == band})
+                        DispatchQueue.main.async {
+                            self.bandsTableView.reloadData()
+                        }
+                    }
                 }
             }
         }

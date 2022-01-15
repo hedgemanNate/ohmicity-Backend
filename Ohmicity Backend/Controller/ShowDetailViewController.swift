@@ -564,7 +564,7 @@ extension ShowDetailViewController {
                 guard let band = RemoteDataController.bandArray.first(where: {$0.bandID == showFilterArray[row].band}) else {return cellTagIssue}
                 
                 if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "BandCell"), owner: nil) as? NSTableCellView {
-                    cell.textField?.stringValue = band.name
+                    cell.textField?.stringValue = "\(showFilterArray[row].bandDisplayName): \(band.name)"
                     cell.textField?.textColor = .white
                     return checkIfShowIsSpecial(show: showFilterArray[row], cell: cell)
                 }

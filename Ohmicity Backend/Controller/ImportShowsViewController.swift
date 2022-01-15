@@ -72,7 +72,7 @@ class ImportShowsViewController: NSViewController, NSTableViewDelegate, NSTableV
                     //LocalDataStorageController.saveJsonData()
                 }
             }
-            LocalDataStorageController.saverJsonData()
+            LocalDataStorageController.saveJsonData()
             DispatchQueue.main.async {
                 self.showsTableView.reloadData()
                 self.numberOfNewShowsLabel.stringValue = "\(RawShowDataController.rawShowsArray.count)"
@@ -82,6 +82,8 @@ class ImportShowsViewController: NSViewController, NSTableViewDelegate, NSTableV
     
     @IBAction func clearButtonTapped(_ sender: Any) {
         RawShowDataController.rawShowsArray = []
+        badTagArray = []
+        LocalDataStorageController.saveJsonData()
         showsTableView.reloadData()
     }
     
@@ -111,10 +113,9 @@ class ImportShowsViewController: NSViewController, NSTableViewDelegate, NSTableV
             bandID = assignBandTagID(rawShow: rawShow)
             //
             
-            if !RemoteDataController.bandArray.contains(where: {$0.bandID == bandID}) {
-                badTag += 1
-                print("\(badTag): \(rawShow.band) has a BAD TAG")
-                badTagArray.append(bandID)
+            if  bandID.contains("Bad Tag:") {
+                let bandName = bandID.replacingOccurrences(of: "Bad Tag:", with: "")
+                badTagArray.append(bandName)
                 continue
             }
             
@@ -154,6 +155,8 @@ class ImportShowsViewController: NSViewController, NSTableViewDelegate, NSTableV
             }
         }
         totalRejected = noBandIDTag + noVenueIDTag + numberOfDuplicates + badTag
+        let set = Set(badTagArray)
+        badTagArray = Array(set)
         
         messageTextField.stringValue = "Total Number Rejected: \(totalRejected)"
         
@@ -173,7 +176,6 @@ class ImportShowsViewController: NSViewController, NSTableViewDelegate, NSTableV
             showsArray = RemoteDataController.showArray.sorted(by: {$0.lastModified.seconds > $1.lastModified.seconds})
             numberOfNewShowsLabel.stringValue = String(showsArray.count)
         } else if badTagButton.state == .on {
-            badTagArray.removeAll(where: {$0 == "none"})
             numberOfNewShowsLabel.stringValue = String(badTagArray.count)
         }
         
@@ -187,14 +189,13 @@ class ImportShowsViewController: NSViewController, NSTableViewDelegate, NSTableV
 extension ImportShowsViewController {
     
     private func assignBandTagID(rawShow: ShowData) -> String {
-        var bandID = "none"
+        var bandID = "Bad Tag:\(rawShow.band)"
         
-        for tag in TagController.bandTags {
-            for variation in tag.variations {
-                if rawShow.band.lowercased() == variation.lowercased() {
+        outer: for tag in TagController.bandTags {
+            inner: for variation in tag.variations {
+                if variation.localizedCaseInsensitiveContains(rawShow.band) || rawShow.band.localizedCaseInsensitiveContains(variation) {
                     bandID = tag.bandID
-                } else {
-                    
+                    break outer
                 }
             }
         }
@@ -207,7 +208,7 @@ extension ImportShowsViewController {
         
         for show in venueArray {
             let hours = newShow.date.timeIntervalSince(show.date)
-            let timeSpan = -7200.0...7200.0
+            let timeSpan = -7201.0...7199.0
             if timeSpan.contains(hours) {
                 guard let index = RemoteDataController.showArray.firstIndex(where: {$0 == show}) else {return}
                 var changedShow = RemoteDataController.showArray[index]

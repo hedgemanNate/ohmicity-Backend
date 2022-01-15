@@ -14,7 +14,7 @@ class VenueTagViewController: NSViewController, NSTableViewDelegate, NSTableView
     //Table Views
     @IBOutlet weak var venueTableView: NSTableView!
     @IBOutlet weak var tagsTableView: NSTableView!
-    @IBOutlet weak var lastImportTableView: NSTableView!
+    @IBOutlet weak var bandsTableView: NSTableView!
     
     
     var venueTableIndex: Int {
@@ -44,9 +44,9 @@ class VenueTagViewController: NSViewController, NSTableViewDelegate, NSTableView
         tagsTableView.dataSource = self
         tagsTableView.doubleAction = #selector(tagsTableClick)
         
-        lastImportTableView.delegate = self
-        lastImportTableView.dataSource = self
-        lastImportTableView.doubleAction = #selector(importTableClick)
+        bandsTableView.delegate = self
+        bandsTableView.dataSource = self
+        bandsTableView.doubleAction = #selector(bandsTableClick)
         
     }
     
@@ -130,8 +130,8 @@ class VenueTagViewController: NSViewController, NSTableViewDelegate, NSTableView
         self.newTagTextField.stringValue = "\(filterArray[self.venueTableView.selectedRow].variations[self.tagsTableView.selectedRow])"
     }
     
-    @objc private func importTableClick() {
-        self.newTagTextField.stringValue = "\(newVenueArray[lastImportTableView.selectedRow])"
+    @objc private func bandsTableClick() {
+        self.newTagTextField.stringValue = "\(newVenueArray[bandsTableView.selectedRow])"
     }
 }
 
@@ -145,7 +145,7 @@ extension VenueTagViewController {
             return filterArray.count
         case tagsTableView:
             return filterArray[venueTableIndex].variations.count
-        case lastImportTableView:
+        case bandsTableView:
             return newVenueArray.count
         default:
             return 0
@@ -168,7 +168,7 @@ extension VenueTagViewController {
                 return cell
             }
         
-        case lastImportTableView:
+        case bandsTableView:
             if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier("ImportCell"), owner: nil) as? NSTableCellView {
                 cell.textField?.stringValue = "\(row + 1): \(newVenueArray[row])"
                 return cell

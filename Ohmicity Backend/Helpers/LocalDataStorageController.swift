@@ -94,14 +94,6 @@ extension LocalDataStorageController {
             UserDefaults.standard.set(encoded, forKey: "SavedJsonData")
             print("Json Data Saved")
         }
-    }
-    
-    static func saverJsonData() {
-        
-        if let encoded = try? JSONEncoder().encode(RawShowDataController.rawShowsArray) {
-            UserDefaults.standard.set(encoded, forKey: "SavedJsonData")
-            print("Json Data Saved")
-        }
         
     }
 }
