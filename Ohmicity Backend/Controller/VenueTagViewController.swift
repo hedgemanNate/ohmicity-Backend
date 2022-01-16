@@ -64,7 +64,7 @@ class VenueTagViewController: NSViewController, NSTableViewDelegate, NSTableView
         let newTag = newTagTextField.stringValue
         tag.variations.append(newTag)
         tagsTableView.reloadData()
-        LocalDataStorageController.saveBandTagData()
+        LocalBackupDataStorageController.saveBandTagData()
         newTagTextField.stringValue = ""
     }
     
@@ -83,10 +83,10 @@ class VenueTagViewController: NSViewController, NSTableViewDelegate, NSTableView
     
     @IBAction func breaker(_ sender: Any) {
         
-        for venue in LocalDataStorageController.venueArray {
+        for venue in LocalBackupDataStorageController.venueArray {
             let newTag = VenueTag(venueID: venue.venueID, variations: [venue.name])
             TagController.venueTags.append(newTag)
-            LocalDataStorageController.saveVenueTagData()
+            LocalBackupDataStorageController.saveVenueTagData()
         }
     }
     
@@ -103,7 +103,7 @@ class VenueTagViewController: NSViewController, NSTableViewDelegate, NSTableView
     //MARK: Functions
     private func getNewVenues() {
         let rawShows = RawShowDataController.rawShowsArray
-        let venues = LocalDataStorageController.venueArray
+        let venues = LocalBackupDataStorageController.venueArray
         
         for show in rawShows {
             if venues.contains(where: {$0.name == show.venue}) {

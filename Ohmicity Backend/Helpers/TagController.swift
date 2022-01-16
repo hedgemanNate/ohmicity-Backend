@@ -20,7 +20,7 @@ class TagController {
         for bandTag in bandTags {
             
             if bandTag.variations.contains(bandName) {
-                guard let foundBand = LocalDataStorageController.bandArray.first(where: {$0.bandID == bandTag.bandID}) else { continue }
+                guard let foundBand = LocalBackupDataStorageController.bandArray.first(where: {$0.bandID == bandTag.bandID}) else { continue }
                 
                 print(foundBand.name)
                 return foundBand
@@ -36,7 +36,7 @@ class TagController {
         for venueTag in venueTags {
             
             if venueTag.variations.contains(venue) {
-                guard let foundVenue = LocalDataStorageController.venueArray.first(where: {$0.venueID == venueTag.venueID}) else { return newVenue }
+                guard let foundVenue = LocalBackupDataStorageController.venueArray.first(where: {$0.venueID == venueTag.venueID}) else { return newVenue }
                 
                 return foundVenue
             }

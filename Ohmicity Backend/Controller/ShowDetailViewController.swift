@@ -79,7 +79,7 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
     //MARK: UpdateViews
     private func updateViews() {
         if currentShow != nil {
-            let tempVenue = LocalDataStorageController.venueArray.first(where: {$0.venueID == currentShow?.venue})
+            let tempVenue = LocalBackupDataStorageController.venueArray.first(where: {$0.venueID == currentShow?.venue})
             guard let tempVenue = tempVenue else {
                 clearAll()
                 messageCenter.stringValue = "Error: Show Venue Is Corrupted. Needs New Tag."
@@ -146,7 +146,7 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
     private func initialSetup() {
         remoteButton.state = .on
         showFilterArray = RemoteDataController.showArray.sorted(by: {$0.date < $1.date})
-        venueFilterArray = LocalDataStorageController.venueArray.sorted(by: {$0.name < $1.name})
+        venueFilterArray = LocalBackupDataStorageController.venueArray.sorted(by: {$0.name < $1.name})
         bandFilterArray = RemoteDataController.bandArray.sorted(by: {$0.name < $1.name})
     }
     
@@ -190,7 +190,7 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
     }
     
     @IBAction func saveButtonTapped(_ sender: Any) {
-        let tempVenue = LocalDataStorageController.venueArray.first(where: {$0.name == venueNameTextField.stringValue})
+        let tempVenue = LocalBackupDataStorageController.venueArray.first(where: {$0.name == venueNameTextField.stringValue})
         guard let tempVenue = tempVenue else {return}
         
         let tempBand = RemoteDataController.bandArray.first(where: {$0.name == bandNameTextField.stringValue})
@@ -296,9 +296,9 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         
         //Delete Locally
         guard let show = currentShow else {return}
-        LocalDataStorageController.showArray.removeAll(where: {$0 == show})
+        LocalBackupDataStorageController.showArray.removeAll(where: {$0 == show})
         notificationCenter.post(Notification(name: Notification.Name(rawValue: "showsUpdated")))
-        LocalDataStorageController.saveShowData()
+        LocalBackupDataStorageController.saveShowData()
         
         //Put On Hold Remotely
         RemoteDataController.showArray.removeAll(where: {$0 == currentShow})
@@ -383,7 +383,7 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
     }
     
     @IBAction func copyAllShowsToRemoteButtonTapped(_ sender: Any) {
-        for show in LocalDataStorageController.showArray {
+        for show in LocalBackupDataStorageController.showArray {
             do {
                 try workRef.showDataPath.document(show.showID).setData(from: show, completion: { err in
                     if let err = err {
@@ -438,9 +438,9 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
             showSearchTextField.isEnabled = false
             xityPicksButton.isEnabled = false
             if showSearchTextField.stringValue == "" {
-                showFilterArray = LocalDataStorageController.showArray
+                showFilterArray = LocalBackupDataStorageController.showArray
             showSearchTextField.isEnabled = false
-            showFilterArray = LocalDataStorageController.showArray.filter({$0.bandDisplayName .localizedCaseInsensitiveContains(showSearchTextField.stringValue)})
+            showFilterArray = LocalBackupDataStorageController.showArray.filter({$0.bandDisplayName .localizedCaseInsensitiveContains(showSearchTextField.stringValue)})
             }
         }
     }
@@ -449,9 +449,9 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
     @IBAction func showListSearchField(_ sender: Any) {
         if backupButton.state == .on {
             if showSearchTextField.stringValue == "" {
-                showFilterArray = LocalDataStorageController.showArray
+                showFilterArray = LocalBackupDataStorageController.showArray
             } else {
-                showFilterArray = LocalDataStorageController.showArray.filter({$0.bandDisplayName.localizedCaseInsensitiveContains(showSearchTextField.stringValue)})
+                showFilterArray = LocalBackupDataStorageController.showArray.filter({$0.bandDisplayName.localizedCaseInsensitiveContains(showSearchTextField.stringValue)})
                 showsTableView.reloadData()
             }
         } else {
@@ -468,9 +468,9 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
     @IBAction func venueBandSearchField(_ sender: Any) {
         if venueButton.state == .on {
             if venueBandSearchTextField.stringValue == "" {
-                venueFilterArray = LocalDataStorageController.venueArray
+                venueFilterArray = LocalBackupDataStorageController.venueArray
             } else {
-                venueFilterArray = LocalDataStorageController.venueArray.filter({$0.name.localizedCaseInsensitiveContains(venueBandSearchTextField.stringValue)})
+                venueFilterArray = LocalBackupDataStorageController.venueArray.filter({$0.name.localizedCaseInsensitiveContains(venueBandSearchTextField.stringValue)})
             }
         }
         
@@ -546,7 +546,7 @@ extension ShowDetailViewController {
                     return checkIfShowIsSpecial(show: showFilterArray[row], cell: cell)
                 }
             } else if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "VenueColumn") {
-                guard let venue = LocalDataStorageController.venueArray.first(where: {$0.venueID == showFilterArray[row].venue}) else {return NSTableCellView()}
+                guard let venue = LocalBackupDataStorageController.venueArray.first(where: {$0.venueID == showFilterArray[row].venue}) else {return NSTableCellView()}
                 if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "VenueCell"), owner: nil) as? NSTableCellView {
                     cell.textField?.stringValue = venue.name
                     cell.textField?.textColor = .white

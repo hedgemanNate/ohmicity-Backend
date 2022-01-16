@@ -65,9 +65,6 @@ class BandTagViewController: NSViewController, NSTableViewDelegate, NSTableViewD
         bandsTableView.delegate = self
         bandsTableView.dataSource = self
         bandsTableView.doubleAction = #selector(bandsTableClick)
-        
-        filterBandArray = RemoteDataController.bandArray.sorted(by: {$0.name < $1.name})
-        bandSearchField.stringValue = ""
     }
     
     //MARK: UpdateViews
@@ -90,7 +87,7 @@ class BandTagViewController: NSViewController, NSTableViewDelegate, NSTableViewD
 
         tagTableView.reloadData()
         variationsTableView.reloadData()
-        LocalDataStorageController.saveBandTagData()
+        LocalBackupDataStorageController.saveBandTagData()
     }
     
     @IBAction func deleteTagsWithNoBands(_ sender: Any) {
@@ -101,7 +98,7 @@ class BandTagViewController: NSViewController, NSTableViewDelegate, NSTableViewD
             }
             
         }
-        LocalDataStorageController.saveBandTagData()
+        LocalBackupDataStorageController.saveBandTagData()
     }
     
     
@@ -114,13 +111,13 @@ class BandTagViewController: NSViewController, NSTableViewDelegate, NSTableViewD
         filterArray[tagTableIndex].variations.removeAll(where: {$0 == tempVariation})
         variationsTableView.reloadData()
         
-        LocalDataStorageController.saveBandTagData()
+        LocalBackupDataStorageController.saveBandTagData()
         
     }
     
     @IBAction func clearAllTags(_ sender: Any) {
         TagController.bandTags = []
-        LocalDataStorageController.saveBandTagData()
+        LocalBackupDataStorageController.saveBandTagData()
     }
     
     @IBAction func createAllNewTags(_ sender: Any) {
@@ -131,7 +128,7 @@ class BandTagViewController: NSViewController, NSTableViewDelegate, NSTableViewD
             TagController.bandTags.append(newTag)
         }
         
-        LocalDataStorageController.saveBandTagData()
+        LocalBackupDataStorageController.saveBandTagData()
     }
     
     @IBAction func addTagButtonTapped(_ sender: Any) {
@@ -150,7 +147,7 @@ class BandTagViewController: NSViewController, NSTableViewDelegate, NSTableViewD
     @IBAction func addVariationButtonTapped(_ sender: Any) {
         selectedTag.variations.append(newTagTextField.stringValue)
         variationsTableView.reloadData()
-        LocalDataStorageController.saveBandTagData()
+        LocalBackupDataStorageController.saveBandTagData()
     }
     
     
@@ -203,8 +200,10 @@ class BandTagViewController: NSViewController, NSTableViewDelegate, NSTableViewD
     
     private func setFilterArray() {
         filterArray = TagController.bandTags
+        filterBandArray = RemoteDataController.bandArray.sorted(by: {$0.name < $1.name})
         DispatchQueue.main.async {
             self.tagTableView.reloadData()
+            self.bandsTableView.reloadData()
             //self.tagsTableView.reloadData()
         }
     }

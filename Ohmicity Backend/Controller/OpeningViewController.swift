@@ -41,11 +41,11 @@ class OpeningViewController: NSViewController {
         showLight.fillColor = .red
         
         
-        LocalDataStorageController.loadJsonData()
-        LocalDataStorageController.loadShowData()
-        LocalDataStorageController.loadBusinessData()
-        LocalDataStorageController.loadBandTagData()
-        LocalDataStorageController.loadVenueTagData()
+        LocalBackupDataStorageController.loadJsonData()
+        LocalBackupDataStorageController.loadShowData()
+        LocalBackupDataStorageController.loadBusinessData()
+        LocalBackupDataStorageController.loadBandTagData()
+        LocalBackupDataStorageController.loadVenueTagData()
     }
     
     @objc private func checkIfBandDataIsReady() {
