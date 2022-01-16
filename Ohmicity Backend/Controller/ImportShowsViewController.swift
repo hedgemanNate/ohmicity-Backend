@@ -11,6 +11,15 @@ import FirebaseFirestore
 class ImportShowsViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
 
     //MARK: Properties
+    var oneMonthAndAHalfAway: Date {
+        var dateComponent = DateComponents()
+        dateComponent.month = 1
+        dateComponent.day = 15
+        guard let dateLimit = Calendar.current.date(byAdding: dateComponent, to: Date()) else {return Date()}
+        return dateLimit
+    }
+    
+    
     //Array
     var showsArray = [Show]() {didSet{showsTableView.reloadData()}}
     var badTagArray = [String]() {didSet{showsTableView.reloadData()}}
@@ -69,10 +78,10 @@ class ImportShowsViewController: NSViewController, NSTableViewDelegate, NSTableV
                 let url = URL(fileURLWithPath: result.path)
                 RawShowDataController.path = url
                 RawShowDataController.loadShowsPath {
-                    //LocalDataStorageController.saveJsonData()
+                    print(url.absoluteString)
                 }
             }
-            LocalDataStorageController.saveJsonData()
+            LocalBackupDataStorageController.saveJsonData()
             DispatchQueue.main.async {
                 self.showsTableView.reloadData()
                 self.numberOfNewShowsLabel.stringValue = "\(RawShowDataController.rawShowsArray.count)"
@@ -83,7 +92,7 @@ class ImportShowsViewController: NSViewController, NSTableViewDelegate, NSTableV
     @IBAction func clearButtonTapped(_ sender: Any) {
         RawShowDataController.rawShowsArray = []
         badTagArray = []
-        LocalDataStorageController.saveJsonData()
+        LocalBackupDataStorageController.saveJsonData()
         showsTableView.reloadData()
     }
     
@@ -99,7 +108,7 @@ class ImportShowsViewController: NSViewController, NSTableViewDelegate, NSTableV
             var bandID = ""
             
             //Replace this line with *1* when venue tags are ready
-            venueID = LocalDataStorageController.venueArray.first(where: {$0.name == rawShow.venue})?.venueID ?? "none"
+            venueID = LocalBackupDataStorageController.venueArray.first(where: {$0.name == rawShow.venue})?.venueID ?? "none"
             //
             
             if venueID == "none" {
@@ -135,7 +144,7 @@ class ImportShowsViewController: NSViewController, NSTableViewDelegate, NSTableV
             }
             
             if newShow.date < Date() {continue}
-            
+            if newShow.date > oneMonthAndAHalfAway {continue}
             
             
             checkIfShowHasBeenUpdated(newShow: newShow)
@@ -268,7 +277,7 @@ extension ImportShowsViewController {
             }
         } else if processedShowsButton.state == .on {
             let show = showsArray[row]
-            guard let venue = LocalDataStorageController.venueArray.first(where: {$0.venueID == show.venue}) else {return nil}
+            guard let venue = LocalBackupDataStorageController.venueArray.first(where: {$0.venueID == show.venue}) else {return nil}
             guard let band = RemoteDataController.bandArray.first(where: {$0.bandID == show.band}) else {return nil}
             
             if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier("RawShowCell"), owner: nil) as? NSTableCellView {

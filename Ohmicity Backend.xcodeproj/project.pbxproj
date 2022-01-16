@@ -16,7 +16,7 @@
 		D85AC754267BB02B00CEA95B /* RemoteDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85AC753267BB02B00CEA95B /* RemoteDataController.swift */; };
 		D85F3D1D267CF2FC001BCFCA /* FireStoreReferenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85F3D1C267CF2FC001BCFCA /* FireStoreReferenceManager.swift */; };
 		F610AA3A2669309100EC2E8A /* VenueDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610AA382669309100EC2E8A /* VenueDetailViewController.swift */; };
-		F610AA3F26699EE700EC2E8A /* LocalDataStorageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610AA3E26699EE700EC2E8A /* LocalDataStorageController.swift */; };
+		F610AA3F26699EE700EC2E8A /* LocalBackupDataStorageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610AA3E26699EE700EC2E8A /* LocalBackupDataStorageController.swift */; };
 		F615064B268E67E200C4B808 /* Ohmicity Logo Banner.png in Resources */ = {isa = PBXBuildFile; fileRef = F615064A268E67E200C4B808 /* Ohmicity Logo Banner.png */; };
 		F615064D268E680B00C4B808 /* 1200px-American_Heart_Association_Logo.svg.png in Resources */ = {isa = PBXBuildFile; fileRef = F615064C268E680B00C4B808 /* 1200px-American_Heart_Association_Logo.svg.png */; };
 		F61683F626AD0490009CB284 /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61683F526AD0490009CB284 /* MainTableViewCell.swift */; };
@@ -25,6 +25,8 @@
 		F630FC0726583E5A001D0DA6 /* ShowData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F630FC0626583E5A001D0DA6 /* ShowData.swift */; };
 		F6334C0E2786504D00CD0A4F /* Tags.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6334C0D2786504D00CD0A4F /* Tags.swift */; };
 		F6334C102786511100CD0A4F /* TagController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6334C0F2786511100CD0A4F /* TagController.swift */; };
+		F63837872793E14300838858 /* ProductionShows.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63837862793E14300838858 /* ProductionShows.swift */; };
+		F638378B2793FA8B00838858 /* ProductionShowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F638378A2793FA8B00838858 /* ProductionShowController.swift */; };
 		F651C91C278605F600FCD0AA /* ImportShowsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F651C91B278605F600FCD0AA /* ImportShowsViewController.swift */; };
 		F655439F2689ABA300F823BA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F655439E2689ABA300F823BA /* GoogleService-Info.plist */; };
 		F6578F4A268D032E00AC25CE /* BusinessPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6578F48268D032E00AC25CE /* BusinessPhoto.swift */; };
@@ -66,7 +68,7 @@
 		D85AC753267BB02B00CEA95B /* RemoteDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDataController.swift; sourceTree = "<group>"; };
 		D85F3D1C267CF2FC001BCFCA /* FireStoreReferenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireStoreReferenceManager.swift; sourceTree = "<group>"; };
 		F610AA382669309100EC2E8A /* VenueDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueDetailViewController.swift; sourceTree = "<group>"; };
-		F610AA3E26699EE700EC2E8A /* LocalDataStorageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataStorageController.swift; sourceTree = "<group>"; };
+		F610AA3E26699EE700EC2E8A /* LocalBackupDataStorageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalBackupDataStorageController.swift; sourceTree = "<group>"; };
 		F615064A268E67E200C4B808 /* Ohmicity Logo Banner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Ohmicity Logo Banner.png"; sourceTree = "<group>"; };
 		F615064C268E680B00C4B808 /* 1200px-American_Heart_Association_Logo.svg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1200px-American_Heart_Association_Logo.svg.png"; sourceTree = "<group>"; };
 		F61683F526AD0490009CB284 /* MainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
@@ -76,6 +78,8 @@
 		F630FC0626583E5A001D0DA6 /* ShowData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowData.swift; sourceTree = "<group>"; };
 		F6334C0D2786504D00CD0A4F /* Tags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tags.swift; sourceTree = "<group>"; };
 		F6334C0F2786511100CD0A4F /* TagController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagController.swift; sourceTree = "<group>"; };
+		F63837862793E14300838858 /* ProductionShows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductionShows.swift; sourceTree = "<group>"; };
+		F638378A2793FA8B00838858 /* ProductionShowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductionShowController.swift; sourceTree = "<group>"; };
 		F651C91B278605F600FCD0AA /* ImportShowsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportShowsViewController.swift; sourceTree = "<group>"; };
 		F655439E2689ABA300F823BA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F6578F48268D032E00AC25CE /* BusinessPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessPhoto.swift; sourceTree = "<group>"; };
@@ -125,7 +129,7 @@
 				F65B06AC266C95AF00616BD9 /* Helper.swift */,
 				D85AC753267BB02B00CEA95B /* RemoteDataController.swift */,
 				D85F3D1C267CF2FC001BCFCA /* FireStoreReferenceManager.swift */,
-				F610AA3E26699EE700EC2E8A /* LocalDataStorageController.swift */,
+				F610AA3E26699EE700EC2E8A /* LocalBackupDataStorageController.swift */,
 				F6C5930B26585F1A000E0245 /* RawShowDataController.swift */,
 				D83B32CC267A5D800065948E /* ImageController.swift */,
 				F6936DC326A0DA6C00E5FA7F /* Enumerations.swift */,
@@ -156,6 +160,7 @@
 				F676F0EC2698DD5900C47599 /* Message.swift */,
 				F617385E26D85C8E0084B2CB /* BusinessBannerAd.swift */,
 				F6334C0D2786504D00CD0A4F /* Tags.swift */,
+				F63837862793E14300838858 /* ProductionShows.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -194,6 +199,7 @@
 				F617385C26D858A40084B2CB /* BannerAdsViewController.swift */,
 				F68A6CEE27794A0B009DCB8F /* RecommendationsViewController.swift */,
 				F67DA270278D2C4000DB0820 /* DatabaseUtilityViewController.swift */,
+				F638378A2793FA8B00838858 /* ProductionShowController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -402,17 +408,19 @@
 				D8092A1226682D4E00560A97 /* User.swift in Sources */,
 				D85F3D1D267CF2FC001BCFCA /* FireStoreReferenceManager.swift in Sources */,
 				F65B06A4266C360F00616BD9 /* BandDetailViewController.swift in Sources */,
+				F63837872793E14300838858 /* ProductionShows.swift in Sources */,
 				F65DC07726E5DBA300340C07 /* BulkShowCreationViewController.swift in Sources */,
 				D83B32CD267A5D800065948E /* ImageController.swift in Sources */,
 				F617385D26D858A40084B2CB /* BannerAdsViewController.swift in Sources */,
 				F67DA271278D2C4000DB0820 /* DatabaseUtilityViewController.swift in Sources */,
-				F610AA3F26699EE700EC2E8A /* LocalDataStorageController.swift in Sources */,
+				F610AA3F26699EE700EC2E8A /* LocalBackupDataStorageController.swift in Sources */,
 				F630FC0726583E5A001D0DA6 /* ShowData.swift in Sources */,
 				F6936DC426A0DA6C00E5FA7F /* Enumerations.swift in Sources */,
 				F610AA3A2669309100EC2E8A /* VenueDetailViewController.swift in Sources */,
 				F6C5930C26585F1A000E0245 /* RawShowDataController.swift in Sources */,
 				F6334C0E2786504D00CD0A4F /* Tags.swift in Sources */,
 				F6578F4A268D032E00AC25CE /* BusinessPhoto.swift in Sources */,
+				F638378B2793FA8B00838858 /* ProductionShowController.swift in Sources */,
 				F651C91C278605F600FCD0AA /* ImportShowsViewController.swift in Sources */,
 				F676F0ED2698DD5900C47599 /* Message.swift in Sources */,
 				F6C31F552656E57B004A1BB2 /* AppDelegate.swift in Sources */,

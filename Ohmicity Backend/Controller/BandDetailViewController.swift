@@ -304,7 +304,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
                     self.alertTextField.stringValue = err.localizedDescription
                 } else {
                     TagController.bandTags.removeAll(where: {$0.bandID == currentBand.bandID})
-                    LocalDataStorageController.saveBandTagData()
+                    LocalBackupDataStorageController.saveBandTagData()
                     RemoteDataController.bandArray.removeAll(where: {$0 == self.currentBand})
                     self.currentBand = nil
                     self.updateViews()
@@ -347,14 +347,6 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     }
     
     //MARK: Tag Buttons Functions
-    @IBAction func makeTagButtonTapped(_ sender: Any) {
-        guard let currentBand = currentBand else {return}
-        let newTag = BandTag(band: currentBand)
-        TagController.bandTags.append(newTag)
-        LocalDataStorageController.saveBandTagData()
-        tagsTableView.reloadData()
-    }
-    
     
     @IBAction func addVariationButtonTapped(_ sender: Any) {
         guard let currentBand = currentBand else {return}
@@ -362,7 +354,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         let tag = TagController.bandTags.first(where: {$0.bandID == currentBand.bandID})
         tag?.variations.append(bandNameTextField.stringValue)
         tagsTableView.reloadData()
-        LocalDataStorageController.saveBandTagData()
+        LocalBackupDataStorageController.saveBandTagData()
     }
     
     @IBAction func deleteVariationButtonTapped(_ sender: Any) {
@@ -371,7 +363,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         guard let index = tag?.variations.firstIndex(where: {$0 == selectedVariation}) else {return}
         tag?.variations.remove(at: index)
         tagsTableView.reloadData()
-        LocalDataStorageController.saveBandTagData()
+        LocalBackupDataStorageController.saveBandTagData()
     }
     
     
@@ -479,14 +471,14 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         backupSafetySwitch.state = .off
         saveBackupButton.isEnabled = false
         loadBackupButton.isEnabled = false
-        LocalDataStorageController.bandArray = RemoteDataController.bandArray
-        LocalDataStorageController.saveBackupBandData()
+        LocalBackupDataStorageController.bandArray = RemoteDataController.bandArray
+        LocalBackupDataStorageController.saveBackupBandData()
         alertTextField.stringValue = "Band Data Backup Saved"
     }
     
     @IBAction func loadBackupButtonTapped(_ sender: Any) {
         if backupButton.state == .on {
-            LocalDataStorageController.loadBackupBandData()
+            LocalBackupDataStorageController.loadBackupBandData()
             alertTextField.stringValue = "Band Data Backup Loaded"
         } else {
             alertTextField.stringValue = "Select Backup Radial before loading Backup"
@@ -496,7 +488,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         loadBackupButton.isEnabled = false
         
         if backupButton.state == .on {
-            filteredBandArray = LocalDataStorageController.bandArray
+            filteredBandArray = LocalBackupDataStorageController.bandArray
         }
     }
     
@@ -507,17 +499,17 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     @IBAction func radioButtonsChanged(_ sender: Any) {
         if newButton.state == .on {
             if searchTextField.stringValue == "" {
-                filteredBandArray = LocalDataStorageController.bandArray.sorted(by: {$0.lastModified.seconds < $1.lastModified.seconds})
+                filteredBandArray = LocalBackupDataStorageController.bandArray.sorted(by: {$0.lastModified.seconds < $1.lastModified.seconds})
             } else {
-                filteredBandArray = LocalDataStorageController.bandArray.filter({$0.name.localizedCaseInsensitiveContains(searchTextField.stringValue)})
+                filteredBandArray = LocalBackupDataStorageController.bandArray.filter({$0.name.localizedCaseInsensitiveContains(searchTextField.stringValue)})
             }
             
             
         } else if backupButton.state == .on {
             if searchTextField.stringValue == "" {
-                filteredBandArray = LocalDataStorageController.bandArray.sorted(by: {$0.name < $1.name})
+                filteredBandArray = LocalBackupDataStorageController.bandArray.sorted(by: {$0.name < $1.name})
             } else {
-                filteredBandArray = LocalDataStorageController.bandArray.filter({$0.name.localizedCaseInsensitiveContains(searchTextField.stringValue)})
+                filteredBandArray = LocalBackupDataStorageController.bandArray.filter({$0.name.localizedCaseInsensitiveContains(searchTextField.stringValue)})
             }
             
             
@@ -535,9 +527,9 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     @IBAction func searchingTextField(_ sender: Any) {
         if backupButton.state == .on {
             if searchTextField.stringValue == "" {
-                filteredBandArray = LocalDataStorageController.bandArray.sorted(by: {$0.name < $1.name})
+                filteredBandArray = LocalBackupDataStorageController.bandArray.sorted(by: {$0.name < $1.name})
             } else {
-                filteredBandArray = LocalDataStorageController.bandArray.filter({$0.name.localizedCaseInsensitiveContains(searchTextField.stringValue)})
+                filteredBandArray = LocalBackupDataStorageController.bandArray.filter({$0.name.localizedCaseInsensitiveContains(searchTextField.stringValue)})
             }
         } else if remoteButton.state == .on {
             if searchTextField.stringValue == "" {
@@ -547,9 +539,9 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
             }
         } else if newButton.state == .on {
             if searchTextField.stringValue == "" {
-                filteredBandArray = LocalDataStorageController.bandArray.sorted(by: {$0.lastModified.seconds < $1.lastModified.seconds})
+                filteredBandArray = LocalBackupDataStorageController.bandArray.sorted(by: {$0.lastModified.seconds < $1.lastModified.seconds})
             } else {
-                filteredBandArray = LocalDataStorageController.bandArray.filter({$0.name.localizedCaseInsensitiveContains(searchTextField.stringValue)})
+                filteredBandArray = LocalBackupDataStorageController.bandArray.filter({$0.name.localizedCaseInsensitiveContains(searchTextField.stringValue)})
             }
         }
         
@@ -737,7 +729,7 @@ extension BandDetailViewController {
     
     @objc private func loadInBand() {
         currentBand = selectedBand
-        showsArray = LocalDataStorageController.showArray.filter({$0.band == selectedBand.name})
+        showsArray = LocalBackupDataStorageController.showArray.filter({$0.band == selectedBand.name})
         updateViews()
     }
     
@@ -755,7 +747,7 @@ extension BandDetailViewController {
                 self.filteredBandArray.removeAll(where: {$0.bandID == tempBand.bandID})
                 
                 TagController.bandTags.removeAll(where: {$0.bandID == tempBand.bandID})
-                LocalDataStorageController.saveBandTagData()
+                LocalBackupDataStorageController.saveBandTagData()
                 
                 DispatchQueue.main.async {
                     self.reloadAllTableViews()
@@ -785,10 +777,10 @@ extension BandDetailViewController {
                     self.alertTextField.stringValue = err.localizedDescription
                 } else {
                     self.alertTextField.stringValue = "Band added on database"
-                    LocalDataStorageController.bandArray.append(newBand)
+                    LocalBackupDataStorageController.bandArray.append(newBand)
                     TagController.bandTags.append(newTag)
-                    LocalDataStorageController.saveBandData()
-                    LocalDataStorageController.saveBandTagData()
+                    LocalBackupDataStorageController.saveBandData()
+                    LocalBackupDataStorageController.saveBandTagData()
                     self.buttonIndication(color: .green)
                     
                     DispatchQueue.main.async {
@@ -829,7 +821,7 @@ extension BandDetailViewController {
                     self.alertTextField.stringValue = err.localizedDescription
                 } else {
                     self.alertTextField.stringValue = "Band updated on database"
-                    LocalDataStorageController.saveBandData()
+                    LocalBackupDataStorageController.saveBandData()
                     self.buttonIndication(color: .green)
                     
                     DispatchQueue.main.async {
@@ -964,7 +956,7 @@ extension BandDetailViewController {
         switch tableView {
         case showsTableView:
             if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "Venue") {
-                guard let venue = LocalDataStorageController.venueArray.first(where: {$0.venueID == showsArray[row].venue}) else {return NSTableCellView()}
+                guard let venue = LocalBackupDataStorageController.venueArray.first(where: {$0.venueID == showsArray[row].venue}) else {return NSTableCellView()}
                 
                 let venueIdentifier = NSUserInterfaceItemIdentifier("VenueCell")
                 guard let cell = tableView.makeView(withIdentifier: venueIdentifier, owner: self) as? NSTableCellView else {return nil}
