@@ -21,17 +21,10 @@ let dateFormatShowInfo = "E, MMMM d, h:mma"
 
 let dateFormatter = DateFormatter()
 
-extension Array where Element: Hashable {
-    func removingDuplicates() -> [Element] {
-        var addedDict = [Element: Bool]()
-
-        return filter {
-            addedDict.updateValue(true, forKey: $0) == nil
+extension Array {
+    func chunked(into size: Int) -> [[Element]] {
+        return stride(from: 0, to: count, by: size).map {
+            Array(self[$0 ..< Swift.min($0 + size, count)])
         }
     }
-
-    mutating func removeDuplicates() {
-        self = self.removingDuplicates()
-    }
 }
-

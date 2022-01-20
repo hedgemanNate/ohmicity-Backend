@@ -1392,8 +1392,8 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="277" height="148"/>
                                                             <datePickerCell key="cell" controlSize="large" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="R2s-zw-K34">
                                                                 <font key="font" metaFont="system"/>
-                                                                <date key="date" timeIntervalSinceReferenceDate="663982063.82711804">
-                                                                    <!--2022-01-15 23:27:43 +0000-->
+                                                                <date key="date" timeIntervalSinceReferenceDate="664304045.36745703">
+                                                                    <!--2022-01-19 16:54:05 +0000-->
                                                                 </date>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1437,8 +1437,8 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="277" height="148"/>
                                                             <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="503-Ty-Gdc">
                                                                 <font key="font" metaFont="system"/>
-                                                                <date key="date" timeIntervalSinceReferenceDate="663982063.83275104">
-                                                                    <!--2022-01-15 23:27:43 +0000-->
+                                                                <date key="date" timeIntervalSinceReferenceDate="664304045.37513494">
+                                                                    <!--2022-01-19 16:54:05 +0000-->
                                                                 </date>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1482,8 +1482,8 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="277" height="148"/>
                                                             <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="7jY-Qv-i7V">
                                                                 <font key="font" metaFont="system"/>
-                                                                <date key="date" timeIntervalSinceReferenceDate="663982063.83828795">
-                                                                    <!--2022-01-15 23:27:43 +0000-->
+                                                                <date key="date" timeIntervalSinceReferenceDate="664304045.38056505">
+                                                                    <!--2022-01-19 16:54:05 +0000-->
                                                                 </date>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1527,8 +1527,8 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="277" height="148"/>
                                                             <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="tXN-jR-RxO">
                                                                 <font key="font" metaFont="system"/>
-                                                                <date key="date" timeIntervalSinceReferenceDate="663982063.84383702">
-                                                                    <!--2022-01-15 23:27:43 +0000-->
+                                                                <date key="date" timeIntervalSinceReferenceDate="664304045.38594401">
+                                                                    <!--2022-01-19 16:54:05 +0000-->
                                                                 </date>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -2042,8 +2042,8 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <datePickerCell key="cell" borderStyle="bezel" alignment="left" useCurrentDate="YES" id="U6u-Ac-yGh">
                                     <font key="font" metaFont="system"/>
-                                    <date key="date" timeIntervalSinceReferenceDate="663982063.87962699">
-                                        <!--2022-01-15 23:27:43 +0000-->
+                                    <date key="date" timeIntervalSinceReferenceDate="664304045.42332602">
+                                        <!--2022-01-19 16:54:05 +0000-->
                                     </date>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -2054,8 +2054,8 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <datePickerCell key="cell" borderStyle="bezel" alignment="left" useCurrentDate="YES" id="g7o-Ed-NvT">
                                     <font key="font" metaFont="system"/>
-                                    <date key="date" timeIntervalSinceReferenceDate="663982063.88310397">
-                                        <!--2022-01-15 23:27:43 +0000-->
+                                    <date key="date" timeIntervalSinceReferenceDate="664304045.42678404">
+                                        <!--2022-01-19 16:54:05 +0000-->
                                     </date>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -2865,8 +2865,8 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <datePickerCell key="cell" controlSize="large" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="k9s-3e-zKO">
                                     <font key="font" metaFont="system"/>
-                                    <date key="date" timeIntervalSinceReferenceDate="663982064.04455304">
-                                        <!--2022-01-15 23:27:44 +0000-->
+                                    <date key="date" timeIntervalSinceReferenceDate="664304045.47863305">
+                                        <!--2022-01-19 16:54:05 +0000-->
                                     </date>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -5435,12 +5435,12 @@
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yQk-sL-NzT">
                                 <rect key="frame" x="132" y="575" width="249" height="48"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="square" title="Push Bands To Developing DB" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="Myx-Uu-HAS">
+                                <buttonCell key="cell" type="square" title="Push All Bands To Developing DB" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="Myx-Uu-HAS">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="pushBandsToDBButtonTapped:" target="YsA-gS-d3u" id="MJ6-ap-pfM"/>
+                                    <action selector="pushAllBandsToDevelopingDBButtonTapped:" target="YsA-gS-d3u" id="gm1-Lw-dne"/>
                                 </connections>
                             </button>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZYH-8H-FUg">
@@ -5463,12 +5463,12 @@
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fl0-TM-gt1">
                                 <rect key="frame" x="132" y="517" width="249" height="48"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="square" title="Push Venues To Developing DB" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="5c8-c0-EPN">
+                                <buttonCell key="cell" type="square" title="Push All Venues To Developing DB" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="5c8-c0-EPN">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="pushVenuesToDBButtonTapped:" target="YsA-gS-d3u" id="3KO-yA-dPV"/>
+                                    <action selector="pushAllVenuesToDevelopingDBButtonTapped:" target="YsA-gS-d3u" id="s0b-9N-sjw"/>
                                 </connections>
                             </button>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cd6-h6-DeU">
@@ -5480,7 +5480,7 @@
                                 </buttonCell>
                             </button>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CZ1-Wn-3PF">
-                                <rect key="frame" x="132" y="457" width="249" height="48"/>
+                                <rect key="frame" x="178" y="230" width="249" height="48"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="square" title="Push Shows To Developing DB" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="a5z-ey-gDj">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -5498,8 +5498,30 @@
                                     <font key="font" metaFont="systemBold" size="22"/>
                                 </buttonCell>
                             </button>
+                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tsD-5u-32Y">
+                                <rect key="frame" x="1016" y="204" width="249" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="square" title="Tester" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="mP6-KI-9nU">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <connections>
+                                        <action selector="tester:" target="YsA-gS-d3u" id="mFM-Kl-WVf"/>
+                                    </connections>
+                                </buttonCell>
+                            </button>
+                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qml-cc-Rnc">
+                                <rect key="frame" x="678" y="204" width="249" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="square" title="connected" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="058-Tm-p0B">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="loadPic:" target="YsA-gS-d3u" id="FPN-I0-Eto"/>
+                                </connections>
+                            </button>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9l8-M7-VTy">
-                                <rect key="frame" x="132" y="399" width="249" height="48"/>
+                                <rect key="frame" x="132" y="457" width="249" height="48"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="square" title="Push All Shows To Developing DB" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="VNJ-N9-W9B">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>

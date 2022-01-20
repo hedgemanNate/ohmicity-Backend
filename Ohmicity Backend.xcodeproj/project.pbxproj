@@ -25,8 +25,8 @@
 		F630FC0726583E5A001D0DA6 /* ShowData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F630FC0626583E5A001D0DA6 /* ShowData.swift */; };
 		F6334C0E2786504D00CD0A4F /* Tags.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6334C0D2786504D00CD0A4F /* Tags.swift */; };
 		F6334C102786511100CD0A4F /* TagController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6334C0F2786511100CD0A4F /* TagController.swift */; };
-		F63837872793E14300838858 /* ProductionShows.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63837862793E14300838858 /* ProductionShows.swift */; };
-		F638378B2793FA8B00838858 /* ProductionShowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F638378A2793FA8B00838858 /* ProductionShowController.swift */; };
+		F63837872793E14300838858 /* ProductionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63837862793E14300838858 /* ProductionData.swift */; };
+		F638378B2793FA8B00838858 /* ProductionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F638378A2793FA8B00838858 /* ProductionController.swift */; };
 		F651C91C278605F600FCD0AA /* ImportShowsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F651C91B278605F600FCD0AA /* ImportShowsViewController.swift */; };
 		F655439F2689ABA300F823BA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F655439E2689ABA300F823BA /* GoogleService-Info.plist */; };
 		F6578F4A268D032E00AC25CE /* BusinessPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6578F48268D032E00AC25CE /* BusinessPhoto.swift */; };
@@ -52,6 +52,7 @@
 		F6C5930C26585F1A000E0245 /* RawShowDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C5930B26585F1A000E0245 /* RawShowDataController.swift */; };
 		F6D80C44266AF93200A18ED2 /* Band.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D80C43266AF93200A18ED2 /* Band.swift */; };
 		F6D80C4B266B0FEF00A18ED2 /* Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D80C4A266B0FEF00A18ED2 /* Show.swift */; };
+		F6DE75B12798FD4B0033C807 /* DefaultBand.png in Resources */ = {isa = PBXBuildFile; fileRef = F6DE75B02798FD4B0033C807 /* DefaultBand.png */; };
 		F6F11E8C267FEAFD00E6368A /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = F6F11E8B267FEAFD00E6368A /* Podfile */; };
 /* End PBXBuildFile section */
 
@@ -78,8 +79,8 @@
 		F630FC0626583E5A001D0DA6 /* ShowData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowData.swift; sourceTree = "<group>"; };
 		F6334C0D2786504D00CD0A4F /* Tags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tags.swift; sourceTree = "<group>"; };
 		F6334C0F2786511100CD0A4F /* TagController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagController.swift; sourceTree = "<group>"; };
-		F63837862793E14300838858 /* ProductionShows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductionShows.swift; sourceTree = "<group>"; };
-		F638378A2793FA8B00838858 /* ProductionShowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductionShowController.swift; sourceTree = "<group>"; };
+		F63837862793E14300838858 /* ProductionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductionData.swift; sourceTree = "<group>"; };
+		F638378A2793FA8B00838858 /* ProductionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductionController.swift; sourceTree = "<group>"; };
 		F651C91B278605F600FCD0AA /* ImportShowsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportShowsViewController.swift; sourceTree = "<group>"; };
 		F655439E2689ABA300F823BA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F6578F48268D032E00AC25CE /* BusinessPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessPhoto.swift; sourceTree = "<group>"; };
@@ -108,6 +109,7 @@
 		F6C5930B26585F1A000E0245 /* RawShowDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawShowDataController.swift; sourceTree = "<group>"; };
 		F6D80C43266AF93200A18ED2 /* Band.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Band.swift; sourceTree = "<group>"; };
 		F6D80C4A266B0FEF00A18ED2 /* Show.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Show.swift; sourceTree = "<group>"; };
+		F6DE75B02798FD4B0033C807 /* DefaultBand.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DefaultBand.png; sourceTree = "<group>"; };
 		F6F11E8B267FEAFD00E6368A /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -160,7 +162,7 @@
 				F676F0EC2698DD5900C47599 /* Message.swift */,
 				F617385E26D85C8E0084B2CB /* BusinessBannerAd.swift */,
 				F6334C0D2786504D00CD0A4F /* Tags.swift */,
-				F63837862793E14300838858 /* ProductionShows.swift */,
+				F63837862793E14300838858 /* ProductionData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -199,7 +201,7 @@
 				F617385C26D858A40084B2CB /* BannerAdsViewController.swift */,
 				F68A6CEE27794A0B009DCB8F /* RecommendationsViewController.swift */,
 				F67DA270278D2C4000DB0820 /* DatabaseUtilityViewController.swift */,
-				F638378A2793FA8B00838858 /* ProductionShowController.swift */,
+				F638378A2793FA8B00838858 /* ProductionController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -238,6 +240,7 @@
 		F6C31F532656E57B004A1BB2 /* Ohmicity Backend */ = {
 			isa = PBXGroup;
 			children = (
+				F6DE75AF2798FD3D0033C807 /* Images */,
 				D85AC756267BB03300CEA95B /* Helpers */,
 				F6292DD32656F2E000DAE6B5 /* Models */,
 				F6A2D7522656F06300C50456 /* Views */,
@@ -249,6 +252,14 @@
 				F6F11E8B267FEAFD00E6368A /* Podfile */,
 			);
 			path = "Ohmicity Backend";
+			sourceTree = "<group>";
+		};
+		F6DE75AF2798FD3D0033C807 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				F6DE75B02798FD4B0033C807 /* DefaultBand.png */,
+			);
+			path = Images;
 			sourceTree = "<group>";
 		};
 		F6F5C1B32656EB2C0003924A /* Assets */ = {
@@ -330,6 +341,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6F11E8C267FEAFD00E6368A /* Podfile in Resources */,
+				F6DE75B12798FD4B0033C807 /* DefaultBand.png in Resources */,
 				F6C31F592656E57B004A1BB2 /* Assets.xcassets in Resources */,
 				F6C31F5C2656E57B004A1BB2 /* Main.storyboard in Resources */,
 				F6578F4B268D032E00AC25CE /* BusinessPhoto.xib in Resources */,
@@ -408,7 +420,7 @@
 				D8092A1226682D4E00560A97 /* User.swift in Sources */,
 				D85F3D1D267CF2FC001BCFCA /* FireStoreReferenceManager.swift in Sources */,
 				F65B06A4266C360F00616BD9 /* BandDetailViewController.swift in Sources */,
-				F63837872793E14300838858 /* ProductionShows.swift in Sources */,
+				F63837872793E14300838858 /* ProductionData.swift in Sources */,
 				F65DC07726E5DBA300340C07 /* BulkShowCreationViewController.swift in Sources */,
 				D83B32CD267A5D800065948E /* ImageController.swift in Sources */,
 				F617385D26D858A40084B2CB /* BannerAdsViewController.swift in Sources */,
@@ -420,7 +432,7 @@
 				F6C5930C26585F1A000E0245 /* RawShowDataController.swift in Sources */,
 				F6334C0E2786504D00CD0A4F /* Tags.swift in Sources */,
 				F6578F4A268D032E00AC25CE /* BusinessPhoto.swift in Sources */,
-				F638378B2793FA8B00838858 /* ProductionShowController.swift in Sources */,
+				F638378B2793FA8B00838858 /* ProductionController.swift in Sources */,
 				F651C91C278605F600FCD0AA /* ImportShowsViewController.swift in Sources */,
 				F676F0ED2698DD5900C47599 /* Message.swift in Sources */,
 				F6C31F552656E57B004A1BB2 /* AppDelegate.swift in Sources */,

@@ -16,57 +16,53 @@ class DatabaseUtilityViewController: NSViewController {
     //Properties
     @IBOutlet weak var messageTextField: NSTextField!
     
+    var imageData: Data?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.preferredContentSize = NSSize(width: 1320, height: 780)
     }
     
     
-    @IBAction func pushBandsToDevelopingDBButtonTapped(_ sender: Any) {
-    outer: for band in RemoteDataController.bandArray {
-            workRef.bandDataPath.document(band.bandID).delete { err in
-                if let err = err {
-                    self.messageTextField.stringValue = err.localizedDescription
-                }
+    @IBAction func pushAllBandsToDevelopingDBButtonTapped(_ sender: Any) {
+        let breakUpBands = RemoteDataController.bandArray.chunked(into: splitBandsIntoGroups())
+        
+        for group in breakUpBands {
+            var groupedBands = GroupOfProductionBands(bands: [SingleProductionBand]())
+            for band in group {
+                
+                let singleBand = SingleProductionBand(bandID: band.bandID, name: band.name, photo: band.photo, genre: band.genre, mediaLink: band.mediaLink, ohmPick: band.ohmPick)
+                groupedBands.bands.append(singleBand)
+                continue
             }
-        messageTextField.stringValue = "Bands Deleted From Database"
+            ProductionBandController.allBands.append(groupedBands)
         }
         
+        var bandGroupCount = 0
         
-        for band in LocalBackupDataStorageController.bandArray {
+        for bandGroup in ProductionBandController.allBands {
+            bandGroupCount += 1
             do {
-                try workRef.bandDataPath.document(band.bandID).setData(from: band, completion: { err in
+                try workRef.allBandDataPath.document("\(bandGroupCount)-\(UUID().uuidString)").setData(from: bandGroup, completion: { err in
                     if let err = err {
-                        NSLog(err.localizedDescription)
                         self.messageTextField.stringValue = err.localizedDescription
+                    } else {
+                        self.messageTextField.stringValue = "Group Of Production Bands Pushed"
                     }
-                    self.messageTextField.stringValue = "Bands Upload to Database Completed"
                 })
             } catch let error {
-                self.messageTextField.stringValue = error.localizedDescription
+                print(error)
             }
-            
+            if bandGroupCount == ProductionBandController.allBands.count {
+                messageTextField.stringValue = "All Bands Finished Pushing"
+            }
         }
     }
     
-    @IBAction func pushVenuesToDevelopingDBButtonTapped(_ sender: Any) {
+    @IBAction func pushAllVenuesToDevelopingDBButtonTapped(_ sender: Any) {
+    
     }
     
-    @IBAction func pushShowsToDevelopingDBButtonTapped(_ sender: Any) {
-        for show in LocalBackupDataStorageController.showArray {
-            do {
-                try workRef.showDataPath.document(show.showID).setData(from: show, completion: { err in
-                    if let err = err {
-                        NSLog(err.localizedDescription)
-                        self.messageTextField.stringValue = err.localizedDescription
-                    }
-                    self.messageTextField.stringValue = "Show Upload Completed"
-                })
-            } catch let error {
-                self.messageTextField.stringValue = error.localizedDescription
-            }
-        }
-    }
     
     @IBAction func pushAllShowsToDevelopingDBButtonTapped(_ sender: Any) {
         for show in RemoteDataController.showArray {
@@ -88,7 +84,19 @@ class DatabaseUtilityViewController: NSViewController {
         
     }
     
+    @IBAction func tester(_ sender: Any) {
+        
+        
+    }
     
     
     
+    
+
+    private func splitBandsIntoGroups() -> Int {
+        let numOfBands = RemoteDataController.bandArray.count
+        let result: Int = numOfBands / 60
+        return result
+        
+    }
 }

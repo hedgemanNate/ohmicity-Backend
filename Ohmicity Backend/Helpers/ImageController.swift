@@ -13,6 +13,7 @@ class ImageController {
     func addImage(file: URL) -> NSImage{
         let imageData = NSData(contentsOf: file)!
         let image = NSImage(data: imageData as Data)
+        print(file)
         return image!
     }
 }
