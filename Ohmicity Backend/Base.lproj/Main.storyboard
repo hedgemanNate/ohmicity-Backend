@@ -5486,6 +5486,9 @@
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="systemBold" size="22"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="pushAllToProduction:" target="YsA-gS-d3u" id="3vh-mo-oxD"/>
+                                </connections>
                             </button>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9l8-M7-VTy">
                                 <rect key="frame" x="132" y="457" width="249" height="48"/>
