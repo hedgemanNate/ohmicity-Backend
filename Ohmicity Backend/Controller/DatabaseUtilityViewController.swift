@@ -142,7 +142,6 @@ class DatabaseUtilityViewController: NSViewController {
         }
     }
     
-    
     @IBAction func pushAllShowsToDevelopingDBButtonTapped(_ sender: Any) {
         for show in RemoteDataController.showArray {
             let singleShow = SingleProductionShow(showID: show.showID, venue: show.venue, band: show.band, collaboration: [], bandDisplayName: show.bandDisplayName, date: show.date, ohmPick: show.ohmPick)
@@ -164,14 +163,11 @@ class DatabaseUtilityViewController: NSViewController {
     }
     
     @IBAction func tester(_ sender: Any) {
-        
-        
+        messageTextField.textColor = .red
+        messageTextField.stringValue = "😘😘😘😘 Love You Babe!!! 😘😘😘😘😘"
     }
     
-    
-    
-    
-
+    //MARK: Functions
     private func splitBandsIntoGroups() -> Int {
         let numOfBands = RemoteDataController.bandArray.count
         let result: Int = numOfBands / 60
