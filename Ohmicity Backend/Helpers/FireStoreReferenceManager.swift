@@ -35,6 +35,8 @@ struct WorkingOffRemoteManager {
     static let showDataPath = fireDataBase.collection(working).document(working).collection("showData")
     static let bandDataPath = fireDataBase.collection(working).document(working).collection("bandData")
     static let bandTagDataPath = fireDataBase.collection(working).document(working).collection("tagData")
+    
+    static let allVenueDataPath = fireDataBase.collection(working).document(working).collection("allVenueData")
 }
 
 let workRef = WorkingOffRemoteManager.self
@@ -49,5 +51,4 @@ struct ProductionManager {
     
     static let allUserDataPath = fireDataBase.collection(production).document(production).collection("allUserData")
     static let allBannerDataPath = fireDataBase.collection(production).document(production).collection("allBannerData")
-    
 }

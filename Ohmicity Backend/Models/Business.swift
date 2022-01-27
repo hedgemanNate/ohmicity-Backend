@@ -23,8 +23,8 @@ protocol MutatingProtocolForBusinessData {
     //Empty for the purpose adding Hours to a business
 }
 
-class BusinessFullData: Codable, Equatable {
-    static func == (lhs: BusinessFullData, rhs: BusinessFullData) -> Bool {
+class Venue: Codable, Equatable {
+    static func == (lhs: Venue, rhs: Venue) -> Bool {
         return lhs.venueID == rhs.venueID
     }
     

@@ -30,8 +30,8 @@ class TagController {
         return newBand
     }
     
-    static func scanVenueTags(venue: String) -> BusinessFullData {
-        let newVenue = BusinessFullData(name: venue, address: "Blank", phoneNumber: 0, website: "Blank")
+    static func scanVenueTags(venue: String) -> Venue {
+        let newVenue = Venue(name: venue, address: "Blank", phoneNumber: 0, website: "Blank")
         
         for venueTag in venueTags {
             

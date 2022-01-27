@@ -16,7 +16,7 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
     var timer = Timer()
     var lastMessage = ""
     var showFilterArray = [Show]() {didSet {showsTableView.reloadData()}}
-    var venueFilterArray = [BusinessFullData]() {didSet {venueBandTableView.reloadData()}}
+    var venueFilterArray = [Venue]() {didSet {venueBandTableView.reloadData()}}
     var bandFilterArray = [Band]() {didSet {venueBandTableView.reloadData()}}
     
     //TableViews

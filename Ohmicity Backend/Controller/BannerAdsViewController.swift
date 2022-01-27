@@ -17,7 +17,7 @@ class BannerAdsViewController: NSViewController {
             clientSelectedInTableView()
         }
     }
-    var currentBusiness: BusinessFullData? {
+    var currentBusiness: Venue? {
         didSet {
             businessSelectedInTableView()
         }
@@ -42,7 +42,7 @@ class BannerAdsViewController: NSViewController {
     @IBOutlet weak var tableView: NSTableView!
     @IBOutlet weak var showAllBusinessesButton: NSButton!
     @IBOutlet weak var showClientsButton: NSButton!
-    var businessResultsArray = [BusinessFullData]()
+    var businessResultsArray = [Venue]()
     var clientResultsArray = [BusinessBannerAd]()
     var clientFullArray = [BusinessBannerAd]()
     

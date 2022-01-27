@@ -9,19 +9,19 @@ import Foundation
 
 class LocalBackupDataStorageController {
     
-    static var venueArray: [BusinessFullData] = []
+    static var venueArray: [Venue] = []
     static var bandArray: [Band] = []
     static var showArray: [Show] = []
     
     //Search Functionality
-    var businessResults = [BusinessFullData]()
+    var businessResults = [Venue]()
     var bandResults = [Band]()
     var showResults = [Show]()
     
 //MARK: Business Data
     static func loadBusinessData() {
         if let data = UserDefaults.standard.data(forKey: "SavedBusinessData") {
-            if let decoded = try? JSONDecoder().decode([BusinessFullData].self, from: data) {
+            if let decoded = try? JSONDecoder().decode([Venue].self, from: data) {
                 LocalBackupDataStorageController.venueArray = decoded.sorted(by: {$0.name < $1.name})
                 print("Business Data Loaded")
                 //return

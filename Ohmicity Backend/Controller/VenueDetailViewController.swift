@@ -19,7 +19,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     
     
     var currentBusinessShows: [Show]?
-    var currentBusiness: BusinessFullData?
+    var currentBusiness: Venue?
     var image: NSImage?
     var logoData: Data?
     var businessPicsData: [Data] = []
@@ -281,7 +281,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         
         
         
-        let newBusiness = BusinessFullData(name: name, address: address, phoneNumber: phoneNumber, website: website)
+        let newBusiness = Venue(name: name, address: address, phoneNumber: phoneNumber, website: website)
         print("Business Created")
         
         newBusiness.stars = Int(stars)!

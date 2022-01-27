@@ -12,11 +12,11 @@ import FirebaseFirestore
 class RemoteDataController {
     
     //Properties
-    static var businessArray: [BusinessFullData] = []
+    static var venueArray: [Venue] = []
     static var bandArray: [Band] = []
     static var showArray: [Show] = []
     
-    var businessResults = [BusinessFullData]()
+    var businessResults = [Venue]()
     var bandResults = [Band]()
     var showResults = [Show]()
     
@@ -58,7 +58,7 @@ class RemoteDataController {
         print("Running Remote Show")
         workRef.showDataPath.getDocuments { (querySnapshot, err) in
             if let err = err {
-                NSLog("Error getting showData: \(err)")
+                NSLog("Error getting showData: \(err.localizedDescription)")
             } else {
                 NSLog("Got show data")
                 RemoteDataController.showArray = []
@@ -81,6 +81,33 @@ class RemoteDataController {
                 RemoteDataController.showArray = show
                 NSLog("Show data collection complete.")
                 notificationCenter.post(name: NSNotification.Name("GotShowData"), object: nil)
+            }
+        }
+    }
+    
+    static func getRemoteVenueData() {
+        //MARK: !!!!!TEMPORARY POINT TO OLD DATABASE!!!!! (ProductionManager.allVenueDataPath.getDocuments)
+        ref.businessFullDataPath.getDocuments { querySnapshot, err in
+            if let err = err {
+                NSLog("Error getting venueData: \(err.localizedDescription)")
+            } else {
+                RemoteDataController.venueArray = []
+                for venue in querySnapshot!.documents {
+                    let result = Result {
+                        try venue.data(as: Venue.self)
+                    }
+                    switch result {
+                    case .success(let venue):
+                        if let venue = venue {
+                            RemoteDataController.venueArray.append(venue)
+                        }
+                    case .failure(let error):
+                        NSLog(error.localizedDescription)
+                    }
+                }
+                RemoteDataController.venueArray.sort(by: {$0.name < $1.name})
+                NSLog("Venue data collection complete.")
+                notificationCenter.post(name: NSNotification.Name("GotVenueData"), object: nil)
             }
         }
     }
