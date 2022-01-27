@@ -25,7 +25,22 @@ class DatabaseUtilityViewController: NSViewController {
     
     //MARK: Production Button/Functions
     @IBAction func pushAllToProduction(_ sender: Any) {
+        let opQueue = OperationQueue()
+        opQueue.maxConcurrentOperationCount = 1
         
+        let pushBands1 = BlockOperation {
+            self.pushBands()
+        }
+        
+        let pushShows2 = BlockOperation {
+            self.pushShows()
+        }
+        
+        let pushVenues3 = BlockOperation {
+            self.pushVenues()
+        }
+        
+        opQueue.addOperations([pushBands1, pushShows2, pushVenues3], waitUntilFinished: true)
     }
     
     private func pushBands() {
@@ -47,18 +62,10 @@ class DatabaseUtilityViewController: NSViewController {
         for bandGroup in ProductionBandController.allBands {
             bandGroupCount += 1
             do {
-                try ProductionManager.allBandDataPath.document("\(bandGroupCount)-\(UUID().uuidString)").setData(from: bandGroup, completion: { err in
-                    if let err = err {
-                        self.messageTextField.stringValue = err.localizedDescription
-                    } else {
-                        self.messageTextField.stringValue = "Group Of Production Bands Pushed"
-                    }
-                })
+                try ProductionManager.allBandDataPath.document("\(bandGroupCount)-\(UUID().uuidString)").setData(from: bandGroup)
             } catch let error {
-                print(error)
-            }
-            if bandGroupCount == ProductionBandController.allBands.count {
-                messageTextField.stringValue = "All Bands Finished Pushing"
+                messageTextField.stringValue = error.localizedDescription
+                NSLog(error.localizedDescription)
             }
         }
     }
@@ -70,15 +77,21 @@ class DatabaseUtilityViewController: NSViewController {
         }
         
         do {
-            try ProductionManager.allShowDataPath.document(ProductionShowController.allShows.allProductionShowsID).setData(from: ProductionShowController.allShows) { err in
-                if let err = err {
-                    self.messageTextField.stringValue = err.localizedDescription
-                } else {
-                    self.messageTextField.stringValue = "All Production Shows Pushed"
-                }
-            }
+            try ProductionManager.allShowDataPath.document(ProductionShowController.allShows.allProductionShowsID).setData(from: ProductionShowController.allShows)
         } catch let error {
             self.messageTextField.stringValue = error.localizedDescription
+            NSLog(error.localizedDescription)
+        }
+    }
+    
+    private func pushVenues() {
+        for venue in RemoteDataController.venueArray {
+            do {
+                try ProductionManager.allVenueDataPath.document(venue.venueID).setData(from: venue)
+            } catch let error {
+                messageTextField.stringValue = error.localizedDescription
+                NSLog(error.localizedDescription)
+            }
         }
     }
     
@@ -119,7 +132,14 @@ class DatabaseUtilityViewController: NSViewController {
     }
     
     @IBAction func pushAllVenuesToDevelopingDBButtonTapped(_ sender: Any) {
-        
+        for venue in RemoteDataController.venueArray {
+            do {
+                try workRef.allVenueDataPath.document(venue.venueID).setData(from: venue)
+            } catch let error {
+                messageTextField.stringValue = error.localizedDescription
+                NSLog(error.localizedDescription)
+            }
+        }
     }
     
     

@@ -86,8 +86,7 @@ class RemoteDataController {
     }
     
     static func getRemoteVenueData() {
-        //MARK: !!!!!TEMPORARY POINT TO OLD DATABASE!!!!! (ProductionManager.allVenueDataPath.getDocuments)
-        ref.businessFullDataPath.getDocuments { querySnapshot, err in
+        workRef.allVenueDataPath.getDocuments { querySnapshot, err in
             if let err = err {
                 NSLog("Error getting venueData: \(err.localizedDescription)")
             } else {
