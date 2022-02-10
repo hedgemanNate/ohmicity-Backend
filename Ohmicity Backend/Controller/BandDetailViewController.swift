@@ -113,7 +113,7 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     //MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.preferredContentSize = NSSize(width: 1320, height: 810)
+        self.preferredContentSize = NSSize(width: 1320, height: 860)
         initialLoading()
         
     }

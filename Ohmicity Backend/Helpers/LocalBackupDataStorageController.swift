@@ -101,7 +101,7 @@ extension LocalBackupDataStorageController {
     
 //MARK: Show data
 extension LocalBackupDataStorageController {
-    static func loadShowData() {
+    static func loadBackupShowData() {
         if let data = UserDefaults.standard.data(forKey: "SavedShowData") {
             if let decoded = try? JSONDecoder().decode([Show].self, from: data) {
                 LocalBackupDataStorageController.showArray = decoded.sorted(by: {$0.date < $1.date})
@@ -111,8 +111,8 @@ extension LocalBackupDataStorageController {
         }
     }
     
-    static func saveShowData() {
-        if let encoded = try? JSONEncoder().encode(LocalBackupDataStorageController.showArray) {
+    static func saveBackupShowData() {
+        if let encoded = try? JSONEncoder().encode(RemoteDataController.showArray) {
             UserDefaults.standard.set(encoded, forKey: "SavedShowData")
             print("Show Data Saved")
         }

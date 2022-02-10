@@ -19,8 +19,8 @@ class DatabaseUtilityViewController: NSViewController {
     var imageData: Data?
     
     override func viewDidLoad() {
+        self.preferredContentSize = NSSize(width: 1320, height: 860)
         super.viewDidLoad()
-        self.preferredContentSize = NSSize(width: 1320, height: 780)
     }
     
     //MARK: Production Button/Functions

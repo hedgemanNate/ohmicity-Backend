@@ -75,7 +75,7 @@ class OpeningViewController: NSViewController {
             TagController.venueTags = []
             
             LocalBackupDataStorageController.loadJsonData()
-            LocalBackupDataStorageController.loadShowData()
+            LocalBackupDataStorageController.loadBackupShowData()
             LocalBackupDataStorageController.loadBusinessData()
             LocalBackupDataStorageController.loadBandTagData()
             LocalBackupDataStorageController.loadVenueTagData()
@@ -107,7 +107,7 @@ class OpeningViewController: NSViewController {
             venueLight.fillColor = .yellow
             
             LocalBackupDataStorageController.loadJsonData()
-            LocalBackupDataStorageController.loadShowData()
+            LocalBackupDataStorageController.loadBackupShowData()
             LocalBackupDataStorageController.loadBusinessData()
             LocalBackupDataStorageController.loadBandTagData()
             LocalBackupDataStorageController.loadVenueTagData()

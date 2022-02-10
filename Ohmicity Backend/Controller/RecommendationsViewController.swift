@@ -36,7 +36,7 @@ class RecommendationsViewController: NSViewController, NSTableViewDelegate, NSTa
     
     
     private func updateViews() {
-        self.preferredContentSize = NSSize(width: 1320, height: 780)
+        self.preferredContentSize = NSSize(width: 1320, height: 860)
     }
     
     private func setupTableView() {

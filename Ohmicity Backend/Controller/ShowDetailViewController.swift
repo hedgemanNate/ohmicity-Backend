@@ -41,6 +41,8 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
     @IBOutlet weak var enableBackupButton: NSButton!
     @IBOutlet weak var filterXityPicksButton: NSButton!
     @IBOutlet weak var filterShowsDropDown: NSComboBox!
+    @IBOutlet weak var backupSafetySwitch: NSButton!
+    
     
     @IBOutlet weak var xityPicksButton: NSButton!
     var xityPicksFilter = false
@@ -62,7 +64,7 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.preferredContentSize = NSSize(width: 1320, height: 780)
+        self.preferredContentSize = NSSize(width: 1320, height: 860)
         initialSetup()
         showsTableView.delegate = self
         showsTableView.dataSource = self
@@ -306,7 +308,7 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         guard let show = currentShow else {return}
         LocalBackupDataStorageController.showArray.removeAll(where: {$0 == show})
         notificationCenter.post(Notification(name: Notification.Name(rawValue: "showsUpdated")))
-        LocalBackupDataStorageController.saveShowData()
+        LocalBackupDataStorageController.saveBackupShowData()
         
         //Put On Hold Remotely
         RemoteDataController.showArray.removeAll(where: {$0 == currentShow})
@@ -357,14 +359,50 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         }
     }
     
+    @IBAction func backupSafetySwitch(_ sender: Any) {
+        switch backupSafetySwitch.state {
+        case .off:
+            saveBackupButton.isEnabled = false
+            loadBackupButton.isEnabled = false
+        case .on:
+            saveBackupButton.isEnabled = true
+            loadBackupButton.isEnabled = true
+        default:
+            break
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) { [self] in
+            backupSafetySwitch.state = .off
+            saveBackupButton.isEnabled = false
+            loadBackupButton.isEnabled = false
+        }
+    }
     
     @IBAction func saveBackupButtonTapped(_ sender: Any) {
+        if RemoteDataController.bandArray == [] {
+            messageCenter.stringValue = "There is no data from the remote database to backup. Make sure you are in Publisher Mode."
+            return
+        }
+        backupSafetySwitch.state = .off
+        saveBackupButton.isEnabled = false
+        loadBackupButton.isEnabled = false
+        LocalBackupDataStorageController.bandArray = RemoteDataController.bandArray
+        LocalBackupDataStorageController.saveBackupShowData()
+        messageCenter.stringValue = "Band Data Backup Saved"
     }
     
     @IBAction func loadBackupButtonTapped(_ sender: Any) {
-    }
-    
-    @IBAction func enableBackupButtonTapped(_ sender: Any) {
+        if backupButton.state == .on {
+            LocalBackupDataStorageController.loadBackupShowData()
+            showFilterArray = LocalBackupDataStorageController.showArray
+            
+            messageCenter.stringValue = "Band Data Backup Loaded"
+        } else {
+            messageCenter.stringValue = "Select Backup Radial before loading Backup"
+        }
+        backupSafetySwitch.state = .off
+        saveBackupButton.isEnabled = false
+        loadBackupButton.isEnabled = false
     }
     
     @IBAction func copySelectedShowToRemoteButtonTapped(_ sender: Any) {
@@ -421,7 +459,6 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
     
     @IBAction func searchShowsRadioButtonsTapped(_ sender: Any) {
         if newButton.state == .on {
-            showSearchTextField.isEnabled = true
             xityPicksButton.isEnabled = false
             if showSearchTextField.stringValue == "" {
                 showFilterArray = RemoteDataController.showArray.sorted(by: {$0.lastModified.seconds < $1.lastModified.seconds})
@@ -429,7 +466,6 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
                 showFilterArray = RemoteDataController.showArray.filter({$0.bandDisplayName .localizedCaseInsensitiveContains(showSearchTextField.stringValue)})
             }
         } else if remoteButton.state == .on {
-            showSearchTextField.isEnabled = true
             xityPicksButton.isEnabled = true
             if showSearchTextField.stringValue == "" {
                 showFilterArray = RemoteDataController.showArray.sorted(by: {$0.date < $1.date})
@@ -437,12 +473,11 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
                 showFilterArray = RemoteDataController.showArray.filter({$0.bandDisplayName .localizedCaseInsensitiveContains(showSearchTextField.stringValue)})
             }
         } else if backupButton.state == .on {
-            showSearchTextField.isEnabled = false
             xityPicksButton.isEnabled = false
             if showSearchTextField.stringValue == "" {
                 showFilterArray = LocalBackupDataStorageController.showArray
-            showSearchTextField.isEnabled = false
-            showFilterArray = LocalBackupDataStorageController.showArray.filter({$0.bandDisplayName .localizedCaseInsensitiveContains(showSearchTextField.stringValue)})
+            } else {
+                showFilterArray = LocalBackupDataStorageController.showArray.filter({$0.bandDisplayName .localizedCaseInsensitiveContains(showSearchTextField.stringValue)})
             }
         }
     }
@@ -452,8 +487,11 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         if backupButton.state == .on {
             if showSearchTextField.stringValue == "" {
                 showFilterArray = LocalBackupDataStorageController.showArray
+                showsTableView.reloadData()
             } else {
-                showFilterArray = LocalBackupDataStorageController.showArray.filter({$0.bandDisplayName.localizedCaseInsensitiveContains(showSearchTextField.stringValue)})
+                let byBandArray = LocalBackupDataStorageController.showArray.filter({$0.bandDisplayName.localizedCaseInsensitiveContains(showSearchTextField.stringValue)})
+                
+                showFilterArray = byBandArray
                 showsTableView.reloadData()
             }
         } else {
@@ -461,7 +499,10 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
                 showFilterArray = RemoteDataController.showArray
                 showsTableView.reloadData()
             } else {
-                showFilterArray = RemoteDataController.showArray.filter({$0.bandDisplayName.localizedCaseInsensitiveContains(showSearchTextField.stringValue)})
+                let byBandArray = RemoteDataController.showArray.filter({$0.bandDisplayName.localizedCaseInsensitiveContains(showSearchTextField.stringValue)})
+                
+                showFilterArray = byBandArray
+                showFilterArray.sort(by: {$0.date < $1.date})
                 showsTableView.reloadData()
             }
         }
@@ -563,10 +604,18 @@ extension ShowDetailViewController {
                     cellTagIssue = cellTagCell
                 }
                 
-                guard let band = RemoteDataController.bandArray.first(where: {$0.bandID == showFilterArray[row].band}) else {return cellTagIssue}
+                var band: Band?
+                
+                if remoteButton.state == .on || newButton.state == .on {
+                    guard let band1 = RemoteDataController.bandArray.first(where: {$0.bandID == showFilterArray[row].band}) else {return cellTagIssue}
+                    band = band1
+                } else if backupButton.state == .on {
+                    guard let band1 = LocalBackupDataStorageController.bandArray.first(where: {$0.bandID == showFilterArray[row].band}) else {return cellTagIssue}
+                    band = band1
+                }
                 
                 if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "BandCell"), owner: nil) as? NSTableCellView {
-                    cell.textField?.stringValue = "\(showFilterArray[row].bandDisplayName): \(band.name)"
+                    cell.textField?.stringValue = "\(showFilterArray[row].bandDisplayName): \(band?.name ?? "No Name Found")"
                     cell.textField?.textColor = .white
                     return checkIfShowIsSpecial(show: showFilterArray[row], cell: cell)
                 }

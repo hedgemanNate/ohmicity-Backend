@@ -35,6 +35,7 @@ class VenueTagViewController: NSViewController, NSTableViewDelegate, NSTableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.preferredContentSize = NSSize(width: 1320, height: 860)
         updateViews()
         venueTableView.delegate = self
         venueTableView.dataSource = self
@@ -93,7 +94,6 @@ class VenueTagViewController: NSViewController, NSTableViewDelegate, NSTableView
     
     //MARK: UpdateViews
     private func updateViews() {
-        self.preferredContentSize = NSSize(width: 1320, height: 780)
         //newTagTextField.becomeFirstResponder()
         getNewVenues()
         setFilterArray()

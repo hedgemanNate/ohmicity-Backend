@@ -16,10 +16,11 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     //MARK: Properties
     var cImage: NSImage?
     @IBOutlet weak var buttonBoxView: NSBox!
+    @IBOutlet weak var remoteShowCheckLabel: NSTextField!
     
     
-    var currentBusinessShows: [Show]?
-    var currentBusiness: Venue?
+    var currentVenueShows: [Show]? {didSet{showsTableView.reloadData()}}
+    var currentVenue: Venue? {didSet{updateViews()}}
     var image: NSImage?
     var logoData: Data?
     var businessPicsData: [Data] = []
@@ -84,11 +85,18 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.preferredContentSize = NSSize(width: 1320, height: 860)
         updateViews()
-        showsTableView.doubleAction = #selector(doubleClicked)
+        venuesTableView.doubleAction = #selector(doubleClicked)
         cityArray = [veniceButton, sarasotaButton, bradentonButton, stPeteButton, tampaButton, yborButton]
         venueTypeArray = [restaurantButton, barButton, clubButton, outdoorsButton, liveMusicButton, familyButton]
         
+        showsTableView.delegate = self
+        showsTableView.dataSource = self
+        venuesTableView.delegate = self
+        venuesTableView.dataSource = self
+        collectionView.delegate = self
+        collectionView.dataSource = self
     }
     
     override func viewWillAppear() {
@@ -164,8 +172,8 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
             let imageData = NSData(contentsOf: result)
             let data = imageData! as Data
             
-            if currentBusiness != nil {
-                currentBusiness?.pics.append(data)
+            if currentVenue != nil {
+                currentVenue?.pics.append(data)
             } else {
                 businessPicsData.append(data)
             }
@@ -186,8 +194,8 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     @IBAction func photoDeleteButtonTapped(_ sender: Any) {
         guard let index = collectionView.selectionIndexes.first else {return}
         
-        if currentBusiness != nil {
-            currentBusiness?.pics.remove(at: index)
+        if currentVenue != nil {
+            currentVenue?.pics.remove(at: index)
         } else {
             businessPicsData.remove(at: index)
         }
@@ -226,7 +234,7 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         guard let phoneNumber = Int(numberString) else {return print("Return on phone number")}
         
         //Update Shows For Venue
-        let oldVenueName = currentBusiness?.name
+        let oldVenueName = currentVenue?.name
         let newVenueName = nameTextField.stringValue
         
         
@@ -240,30 +248,30 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
                     LocalBackupDataStorageController.showArray.append(show)
                 }
             }
-            LocalBackupDataStorageController.saveShowData()
+            LocalBackupDataStorageController.saveBackupShowData()
         }
         
         
         //Picture Handling
-        currentBusiness?.logo = logoData
+        currentVenue?.logo = logoData
         
-        currentBusiness?.name = name
-        currentBusiness?.address = address
-        currentBusiness?.website = website
-        currentBusiness?.phoneNumber = phoneNumber
+        currentVenue?.name = name
+        currentVenue?.address = address
+        currentVenue?.website = website
+        currentVenue?.phoneNumber = phoneNumber
         if ohmPick.state == .on {
-            currentBusiness?.ohmPick = true
+            currentVenue?.ohmPick = true
         } else if ohmPick.state == .off {
-            currentBusiness?.ohmPick = false
+            currentVenue?.ohmPick = false
         }
         
         let hours = Hours(mon: mondayOpenTextField.stringValue, tues: tuesdayOpenTextField.stringValue, wed: wednesdayOpenTextField.stringValue, thur: thursdayOpenTextField.stringValue, fri: fridayOpenTextField.stringValue, sat: saturdayOpenTextField.stringValue, sun: sundayOpenTextField.stringValue)
         
-        currentBusiness?.hours = hours
-        currentBusiness?.lastModified = Timestamp()
+        currentVenue?.hours = hours
+        currentVenue?.lastModified = Timestamp()
         
-        if !LocalBackupDataStorageController.venueArray.contains(currentBusiness!) {
-            LocalBackupDataStorageController.venueArray.append(currentBusiness!)
+        if !LocalBackupDataStorageController.venueArray.contains(currentVenue!) {
+            LocalBackupDataStorageController.venueArray.append(currentVenue!)
         }
         
         LocalBackupDataStorageController.saveBusinessData()
@@ -342,11 +350,11 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         newBusiness.hours = hours
         newBusiness.lastModified = Timestamp()
         
-        currentBusiness = newBusiness
+        currentVenue = newBusiness
         
         LocalBackupDataStorageController.venueArray.append(newBusiness)
         LocalBackupDataStorageController.saveBusinessData()
-        LocalBackupDataStorageController.saveShowData()
+        LocalBackupDataStorageController.saveBackupShowData()
         
         notificationCenter.post(name: NSNotification.Name("showsUpdated"), object: nil)
         print("Save Button Tapped")
@@ -357,10 +365,10 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     
     @IBAction func pushBusinessButtonTapped(_ sender: Any) {
         let ref = FireStoreReferenceManager.businessFullDataPath
-        currentBusiness?.lastModified = Timestamp()
+        currentVenue?.lastModified = Timestamp()
         
         do {
-            try ref.document(currentBusiness!.venueID).setData(from: currentBusiness)
+            try ref.document(currentVenue!.venueID).setData(from: currentVenue)
             buttonIndication2(color: .green)
         } catch let error {
             NSLog(error.localizedDescription)
@@ -373,151 +381,101 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     //MARK: Business Type CheckBox Buttons
     @IBAction func restaurantButtonTapped(_ sender: Any) {
         if restaurantButton.state == .on {
-            currentBusiness?.businessType.append(BusinessType.Restaurant)
+            currentVenue?.businessType.append(BusinessType.Restaurant)
         } else {
-            currentBusiness?.businessType.removeAll(where: {$0 == BusinessType.Restaurant})
+            currentVenue?.businessType.removeAll(where: {$0 == BusinessType.Restaurant})
         }
     }
     @IBAction func barButtonTapped(_ sender: Any) {
         if barButton.state == .on {
-            currentBusiness?.businessType.append(BusinessType.Bar)
+            currentVenue?.businessType.append(BusinessType.Bar)
         } else {
-            currentBusiness?.businessType.removeAll(where: {$0 == BusinessType.Bar})
+            currentVenue?.businessType.removeAll(where: {$0 == BusinessType.Bar})
         }
     }
     @IBAction func clubButtonTapped(_ sender: Any) {
         if clubButton.state == .on {
-            currentBusiness?.businessType.append(BusinessType.Club)
+            currentVenue?.businessType.append(BusinessType.Club)
         } else {
-            currentBusiness?.businessType.removeAll(where: {$0 == BusinessType.Club})
+            currentVenue?.businessType.removeAll(where: {$0 == BusinessType.Club})
         }
     }
     @IBAction func outdoorsButtonTapped(_ sender: Any) {
         if outdoorsButton.state == .on {
-            currentBusiness?.businessType.append(BusinessType.Outdoors)
+            currentVenue?.businessType.append(BusinessType.Outdoors)
         } else {
-            currentBusiness?.businessType.removeAll(where: {$0 == BusinessType.Outdoors})
+            currentVenue?.businessType.removeAll(where: {$0 == BusinessType.Outdoors})
         }
     }
     @IBAction func liveMusicButtonTapped(_ sender: Any) {
         if liveMusicButton.state == .on {
-            currentBusiness?.businessType.append(BusinessType.LiveMusic)
+            currentVenue?.businessType.append(BusinessType.LiveMusic)
         } else {
-            currentBusiness?.businessType.removeAll(where: {$0 == BusinessType.LiveMusic})
+            currentVenue?.businessType.removeAll(where: {$0 == BusinessType.LiveMusic})
         }
     }
     @IBAction func familyButtonTapped(_ sender: Any) {
         if familyButton.state == .on {
-            currentBusiness?.businessType.append(BusinessType.Family)
+            currentVenue?.businessType.append(BusinessType.Family)
         } else {
-            currentBusiness?.businessType.removeAll(where: {$0 == BusinessType.Family})
+            currentVenue?.businessType.removeAll(where: {$0 == BusinessType.Family})
         }
     }
     
     //MARK: City CheckBox Buttons
     @IBAction func veniceButtonTapped(_ sender: Any) {
         if veniceButton.state == .on {
-            currentBusiness?.city.append(City.Venice)
+            currentVenue?.city.append(City.Venice)
         } else {
-            currentBusiness?.city.removeAll(where: {$0 == City.Venice})
+            currentVenue?.city.removeAll(where: {$0 == City.Venice})
         }
     }
     @IBAction func sarasotaButtonTapped(_ sender: Any) {
         if sarasotaButton.state == .on {
-            currentBusiness?.city.append(City.Sarasota)
+            currentVenue?.city.append(City.Sarasota)
         } else {
-            currentBusiness?.city.removeAll(where: {$0 == City.Sarasota})
+            currentVenue?.city.removeAll(where: {$0 == City.Sarasota})
         }
     }
     
     @IBAction func bradentonButtonTapped(_ sender: Any) {
         if bradentonButton.state == .on {
-            currentBusiness?.city.append(City.Bradenton)
+            currentVenue?.city.append(City.Bradenton)
         } else {
-            currentBusiness?.city.removeAll(where: {$0 == City.Bradenton})
+            currentVenue?.city.removeAll(where: {$0 == City.Bradenton})
         }
     }
     
     @IBAction func stPeteButtonTapped(_ sender: Any) {
         if stPeteButton.state == .on {
-            currentBusiness?.city.append(City.StPete)
+            currentVenue?.city.append(City.StPete)
         } else {
-            currentBusiness?.city.removeAll(where: {$0 == City.StPete})
+            currentVenue?.city.removeAll(where: {$0 == City.StPete})
         }
     }
     
     @IBAction func tampaButtonTapped(_ sender: Any) {
         if tampaButton.state == .on {
-            currentBusiness?.city.append(City.Tampa)
+            currentVenue?.city.append(City.Tampa)
         } else {
-            currentBusiness?.city.removeAll(where: {$0 == City.Tampa})
+            currentVenue?.city.removeAll(where: {$0 == City.Tampa})
         }
     }
     
     @IBAction func yborButtonTapped(_ sender: Any) {
         if yborButton.state == .on {
-            currentBusiness?.city.append(City.Ybor)
+            currentVenue?.city.append(City.Ybor)
         } else {
-            currentBusiness?.city.removeAll(where: {$0 == City.Ybor})
+            currentVenue?.city.removeAll(where: {$0 == City.Ybor})
         }
     }
     
     //MARK: UpdateViews
     func updateViews() {
-        showsTableView.delegate = self
-        showsTableView.dataSource = self
-        collectionView.delegate = self
-        collectionView.dataSource = self
+        collectionView.reloadData()
+        showsTableView.reloadData()
         
-        logoImageView.imageAlignment = .alignCenter
-        logoImageView.imageScaling = .scaleProportionallyDown
-        
-        if currentBusiness != nil {
-            self.title = "Edit \(currentBusiness!.name)"
-            inputBusinessHours()
-            addBusinessType()
-            
-//            //MARK: TEMP UNTIL DATA MODEL IS UPDATED
-//            if currentBusiness?.city == nil {
-//                currentBusiness?.city = []
-//            }
-            
-            //Remove Above Temp But Keep addCity()
-            addCity()
-            
-            
-            nameTextField.stringValue = currentBusiness!.name
-            addressTextField.stringValue = currentBusiness!.address
-            phoneTextField.stringValue = String(currentBusiness!.phoneNumber)
-            websiteTextField.stringValue = currentBusiness!.website
-            
-            mondayOpenTextField.stringValue = currentBusiness?.hours?.monday ?? "No Hours"
-            tuesdayOpenTextField.stringValue = currentBusiness?.hours?.tuesday ?? "No Hours"
-            wednesdayOpenTextField.stringValue = currentBusiness?.hours?.wednesday ?? "No Hours"
-            thursdayOpenTextField.stringValue = currentBusiness?.hours?.thursday  ?? "No Hours"
-            fridayOpenTextField.stringValue = currentBusiness?.hours?.friday ?? "No Hours"
-            saturdayOpenTextField.stringValue = currentBusiness?.hours?.saturday ?? "No Hours"
-            sundayOpenTextField.stringValue = currentBusiness?.hours?.sunday ?? "No Hours"
-            
-            
-            //Initializing currentBusinessShows Array
-            currentBusinessShows = LocalBackupDataStorageController.showArray.filter({$0.venue == currentBusiness?.name})
-            
-            if currentBusiness?.ohmPick == true {
-                ohmPick.state = .on
-            } else {
-                ohmPick.state = .off
-            }
-            
-            //Image Handling Should Happen Last
-            guard let logo = currentBusiness?.logo else {return}
-            logoData = logo
-            image = NSImage(data: logoData!)
-            logoImageView.image = image
-            
-        }
-        
-        //Text and Button Arrays
+        //Text Fields
         scheduleTextFieldsArray = [
             mondayOpenTextField,
             tuesdayOpenTextField,
@@ -528,6 +486,53 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
             sundayOpenTextField
         ]
         
+        if RemoteDataController.showArray != [] {
+            remoteShowCheckLabel.stringValue = ""
+        } else {
+            remoteShowCheckLabel.stringValue = "Switch To Publisher Mode To See Shows"
+        }
+        
+        logoImageView.imageAlignment = .alignCenter
+        logoImageView.imageScaling = .scaleProportionallyDown
+        
+        if currentVenue != nil {
+            self.title = "Edit \(currentVenue!.name)"
+            inputBusinessHours()
+            addBusinessType()
+            addCity()
+
+            nameTextField.stringValue = currentVenue!.name
+            addressTextField.stringValue = currentVenue!.address
+            phoneTextField.stringValue = String(currentVenue!.phoneNumber)
+            websiteTextField.stringValue = currentVenue!.website
+            
+            mondayOpenTextField.stringValue = currentVenue?.hours?.monday ?? "No Hours"
+            tuesdayOpenTextField.stringValue = currentVenue?.hours?.tuesday ?? "No Hours"
+            wednesdayOpenTextField.stringValue = currentVenue?.hours?.wednesday ?? "No Hours"
+            thursdayOpenTextField.stringValue = currentVenue?.hours?.thursday  ?? "No Hours"
+            fridayOpenTextField.stringValue = currentVenue?.hours?.friday ?? "No Hours"
+            saturdayOpenTextField.stringValue = currentVenue?.hours?.saturday ?? "No Hours"
+            sundayOpenTextField.stringValue = currentVenue?.hours?.sunday ?? "No Hours"
+            
+            
+            //Initializing currentBusinessShows Array
+            currentVenueShows = RemoteDataController.showArray.filter({$0.venue == currentVenue?.venueID})
+            
+            if currentVenue?.ohmPick == true {
+                ohmPick.state = .on
+            } else {
+                ohmPick.state = .off
+            }
+            
+            //Image Handling Should Happen Last
+            guard let logo = currentVenue?.logo else {return}
+            logoData = logo
+            image = NSImage(data: logoData!)
+            logoImageView.image = image
+            
+        } else {
+            self.title = "Edit Blank Venue"
+        }
     }
 }
 
@@ -535,8 +540,8 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
 extension VenueDetailViewController {
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        if currentBusiness != nil {
-            return currentBusiness!.pics.count
+        if currentVenue != nil {
+            return currentVenue!.pics.count
         } else {
             return businessPicsData.count
         }
@@ -545,14 +550,13 @@ extension VenueDetailViewController {
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
         var image = NSImage()
         
-        if currentBusiness != nil {
-            guard let pictures = currentBusiness?.pics else {return NSCollectionViewItem()}
+        if currentVenue != nil {
+            guard let pictures = currentVenue?.pics else {return NSCollectionViewItem()}
             
             if let pic = NSImage(data: pictures[indexPath.item]) {
                 image = pic
             } else {
-                let pictures = businessPicsData
-                if let pic = NSImage(data: pictures[indexPath.item]) {
+                if let pic = NSImage(data: businessPicsData[indexPath.item]) {
                     image = pic
                 }
             }
@@ -582,8 +586,8 @@ extension VenueDetailViewController {
         
         switch tableView {
         case showsTableView:
-            if currentBusiness != nil {
-                return currentBusinessShows?.count ?? 0
+            if currentVenue != nil {
+                return currentVenueShows?.count ?? 0
             }
             
         case venuesTableView:
@@ -605,18 +609,19 @@ extension VenueDetailViewController {
         switch tableView {
         case showsTableView:
             var currentShow: Show? {
-                if currentBusiness != nil {
-                    
-                    let currentBusinessShows = RemoteDataController.showArray.filter({$0.venue == currentBusiness?.name})
-                    return currentBusinessShows[row]
+                if currentVenue != nil {
+                    guard let currentVenueShows = currentVenueShows else {return nil}
+                    return currentVenueShows[row]
                 }
                 return nil
             }
             
+            guard let band = RemoteDataController.bandArray.first(where: {$0.bandID == currentShow?.band}) else {return nil}
+            
             if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "Band") {
                 let bandIdentifier = NSUserInterfaceItemIdentifier("BandCell")
                 guard let cellView = tableView.makeView(withIdentifier: bandIdentifier, owner: self) as? NSTableCellView else {return nil}
-                cellView.textField?.stringValue = currentShow?.band ?? "No Data"
+                cellView.textField?.stringValue = band.name
                 return cellView
                 
             } else if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "Time") {
@@ -633,10 +638,10 @@ extension VenueDetailViewController {
             guard let cellView = tableView.makeView(withIdentifier: venueIdentifier, owner: self) as? NSTableCellView else {return nil}
             
             if remoteRadioButton.state == .on {
-                cellView.textField?.stringValue = "Remote:" + RemoteDataController.venueArray[row].name
+                cellView.textField?.stringValue = "Remote: " + RemoteDataController.venueArray[row].name
                 return cellView
             } else {
-                cellView.textField?.stringValue = "Local:" + LocalBackupDataStorageController.venueArray[row].name
+                cellView.textField?.stringValue = "BackUp: " + LocalBackupDataStorageController.venueArray[row].name
                 return cellView
             }
             
@@ -658,24 +663,31 @@ extension VenueDetailViewController {
     
     @objc private func doubleClicked() {
         //performSegue(withIdentifier: "editShowSegue", sender: self)
-        print("Double Clicked Working")
+        var venue: Venue?
+        if remoteRadioButton.state == .on {
+            venue = RemoteDataController.venueArray[venuesTableView.selectedRow]
+            currentVenue = venue
+        } else {
+            venue = LocalBackupDataStorageController.venueArray[venuesTableView.selectedRow]
+            currentVenue = venue
+        }
     }
     
     private func removeShows(completion: @escaping () -> Void) {
-        LocalBackupDataStorageController.showArray.removeAll(where: {$0.venue == currentBusiness?.name})
+        LocalBackupDataStorageController.showArray.removeAll(where: {$0.venue == currentVenue?.name})
         completion()
     }
     
     
     private func inputBusinessHours() {
-        if currentBusiness != nil {
-            mondayOpenTextField.stringValue = (currentBusiness?.hours?.monday)!
-            tuesdayOpenTextField.stringValue = (currentBusiness?.hours?.tuesday)!
-            wednesdayOpenTextField.stringValue = (currentBusiness?.hours?.wednesday)!
-            thursdayOpenTextField.stringValue = (currentBusiness?.hours?.thursday)!
-            fridayOpenTextField.stringValue = (currentBusiness?.hours?.friday)!
-            saturdayOpenTextField.stringValue = (currentBusiness?.hours?.saturday)!
-            sundayOpenTextField.stringValue = (currentBusiness?.hours?.sunday)!
+        if currentVenue != nil {
+            mondayOpenTextField.stringValue = (currentVenue?.hours?.monday)!
+            tuesdayOpenTextField.stringValue = (currentVenue?.hours?.tuesday)!
+            wednesdayOpenTextField.stringValue = (currentVenue?.hours?.wednesday)!
+            thursdayOpenTextField.stringValue = (currentVenue?.hours?.thursday)!
+            fridayOpenTextField.stringValue = (currentVenue?.hours?.friday)!
+            saturdayOpenTextField.stringValue = (currentVenue?.hours?.saturday)!
+            sundayOpenTextField.stringValue = (currentVenue?.hours?.sunday)!
         } else {
             mondayOpenTextField.stringValue = " "
             tuesdayOpenTextField.stringValue = " "
@@ -688,8 +700,15 @@ extension VenueDetailViewController {
     }
     
     private func addBusinessType() {
-        if currentBusiness != nil {
-            for businessType in currentBusiness!.businessType {
+        familyButton.state = .off
+        liveMusicButton.state = .off
+        outdoorsButton.state = .off
+        clubButton.state = .off
+        barButton.state = .off
+        restaurantButton.state = .off
+        
+        if currentVenue != nil {
+            for businessType in currentVenue!.businessType {
                 switch businessType {
                 case .Restaurant:
                     restaurantButton.state = .on
@@ -717,8 +736,8 @@ extension VenueDetailViewController {
         tampaButton.state = .off
         yborButton.state = .off
         
-        if currentBusiness?.city != nil {
-            for city in currentBusiness!.city {
+        if currentVenue?.city != nil {
+            for city in currentVenue!.city {
                 switch city {
                 case .Venice:
                     veniceButton.state = .on

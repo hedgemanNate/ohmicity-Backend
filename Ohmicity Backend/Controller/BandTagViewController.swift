@@ -53,6 +53,7 @@ class BandTagViewController: NSViewController, NSTableViewDelegate, NSTableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.preferredContentSize = NSSize(width: 1320, height: 860)
         updateViews()
         tagTableView.delegate = self
         tagTableView.dataSource = self
@@ -69,7 +70,6 @@ class BandTagViewController: NSViewController, NSTableViewDelegate, NSTableViewD
     
     //MARK: UpdateViews
     private func updateViews() {
-        self.preferredContentSize = NSSize(width: 1320, height: 780)
         setFilterArray()
     }
     
