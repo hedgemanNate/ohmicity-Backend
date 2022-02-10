@@ -895,6 +895,28 @@ extension BandDetailViewController {
                     case classical:
                         classicalButton.state = .on
                     */
+                    case .NA:
+                        break
+                    case .SynthPop:
+                        break
+                    case .RnB:
+                        break
+                    case .Latin:
+                        break
+                    case .Folk:
+                        break
+                    case .Soul:
+                        break
+                    case .Americana:
+                        break
+                    case .ClassicRock:
+                        break
+                    case .World:
+                        break
+                    case .Alternative:
+                        break
+                    case .BlueGrass:
+                        break
                     }
                 }
             }

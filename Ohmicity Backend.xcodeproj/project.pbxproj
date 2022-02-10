@@ -129,8 +129,8 @@
 			isa = PBXGroup;
 			children = (
 				F65B06AC266C95AF00616BD9 /* Helper.swift */,
-				D85AC753267BB02B00CEA95B /* RemoteDataController.swift */,
 				D85F3D1C267CF2FC001BCFCA /* FireStoreReferenceManager.swift */,
+				D85AC753267BB02B00CEA95B /* RemoteDataController.swift */,
 				F610AA3E26699EE700EC2E8A /* LocalBackupDataStorageController.swift */,
 				F6C5930B26585F1A000E0245 /* RawShowDataController.swift */,
 				D83B32CC267A5D800065948E /* ImageController.swift */,
@@ -190,11 +190,11 @@
 			isa = PBXGroup;
 			children = (
 				F6A2D74D2656F05900C50456 /* MainViewController.swift */,
+				F66E7016278901C700C11B18 /* OpeningViewController.swift */,
 				F65DC07526E5DBA300340C07 /* BulkShowCreationViewController.swift */,
 				F610AA382669309100EC2E8A /* VenueDetailViewController.swift */,
 				F65B06A7266C3EC300616BD9 /* ShowDetailViewController.swift */,
 				F65B06A2266C360F00616BD9 /* BandDetailViewController.swift */,
-				F66E7016278901C700C11B18 /* OpeningViewController.swift */,
 				F651C91B278605F600FCD0AA /* ImportShowsViewController.swift */,
 				F69F94A12786868A00D060D3 /* BandTagViewController.swift */,
 				F69F94A5278692B700D060D3 /* VenueTagViewController.swift */,

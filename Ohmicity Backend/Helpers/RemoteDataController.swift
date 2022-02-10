@@ -15,12 +15,17 @@ class RemoteDataController {
     static var venueArray: [Venue] = []
     static var bandArray: [Band] = []
     static var showArray: [Show] = []
+    static var userArray: [User] = []
+    static var businessAd = [BusinessBannerAd]()
+    
+    static var groupedBands = [GroupOfProductionBands]()
+    static var groupedBandsDevelopmentCount = 0
     
     var businessResults = [Venue]()
     var bandResults = [Band]()
     var showResults = [Show]()
     
-    let db = Firestore.firestore()
+    
     
     static func getRemoteBandData() {
         print("Running Remote Band")
@@ -111,5 +116,3 @@ class RemoteDataController {
         }
     }
 }
-
-//var RemoteDataController = RemoteDataController()

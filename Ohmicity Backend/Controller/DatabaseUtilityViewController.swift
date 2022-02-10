@@ -25,84 +25,106 @@ class DatabaseUtilityViewController: NSViewController {
     
     //MARK: Production Button/Functions
     @IBAction func pushAllToProduction(_ sender: Any) {
-        let opQueue = OperationQueue()
-        opQueue.maxConcurrentOperationCount = 1
-        
-        let pushBands1 = BlockOperation {
-            self.pushBands()
+        if ProductionShowController.allShows.shows == [] {
+            messageTextField.textColor = .red
+            messageTextField.stringValue = "First build development shows then push here"
+            messageTextField.textColor = .white
+            return
         }
         
-        let pushShows2 = BlockOperation {
-            self.pushShows()
+        if ProductionBandController.allBands == [] {
+            messageTextField.textColor = .red
+            messageTextField.stringValue = "First build development bands then push here"
+            messageTextField.textColor = .white
+            return
         }
         
-        let pushVenues3 = BlockOperation {
-            self.pushVenues()
+        
+        //Bands
+        var documentIDs = [String]()
+        
+        DispatchQueue.main.async {
+            self.messageTextField.stringValue = "Getting document id's in the database..."
+            sleep(UInt32(0.25))
         }
         
-        opQueue.addOperations([pushBands1, pushShows2, pushVenues3], waitUntilFinished: true)
-    }
-    
-    private func pushBands() {
-        let breakUpBands = RemoteDataController.bandArray.chunked(into: splitBandsIntoGroups())
         
-        for group in breakUpBands {
-            var groupedBands = GroupOfProductionBands(bands: [SingleProductionBand]())
-            for band in group {
+        //First get all document ids to delete them
+        ProductionManager.allBandDataPath.getDocuments { snap, err in
+            if let _ = err {
+                self.messageTextField.stringValue = "Error getting document ID's for deletion"
+            } else {
+                self.messageTextField.stringValue = "Got \(snap!.documents.count) id's"
+                for doc in snap!.documents {
+                    let group =  try? doc.data(as: GroupOfProductionBands.self)
+                    documentIDs.append(group?.groupOfProductionBandsID ?? "non")
+                }
                 
-                let singleBand = SingleProductionBand(bandID: band.bandID, name: band.name, photo: band.photo, genre: band.genre, mediaLink: band.mediaLink, ohmPick: band.ohmPick)
-                groupedBands.bands.append(singleBand)
-                continue
+                //Second delete bands
+                self.messageTextField.stringValue = "Starting to delete bands"
+                var docNum = 0
+                for doc in documentIDs {
+                    ProductionManager.allBandDataPath.document(doc).delete { err in
+                        if let err = err {
+                            self.messageTextField.stringValue = err.localizedDescription
+                        } else {
+                            docNum += 1
+                            self.messageTextField.stringValue = "\(docNum)/\(documentIDs.count) band groups deleted."
+                        }
+                    }
+                }
             }
-            ProductionBandController.allBands.append(groupedBands)
+            
+            //Third Push Bands
+            var bandGroupCount = 0
+            let totalNumberOfBands = ProductionBandController.allBands.count
+            self.messageTextField.stringValue = "Pushing Bands..."
+            for bandGroup in ProductionBandController.allBands {
+                do {
+                    try ProductionManager.allBandDataPath.document("\(bandGroup.groupOfProductionBandsID)").setData(from: bandGroup, completion: { err in
+                        if let err = err {
+                            DispatchQueue.main.async {
+                                self.messageTextField.stringValue = err.localizedDescription
+                            }
+                            sleep(5)
+                        } else {
+                            bandGroupCount += 1
+                            DispatchQueue.main.async {
+                                self.messageTextField.stringValue = "\(bandGroupCount)/\(totalNumberOfBands) of the band groups were pushed."
+                            }
+                        }
+                    })
+                } catch let error {
+                    print(error)
+                }
+            }
+            self.messageTextField.textColor = .green
+            self.messageTextField.stringValue = "Shows And Bands are now LIVE"
+            self.messageTextField.textColor = .white
         }
         
-        var bandGroupCount = 0
-        
-        for bandGroup in ProductionBandController.allBands {
-            bandGroupCount += 1
-            do {
-                try ProductionManager.allBandDataPath.document("\(bandGroupCount)-\(UUID().uuidString)").setData(from: bandGroup)
-            } catch let error {
-                messageTextField.stringValue = error.localizedDescription
-                NSLog(error.localizedDescription)
+        //Shows
+        try? ProductionManager.allShowDataPath.document(ProductionShowController.allShows.allProductionShowsID).setData(from: ProductionShowController.allShows) { err in
+            if let err = err {
+                self.messageTextField.stringValue = err.localizedDescription
+            } else {
+                self.messageTextField.stringValue = "All Shows Pushed To Production"
             }
         }
     }
     
-    private func pushShows() {
-        for show in RemoteDataController.showArray {
-            let singleShow = SingleProductionShow(showID: show.showID, venue: show.venue, band: show.band, collaboration: [], bandDisplayName: show.bandDisplayName, date: show.date, ohmPick: show.ohmPick)
-            ProductionShowController.allShows.shows.append(singleShow)
-        }
-        
-        do {
-            try ProductionManager.allShowDataPath.document(ProductionShowController.allShows.allProductionShowsID).setData(from: ProductionShowController.allShows)
-        } catch let error {
-            self.messageTextField.stringValue = error.localizedDescription
-            NSLog(error.localizedDescription)
-        }
-    }
     
-    private func pushVenues() {
-        for venue in RemoteDataController.venueArray {
-            do {
-                try ProductionManager.allVenueDataPath.document(venue.venueID).setData(from: venue)
-            } catch let error {
-                messageTextField.stringValue = error.localizedDescription
-                NSLog(error.localizedDescription)
-            }
-        }
-    }
+    
+    
     
     //MARK: Developing Buttons
     @IBAction func pushAllBandsToDevelopingDBButtonTapped(_ sender: Any) {
         let breakUpBands = RemoteDataController.bandArray.chunked(into: splitBandsIntoGroups())
+        ProductionBandController.allBands = []
         
         for group in breakUpBands {
             var groupedBands = GroupOfProductionBands(bands: [SingleProductionBand]())
             for band in group {
-                
                 let singleBand = SingleProductionBand(bandID: band.bandID, name: band.name, photo: band.photo, genre: band.genre, mediaLink: band.mediaLink, ohmPick: band.ohmPick)
                 groupedBands.bands.append(singleBand)
                 continue
@@ -110,36 +132,89 @@ class DatabaseUtilityViewController: NSViewController {
             ProductionBandController.allBands.append(groupedBands)
         }
         
-        var bandGroupCount = 0
+        var documentIDs = [String]()
         
-        for bandGroup in ProductionBandController.allBands {
-            bandGroupCount += 1
-            do {
-                try workRef.allBandDataPath.document("\(bandGroupCount)-\(UUID().uuidString)").setData(from: bandGroup, completion: { err in
-                    if let err = err {
-                        self.messageTextField.stringValue = err.localizedDescription
-                    } else {
-                        self.messageTextField.stringValue = "Group Of Production Bands Pushed"
+        DispatchQueue.main.async {
+            self.messageTextField.stringValue = "Getting document id's in the database..."
+            sleep(UInt32(0.25))
+        }
+        
+        
+        //First get all document ids to delete them
+        workRef.allBandDataPath.getDocuments { snap, err in
+            if let _ = err {
+                self.messageTextField.stringValue = "Error getting document ID's for deletion"
+            } else {
+                self.messageTextField.stringValue = "Got \(snap!.documents.count) id's"
+                for doc in snap!.documents {
+                    let group =  try? doc.data(as: GroupOfProductionBands.self)
+                    documentIDs.append(group?.groupOfProductionBandsID ?? "non")
+                }
+                
+                //Second delete bands
+                self.messageTextField.stringValue = "Starting to delete bands"
+                var docNum = 0
+                for doc in documentIDs {
+                    workRef.allBandDataPath.document(doc).delete { err in
+                        if let err = err {
+                            self.messageTextField.stringValue = err.localizedDescription
+                        } else {
+                            docNum += 1
+                            self.messageTextField.stringValue = "\(docNum)/\(documentIDs.count) band groups deleted."
+                        }
                     }
-                })
-            } catch let error {
-                print(error)
+                }
             }
-            if bandGroupCount == ProductionBandController.allBands.count {
-                messageTextField.stringValue = "All Bands Finished Pushing"
+            
+            //Third Push Bands
+            var bandGroupCount = 0
+            let totalNumberOfBands = ProductionBandController.allBands.count
+            self.messageTextField.stringValue = "Pushing Bands..."
+            for bandGroup in ProductionBandController.allBands {
+                do {
+                    try workRef.allBandDataPath.document("\(bandGroup.groupOfProductionBandsID)").setData(from: bandGroup, completion: { err in
+                        if let err = err {
+                            DispatchQueue.main.async {
+                                self.messageTextField.stringValue = err.localizedDescription
+                            }
+                            sleep(5)
+                        } else {
+                            bandGroupCount += 1
+                            DispatchQueue.main.async {
+                                self.messageTextField.stringValue = "\(bandGroupCount)/\(totalNumberOfBands) of the band groups were pushed."
+                            }
+                        }
+                    })
+                } catch let error {
+                    print(error)
+                }
             }
         }
     }
     
+    
+    
+    
     @IBAction func pushAllVenuesToDevelopingDBButtonTapped(_ sender: Any) {
+        self.messageTextField.stringValue = "Pushing Venues..."
+        var docNum = 0
         for venue in RemoteDataController.venueArray {
             do {
-                try workRef.allVenueDataPath.document(venue.venueID).setData(from: venue)
+                try workRef.allVenueDataPath.document(venue.venueID).setData(from: venue, completion: { err in
+                    if let err = err {
+                        self.messageTextField.stringValue = err.localizedDescription
+                    } else {
+                        docNum += 1
+                        self.messageTextField.stringValue = "\(docNum)/\(RemoteDataController.venueArray.count) Venues pushed"
+                    }
+                })
             } catch let error {
                 messageTextField.stringValue = error.localizedDescription
                 NSLog(error.localizedDescription)
             }
+            
         }
+        messageTextField.stringValue = "All Venues Pushed"
     }
     
     @IBAction func pushAllShowsToDevelopingDBButtonTapped(_ sender: Any) {
@@ -148,12 +223,13 @@ class DatabaseUtilityViewController: NSViewController {
             ProductionShowController.allShows.shows.append(singleShow)
         }
         
+        self.messageTextField.stringValue = "Pushing Shows..."
         do {
             try workRef.allShowDataPath.document(ProductionShowController.allShows.allProductionShowsID).setData(from: ProductionShowController.allShows) { err in
                 if let err = err {
                     self.messageTextField.stringValue = err.localizedDescription
                 } else {
-                    self.messageTextField.stringValue = "All Production Shows Pushed"
+                    self.messageTextField.stringValue = "All Development Shows Pushed"
                 }
             }
         } catch let error {
@@ -162,10 +238,51 @@ class DatabaseUtilityViewController: NSViewController {
         
     }
     
-    @IBAction func tester(_ sender: Any) {
-        messageTextField.textColor = .red
-        messageTextField.stringValue = "😘😘😘😘 Love You Babe!!! 😘😘😘😘😘"
+    @IBAction func lenaButton(_ sender: Any) {
+        //        messageTextField.textColor = .red
+        //        messageTextField.stringValue = "😘😘😘😘 Love You Babe!!! 😘😘😘😘😘"
+        
+        //Copy User Data To Production
+        ProductionManager.allBannerDataPath.getDocuments { snap, err in
+            if let err = err {
+                NSLog(err.localizedDescription)
+            } else {
+                RemoteDataController.businessAd = snap!.documents.compactMap({ ads in
+                    try? ads.data(as: BusinessBannerAd.self)
+                })
+            }
+        }
     }
+    
+    @IBAction func multipurposeButton(_ sender: Any) {
+        var documentIDs = [String]()
+        
+        DispatchQueue.main.async {
+            self.messageTextField.stringValue = "Getting document id's in the database..."
+            sleep(UInt32(0.25))
+        }
+        
+        
+        //First get all document ids to delete them
+        
+        workRef.allBandDataPath.getDocuments { snap, err in
+            if let err = err {
+                NSLog(err.localizedDescription)
+            } else {
+                for doc in snap!.documents {
+                    let group =  try? doc.data(as: GroupOfProductionBands.self)
+                    documentIDs.append(group?.groupOfProductionBandsID ?? "non")
+                }
+            }
+            self.messageTextField.stringValue = "Starting to delete bands"
+            for doc in documentIDs {
+                workRef.allBandDataPath.document(doc).delete()
+            }
+        }
+        
+        
+    }
+    
     
     //MARK: Functions
     private func splitBandsIntoGroups() -> Int {

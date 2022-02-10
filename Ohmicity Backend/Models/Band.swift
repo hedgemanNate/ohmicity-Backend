@@ -26,6 +26,17 @@ enum Genre: String, Codable {
     case JamBand
     case Gospel
     case EasyListening
+    case NA
+    case SynthPop = "Synth Pop"
+    case RnB = "R&B"
+    case Latin
+    case Folk
+    case Soul
+    case Americana
+    case ClassicRock = "Classic Rock"
+    case World
+    case Alternative = "Alternative Rock"
+    case BlueGrass = "Bluegrass"
 }
 
 class Band: Codable, Equatable {

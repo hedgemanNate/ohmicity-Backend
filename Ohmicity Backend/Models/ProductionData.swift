@@ -19,7 +19,7 @@ class AllProductionShows: Codable {
     }
 }
 
-struct SingleProductionShow: Codable{
+struct SingleProductionShow: Codable, Equatable {
     let showID: String
     let venue: String
     let band: String
@@ -42,8 +42,8 @@ struct SingleProductionShow: Codable{
 
 
 //MARK: Bands
-struct GroupOfProductionBands: Codable {
-    var groupOfProductionBandsID : String?
+struct GroupOfProductionBands: Codable, Equatable {
+    var groupOfProductionBandsID : String = UUID().uuidString
     var bands: [SingleProductionBand]
     
     init(bands:[SingleProductionBand]) {
@@ -51,7 +51,7 @@ struct GroupOfProductionBands: Codable {
     }
 }
 
-struct SingleProductionBand: Codable{
+struct SingleProductionBand: Codable, Equatable {
     let bandID: String
     let name: String
     let photo: Data?
@@ -83,7 +83,7 @@ class AllProductionVenues: Codable {
     }
 }
 
-struct SingleProductionVenue: Codable{
+struct SingleProductionVenue: Codable, Equatable {
     let venueID: String
     var name: String
     var address: String = ""

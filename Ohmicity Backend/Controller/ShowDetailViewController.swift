@@ -196,7 +196,8 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         let tempBand = RemoteDataController.bandArray.first(where: {$0.name == bandNameTextField.stringValue})
         guard let tempBand = tempBand else {return}
         
-        let tempDate = dateFormatter.string(from: datePicker.dateValue)
+        let datePickerValue = datePicker.dateValue
+        let tempDate = dateFormatter.string(from: datePickerValue)
         
         if currentShow != nil {
             //Check Boxes
@@ -217,9 +218,13 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
             currentShow?.band = tempBand.bandID
             currentShow?.bandDisplayName = tempBand.name
             
+            
             //Date
             currentShow?.dateString = tempDate
-            currentShow?.date = datePicker.dateValue
+            currentShow?.date = datePickerValue
+            
+            
+            
             
         } else {
             
@@ -244,6 +249,8 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         
         guard var currentShow = currentShow else {return}
         currentShow.lastModified = Timestamp()
+        RemoteDataController.showArray.removeAll(where: {$0.showID == currentShow.showID})
+        RemoteDataController.showArray.append(currentShow)
 
         do {
             try workRef.showDataPath.document(currentShow.showID).setData(from: currentShow, completion: { error in
@@ -270,6 +277,7 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
                         
                         self.showFilterArray.removeAll(where: {$0.showID == currentShow.showID})
                         self.showFilterArray.append(currentShow)
+                        self.showFilterArray.sort(by: {$0.date < $1.date})
                         self.showsTableView.reloadData()
                     }
                     self.messageCenter.stringValue = "Show Saved"
@@ -292,7 +300,7 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         
     }
     
-    @IBAction func deleteLocallyButtonTapped(_ sender: Any) {
+    @IBAction func deleteButtonTapped(_ sender: Any) {
         
         //Delete Locally
         guard let show = currentShow else {return}
@@ -302,21 +310,15 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         
         //Put On Hold Remotely
         RemoteDataController.showArray.removeAll(where: {$0 == currentShow})
-        currentShow!.onHold = true
         
         guard let show = currentShow else {return}
         
-        workRef.showDataPath.document(show.showID).updateData(["onHold" : true]) { err in
+        workRef.showDataPath.document(show.showID).delete { err in
             if let err = err {
-                //MARK: Alert Here
-                NSLog("Error Putting Show On Hold: \(err)")
-                self.messageCenter.stringValue = "Error Puttig Show On Hold: \(err)"
-                self.startMessageCenterTimer()
+                self.messageCenter.stringValue = err.localizedDescription
             } else {
-            NSLog("Show is on hold")
-            self.messageCenter.stringValue = "Show is on hold"
-            self.startMessageCenterTimer()
-            notificationCenter.post(Notification(name: Notification.Name(rawValue: "showsUpdated")))
+                self.messageCenter.stringValue = "\(show.showID) has been deleted"
+                self.showsTableView.reloadData()
             }
         }
     }

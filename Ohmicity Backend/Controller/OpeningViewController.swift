@@ -25,9 +25,14 @@ class OpeningViewController: NSViewController {
     @IBOutlet weak var bandLabel: NSTextField!
     @IBOutlet weak var venueLabel: NSTextField!
     
-    
+    //Buttons
     @IBOutlet weak var utilityButton: NSButton!
     @IBOutlet weak var editButton: NSButton!
+    @IBOutlet weak var loadDataButton: NSButton!
+    
+    @IBOutlet weak var modeSwitch: NSSwitch!
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,30 +44,89 @@ class OpeningViewController: NSViewController {
         
         FirebaseApp.configure()
         Database.database().isPersistenceEnabled = true
-        
-        RemoteDataController.getRemoteBandData()
-        RemoteDataController.getRemoteShowData()
-        RemoteDataController.getRemoteVenueData()
-        
-        
     }
     
     func updateViews() {
+        utilityButton.isEnabled = false
+        editButton.isEnabled = false
+        
         bandLight.fillColor = .red
         showLight.fillColor = .red
         venueLight.fillColor = .red
-        
-        
-        LocalBackupDataStorageController.loadJsonData()
-        LocalBackupDataStorageController.loadShowData()
-        LocalBackupDataStorageController.loadBusinessData()
-        LocalBackupDataStorageController.loadBandTagData()
-        LocalBackupDataStorageController.loadVenueTagData()
     }
     
     @IBAction func breaker(_ sender: Any) {
         
     }
+    
+    @IBAction func loadDataButtonTapped(_ sender: Any) {
+        if modeSwitch.state == .off {
+            updateViews()
+            ProductionShowController.allShows.shows = []
+            ProductionBandController.allBands = []
+            ProductionVenueController.allVenues.venues = []
+            RemoteDataController.venueArray = []
+            RemoteDataController.showArray = []
+            RemoteDataController.bandArray = []
+            LocalBackupDataStorageController.venueArray = []
+            LocalBackupDataStorageController.showArray = []
+            LocalBackupDataStorageController.bandArray = []
+            TagController.bandTags = []
+            TagController.venueTags = []
+            
+            LocalBackupDataStorageController.loadJsonData()
+            LocalBackupDataStorageController.loadShowData()
+            LocalBackupDataStorageController.loadBusinessData()
+            LocalBackupDataStorageController.loadBandTagData()
+            LocalBackupDataStorageController.loadVenueTagData()
+            LocalBackupDataStorageController.loadUserData()
+            
+            bandLight.fillColor = .green
+            showLight.fillColor = .green
+            venueLight.fillColor = .green
+            
+            utilityButton.isEnabled = true
+            editButton.isEnabled = true
+            
+        } else {
+            updateViews()
+            ProductionShowController.allShows.shows = []
+            ProductionBandController.allBands = []
+            ProductionVenueController.allVenues.venues = []
+            RemoteDataController.venueArray = []
+            RemoteDataController.showArray = []
+            RemoteDataController.bandArray = []
+            LocalBackupDataStorageController.venueArray = []
+            LocalBackupDataStorageController.showArray = []
+            LocalBackupDataStorageController.bandArray = []
+            TagController.bandTags = []
+            TagController.venueTags = []
+            
+            bandLight.fillColor = .yellow
+            showLight.fillColor = .yellow
+            venueLight.fillColor = .yellow
+            
+            LocalBackupDataStorageController.loadJsonData()
+            LocalBackupDataStorageController.loadShowData()
+            LocalBackupDataStorageController.loadBusinessData()
+            LocalBackupDataStorageController.loadBandTagData()
+            LocalBackupDataStorageController.loadVenueTagData()
+            LocalBackupDataStorageController.loadUserData()
+            RemoteDataController.getRemoteBandData()
+            RemoteDataController.getRemoteShowData()
+            RemoteDataController.getRemoteVenueData()
+        }
+    }
+    
+    @IBAction func modeSwitchTapped(_ sender: Any) {
+        updateViews()
+        if modeSwitch.state == .off {
+            loadDataButton.title = "Load Developer Mode"
+        } else {
+            loadDataButton.title = "Load Publisher Mode"
+        }
+    }
+    
     
     @objc private func checkIfDataIsReady() {
         

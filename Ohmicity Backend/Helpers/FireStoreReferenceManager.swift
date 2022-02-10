@@ -21,6 +21,8 @@ struct FireStoreReferenceManager {
     static let businessBannerAdDataPath = fireDataBase.collection(environment).document(environment).collection("businessBannerAdData")
     
     static let recommendationDataDataPath = fireDataBase.collection(environment).document(environment).collection("recommendationData")
+    
+    static let userDataPath = fireDataBase.collection(environment).document(environment).collection("userData")
 
 }
 
@@ -32,6 +34,8 @@ struct WorkingOffRemoteManager {
     
     static let allShowDataPath = fireDataBase.collection(working).document(working).collection("allShowData")
     static let allBandDataPath = fireDataBase.collection(working).document(working).collection("allBandData")
+    static let allBannerDataPath = fireDataBase.collection(working).document(working).collection("allBannerData")
+    
     static let showDataPath = fireDataBase.collection(working).document(working).collection("showData")
     static let bandDataPath = fireDataBase.collection(working).document(working).collection("bandData")
     static let bandTagDataPath = fireDataBase.collection(working).document(working).collection("tagData")
@@ -51,4 +55,5 @@ struct ProductionManager {
     
     static let allUserDataPath = fireDataBase.collection(production).document(production).collection("allUserData")
     static let allBannerDataPath = fireDataBase.collection(production).document(production).collection("allBannerData")
+    
 }

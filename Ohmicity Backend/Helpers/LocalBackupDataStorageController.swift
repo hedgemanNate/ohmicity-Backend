@@ -12,6 +12,7 @@ class LocalBackupDataStorageController {
     static var venueArray: [Venue] = []
     static var bandArray: [Band] = []
     static var showArray: [Show] = []
+    static var userArray: [User] = [] {didSet {saveUserData()}}
     
     //Search Functionality
     var businessResults = [Venue]()
@@ -114,6 +115,26 @@ extension LocalBackupDataStorageController {
         if let encoded = try? JSONEncoder().encode(LocalBackupDataStorageController.showArray) {
             UserDefaults.standard.set(encoded, forKey: "SavedShowData")
             print("Show Data Saved")
+        }
+    }
+}
+
+//MARK: User Data
+extension LocalBackupDataStorageController {
+    static func loadUserData() {
+        if let data = UserDefaults.standard.data(forKey: "SavedUserData") {
+            if let decoded = try? JSONDecoder().decode([User].self, from: data) {
+                LocalBackupDataStorageController.userArray = decoded
+                print("User Data Loaded")
+                //return
+            }
+        }
+    }
+    
+    static func saveUserData() {
+        if let encoded = try? JSONEncoder().encode(LocalBackupDataStorageController.userArray) {
+            UserDefaults.standard.set(encoded, forKey: "SavedUserData")
+            print("User Data Saved")
         }
     }
 }
