@@ -42,6 +42,8 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     @IBOutlet weak var addressTextField: NSTextField!
     @IBOutlet weak var phoneTextField: NSTextField!
     @IBOutlet weak var websiteTextField: NSTextField!
+    @IBOutlet weak var messageCenter: NSTextField!
+    
     
     //Schedule:
     @IBOutlet weak var mondayOpenTextField: NSTextField!
@@ -206,23 +208,32 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
     }
     
     @IBAction func deleteBusinessButtonTapped(_ sender: Any) {
-//        LocalBackupDataStorageController.venueArray.removeAll(where: {$0 == currentBusiness})
-//
-//        removeShows {
-//            LocalBackupDataStorageController.saveShowData()
-//            notificationCenter.post(name: NSNotification.Name("businessUpdated"), object: nil)
-//            notificationCenter.post(name: NSNotification.Name("showsUpdated"), object: nil)
-//        }
-//
-//        LocalBackupDataStorageController.saveBusinessData()
-    
-        print("Incomplete: Delete from database and local")
+        guard let currentVenue = currentVenue else {return}
         
+        if backupRadioButton.state == .on {
+            messageCenter.stringValue = "You can't delete a single venue from backup! Switch to remote."
+            return
+        }
+        
+        if RemoteDataController.venueArray != [] {
+            WorkingOffRemoteManager.allVenueDataPath.document(currentVenue.venueID).delete { err in
+                if let err = err {
+                    self.messageCenter.textColor = .red
+                    self.messageCenter.stringValue = err.localizedDescription
+                    self.messageCenter.textColor = .white
+                } else {
+                    RemoteDataController.venueArray.removeAll(where: {$0 == currentVenue})
+                    self.venuesTableView.reloadData()
+                    self.removeShows {self.showsTableView.reloadData()}
+                    self.messageCenter.stringValue = "Venue Deleted"
+                }
+            }
+        }
     }
     
     
     
-    //MARK: Save Business
+    //MARK: Save Business - Pick Up Here 2/10/22
     @IBAction func saveBusinessButtonTapped(_ sender: Any) {
         let name = nameTextField.stringValue
         let address = addressTextField.stringValue
@@ -230,31 +241,13 @@ class VenueDetailViewController: NSViewController, NSTableViewDelegate, NSTableV
         let phoneString = phoneTextField.stringValue
         
         let numberString = phoneString.filter("0123456789".contains)
-        print(numberString)
-        guard let phoneNumber = Int(numberString) else {return print("Return on phone number")}
-        
-        //Update Shows For Venue
-        let oldVenueName = currentVenue?.name
-        let newVenueName = nameTextField.stringValue
-        
-        
-        if oldVenueName != newVenueName {
-            for var show in LocalBackupDataStorageController.showArray {
-                if show.venue == oldVenueName {
-
-                    LocalBackupDataStorageController.showArray.removeAll(where: {$0 == show})
-                    show.venue = newVenueName
-                    show.lastModified = Timestamp()
-                    LocalBackupDataStorageController.showArray.append(show)
-                }
-            }
-            LocalBackupDataStorageController.saveBackupShowData()
+        guard let phoneNumber = Int(numberString) else {
+            messageCenter.stringValue = "Return on phone number"
+            return
         }
-        
         
         //Picture Handling
         currentVenue?.logo = logoData
-        
         currentVenue?.name = name
         currentVenue?.address = address
         currentVenue?.website = website
@@ -674,7 +667,7 @@ extension VenueDetailViewController {
     }
     
     private func removeShows(completion: @escaping () -> Void) {
-        LocalBackupDataStorageController.showArray.removeAll(where: {$0.venue == currentVenue?.name})
+        LocalBackupDataStorageController.showArray.removeAll(where: {$0.venue == currentVenue?.venueID})
         completion()
     }
     

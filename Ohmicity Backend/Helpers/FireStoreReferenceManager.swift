@@ -32,6 +32,7 @@ struct WorkingOffRemoteManager {
     static let working = "workingData"
     static let fireDataBase = Firestore.firestore()
     
+    static let allVenueDataPath = fireDataBase.collection(working).document(working).collection("allVenueData")
     static let allShowDataPath = fireDataBase.collection(working).document(working).collection("allShowData")
     static let allBandDataPath = fireDataBase.collection(working).document(working).collection("allBandData")
     static let allBannerDataPath = fireDataBase.collection(working).document(working).collection("allBannerData")
@@ -39,8 +40,6 @@ struct WorkingOffRemoteManager {
     static let showDataPath = fireDataBase.collection(working).document(working).collection("showData")
     static let bandDataPath = fireDataBase.collection(working).document(working).collection("bandData")
     static let bandTagDataPath = fireDataBase.collection(working).document(working).collection("tagData")
-    
-    static let allVenueDataPath = fireDataBase.collection(working).document(working).collection("allVenueData")
 }
 
 let workRef = WorkingOffRemoteManager.self

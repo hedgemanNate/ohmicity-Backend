@@ -3587,21 +3587,21 @@
                                     <action selector="breaker:" target="VqW-db-dnp" id="rVc-bn-oAS"/>
                                 </connections>
                             </button>
-                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xqO-0Z-GoG">
-                                <rect key="frame" x="857" y="21" width="433" height="106"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" selectable="YES" sendsActionOnEndEditing="YES" borderStyle="border" alignment="left" placeholderString="Messages" drawsBackground="YES" id="7pb-Aq-e0y">
-                                    <font key="font" metaFont="system" size="20"/>
-                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9PJ-YS-ebY">
                                 <rect key="frame" x="417" y="447" width="233" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Label" id="w3W-Hb-6tD">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xqO-0Z-GoG">
+                                <rect key="frame" x="857" y="21" width="433" height="106"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" selectable="YES" sendsActionOnEndEditing="YES" borderStyle="border" alignment="left" placeholderString="Messages" drawsBackground="YES" id="7pb-Aq-e0y">
+                                    <font key="font" metaFont="system" size="20"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
@@ -3622,6 +3622,7 @@
                         <outlet property="loadLogoButton" destination="ceR-jm-2ur" id="JKo-fi-Ri1"/>
                         <outlet property="loadPicturesButton" destination="Jkx-C8-N9z" id="a7N-ZA-lEO"/>
                         <outlet property="logoImageView" destination="pMJ-sY-ySU" id="mHq-As-Nx9"/>
+                        <outlet property="messageCenter" destination="xqO-0Z-GoG" id="Li3-0t-Dnn"/>
                         <outlet property="mondayOpenTextField" destination="tWc-Hd-Vf8" id="ygU-0G-gYJ"/>
                         <outlet property="nameTextField" destination="aW3-Rp-Uu9" id="n9v-sA-isq"/>
                         <outlet property="ohmPick" destination="9Lk-N9-ddT" id="FyE-qA-rl9"/>
