@@ -254,16 +254,9 @@ class DatabaseUtilityViewController: NSViewController {
         }
     }
     
+    //MARK: Empty Button
     @IBAction func multipurposeButton(_ sender: Any) {
-        TagController.venueTags = []
         
-        for venue in RemoteDataController.venueArray {
-            let newTag = VenueTag(venueID: venue.venueID, variations: [venue.name])
-            TagController.venueTags.append(newTag)
-        }
-        
-        LocalBackupDataStorageController.saveVenueTagData()
-        print(TagController.venueTags)
     }
     
     

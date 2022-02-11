@@ -107,32 +107,37 @@ class ImportShowsViewController: NSViewController, NSTableViewDelegate, NSTableV
             var venueID = ""
             var bandID = ""
             
-            //Replace this line with *1* when venue tags are ready
-            venueID = LocalBackupDataStorageController.venueArray.first(where: {$0.name == rawShow.venue})?.venueID ?? "none"
-            //
             
-            if venueID == "none" {
-                noVenueIDTag += 1
-                print("\(noVenueIDTag): \(rawShow.venue) has no TAG")
+            venueID = assignVenueTagID(rawShow: rawShow)
+            
+            if venueID.contains("Bad Tag:") {
+                let venueName = bandID.replacingOccurrences(of: "Bad Tag:", with: "")
+                badTagArray.append(venueName)
                 continue
             }
             
             
-            //*1* Same code for venue tags above
             bandID = assignBandTagID(rawShow: rawShow)
-            //
             
-            if  bandID.contains("Bad Tag:") {
+            if bandID.contains("Bad Tag:") {
                 let bandName = bandID.replacingOccurrences(of: "Bad Tag:", with: "")
                 badTagArray.append(bandName)
                 continue
             }
             
-            if bandID == "none" || bandID == "41639FC5-11B6-44D9-8EB3-2D5189E27C10" /*Trash Shows*/ {
+            if venueID.contains("Bad Tag:") {
+                noVenueIDTag += 1
+                print("\(noVenueIDTag): \(rawShow.venue) has no TAG")
+                continue
+            }
+            
+            if bandID.contains("Bad Tag:") || bandID == "41639FC5-11B6-44D9-8EB3-2D5189E27C10" /*Trash Shows*/ {
                 noBandIDTag += 1
                 print("\(noBandIDTag): \(rawShow.band) has no TAG")
                 continue
             }
+            
+            
             
             let newShow = Show(band: bandID, venue: venueID, dateString: rawShow.dateString, displayName: rawShow.band)
             guard let newShow = newShow else {continue}
@@ -198,8 +203,27 @@ class ImportShowsViewController: NSViewController, NSTableViewDelegate, NSTableV
 extension ImportShowsViewController {
     
     private func assignVenueTagID(rawShow: ShowData) -> String {
-        //Start Here 2/11/22
-        return "Dope"
+        var venueID = "Bad Tag:\(rawShow.venue)"
+        
+    outer: for tag in TagController.venueTags {
+            inner: for variation in tag.variations {
+                if variation.localizedCaseInsensitiveContains(rawShow.venue) {
+                    venueID = tag.venueID
+                    break outer
+                }
+                
+                if rawShow.venue.localizedCaseInsensitiveContains(variation) {
+                    venueID = tag.venueID
+                    
+                    /*append this show to an array for all venues that fit this. this means
+                    the a tag was found but I probably need to create a new variation
+                     variations should be exact matches*/
+                    break outer
+                }
+            }
+        }
+        
+        return venueID
     }
     
     private func assignBandTagID(rawShow: ShowData) -> String {
@@ -233,17 +257,16 @@ extension ImportShowsViewController {
             let hours = newShow.date.timeIntervalSince(show.date)
             let timeSpan = -7201.0...7199.0
             if timeSpan.contains(hours) {
-                guard let index = RemoteDataController.showArray.firstIndex(where: {$0 == show}) else {return}
-                var changedShow = RemoteDataController.showArray[index]
+                guard let index = RemoteDataController.showArray.firstIndex(where: {$0 === show}) else {return}
+                let changedShow = RemoteDataController.showArray[index]
                 
-                workRef.showDataPath.document(show.showID).updateData(["onHold" : true, "lastModified" : Timestamp()]) { err in
+                WorkingOffRemoteManager.showDataPath.document(changedShow.showID).delete { err in
                     if let err = err {
                         self.messageTextField.stringValue = err.localizedDescription
                     } else {
-                        changedShow.onHold = true
-                        changedShow.lastModified = Timestamp()
-                        RemoteDataController.showArray.remove(at: index)
-                        RemoteDataController.showArray.append(changedShow)
+                        self.messageTextField.stringValue = "\(changedShow.dateString) was deleted"
+                        NSLog("\(changedShow.dateString) was deleted because the show has been updated")
+                        RemoteDataController.showArray.removeAll(where: {$0.showID == show.showID})
                     }
                 }
             }

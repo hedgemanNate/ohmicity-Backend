@@ -30,7 +30,7 @@ struct Show: Codable, Equatable, Hashable {
     
     //Checking show redundancy
     static func === (lhs: Show, rhs: Show) -> Bool {
-        return lhs.venue == rhs.venue && lhs.date == rhs.date && lhs.band < rhs.band
+        return lhs.venue == rhs.venue && lhs.date == rhs.date
     }
 
     //Hashable Conformity
