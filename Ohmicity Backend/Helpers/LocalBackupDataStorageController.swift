@@ -31,7 +31,7 @@ class LocalBackupDataStorageController {
     }
     
     static func saveVenueData() {
-        if let encoded = try? JSONEncoder().encode(LocalBackupDataStorageController.venueArray) {
+        if let encoded = try? JSONEncoder().encode(RemoteDataController.venueArray) {
             UserDefaults.standard.set(encoded, forKey: "SavedVenueData")
             print("Venue Data Saved")
         }
@@ -52,7 +52,7 @@ extension LocalBackupDataStorageController {
     }
     
     static func saveBandData() {
-        if let encoded = try? JSONEncoder().encode(LocalBackupDataStorageController.bandArray) {
+        if let encoded = try? JSONEncoder().encode(RemoteDataController.bandArray) {
             UserDefaults.standard.set(encoded, forKey: "SavedBandData")
             print("Band Data Saved")
         }
@@ -69,7 +69,7 @@ extension LocalBackupDataStorageController {
     }
     
     static func saveBackupBandData() {
-        if let encoded = try? JSONEncoder().encode(LocalBackupDataStorageController.bandArray) {
+        if let encoded = try? JSONEncoder().encode(RemoteDataController.bandArray) {
             UserDefaults.standard.set(encoded, forKey: "SavedBackupBandData")
             print("Backup Band Data Saved")
         }
@@ -132,7 +132,7 @@ extension LocalBackupDataStorageController {
     }
     
     static func saveUserData() {
-        if let encoded = try? JSONEncoder().encode(LocalBackupDataStorageController.userArray) {
+        if let encoded = try? JSONEncoder().encode(RemoteDataController.userArray) {
             UserDefaults.standard.set(encoded, forKey: "SavedUserData")
             print("User Data Saved")
         }

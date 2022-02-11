@@ -255,32 +255,15 @@ class DatabaseUtilityViewController: NSViewController {
     }
     
     @IBAction func multipurposeButton(_ sender: Any) {
-        var documentIDs = [String]()
+        TagController.venueTags = []
         
-        DispatchQueue.main.async {
-            self.messageTextField.stringValue = "Getting document id's in the database..."
-            sleep(UInt32(0.25))
+        for venue in RemoteDataController.venueArray {
+            let newTag = VenueTag(venueID: venue.venueID, variations: [venue.name])
+            TagController.venueTags.append(newTag)
         }
         
-        
-        //First get all document ids to delete them
-        
-        workRef.allBandDataPath.getDocuments { snap, err in
-            if let err = err {
-                NSLog(err.localizedDescription)
-            } else {
-                for doc in snap!.documents {
-                    let group =  try? doc.data(as: GroupOfProductionBands.self)
-                    documentIDs.append(group?.groupOfProductionBandsID ?? "non")
-                }
-            }
-            self.messageTextField.stringValue = "Starting to delete bands"
-            for doc in documentIDs {
-                workRef.allBandDataPath.document(doc).delete()
-            }
-        }
-        
-        
+        LocalBackupDataStorageController.saveVenueTagData()
+        print(TagController.venueTags)
     }
     
     

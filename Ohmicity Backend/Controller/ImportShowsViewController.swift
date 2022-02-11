@@ -197,13 +197,27 @@ class ImportShowsViewController: NSViewController, NSTableViewDelegate, NSTableV
 //MARK: Functions
 extension ImportShowsViewController {
     
+    private func assignVenueTagID(rawShow: ShowData) -> String {
+        //Start Here 2/11/22
+        return "Dope"
+    }
+    
     private func assignBandTagID(rawShow: ShowData) -> String {
         var bandID = "Bad Tag:\(rawShow.band)"
         
         outer: for tag in TagController.bandTags {
             inner: for variation in tag.variations {
-                if variation.localizedCaseInsensitiveContains(rawShow.band) || rawShow.band.localizedCaseInsensitiveContains(variation) {
+                if variation.localizedCaseInsensitiveContains(rawShow.band) {
                     bandID = tag.bandID
+                    break outer
+                }
+                
+                if rawShow.band.localizedCaseInsensitiveContains(variation) {
+                    bandID = tag.bandID
+                    
+                    /*append this show to an array for all bands that fit this. this means
+                    the a tag was found but I probably need to create a new variation
+                     variations should be exact matches*/
                     break outer
                 }
             }

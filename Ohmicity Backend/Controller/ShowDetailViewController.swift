@@ -30,7 +30,6 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
     @IBOutlet weak var showSearchTextField: NSSearchField!
     @IBOutlet weak var venueBandSearchTextField: NSSearchField!
     
-    
     //Buttons
     @IBOutlet weak var deleteButton: NSButton!
     @IBOutlet weak var ohmPickCheckbox: NSButton!
@@ -46,6 +45,8 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
     
     @IBOutlet weak var xityPicksButton: NSButton!
     var xityPicksFilter = false
+    @IBOutlet weak var buttonBoxView: NSBox!
+    
     
     // Radio Buttons
     @IBOutlet weak var newButton: NSButton!
@@ -310,17 +311,19 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         notificationCenter.post(Notification(name: Notification.Name(rawValue: "showsUpdated")))
         LocalBackupDataStorageController.saveBackupShowData()
         
-        //Put On Hold Remotely
-        RemoteDataController.showArray.removeAll(where: {$0 == currentShow})
         
         guard let show = currentShow else {return}
         
         workRef.showDataPath.document(show.showID).delete { err in
             if let err = err {
                 self.messageCenter.stringValue = err.localizedDescription
+                self.buttonIndication2(color: .red)
             } else {
+                RemoteDataController.showArray.removeAll(where: {$0 == show})
+                self.showFilterArray.removeAll(where: {$0 == show})
                 self.messageCenter.stringValue = "\(show.showID) has been deleted"
                 self.showsTableView.reloadData()
+                self.buttonIndication2(color: .green)
             }
         }
     }
@@ -554,6 +557,25 @@ extension ShowDetailViewController {
         if bandButton.state == .on {
             bandNameTextField.stringValue = bandFilterArray[venueBandTableView.selectedRow].name
         }
+    }
+    
+    private func buttonIndication2(color: NSColor) {
+        var counter = 0
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { time in
+            if counter < 2 {
+                DispatchQueue.main.async {
+                    self.buttonBoxView.fillColor = color
+                }
+                counter += 1
+            } else if counter == 2{
+                DispatchQueue.main.async {
+                    self.buttonBoxView.fillColor = .black
+                }
+                self.timer.invalidate()
+                counter = 0
+               
+            }
+        })
     }
 }
 

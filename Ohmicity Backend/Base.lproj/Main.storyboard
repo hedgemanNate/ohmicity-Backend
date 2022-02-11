@@ -4172,7 +4172,7 @@
                                                 <font key="font" metaFont="system" size="20"/>
                                             </buttonCell>
                                             <connections>
-                                                <action selector="deleteLocallyButtonTapped:" target="Pey-QO-mwU" id="FL7-HT-qi0"/>
+                                                <action selector="deleteButtonTapped:" target="Pey-QO-mwU" id="BCb-xK-oMB"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -4263,6 +4263,7 @@
                         <outlet property="backupSafetySwitch" destination="n6C-K3-LfY" id="yBz-5z-V5I"/>
                         <outlet property="bandButton" destination="I4t-zy-5os" id="DN7-vi-aV6"/>
                         <outlet property="bandNameTextField" destination="UMJ-tA-rbW" id="FXh-fN-ag6"/>
+                        <outlet property="buttonBoxView" destination="lSR-Zu-qh5" id="JfO-Ev-3vV"/>
                         <outlet property="clearButton" destination="xi5-Ir-vwQ" id="II7-OD-spT"/>
                         <outlet property="datePicker" destination="1FF-wC-ic2" id="57A-Lb-1GL"/>
                         <outlet property="deleteButton" destination="WT0-Qe-bBF" id="cEo-oD-hHA"/>
