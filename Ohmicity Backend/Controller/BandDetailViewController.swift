@@ -544,7 +544,6 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
                 filteredBandArray = LocalBackupDataStorageController.bandArray.filter({$0.name.localizedCaseInsensitiveContains(searchTextField.stringValue)})
             }
         }
-        
     }
     
     //MARK: Genre CheckBoxes Tapped
@@ -792,10 +791,6 @@ extension BandDetailViewController {
             self.alertTextField.stringValue = error.localizedDescription
             self.buttonIndication(color: .red)
         }
-        
-        
-        
-        
     }
     
     private func updateBand() {

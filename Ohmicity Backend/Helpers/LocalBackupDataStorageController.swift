@@ -20,20 +20,20 @@ class LocalBackupDataStorageController {
     var showResults = [Show]()
     
 //MARK: Business Data
-    static func loadBusinessData() {
-        if let data = UserDefaults.standard.data(forKey: "SavedBusinessData") {
+    static func loadVenueData() {
+        if let data = UserDefaults.standard.data(forKey: "SavedVenueData") {
             if let decoded = try? JSONDecoder().decode([Venue].self, from: data) {
                 LocalBackupDataStorageController.venueArray = decoded.sorted(by: {$0.name < $1.name})
-                print("Business Data Loaded")
+                print("Venue Data Loaded")
                 //return
             }
         }
     }
     
-    static func saveBusinessData() {
+    static func saveVenueData() {
         if let encoded = try? JSONEncoder().encode(LocalBackupDataStorageController.venueArray) {
-            UserDefaults.standard.set(encoded, forKey: "SavedBusinessData")
-            print("Business Data Saved")
+            UserDefaults.standard.set(encoded, forKey: "SavedVenueData")
+            print("Venue Data Saved")
         }
     }
     

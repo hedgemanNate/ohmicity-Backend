@@ -388,7 +388,7 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         loadBackupButton.isEnabled = false
         LocalBackupDataStorageController.bandArray = RemoteDataController.bandArray
         LocalBackupDataStorageController.saveBackupShowData()
-        messageCenter.stringValue = "Band Data Backup Saved"
+        messageCenter.stringValue = "Show Data Backup Saved"
     }
     
     @IBAction func loadBackupButtonTapped(_ sender: Any) {
@@ -396,7 +396,7 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
             LocalBackupDataStorageController.loadBackupShowData()
             showFilterArray = LocalBackupDataStorageController.showArray
             
-            messageCenter.stringValue = "Band Data Backup Loaded"
+            messageCenter.stringValue = "Show Data Backup Loaded"
         } else {
             messageCenter.stringValue = "Select Backup Radial before loading Backup"
         }

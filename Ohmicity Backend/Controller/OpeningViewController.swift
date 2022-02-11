@@ -44,6 +44,7 @@ class OpeningViewController: NSViewController {
         
         FirebaseApp.configure()
         Database.database().isPersistenceEnabled = true
+        Database.database().persistenceCacheSizeBytes = 2000000000
     }
     
     func updateViews() {
@@ -76,7 +77,7 @@ class OpeningViewController: NSViewController {
             
             LocalBackupDataStorageController.loadJsonData()
             LocalBackupDataStorageController.loadBackupShowData()
-            LocalBackupDataStorageController.loadBusinessData()
+            LocalBackupDataStorageController.loadVenueData()
             LocalBackupDataStorageController.loadBandTagData()
             LocalBackupDataStorageController.loadVenueTagData()
             LocalBackupDataStorageController.loadUserData()
@@ -108,7 +109,7 @@ class OpeningViewController: NSViewController {
             
             LocalBackupDataStorageController.loadJsonData()
             LocalBackupDataStorageController.loadBackupShowData()
-            LocalBackupDataStorageController.loadBusinessData()
+            LocalBackupDataStorageController.loadVenueData()
             LocalBackupDataStorageController.loadBandTagData()
             LocalBackupDataStorageController.loadVenueTagData()
             LocalBackupDataStorageController.loadUserData()
