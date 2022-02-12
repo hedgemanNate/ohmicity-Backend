@@ -58,6 +58,7 @@ class VenueTagViewController: NSViewController, NSTableViewDelegate, NSTableView
         let variation = filterArray[tagsTableIndex].variations[variationsTableView.selectedRow]
         filterArray[tagsTableIndex].variations.removeAll(where: {$0 == variation})
         variationsTableView.reloadData()
+        LocalBackupDataStorageController.saveBandTagData()
     }
 
     @IBAction func addVariationButtonTapped(_ sender: Any) {
@@ -78,7 +79,7 @@ class VenueTagViewController: NSViewController, NSTableViewDelegate, NSTableView
         
         if TagController.venueTags.contains(where: {$0.venueID == newTag.venueID}) {return}
         TagController.venueTags.append(newTag)
-        
+        LocalBackupDataStorageController.saveBandTagData()
     }
     
     @IBAction func searchFieldSearching(_ sender: Any) {
