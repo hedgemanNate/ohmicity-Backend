@@ -12,13 +12,13 @@ class VenueTagViewController: NSViewController, NSTableViewDelegate, NSTableView
     //MARK: Properties
     
     //Table Views
-    @IBOutlet weak var venueTableView: NSTableView!
     @IBOutlet weak var tagsTableView: NSTableView!
-    @IBOutlet weak var bandsTableView: NSTableView!
+    @IBOutlet weak var variationsTableView: NSTableView!
+    @IBOutlet weak var venuesTableView: NSTableView!
     
     
-    var venueTableIndex: Int {
-        var venueTableIndex = venueTableView.selectedRow
+    var tagsTableIndex: Int {
+        var venueTableIndex = tagsTableView.selectedRow
         if venueTableIndex < 0 {
             venueTableIndex = 0
         }
@@ -37,17 +37,17 @@ class VenueTagViewController: NSViewController, NSTableViewDelegate, NSTableView
         super.viewDidLoad()
         self.preferredContentSize = NSSize(width: 1320, height: 860)
         updateViews()
-        venueTableView.delegate = self
-        venueTableView.dataSource = self
-        venueTableView.doubleAction = #selector(venueTableClick)
-        
         tagsTableView.delegate = self
         tagsTableView.dataSource = self
         tagsTableView.doubleAction = #selector(tagsTableClick)
         
-        bandsTableView.delegate = self
-        bandsTableView.dataSource = self
-        bandsTableView.doubleAction = #selector(bandsTableClick)
+        variationsTableView.delegate = self
+        variationsTableView.dataSource = self
+        variationsTableView.doubleAction = #selector(variationTableClick)
+        
+        venuesTableView.delegate = self
+        venuesTableView.dataSource = self
+        venuesTableView.doubleAction = #selector(venuesTableClick)
         
     }
     
@@ -55,26 +55,38 @@ class VenueTagViewController: NSViewController, NSTableViewDelegate, NSTableView
     //MARK: Button Functions
     
     @IBAction func deleteButtonTapped(_ sender: Any) {
-        let tag = filterArray[venueTableIndex].variations[tagsTableView.selectedRow]
-        filterArray[venueTableIndex].variations.removeAll(where: {$0 == tag})
-        tagsTableView.reloadData()
+        let variation = filterArray[tagsTableIndex].variations[variationsTableView.selectedRow]
+        filterArray[tagsTableIndex].variations.removeAll(where: {$0 == variation})
+        variationsTableView.reloadData()
     }
 
-    @IBAction func addTagButtonTapped(_ sender: Any) {
-        let tag = filterArray[venueTableIndex]
+    @IBAction func addVariationButtonTapped(_ sender: Any) {
+        let tag = filterArray[tagsTableIndex]
         let newTag = newTagTextField.stringValue
         tag.variations.append(newTag)
-        tagsTableView.reloadData()
+        variationsTableView.reloadData()
         LocalBackupDataStorageController.saveBandTagData()
         newTagTextField.stringValue = ""
+    }
+    
+    @IBAction func addTagButtonTapped(_ sender: Any) {
+        if newTagTextField.stringValue == "" {return}
+        if venuesTableView.selectedRow < 0 {return}
+        
+        let venue = RemoteDataController.venueArray[venuesTableView.selectedRow]
+        let newTag = VenueTag(venueID: venue.venueID, variations: [venue.name])
+        
+        if TagController.venueTags.contains(where: {$0.venueID == newTag.venueID}) {return}
+        TagController.venueTags.append(newTag)
+        
     }
     
     @IBAction func searchFieldSearching(_ sender: Any) {
         filterArray = TagController.venueTags.filter({$0.variations.contains(where: {$0.localizedCaseInsensitiveContains(searchTextField.stringValue)})})
         
         DispatchQueue.main.async {
-            self.venueTableView.reloadData()
             self.tagsTableView.reloadData()
+            self.variationsTableView.reloadData()
         }
         
         if searchTextField.stringValue == "" {
@@ -95,43 +107,30 @@ class VenueTagViewController: NSViewController, NSTableViewDelegate, NSTableView
     //MARK: UpdateViews
     private func updateViews() {
         //newTagTextField.becomeFirstResponder()
-        getNewVenues()
         setFilterArray()
     }
     
     
     //MARK: Functions
-    private func getNewVenues() {
-        let rawShows = RawShowDataController.rawShowsArray
-        let venues = LocalBackupDataStorageController.venueArray
-        
-        for show in rawShows {
-            if venues.contains(where: {$0.name == show.venue}) {
-                continue
-            } else {
-                newVenueArray.append(show.venue)
-            }
-        }
-    }
     
     private func setFilterArray() {
         filterArray = TagController.venueTags
         DispatchQueue.main.async {
-            self.venueTableView.reloadData()
+            self.tagsTableView.reloadData()
             //self.tagsTableView.reloadData()
         }
     }
     
-    @objc private func venueTableClick() {
-        self.tagsTableView.reloadData()
-    }
-    
     @objc private func tagsTableClick() {
-        self.newTagTextField.stringValue = "\(filterArray[self.venueTableView.selectedRow].variations[self.tagsTableView.selectedRow])"
+        self.variationsTableView.reloadData()
     }
     
-    @objc private func bandsTableClick() {
-        self.newTagTextField.stringValue = "\(newVenueArray[bandsTableView.selectedRow])"
+    @objc private func variationTableClick() {
+        self.newTagTextField.stringValue = "\(filterArray[self.tagsTableView.selectedRow].variations[self.variationsTableView.selectedRow])"
+    }
+    
+    @objc private func venuesTableClick() {
+        self.newTagTextField.stringValue = RemoteDataController.venueArray[venuesTableView.selectedRow].name
     }
 }
 
@@ -141,12 +140,12 @@ extension VenueTagViewController {
     func numberOfRows(in tableView: NSTableView) -> Int {
     
         switch tableView {
-        case venueTableView:
-            return filterArray.count
         case tagsTableView:
-            return filterArray[venueTableIndex].variations.count
-        case bandsTableView:
-            return newVenueArray.count
+            return filterArray.count
+        case variationsTableView:
+            return filterArray[tagsTableIndex].variations.count
+        case venuesTableView:
+            return RemoteDataController.venueArray.count
         default:
             return 0
         }
@@ -155,22 +154,22 @@ extension VenueTagViewController {
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         
         switch tableView {
-        case venueTableView:
+        case tagsTableView:
             if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier("VenueTagCell"), owner: nil) as? NSTableCellView {
                 cell.textField?.stringValue = "\(row + 1): \(filterArray[row].variations[0])"
                 return cell
             }
             
-        case tagsTableView:
-            let venueTag = filterArray[venueTableIndex]
+        case variationsTableView:
+            let venueTag = filterArray[tagsTableIndex]
             if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier("VariationCell"), owner: nil) as? NSTableCellView {
                 cell.textField?.stringValue = "\(row + 1): \(venueTag.variations[row])"
                 return cell
             }
         
-        case bandsTableView:
+        case venuesTableView:
             if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier("ImportCell"), owner: nil) as? NSTableCellView {
-                cell.textField?.stringValue = "\(row + 1): \(newVenueArray[row])"
+                cell.textField?.stringValue = "\(row + 1): \(RemoteDataController.venueArray[row].name)"
                 return cell
             }
             

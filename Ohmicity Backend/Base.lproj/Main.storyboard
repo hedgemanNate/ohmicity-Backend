@@ -995,7 +995,7 @@
                                     <rect key="frame" x="1" y="1" width="457" height="252"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="automatic" viewBased="YES" id="EFB-hg-Mho">
+                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="automatic" viewBased="YES" id="EFB-hg-Mho" userLabel="Tags Table View">
                                             <rect key="frame" x="0.0" y="0.0" width="457" height="252"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="17" height="0.0"/>
@@ -1054,7 +1054,7 @@
                                     <rect key="frame" x="1" y="1" width="457" height="252"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="automatic" viewBased="YES" id="Lbl-3E-YvG">
+                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="automatic" viewBased="YES" id="Lbl-3E-YvG" userLabel="Variations Table View">
                                             <rect key="frame" x="0.0" y="0.0" width="457" height="252"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="17" height="0.0"/>
@@ -1107,27 +1107,27 @@
                                 </scroller>
                             </scrollView>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4hZ-B7-LTl">
-                                <rect key="frame" x="132" y="608" width="69" height="24"/>
+                                <rect key="frame" x="132" y="608" width="46" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Venues" id="g8I-3y-wCq">
+                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Tags" id="g8I-3y-wCq">
                                     <font key="font" metaFont="system" size="20"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="okv-jd-Cc6">
-                                <rect key="frame" x="132" y="288" width="46" height="24"/>
+                                <rect key="frame" x="132" y="288" width="91" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Tags" id="gZR-My-esk">
+                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Variations" id="gZR-My-esk">
                                     <font key="font" metaFont="system" size="20"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IaR-W7-jlZ">
-                                <rect key="frame" x="506" y="288" width="87" height="40"/>
+                                <rect key="frame" x="487" y="288" width="106" height="28"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="square" title="Delete Tag" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="r2K-oo-CHy">
+                                <buttonCell key="cell" type="square" title="Delete Variation" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="r2K-oo-CHy">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -1138,21 +1138,21 @@
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iHE-6P-YgQ">
                                 <rect key="frame" x="676" y="600" width="500" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Type New Tag Here" bezelStyle="round" id="xlh-sd-JL3">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Type New Tag/Variation Here" bezelStyle="round" id="xlh-sd-JL3">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
                             <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="P5Y-D0-6Us">
-                                <rect key="frame" x="676" y="543" width="500" height="40"/>
+                                <rect key="frame" x="676" y="543" width="245" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <buttonCell key="cell" type="square" title="Add Tag" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="y2U-9d-PfP">
+                                <buttonCell key="cell" type="square" title="Add Variation" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="y2U-9d-PfP">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="addTagButtonTapped:" target="vOw-9P-jgv" id="FnN-k4-B5X"/>
+                                    <action selector="addVariationButtonTapped:" target="vOw-9P-jgv" id="30c-ow-Y6w"/>
                                 </connections>
                             </button>
                             <searchField wantsLayer="YES" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6tG-H8-MA5">
@@ -1246,19 +1246,30 @@
                                     <action selector="breaker:" target="vOw-9P-jgv" id="fjd-g1-bMh"/>
                                 </connections>
                             </button>
+                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oU1-QK-veQ">
+                                <rect key="frame" x="931" y="457" width="245" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="square" title="Add Tag" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="7fR-yT-v4e">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="addTagButtonTapped:" target="vOw-9P-jgv" id="Ja9-mU-lXI"/>
+                                </connections>
+                            </button>
                         </subviews>
                     </view>
                     <connections>
-                        <outlet property="bandsTableView" destination="bTV-Y7-Zi6" id="UQz-OH-Atv"/>
                         <outlet property="newTagTextField" destination="iHE-6P-YgQ" id="9Tq-IW-f34"/>
                         <outlet property="searchTextField" destination="6tG-H8-MA5" id="Jnu-Z0-pQU"/>
-                        <outlet property="tagsTableView" destination="Lbl-3E-YvG" id="Ebx-BI-R2Z"/>
-                        <outlet property="venueTableView" destination="EFB-hg-Mho" id="OEs-kd-1ZB"/>
+                        <outlet property="tagsTableView" destination="EFB-hg-Mho" id="OEs-kd-1ZB"/>
+                        <outlet property="variationsTableView" destination="Lbl-3E-YvG" id="Ebx-BI-R2Z"/>
+                        <outlet property="venuesTableView" destination="bTV-Y7-Zi6" id="UQz-OH-Atv"/>
                     </connections>
                 </viewController>
                 <customObject id="Zjb-HM-Xvq" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1621" y="5223"/>
+            <point key="canvasLocation" x="-1621.5" y="5222.5"/>
         </scene>
         <!--Welcome To Ohmicity-->
         <scene sceneID="X6B-l8-q3h">
@@ -1463,8 +1474,8 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="277" height="148"/>
                                                             <datePickerCell key="cell" controlSize="large" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="R2s-zw-K34">
                                                                 <font key="font" metaFont="system"/>
-                                                                <date key="date" timeIntervalSinceReferenceDate="666215071.62692404">
-                                                                    <!--2022-02-10 19:44:31 +0000-->
+                                                                <date key="date" timeIntervalSinceReferenceDate="666301046.49060798">
+                                                                    <!--2022-02-11 19:37:26 +0000-->
                                                                 </date>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1508,8 +1519,8 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="277" height="148"/>
                                                             <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="503-Ty-Gdc">
                                                                 <font key="font" metaFont="system"/>
-                                                                <date key="date" timeIntervalSinceReferenceDate="666215071.634215">
-                                                                    <!--2022-02-10 19:44:31 +0000-->
+                                                                <date key="date" timeIntervalSinceReferenceDate="666301046.49608099">
+                                                                    <!--2022-02-11 19:37:26 +0000-->
                                                                 </date>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1553,8 +1564,8 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="277" height="148"/>
                                                             <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="7jY-Qv-i7V">
                                                                 <font key="font" metaFont="system"/>
-                                                                <date key="date" timeIntervalSinceReferenceDate="666215071.63969696">
-                                                                    <!--2022-02-10 19:44:31 +0000-->
+                                                                <date key="date" timeIntervalSinceReferenceDate="666301046.50144005">
+                                                                    <!--2022-02-11 19:37:26 +0000-->
                                                                 </date>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1598,8 +1609,8 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="277" height="148"/>
                                                             <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="tXN-jR-RxO">
                                                                 <font key="font" metaFont="system"/>
-                                                                <date key="date" timeIntervalSinceReferenceDate="666215071.64507794">
-                                                                    <!--2022-02-10 19:44:31 +0000-->
+                                                                <date key="date" timeIntervalSinceReferenceDate="666301046.506971">
+                                                                    <!--2022-02-11 19:37:26 +0000-->
                                                                 </date>
                                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -2113,8 +2124,8 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <datePickerCell key="cell" borderStyle="bezel" alignment="left" useCurrentDate="YES" id="U6u-Ac-yGh">
                                     <font key="font" metaFont="system"/>
-                                    <date key="date" timeIntervalSinceReferenceDate="666215071.68099797">
-                                        <!--2022-02-10 19:44:31 +0000-->
+                                    <date key="date" timeIntervalSinceReferenceDate="666301046.54241097">
+                                        <!--2022-02-11 19:37:26 +0000-->
                                     </date>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -2125,8 +2136,8 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <datePickerCell key="cell" borderStyle="bezel" alignment="left" useCurrentDate="YES" id="g7o-Ed-NvT">
                                     <font key="font" metaFont="system"/>
-                                    <date key="date" timeIntervalSinceReferenceDate="666215071.68441296">
-                                        <!--2022-02-10 19:44:31 +0000-->
+                                    <date key="date" timeIntervalSinceReferenceDate="666301046.54598498">
+                                        <!--2022-02-11 19:37:26 +0000-->
                                     </date>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -3840,7 +3851,7 @@
                                     </subviews>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="2rR-Ww-Zcz">
-                                    <rect key="frame" x="1" y="284" width="728" height="15"/>
+                                    <rect key="frame" x="1" y="434" width="728" height="15"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="NHl-HJ-dj7">
@@ -3902,8 +3913,8 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <datePickerCell key="cell" controlSize="large" borderStyle="bezel" alignment="left" datePickerStyle="clockAndCalendar" useCurrentDate="YES" id="k9s-3e-zKO">
                                     <font key="font" metaFont="system"/>
-                                    <date key="date" timeIntervalSinceReferenceDate="666215071.82791197">
-                                        <!--2022-02-10 19:44:31 +0000-->
+                                    <date key="date" timeIntervalSinceReferenceDate="666301046.72694397">
+                                        <!--2022-02-11 19:37:26 +0000-->
                                     </date>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -4013,7 +4024,7 @@
                                     </subviews>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="kFK-Cf-cJC">
-                                    <rect key="frame" x="1" y="133" width="530" height="15"/>
+                                    <rect key="frame" x="1" y="293" width="530" height="15"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="CG0-N0-8D1">

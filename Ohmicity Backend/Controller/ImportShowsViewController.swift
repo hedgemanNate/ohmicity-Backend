@@ -100,7 +100,7 @@ class ImportShowsViewController: NSViewController, NSTableViewDelegate, NSTableV
         var noBandIDTag = 0
         var numberOfDuplicates = 0
         var noVenueIDTag = 0
-        var badTag = 0
+        let badTag = 0
         var totalRejected = 0
         
         for rawShow in RawShowDataController.rawShowsArray {

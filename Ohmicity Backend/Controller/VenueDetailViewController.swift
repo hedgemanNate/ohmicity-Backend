@@ -663,6 +663,7 @@ extension VenueDetailViewController {
         newVenue.logo = logoData
         newVenue.pics = venuePicsData
         newVenue.lastModified = Timestamp()
+        let newTag = VenueTag(venueID: newVenue.venueID, variations: [newVenue.name])
         
         do {
             try WorkingOffRemoteManager.allVenueDataPath.document(newVenue.venueID).setData(from: newVenue) { err in
@@ -671,6 +672,8 @@ extension VenueDetailViewController {
                     self.buttonIndication2(color: .red)
                 } else {
                     RemoteDataController.venueArray.append(newVenue)
+                    TagController.venueTags.append(newTag)
+                    LocalBackupDataStorageController.saveVenueTagData()
                     DispatchQueue.main.async {
                         self.venuesTableView.reloadData()
                         self.messageCenter.stringValue = "\(newVenue.name) was added to database successfully!"

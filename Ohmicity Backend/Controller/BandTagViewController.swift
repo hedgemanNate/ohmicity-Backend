@@ -65,7 +65,7 @@ class BandTagViewController: NSViewController, NSTableViewDelegate, NSTableViewD
         
         bandsTableView.delegate = self
         bandsTableView.dataSource = self
-        bandsTableView.doubleAction = #selector(bandsTableClick)
+        bandsTableView.doubleAction = #selector(venuesTableClick)
     }
     
     //MARK: UpdateViews
@@ -218,7 +218,7 @@ class BandTagViewController: NSViewController, NSTableViewDelegate, NSTableViewD
         self.newTagTextField.stringValue = "\(selectedVariation)"
     }
     
-    @objc private func bandsTableClick() {
+    @objc private func venuesTableClick() {
         self.newTagTextField.stringValue = filterBandArray[bandsTableView.selectedRow].name
         selectedBand = filterBandArray[bandsTableView.selectedRow]
         guard let selectedBand = selectedBand else {return}
