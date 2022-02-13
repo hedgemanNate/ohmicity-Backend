@@ -8,7 +8,7 @@ import Cocoa
 import Foundation
 import FirebaseFirestore
 
-infix operator =< :  AssignmentPrecedence
+infix operator =<= :  AssignmentPrecedence
 struct Show: Codable, Equatable, Hashable {
     var showID: String
     var lastModified = Timestamp()
@@ -26,6 +26,10 @@ struct Show: Codable, Equatable, Hashable {
     //Equatable Conformity
     static func == (lhs: Show, rhs: Show) -> Bool {
         return lhs.showID == rhs.showID
+    }
+    
+    static func =<= (lhs: Show, rhs: Show) -> Bool {
+        return lhs.venue == rhs.venue && lhs.date == rhs.date && lhs.band == rhs.band
     }
     
     //Checking show redundancy

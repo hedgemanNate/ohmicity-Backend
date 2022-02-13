@@ -203,34 +203,50 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
         let tempDate = dateFormatter.string(from: datePickerValue)
         
         if currentShow != nil {
+            guard var currentShow = currentShow else {return}
+
             //Check Boxes
             if ohmPickCheckbox.state == .off {
-                currentShow?.ohmPick = false
+                currentShow.ohmPick = false
             } else {
-                currentShow?.ohmPick = true
+                currentShow.ohmPick = true
             }
             
             if showOnHoldCheckbox.state == .off {
-                currentShow?.onHold = false
+                currentShow.onHold = false
             } else {
-                currentShow?.onHold = true
+                currentShow.onHold = true
             }
             
             //Venue and Band
-            currentShow?.venue = tempVenue.venueID
-            currentShow?.band = tempBand.bandID
-            currentShow?.bandDisplayName = tempBand.name
-            
-            
+            currentShow.venue = tempVenue.venueID
+            currentShow.band = tempBand.bandID
+            currentShow.bandDisplayName = tempBand.name
+                
             //Date
-            currentShow?.dateString = tempDate
-            currentShow?.date = datePickerValue
-            
-            
+            currentShow.dateString = tempDate
+            currentShow.date = datePickerValue
+            do {
+                try workRef.showDataPath.document(currentShow.showID).setData(from: currentShow, completion: { err in
+                    if let err = err {
+                        self.messageCenter.stringValue = err.localizedDescription
+                        self.buttonIndication2(color: .red)
+                    } else {
+                        RemoteDataController.showArray.removeAll(where: {$0 == currentShow})
+                        self.showFilterArray.removeAll(where: {$0 == currentShow})
+                        RemoteDataController.showArray.append(currentShow)
+                        self.showFilterArray.append(currentShow)
+                        self.showFilterArray.sort(by: {$0.date < $1.date})
+                        self.messageCenter.stringValue = "Show Saved."
+                        self.buttonIndication2(color: .green)
+                    }
+                })
+            } catch (let error) {
+                self.messageCenter.stringValue = error.localizedDescription
+            }
             
             
         } else {
-            
             
             let newShow = Show(band: tempBand.bandID, venue: tempVenue.venueID, dateString: tempDate, displayName: tempBand.name)
             
@@ -260,6 +276,7 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
                 if let error = error {
                     self.messageCenter.stringValue = error.localizedDescription
                     self.startMessageCenterTimer()
+                    self.buttonIndication2(color: .red)
                 } else {
                     if !RemoteDataController.showArray.contains(currentShow) {
                         RemoteDataController.showArray.append(currentShow)
@@ -285,6 +302,7 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
                     }
                     self.messageCenter.stringValue = "Show Saved"
                     self.startMessageCenterTimer()
+                    self.buttonIndication2(color: .green)
                 }
             })
         } catch let error {
@@ -305,25 +323,23 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
     
     @IBAction func deleteButtonTapped(_ sender: Any) {
         
-        //Delete Locally
-        guard let show = currentShow else {return}
-        LocalBackupDataStorageController.showArray.removeAll(where: {$0 == show})
-        notificationCenter.post(Notification(name: Notification.Name(rawValue: "showsUpdated")))
-        LocalBackupDataStorageController.saveBackupShowData()
-        
-        
         guard let show = currentShow else {return}
         
-        workRef.showDataPath.document(show.showID).delete { err in
+        WorkingOffRemoteManager.showDataPath.document(show.showID).delete { err in
             if let err = err {
                 self.messageCenter.stringValue = err.localizedDescription
+                self.startMessageCenterTimer()
                 self.buttonIndication2(color: .red)
             } else {
+                LocalBackupDataStorageController.showArray.removeAll(where: {$0 == show})
                 RemoteDataController.showArray.removeAll(where: {$0 == show})
                 self.showFilterArray.removeAll(where: {$0 == show})
+                self.showsTableView.reloadData()
                 self.messageCenter.stringValue = "\(show.showID) has been deleted"
                 self.showsTableView.reloadData()
+                self.startMessageCenterTimer()
                 self.buttonIndication2(color: .green)
+                LocalBackupDataStorageController.saveBackupShowData()
             }
         }
     }
@@ -335,7 +351,6 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
                 workRef.showDataPath.document(show.showID).delete { err in
                     if let err = err {
                         self.messageCenter.stringValue = err.localizedDescription
-                        self.startMessageCenterTimer()
                     } else {
                         RemoteDataController.showArray.removeAll(where: {$0.showID == show.showID})
                         self.showFilterArray.removeAll(where: {$0.showID == show.showID})
@@ -355,7 +370,6 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
                         self.messageCenter.stringValue = err.localizedDescription
                     } else {
                         self.messageCenter.stringValue = "Corrupted Shows Removed"
-                        self.startMessageCenterTimer()
                     }
                 }
             }
@@ -602,6 +616,8 @@ extension ShowDetailViewController {
     }
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        let bandID = showFilterArray[row].band
+        let band = RemoteDataController.bandArray.first(where: {$0.bandID == bandID})
         switch tableView {
         case showsTableView:
             if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "NumberColumn") {
@@ -618,7 +634,6 @@ extension ShowDetailViewController {
                     return checkIfShowIsSpecial(show: showFilterArray[row], cell: cell)
                 }
             } else if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "BandColumn") {
-                
                 var cellTagIssue = NSTableCellView()
                 if let cellTagCell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "BandCell"), owner: nil) as? NSTableCellView {
                     cellTagCell.textField?.stringValue = showFilterArray[row].bandDisplayName
@@ -639,6 +654,7 @@ extension ShowDetailViewController {
                 if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "BandCell"), owner: nil) as? NSTableCellView {
                     cell.textField?.stringValue = "\(showFilterArray[row].bandDisplayName): \(band?.name ?? "No Name Found")"
                     cell.textField?.textColor = .white
+                    if band?.photo != nil {cell.textField?.textColor = .orange}
                     return checkIfShowIsSpecial(show: showFilterArray[row], cell: cell)
                 }
             } else if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "DateColumn") {
@@ -669,7 +685,6 @@ extension ShowDetailViewController {
         }
         return nil
     }
-    
     
     func tableViewSelectionDidChange(_ notification: Notification) {
        

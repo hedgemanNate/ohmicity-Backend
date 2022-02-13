@@ -225,7 +225,7 @@ class BannerAdsViewController: NSViewController {
     
     //MARK: NetworkCalls
     private func getBusinessAdData() {
-        ref.businessBannerAdDataPath.getDocuments { querySnapshot, error in
+        WorkingOffRemoteManager.allBannerDataPath.getDocuments { querySnapshot, error in
             if let error = error {
                 self.messageCenterTextField.stringValue = "\(error.localizedDescription)"
             } else {
@@ -255,7 +255,7 @@ class BannerAdsViewController: NSViewController {
     private func pushBusinessAd(_ bannerAd: BusinessBannerAd) {
         do {
             bannerAd.lastModified = Timestamp()
-            try ref.businessBannerAdDataPath.document(bannerAd.adID).setData(from: bannerAd)
+            try ProductionManager.allBannerDataPath.document(bannerAd.adID).setData(from: bannerAd)
             messageCenterTextField.stringValue = "Banner Ad Saved"
         } catch let error {
             messageCenterTextField.stringValue = error.localizedDescription
@@ -264,10 +264,16 @@ class BannerAdsViewController: NSViewController {
     
     private func deleteBannerAd() {
         if currentBannerAd != nil {
-            ref.businessBannerAdDataPath.document(currentBannerAd!.adID).delete()
-            messageCenterTextField.stringValue = "Delete Successful"
+            ProductionManager.allBannerDataPath.document(currentBannerAd!.adID).delete { err in
+                if let err = err {
+                    self.messageCenterTextField.stringValue = err.localizedDescription
+                } else {
+                    self.messageCenterTextField.stringValue = "Delete Successful"
+                }
+            }
+            
         } else {
-            messageCenterTextField.stringValue = "Delete Failed"
+            messageCenterTextField.stringValue = "No banner loaded to delete"
         }
     }
 }
