@@ -123,6 +123,10 @@ class DatabaseUtilityViewController: NSViewController {
     
     //MARK: Single Production Buttons
     @IBAction func pushAllShowsToProductionDBButtonTapped(_ sender: Any) {
+        if RemoteDataController.showArray == [] {
+            self.messageTextField.stringValue = "Switch To Production Mode"
+            return
+        }
         for show in RemoteDataController.showArray {
             let singleShow = SingleProductionShow(showID: show.showID, venue: show.venue, band: show.band, collaboration: [], bandDisplayName: show.bandDisplayName, date: show.date, ohmPick: show.ohmPick)
             ProductionShowController.allShows.shows.append(singleShow)
@@ -144,6 +148,10 @@ class DatabaseUtilityViewController: NSViewController {
     }
     
     @IBAction func pushAllBandsToProductionDBButtonTapped(_ sender: Any) {
+        if RemoteDataController.bandArray == [] {
+            self.messageTextField.stringValue = "Switch To Production Mode"
+            return
+        }
         let breakUpBands = RemoteDataController.bandArray.chunked(into: splitBandsIntoGroups())
         ProductionBandController.allBands = []
         
@@ -219,6 +227,10 @@ class DatabaseUtilityViewController: NSViewController {
     }
     
     @IBAction func pushAllVenuesToProductionDBButtonTapped(_ sender: Any) {
+        if RemoteDataController.venueArray == [] {
+            self.messageTextField.stringValue = "Switch To Production Mode"
+            return
+        }
         self.messageTextField.stringValue = "Pushing Venues..."
         var docNum = 0
         for venue in RemoteDataController.venueArray {
