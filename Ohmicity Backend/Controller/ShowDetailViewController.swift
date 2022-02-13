@@ -226,6 +226,8 @@ class ShowDetailViewController: NSViewController, NSTableViewDataSource, NSTable
             //Date
             currentShow.dateString = tempDate
             currentShow.date = datePickerValue
+            
+            
             do {
                 try workRef.showDataPath.document(currentShow.showID).setData(from: currentShow, completion: { err in
                     if let err = err {

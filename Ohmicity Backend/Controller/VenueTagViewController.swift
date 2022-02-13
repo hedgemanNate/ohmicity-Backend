@@ -62,6 +62,10 @@ class VenueTagViewController: NSViewController, NSTableViewDelegate, NSTableView
     }
 
     @IBAction func addVariationButtonTapped(_ sender: Any) {
+        if newTagTextField.stringValue == "" || newTagTextField.stringValue == "Select a tag first" || newTagTextField.stringValue == "Select A Tag OR Write In A Variation First!!!" {
+            newTagTextField.stringValue = "Select A Tag OR Write In A Tag First!!!"
+            return
+        }
         let tag = filterArray[tagsTableIndex]
         let newTag = newTagTextField.stringValue
         tag.variations.append(newTag)
@@ -127,6 +131,10 @@ class VenueTagViewController: NSViewController, NSTableViewDelegate, NSTableView
     }
     
     @objc private func variationTableClick() {
+        if tagsTableView.selectedRow < 0 {
+            newTagTextField.stringValue = "Select a tag first"
+            return
+        }
         self.newTagTextField.stringValue = "\(filterArray[self.tagsTableView.selectedRow].variations[self.variationsTableView.selectedRow])"
     }
     

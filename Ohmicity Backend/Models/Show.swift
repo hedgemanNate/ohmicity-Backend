@@ -61,4 +61,17 @@ extension Show {
         self.bandDisplayName = displayName
     }
     
+    init(band: String, venue: String, date: Date, displayName: String) {
+        
+        dateFormatter.dateFormat = dateFormat4
+        let dateString = dateFormatter.string(from: date)
+        
+        let showID = Firestore.firestore().collection("showData").document().documentID
+        self.showID = showID
+        self.band = band
+        self.venue = venue
+        self.dateString = dateString
+        self.date = date
+        self.bandDisplayName = displayName
+    }
 }
