@@ -1,9 +1,9 @@
-//
-//  BulkShowCreationViewController.swift
-//  Ohmicity Backend
-//
-//  Created by Nathan Hedgeman on 9/6/21.
-//
+////
+////  BulkShowCreationViewController.swift
+////  Ohmicity Backend
+////
+////  Created by Nathan Hedgeman on 9/6/21.
+////
 
 import Cocoa
 
@@ -11,7 +11,7 @@ class BulkShowCreationViewController: NSViewController {
     //MARK: Properties
     //TableViews
     var bandResultsArray = [Band]()
-    var venueResultsArray = [BusinessFullData]()
+    var venueResultsArray = [Venue]()
     var showsArray = [Show]() {
         didSet {
             showsTableView.reloadData()
@@ -28,6 +28,8 @@ class BulkShowCreationViewController: NSViewController {
     
     @IBOutlet weak var bandSearchField: NSSearchField!
     @IBOutlet weak var venueSearchField: NSSearchField!
+    
+    @IBOutlet weak var displayNameTextField: NSTextField!
     
     //Buttons
     @IBOutlet weak var show1CheckBoxButton: NSButton!
@@ -46,6 +48,7 @@ class BulkShowCreationViewController: NSViewController {
     @IBOutlet weak var calendar4: NSDatePicker!
     
     //MessageCenter
+    
     @IBOutlet weak var messageCenterTextField: NSTextField!
     var timer = Timer()
     
@@ -59,18 +62,14 @@ class BulkShowCreationViewController: NSViewController {
         setUpTableViews()
         clearTextFields()
         resetCheckBoxes()
-        bandResultsArray = localDataController.bandArray
-        venueResultsArray = localDataController.businessArray
+        bandResultsArray = RemoteDataController.bandArray
+        venueResultsArray = RemoteDataController.venueArray
         bandsTableView.reloadData()
         venueTableView.reloadData()
         show1CheckBoxButton.resignFirstResponder()
         bandSearchField.becomeFirstResponder()
         
-        
         checkBoxLogic()
-        
-        //UI For Buttons
-        defualtColor = addShowsButton.layer?.backgroundColor
     }
     
     private func setUpTableViews() {
@@ -88,7 +87,7 @@ class BulkShowCreationViewController: NSViewController {
         print("click")
         let indexPath = venueTableView.selectedRow
         let venueName = venueResultsArray[indexPath].name
-        showsArray = localDataController.showArray.filter({$0.venue == venueName})
+        showsArray = RemoteDataController.showArray.filter({$0.venue == venueName})
         showsArray.removeAll(where: {$0.onHold == true})
         
         DispatchQueue.main.async {
@@ -138,100 +137,14 @@ class BulkShowCreationViewController: NSViewController {
     //MARK: Button Actions
     
     @IBAction func addShowsButtonTapped(_ sender: Any) {
-        dateFormatter.dateFormat = dateFormat1
-        var bulkShowCreationCounter = 0
-        var band: Band?
-        var venue: BusinessFullData?
         
-        let bandIndex = bandsTableView.selectedRow
-        let venueIndex = venueTableView.selectedRow
-        
-        if bandIndex < 0 {
-            messageCenterTextField.stringValue = "Select A Band"
-            return
-            
-        } else {
-            band = bandResultsArray[bandIndex]
-        }
-        
-        if venueIndex < 0 {
-            messageCenterTextField.stringValue = "Select A Venue"
-            return
-        } else {
-            venue = venueResultsArray[venueIndex]
-        }
-        
-        if show1CheckBoxButton.state == .on {
-            let dateString = dateFormatter.string(from: calendar1.dateValue)
-            var show = Show(band: band!.name, venue: venue!.name, dateString: dateString, date: calendar1.dateValue)
-            show.city = venue?.city
-            show.city?.append(.All)
-            if localDataController.showArray.contains(show) {
-                messageCenterTextField.stringValue.append("Show1 already exists")
-            }
-            localDataController.showArray.append(show)
-            addedShowsToBePushedArray.append(show)
-            bulkShowCreationCounter += 1
-        }
-        
-        if show2CheckBoxButton.state == .on {
-            let dateString = dateFormatter.string(from: calendar2.dateValue)
-            var show = Show(band: band!.name, venue: venue!.name, dateString: dateString, date: calendar2.dateValue)
-            show.city = venue?.city
-            show.city?.append(.All)
-            if localDataController.showArray.contains(show) {
-                messageCenterTextField.stringValue.append("Show2 already exists")
-            }
-            localDataController.showArray.append(show)
-            addedShowsToBePushedArray.append(show)
-            bulkShowCreationCounter += 1
-        }
-        
-        if show3CheckBoxButton.state == .on {
-            let dateString = dateFormatter.string(from: calendar3.dateValue)
-            var show = Show(band: band!.name, venue: venue!.name, dateString: dateString, date: calendar3.dateValue)
-            show.city = venue?.city
-            show.city?.append(.All)
-            if localDataController.showArray.contains(show) {
-                messageCenterTextField.stringValue.append("Show3 already exists")
-            }
-            localDataController.showArray.append(show)
-            addedShowsToBePushedArray.append(show)
-            bulkShowCreationCounter += 1
-        }
-        
-        if show4CheckBoxButton.state == .on {
-            let dateString = dateFormatter.string(from: calendar4.dateValue)
-            var show = Show(band: band!.name, venue: venue!.name, dateString: dateString, date: calendar4.dateValue)
-            show.city = venue?.city
-            show.city?.append(.All)
-            if localDataController.showArray.contains(show) {
-                messageCenterTextField.stringValue.append("Show4 already exists")
-            }
-            localDataController.showArray.append(show)
-            addedShowsToBePushedArray.append(show)
-            bulkShowCreationCounter += 1
-        }
-        
-        resetCheckBoxes()
-        messageCenterTextField.stringValue = "\(bulkShowCreationCounter) Shows Added"
-        
-        //Color Indication
-        DispatchQueue.main.async {
-            self.addShowsButton.layer?.backgroundColor = NSColor.green.cgColor
-            self.timer.invalidate()
-            self.timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: false, block: { _ in
-                self.addShowsButton.layer?.backgroundColor = self.defualtColor
-            })
-        }
-        
-        localDataController.saveShowData()
     }
     
     @IBAction func pushShowsButtonTapped(_ sender: Any) {
+        addShows()
         for show in addedShowsToBePushedArray {
             do {
-                try ref.showDataPath.document(show.showID).setData(from: show, encoder: .init(), completion: { error in
+                try WorkingOffRemoteManager.showDataPath.document(show.showID).setData(from: show, encoder: .init(), completion: { error in
                     if let err = error {
                         NSLog(err.localizedDescription)
                         DispatchQueue.main.async {
@@ -240,9 +153,11 @@ class BulkShowCreationViewController: NSViewController {
                             self.timer.invalidate()
                             self.timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: false, block: { _ in
                                 self.pushShowsButton.layer?.backgroundColor = self.defualtColor
+                                self.timer.invalidate()
                             })
                         }
                     } else {
+                        RemoteDataController.showArray.append(show)
                         self.show1CheckBoxButton.state = .off
                         self.checkBoxLogic()
                         self.addedShowsToBePushedArray.removeAll(where:{ $0 == show})
@@ -251,6 +166,7 @@ class BulkShowCreationViewController: NSViewController {
                             self.timer.invalidate()
                             self.timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: false, block: { _ in
                                 self.pushShowsButton.layer?.backgroundColor = self.defualtColor
+                                self.timer.invalidate()
                             })
                         }
                     }
@@ -259,22 +175,27 @@ class BulkShowCreationViewController: NSViewController {
                 NSLog("Error pushing shows in BulkShowCreationViewController")
             }
         }
+        self.messageCenterTextField.stringValue = "Shows Saved"
     }
     
     
     
     @IBAction func resetButtonTapped(_ sender: Any) {
-//        resetCheckBoxes()
-//        clearTextFields()
-//        bandsTableView.reloadData()
-//        venueTableView.reloadData()
+        resetCheckBoxes()
+        clearTextFields()
+        bandsTableView.reloadData()
+        venueTableView.reloadData()
     }
     
     @IBAction func refreshButtonTapped(_ sender: Any) {
-        bandResultsArray = localDataController.bandArray
-        venueResultsArray = localDataController.businessArray
+        bandResultsArray = RemoteDataController.bandArray
+        venueResultsArray = RemoteDataController.venueArray
         bandsTableView.reloadData()
         venueTableView.reloadData()
+    }
+    
+    @IBAction func clearDisplayName(_ sender: Any) {
+        displayNameTextField.stringValue = ""
     }
     
     
@@ -307,21 +228,6 @@ class BulkShowCreationViewController: NSViewController {
 }
 
 
-//MARK: Segue
-extension BulkShowCreationViewController {
-    override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
-        switch segue.identifier {
-        case "editShowSegue":
-            guard let destinationVC = segue.destinationController as? ShowDetailViewController else {return}
-            let indexPath = showsTableView.selectedRow
-            let show = showsArray[indexPath]
-            destinationVC.currentShow = show
-        default:
-            break
-        }
-    }
-}
-
 
 //MARK: TableView
 extension BulkShowCreationViewController: NSTableViewDataSource, NSTableViewDelegate {
@@ -340,7 +246,7 @@ extension BulkShowCreationViewController: NSTableViewDataSource, NSTableViewDele
     }
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        dateFormatter.dateFormat = dateFormat1
+        
         switch tableView {
         case bandsTableView:
             if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "BandCell"), owner: nil) as? NSTableCellView {
@@ -360,7 +266,7 @@ extension BulkShowCreationViewController: NSTableViewDataSource, NSTableViewDele
                 cell.textField?.textColor = .white
                 cell.textField?.backgroundColor = .clear
                 
-                dateFormatter.dateFormat = dateFormat3
+                dateFormatter.dateFormat = dateFormat4
                 let showDate = dateFormatter.string(from: show.date)
                 let today = dateFormatter.string(from: Date())
                 
@@ -390,10 +296,10 @@ extension BulkShowCreationViewController {
     
     private func bandSearch() {
         if bandSearchField.stringValue == "" {
-            bandResultsArray = localDataController.bandArray
+            bandResultsArray = RemoteDataController.bandArray
             bandsTableView.reloadData()
         } else {
-            bandResultsArray = localDataController.bandArray.filter({($0.name.localizedCaseInsensitiveContains(bandSearchField.stringValue))})
+            bandResultsArray = RemoteDataController.bandArray.filter({($0.name.localizedCaseInsensitiveContains(bandSearchField.stringValue))})
             DispatchQueue.main.async {
                 self.bandsTableView.reloadData()
                 self.bandsTableView.scrollRowToVisible(0)
@@ -403,14 +309,46 @@ extension BulkShowCreationViewController {
     
     private func venueSearch() {
         if venueSearchField.stringValue == "" {
-            venueResultsArray = localDataController.businessArray
+            venueResultsArray = RemoteDataController.venueArray
             venueTableView.reloadData()
         } else {
-            venueResultsArray = localDataController.businessArray.filter({($0.name.localizedCaseInsensitiveContains(venueSearchField.stringValue))})
+            venueResultsArray = RemoteDataController.venueArray.filter({($0.name.localizedCaseInsensitiveContains(venueSearchField.stringValue))})
             DispatchQueue.main.async {
                 self.venueTableView.reloadData()
                 self.venueTableView.scrollRowToVisible(0)
             }
+        }
+    }
+    
+    private func addShows() {
+        let band = bandResultsArray[bandsTableView.selectedRow]
+        let venue = venueResultsArray[venueTableView.selectedRow]
+        dateFormatter.dateFormat = dateFormat4
+        var displayName = ""
+        if displayNameTextField.stringValue == "" {
+            displayName = band.name
+        } else {
+            displayName = displayNameTextField.stringValue
+        }
+        
+        if show1CheckBoxButton.state == .on {
+            let show = Show(band: band.bandID, venue: venue.venueID, date: calendar1.dateValue, displayName: displayName)
+            addedShowsToBePushedArray.append(show)
+        }
+        
+        if show2CheckBoxButton.state == .on {
+            let show = Show(band: band.bandID, venue: venue.venueID, date: calendar2.dateValue, displayName: displayName)
+            addedShowsToBePushedArray.append(show)
+        }
+        
+        if show3CheckBoxButton.state == .on {
+            let show = Show(band: band.bandID, venue: venue.venueID, date: calendar3.dateValue, displayName: displayName)
+            addedShowsToBePushedArray.append(show)
+        }
+        
+        if show4CheckBoxButton.state == .on {
+            let show = Show(band: band.bandID, venue: venue.venueID, date: calendar4.dateValue, displayName: displayName)
+            addedShowsToBePushedArray.append(show)
         }
     }
 }

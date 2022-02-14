@@ -8,7 +8,6 @@
 import Cocoa
 import FirebaseFirestore
 import FirebaseFirestoreSwift
-import SwiftUI
 
 class BannerAdsViewController: NSViewController {
     
@@ -18,7 +17,7 @@ class BannerAdsViewController: NSViewController {
             clientSelectedInTableView()
         }
     }
-    var currentBusiness: BusinessFullData? {
+    var currentBusiness: Venue? {
         didSet {
             businessSelectedInTableView()
         }
@@ -43,16 +42,17 @@ class BannerAdsViewController: NSViewController {
     @IBOutlet weak var tableView: NSTableView!
     @IBOutlet weak var showAllBusinessesButton: NSButton!
     @IBOutlet weak var showClientsButton: NSButton!
-    var businessResultsArray = [BusinessFullData]()
+    var businessResultsArray = [Venue]()
     var clientResultsArray = [BusinessBannerAd]()
     var clientFullArray = [BusinessBannerAd]()
     
-    //MessageCneter
+    //MessageCenter
     @IBOutlet weak var messageCenterTextField: NSTextField!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.preferredContentSize = NSSize(width: 1320, height: 860)
         setUpTableView()
         updateViews()
     }
@@ -120,7 +120,7 @@ class BannerAdsViewController: NSViewController {
     
     //MARK: UpdateViews
     private func updateViews() {
-        self.preferredContentSize = NSSize(width: 889, height: 654)
+        self.preferredContentSize = NSSize(width: 1320, height: 780)
         getBusinessAdData()
         DispatchQueue.main.async {
             self.tableView.reloadData()
@@ -215,7 +215,7 @@ class BannerAdsViewController: NSViewController {
         if showAllBusinessesButton.state == .on {
             let row = tableView.selectedRow
             if row < 0 {return}
-            currentBusiness = localDataController.businessArray[row]
+            currentBusiness = LocalBackupDataStorageController.venueArray[row]
         } else {
             let row = tableView.selectedRow
             if row < 0 {return}
@@ -225,7 +225,7 @@ class BannerAdsViewController: NSViewController {
     
     //MARK: NetworkCalls
     private func getBusinessAdData() {
-        ref.businessBannerAdDataPath.getDocuments { querySnapshot, error in
+        WorkingOffRemoteManager.allBannerDataPath.getDocuments { querySnapshot, error in
             if let error = error {
                 self.messageCenterTextField.stringValue = "\(error.localizedDescription)"
             } else {
@@ -255,7 +255,7 @@ class BannerAdsViewController: NSViewController {
     private func pushBusinessAd(_ bannerAd: BusinessBannerAd) {
         do {
             bannerAd.lastModified = Timestamp()
-            try ref.businessBannerAdDataPath.document(bannerAd.adID).setData(from: bannerAd)
+            try ProductionManager.allBannerDataPath.document(bannerAd.adID).setData(from: bannerAd)
             messageCenterTextField.stringValue = "Banner Ad Saved"
         } catch let error {
             messageCenterTextField.stringValue = error.localizedDescription
@@ -264,10 +264,16 @@ class BannerAdsViewController: NSViewController {
     
     private func deleteBannerAd() {
         if currentBannerAd != nil {
-            ref.businessBannerAdDataPath.document(currentBannerAd!.adID).delete()
-            messageCenterTextField.stringValue = "Delete Successful"
+            ProductionManager.allBannerDataPath.document(currentBannerAd!.adID).delete { err in
+                if let err = err {
+                    self.messageCenterTextField.stringValue = err.localizedDescription
+                } else {
+                    self.messageCenterTextField.stringValue = "Delete Successful"
+                }
+            }
+            
         } else {
-            messageCenterTextField.stringValue = "Delete Failed"
+            messageCenterTextField.stringValue = "No banner loaded to delete"
         }
     }
 }
@@ -285,7 +291,7 @@ extension BannerAdsViewController: NSTableViewDelegate, NSTableViewDataSource {
     
     func numberOfRows(in tableView: NSTableView) -> Int {
         if showAllBusinessesButton.state == .on {
-            return localDataController.businessArray.count
+            return LocalBackupDataStorageController.venueArray.count
         } else {
             return clientResultsArray.count
         }
@@ -296,7 +302,7 @@ extension BannerAdsViewController: NSTableViewDelegate, NSTableViewDataSource {
         if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "BusinessCell"), owner: nil) as? NSTableCellView {
             
             if showAllBusinessesButton.state == .on {
-                cell.textField?.stringValue = localDataController.businessArray[row].name
+                cell.textField?.stringValue = LocalBackupDataStorageController.venueArray[row].name
             } else {
                 cell.textField?.stringValue = clientResultsArray[row].businessName
             }
@@ -306,8 +312,3 @@ extension BannerAdsViewController: NSTableViewDelegate, NSTableViewDataSource {
     }
 }
 
-struct BannerAdsViewController_Previews: PreviewProvider {
-    static var previews: some View {
-        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
-    }
-}

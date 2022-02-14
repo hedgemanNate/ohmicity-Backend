@@ -11,8 +11,30 @@ import FirebaseFirestore
 class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
     
     //Properties
-    var currentBand: Band?
-    var shows: [Show] = []
+    var currentBand: Band? {
+        didSet {
+            updateViews()
+            addVariation.isEnabled = true
+        }
+    }
+    
+    var selectedBand: Band {
+        let tempBand = filteredBandArray[bandsTableView.selectedRow]
+        return tempBand
+    }
+    
+    //Arrays
+    var showsArray = [Show]() {
+        didSet {
+            showsTableView.reloadData()
+        }
+    }
+    
+    var filteredBandArray = [Band]() {
+        didSet {
+            bandsTableView.reloadData()
+        }
+    }
     var genreButtonArray: [NSButton] = []
     
     var image: NSImage?
@@ -20,14 +42,22 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     
     var timer = Timer()
     
+    //TableViews
+    @IBOutlet weak var bandsTableView: NSTableView!
+    @IBOutlet weak var showsTableView: NSTableView!
+    @IBOutlet weak var tagsTableView: NSTableView!
+    
+    
     //Views
-    @IBOutlet weak var tableView: NSTableView!
     @IBOutlet weak var logoImageView: NSImageView!
+    @IBOutlet weak var buttonBoxView: NSBox!
     
     //TextFields
     @IBOutlet weak var bandNameTextField: NSTextField!
     @IBOutlet weak var bandMediaLinkTextField: NSTextField!
-    @IBOutlet weak var buttonBoxView: NSBox!
+    @IBOutlet weak var searchTextField: NSSearchField!
+    @IBOutlet weak var alertTextField: NSTextField!
+    
     
     //Genre Buttons
     @IBOutlet weak var rockButton: NSButton!
@@ -46,27 +76,131 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     @IBOutlet weak var jamBandButton: NSButton!
     @IBOutlet weak var experimentalButton: NSButton!
     @IBOutlet weak var metalButton: NSButton!
+    @IBOutlet weak var latinButton: NSButton!
+    @IBOutlet weak var worldButton: NSButton!
+    @IBOutlet weak var folkButton: NSButton!
+    @IBOutlet weak var americanaButton: NSButton!
+    @IBOutlet weak var classicRockButton: NSButton!
+    @IBOutlet weak var classicalButton: NSButton!
     
     //Buttons
-    @IBOutlet weak var pushBandButton: NSButton!
     @IBOutlet weak var saveBandButton: NSButton!
     @IBOutlet weak var loadPictureButton: NSButton!
-    @IBOutlet weak var ohmPickButton: NSButtonCell!
+    @IBOutlet weak var ohmPickButton: NSButton!
     @IBOutlet weak var capitalize: NSButton!
+    @IBOutlet weak var makeSelectedTag: NSButton!
+    @IBOutlet weak var addVariation: NSButton!
+    @IBOutlet weak var deleteTag: NSButton!
+    @IBOutlet weak var deleteButton: NSButton!
+    @IBOutlet weak var copyAllBandsFromRemote: NSButton!
+    @IBOutlet weak var copySelectedBandFromRemote: NSButton!
+    @IBOutlet weak var backupSafetySwitch: NSButton!
+    @IBOutlet weak var saveBackupButton: NSButton!
+    @IBOutlet weak var loadBackupButton: NSButton!
+    @IBOutlet weak var filterDropDownButton: NSPopUpButton!
+    @IBOutlet weak var newButton: NSButton!
+    @IBOutlet weak var backupButton: NSButton!
+    @IBOutlet weak var remoteButton: NSButton!
     
+    
+    
+    //Labels
     @IBOutlet weak var lastUpdatedLabel: NSTextField!
+    @IBOutlet weak var bandIDLabel: NSTextField!
     
     
     
+    //MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.dataSource = self
-        tableView.delegate = self
-        updateViews()
+        self.preferredContentSize = NSSize(width: 1320, height: 860)
+        initialLoading()
+        
     }
     
     @IBAction func breaker(_ sender: Any) {
         
+    }
+    
+    //MARK: UpdateViews
+    private func updateViews() {
+        showsTableView.reloadData()
+        tagsTableView.reloadData()
+        
+        fillData()
+        showArraySetup()
+        
+        logoImageView.imageAlignment = .alignCenter
+        logoImageView.imageScaling = .scaleProportionallyDown
+        
+        
+        checkCurrentObject { [self] in
+            if currentBand?.ohmPick == true {
+                ohmPickButton.state = .on
+            }
+            
+            if currentBand!.photo != nil {
+                imageData = currentBand?.photo
+                image = NSImage(data: imageData! as Data)
+                logoImageView.image = image
+            } else {
+                logoImageView.image = .none
+            }
+            
+            dateFormatter.dateFormat = dateFormat4
+            guard let lastDate = currentBand?.lastModified.dateValue() else {return NSLog("No lastModified for \(currentBand?.name ?? "This Band")")}
+            
+            lastUpdatedLabel.stringValue = "\(dateFormatter.string(from: lastDate))"
+            
+        } ifNil: {
+            //DO NOTHING
+        }
+    }
+    
+    private func initialLoading() {
+        backupSafetySwitch.state = .off
+        saveBackupButton.isEnabled = false
+        loadBackupButton.isEnabled = false
+        remoteButton.state = .on
+        filteredBandArray = RemoteDataController.bandArray.sorted(by: {$0.name < $1.name})
+        bandsTableView.doubleAction = #selector(loadInBand)
+        bandsTableView.dataSource = self
+        bandsTableView.delegate = self
+        showsTableView.dataSource = self
+        showsTableView.delegate = self
+        tagsTableView.dataSource = self
+        tagsTableView.delegate = self
+        fillGenreButtonArray()
+        filteredBandArray = RemoteDataController.bandArray.sorted(by: {$0.name < $1.name})
+        
+    }
+    
+    private func fillGenreButtonArray() {
+        genreButtonArray = [
+            rockButton,
+            bluesButton,
+            jazzButton,
+            danceButton,
+            reggaeButton,
+            countryButton,
+            funkButton,
+            edmButton,
+            hiphopButton,
+            djButton,
+            popButton,
+            easyListeningButton,
+            gospelButton,
+            jamBandButton,
+            experimentalButton,
+            metalButton,
+            latinButton,
+            worldButton,
+            folkButton,
+            americanaButton,
+            classicRockButton,
+            classicalButton,
+            ohmPickButton
+        ]
     }
     
     private func buttonIndication(color: NSColor) {
@@ -88,87 +222,104 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
     }
     
     
-    //MARK: Buttons Tapped Functions
-    @IBAction func saveButtonTapped(_ sender: Any) {
+    //MARK: Band  Detail Buttons Functions
+    @IBAction func capitalizeButtonTapped(_ sender: Any) {
+        let oldName = bandNameTextField.stringValue
+        let lowerName = oldName.lowercased()
+        let finalName = lowerName.capitalized
         
-        
-        checkCurrentObject { [self] in
-            if localDataController.bandArray.contains(currentBand!) {
-                //Update Shows For Band
-                let oldBandName = currentBand?.name
-                let newBandName = bandNameTextField.stringValue
-                
-                
-                if oldBandName != newBandName {
-                    currentBand?.name = newBandName
-                    for var show in localDataController.showArray {
-                        if show.band == oldBandName {
-                            show.band = newBandName
-                            
-                            localDataController.showArray.removeAll(where: {$0 == show})
-                            show.lastModified = Timestamp()
-                            localDataController.showArray.append(show)
-                        }
-                    }
-                    localDataController.saveShowData()
-                }
-                
-                currentBand?.mediaLink = bandMediaLinkTextField.stringValue
-                currentBand?.photo = imageData
-                if ohmPickButton.state == .on {
-                    currentBand?.ohmPick = true
-                } else {
-                    currentBand?.ohmPick = false
-                }
-                
-                if localDataController.bandArray.contains(currentBand!) == false {
-                    localDataController.bandArray.append(currentBand!)
-                }
-                
-                currentBand?.lastModified = Timestamp()
-                
-                localDataController.saveBandData()
-                notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
-                buttonIndication(color: .green)
-                
-                
-                
-            } else {
-                localDataController.bandArray.append(currentBand!)
-                localDataController.saveBandData()
-                notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
-                buttonIndication(color: .green)
-            }
-            
-        } ifNil: { [self] in
-            let newBand = Band(name: bandNameTextField.stringValue, mediaLink: bandMediaLinkTextField.stringValue, ohmPick: ohmPickButton.state)
-            newBand.photo = imageData
-            newBand.lastModified = Timestamp()
-            
-            if localDataController.bandArray.contains(newBand) {
-                return
-                    buttonIndication(color: .orange)
-            }
-            
-            currentBand = newBand
-            localDataController.bandArray.append(newBand)
-            localDataController.saveBandData()
-            notificationCenter.post(name: NSNotification.Name("bandsUpdated"), object: nil)
-            buttonIndication(color: .green)
-        }
-
+        bandNameTextField.stringValue = finalName
     }
     
-    @IBAction func pushButtonTapped(_ sender: Any) {
-        let ref = FireStoreReferenceManager.bandDataPath
-        do {
-            currentBand?.lastModified = Timestamp()
-            try ref.document(currentBand!.bandID).setData(from: currentBand)
-            print("Maybe a good push to database: Wait for error")
-            buttonIndication(color: .green)
-        } catch let error {
-                NSLog(error.localizedDescription)
-            buttonIndication(color: .red)
+    @IBAction func clearButtonTapped(_ sender: Any) {
+        currentBand = nil
+        bandNameTextField.stringValue = ""
+        bandMediaLinkTextField.stringValue = ""
+        
+        DispatchQueue.main.async {
+            self.imageData = nil
+            self.image = nil
+            self.logoImageView.image = .none
+        }
+        
+        showsArray = []
+        for genre in genreButtonArray {
+            genre.state = .off
+        }
+    }
+    
+    @IBAction func clearPhotoButtonTapped(_ sender: Any) {
+        imageData = nil
+        image = nil
+        currentBand?.photo = nil
+        logoImageView.image = .none
+    }
+    
+    
+    @IBAction func saveButtonTapped(_ sender: Any) {
+        let alert = NSAlert()
+        alert.alertStyle = .informational
+        
+        if currentBand == nil {
+            alert.messageText = "Create New Band"
+            alert.informativeText = "Creating a new band will use the information filled out on this page."
+            alert.addButton(withTitle: "Cancel")
+            alert.addButton(withTitle: "Create New Band")
+        }
+        
+        if currentBand != nil {
+            alert.messageText = "Create New Band Or Update Current Band"
+            alert.informativeText = "Creating a new band will use the information filled out on this page."
+            alert.addButton(withTitle: "Cancel")
+            alert.addButton(withTitle: "Create New Band")
+            alert.addButton(withTitle: "Update")
+        }
+        
+        let res = alert.runModal()
+        
+        switch res {
+        case .alertSecondButtonReturn:
+            createNewBand()
+        case .alertThirdButtonReturn:
+            updateBand()
+        default:
+            break
+        }
+    }
+    
+    @IBAction func goToLinkButtonTapped(_ sender: Any) {
+        if bandMediaLinkTextField.stringValue != "" {
+            let url = URL(string: "\(bandMediaLinkTextField.stringValue)")!
+            NSWorkspace.shared.open(url)
+        } else {
+            alertTextField.stringValue = "Band has no media link".capitalized
+        }
+    }
+    
+    @IBAction func deleteLoadedButtonTapped(_ sender: Any) {
+        guard let currentBand = currentBand else {return}
+        checkCurrentObject {
+            workRef.bandDataPath.document(currentBand.bandID).delete { err in
+                if let err = err {
+                    self.alertTextField.stringValue = err.localizedDescription
+                } else {
+                    TagController.bandTags.removeAll(where: {$0.bandID == currentBand.bandID})
+                    LocalBackupDataStorageController.saveBandTagData()
+                    RemoteDataController.bandArray.removeAll(where: {$0 == self.currentBand})
+                    self.currentBand = nil
+                    self.updateViews()
+                    self.alertTextField.stringValue = "\(currentBand.name) and there tag was deleted"
+                    
+                    
+                    DispatchQueue.main.async {
+                        self.reloadAllTableViews()
+                    }
+                }
+            }
+            
+            
+        } ifNil: {
+            self.alertTextField.stringValue = "COULD NOT DELETE BECAUSE NO BAND IS LOADED"
         }
     }
     
@@ -195,15 +346,205 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
         }
     }
     
-    @IBAction func capitalizeButtonTapped(_ sender: Any) {
-        let oldName = bandNameTextField.stringValue
-        let lowerName = oldName.lowercased()
-        let finalName = lowerName.capitalized
-        
-        bandNameTextField.stringValue = finalName
+    //MARK: Tag Buttons Functions
+    
+    @IBAction func addVariationButtonTapped(_ sender: Any) {
+        guard let currentBand = currentBand else {return}
+
+        let tag = TagController.bandTags.first(where: {$0.bandID == currentBand.bandID})
+        tag?.variations.append(bandNameTextField.stringValue)
+        tagsTableView.reloadData()
+        LocalBackupDataStorageController.saveBandTagData()
+    }
+    
+    @IBAction func deleteVariationButtonTapped(_ sender: Any) {
+        let tag = TagController.bandTags.first(where: {$0.bandID == selectedBand.bandID})
+        let selectedVariation = tag?.variations[tagsTableView.selectedRow]
+        guard let index = tag?.variations.firstIndex(where: {$0 == selectedVariation}) else {return}
+        tag?.variations.remove(at: index)
+        tagsTableView.reloadData()
+        LocalBackupDataStorageController.saveBandTagData()
     }
     
     
+    //MARK: Band List Buttons Functions
+    @IBAction func makeSelectedButtonTapped(_ sender: Any) {
+        if bandsTableView.numberOfSelectedRows == 0 {return}
+        let tempBand = selectedBand
+        guard let currentBand = currentBand else { return }
+        
+        let alert = NSAlert()
+        alert.alertStyle = .critical
+        alert.messageText = "Are You Sure?"
+        alert.addButton(withTitle: "Yes. Do it.")
+        alert.addButton(withTitle: "Cancel")
+        alert.informativeText = "Make \(tempBand.name) a TAG for \(currentBand.name) and delete \(tempBand.name) from band list?"
+        let res = alert.runModal()
+        
+        //Adds functionality to the first button (Yes. Do it")
+        if res == .alertFirstButtonReturn {
+            makeBandATag()
+        }
+    }
+    
+    @IBAction func removeNoShowBandsButtonTapped(_ sender: Any) {
+        for band in RemoteDataController.bandArray {
+            if band.photo == nil && !RemoteDataController.showArray.contains(where: {$0.band == band.bandID}) {
+                workRef.bandDataPath.document(band.bandID).delete { err in
+                    if let err = err {
+                        self.alertTextField.stringValue = err.localizedDescription
+                    } else {
+                        self.alertTextField.stringValue = "Bands with no shows or pictures were deleted from database."
+                        RemoteDataController.bandArray.removeAll(where: {$0 == band})
+                        DispatchQueue.main.async {
+                            self.bandsTableView.reloadData()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    @IBAction func deleteSelectedBand(_ sender: Any) {
+        let tempBand = selectedBand
+        
+        ref.bandDataPath.document(tempBand.bandID).delete { err in
+            if let err = err {
+                self.alertTextField.stringValue = "\(err.localizedDescription)"
+            } else {
+                self.alertTextField.stringValue = "\(tempBand.name) was deleted from the database."
+                RemoteDataController.bandArray.removeAll(where: {$0.bandID == tempBand.bandID})
+                TagController.bandTags.removeAll(where: {$0.bandID == tempBand.bandID})
+                DispatchQueue.main.async {
+                    self.reloadAllTableViews()
+                }
+            }
+        }
+    }
+    
+    
+    @IBAction func filterButtonTapped(_ sender: Any) {
+        switch filterDropDownButton.indexOfSelectedItem {
+        case 0:
+            filteredBandArray = RemoteDataController.bandArray.filter({$0.photo != nil})
+            
+        case 1:
+            filteredBandArray = RemoteDataController.bandArray.filter({$0.photo == nil})
+            
+        case 2: filteredBandArray = RemoteDataController.bandArray.filter({$0.ohmPick == true})
+        
+        default:
+            break
+        }
+    }
+    
+    @IBAction func clearFilterButtonTapped(_ sender: Any) {
+        filteredBandArray = RemoteDataController.bandArray
+    }
+    
+    //MARK: Band Data Backup Functions
+    @IBAction func backupSafetySwitch(_ sender: Any) {
+        switch backupSafetySwitch.state {
+        case .off:
+            saveBackupButton.isEnabled = false
+            loadBackupButton.isEnabled = false
+        case .on:
+            saveBackupButton.isEnabled = true
+            loadBackupButton.isEnabled = true
+        default:
+            break
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) { [self] in
+            backupSafetySwitch.state = .off
+            saveBackupButton.isEnabled = false
+            loadBackupButton.isEnabled = false
+        }
+    }
+    
+    @IBAction func saveBackupButtonTapped(_ sender: Any) {
+        if RemoteDataController.bandArray == [] {
+            alertTextField.stringValue = "There is no data from the database to backup. Try restarting the program to get data from database. This should not have happened."
+            return
+        }
+        backupSafetySwitch.state = .off
+        saveBackupButton.isEnabled = false
+        loadBackupButton.isEnabled = false
+        LocalBackupDataStorageController.bandArray = RemoteDataController.bandArray
+        LocalBackupDataStorageController.saveBackupBandData()
+        alertTextField.stringValue = "Band Data Backup Saved"
+    }
+    
+    @IBAction func loadBackupButtonTapped(_ sender: Any) {
+        if backupButton.state == .on {
+            LocalBackupDataStorageController.loadBackupBandData()
+            alertTextField.stringValue = "Band Data Backup Loaded"
+        } else {
+            alertTextField.stringValue = "Select Backup Radial before loading Backup"
+        }
+        backupSafetySwitch.state = .off
+        saveBackupButton.isEnabled = false
+        loadBackupButton.isEnabled = false
+        
+        if backupButton.state == .on {
+            filteredBandArray = LocalBackupDataStorageController.bandArray
+        }
+    }
+    
+    
+    
+    //MARK: Radio Buttons
+    
+    @IBAction func radioButtonsChanged(_ sender: Any) {
+        if newButton.state == .on {
+            if searchTextField.stringValue == "" {
+                filteredBandArray = LocalBackupDataStorageController.bandArray.sorted(by: {$0.lastModified.seconds < $1.lastModified.seconds})
+            } else {
+                filteredBandArray = LocalBackupDataStorageController.bandArray.filter({$0.name.localizedCaseInsensitiveContains(searchTextField.stringValue)})
+            }
+            
+            
+        } else if backupButton.state == .on {
+            if searchTextField.stringValue == "" {
+                filteredBandArray = LocalBackupDataStorageController.bandArray.sorted(by: {$0.name < $1.name})
+            } else {
+                filteredBandArray = LocalBackupDataStorageController.bandArray.filter({$0.name.localizedCaseInsensitiveContains(searchTextField.stringValue)})
+            }
+            
+            
+        } else if remoteButton.state == .on {
+            filteredBandArray = RemoteDataController.bandArray
+            if searchTextField.stringValue == "" {
+                filteredBandArray = RemoteDataController.bandArray
+            } else {
+                filteredBandArray = filteredBandArray.filter({$0.name.localizedCaseInsensitiveContains(searchTextField.stringValue)})
+            }
+        }
+    }
+    
+    //MARK: Search TextField
+    @IBAction func searchingTextField(_ sender: Any) {
+        if backupButton.state == .on {
+            if searchTextField.stringValue == "" {
+                filteredBandArray = LocalBackupDataStorageController.bandArray.sorted(by: {$0.name < $1.name})
+            } else {
+                filteredBandArray = LocalBackupDataStorageController.bandArray.filter({$0.name.localizedCaseInsensitiveContains(searchTextField.stringValue)})
+            }
+        } else if remoteButton.state == .on {
+            if searchTextField.stringValue == "" {
+                filteredBandArray = RemoteDataController.bandArray
+            } else {
+                filteredBandArray = RemoteDataController.bandArray.filter({$0.name.localizedCaseInsensitiveContains(searchTextField.stringValue)})
+            }
+        } else if newButton.state == .on {
+            if searchTextField.stringValue == "" {
+                filteredBandArray = LocalBackupDataStorageController.bandArray.sorted(by: {$0.lastModified.seconds < $1.lastModified.seconds})
+            } else {
+                filteredBandArray = LocalBackupDataStorageController.bandArray.filter({$0.name.localizedCaseInsensitiveContains(searchTextField.stringValue)})
+            }
+        }
+    }
     
     //MARK: Genre CheckBoxes Tapped
     @IBAction func rockButtonTapped(_ sender: Any) {
@@ -290,7 +631,6 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
             currentBand?.genre.removeAll(where: {$0 == Genre.Metal})
         }
     }
-    
     @IBAction func experimentalButtonTapped(_ sender: Any) {
         if experimentalButton.state == .on {
             currentBand?.genre.append(Genre.Experimental)
@@ -298,7 +638,6 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
             currentBand?.genre.removeAll(where: {$0 == Genre.Experimental})
         }
     }
-    
     @IBAction func easyListeningButtonTapped(_ sender: Any) {
         if easyListeningButton.state == .on {
             currentBand?.genre.append(Genre.EasyListening)
@@ -306,7 +645,6 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
             currentBand?.genre.removeAll(where: {$0 == Genre.EasyListening})
         }
     }
-    
     @IBAction func gospelButtonTapped(_ sender: Any) {
         if gospelButton.state == .on {
             currentBand?.genre.append(Genre.Gospel)
@@ -314,7 +652,6 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
             currentBand?.genre.removeAll(where: {$0 == Genre.Gospel})
         }
     }
-    
     @IBAction func jamBandButtonTapped(_ sender: Any) {
         if jamBandButton.state == .on {
             currentBand?.genre.append(Genre.JamBand)
@@ -322,69 +659,189 @@ class BandDetailViewController: NSViewController, NSTableViewDelegate, NSTableVi
             currentBand?.genre.removeAll(where: {$0 == Genre.JamBand})
         }
     }
-    
-    
-    
-    //MARK: UpdateViews
-    private func updateViews() {
-        showArraySetup()
-        reloadTableView()
-        fillData()
-        
-        logoImageView.imageAlignment = .alignCenter
-        logoImageView.imageScaling = .scaleProportionallyDown
-        
-        checkCurrentObject { [self] in
-            title = "Edit \(currentBand!.name)"
-            if currentBand?.ohmPick == true {
-                ohmPickButton.state = .on
-            }
-            
-            if currentBand!.photo != nil {
-                imageData = currentBand?.photo
-                image = NSImage(data: imageData! as Data)
-                logoImageView.image = image
-            }
-            
-            dateFormatter.dateFormat = dateFormat4
-            guard let lastDate = currentBand?.lastModified.dateValue() else {return NSLog("No lastModified for \(currentBand?.name ?? "This Band")")}
-            
-            lastUpdatedLabel.stringValue = "\(dateFormatter.string(from: lastDate))"
-            
-        } ifNil: { [self] in
-            
+    //Not Connected
+    @IBAction func latinButtonTapped(_ sender: Any) {
+        if latinButton.state == .on {
+            //currentBand?.genre.append(Genre.JamBand)
+        } else {
+            //currentBand?.genre.removeAll(where: {$0 == Genre.JamBand})
         }
-
+    }
+    @IBAction func worldButtonTapped(_ sender: Any) {
+        if worldButton.state == .on {
+            //currentBand?.genre.append(Genre.JamBand)
+        } else {
+            //currentBand?.genre.removeAll(where: {$0 == Genre.JamBand})
+        }
+    }
+    @IBAction func folkButtonTapped(_ sender: Any) {
+        if folkButton.state == .on {
+            //currentBand?.genre.append(Genre.JamBand)
+        } else {
+            //currentBand?.genre.removeAll(where: {$0 == Genre.JamBand})
+        }
+    }
+    @IBAction func americanaButtonTapped(_ sender: Any) {
+        if americanaButton.state == .on {
+            //currentBand?.genre.append(Genre.JamBand)
+        } else {
+            //currentBand?.genre.removeAll(where: {$0 == Genre.JamBand})
+        }
+    }
+    @IBAction func classicRockButtonTapped(_ sender: Any) {
+        if classicRockButton.state == .on {
+            //currentBand?.genre.append(Genre.JamBand)
+        } else {
+            //currentBand?.genre.removeAll(where: {$0 == Genre.JamBand})
+        }
+    }
+    @IBAction func classicalButtonTapped(_ sender: Any) {
+        if classicalButton.state == .on {
+            //currentBand?.genre.append(Genre.JamBand)
+        } else {
+            //currentBand?.genre.removeAll(where: {$0 == Genre.JamBand})
+        }
     }
     
 }
-
-//MARK: Helper Functions
-extension BandDetailViewController {
     
+
+//MARK: Functions
+extension BandDetailViewController {
     
     private func showArraySetup() {
         checkCurrentObject { [self] in
-            shows = localDataController.showArray.filter({$0.band == currentBand!.name})
+            showsArray = RemoteDataController.showArray.filter({$0.band == currentBand!.bandID})
+            showsTableView.reloadData()
         } ifNil: {
             return
         }
-
-        
     }
     
-    private func reloadTableView() {
+    private func reloadAllTableViews() {
         DispatchQueue.main.async {
-            self.tableView.reloadData()
+            self.showsTableView.reloadData()
+            self.tagsTableView.reloadData()
+            self.bandsTableView.reloadData()
+        }
+    }
+    
+    @objc private func loadInBand() {
+        currentBand = selectedBand
+        showsArray = LocalBackupDataStorageController.showArray.filter({$0.band == selectedBand.name})
+        updateViews()
+    }
+    
+    private func makeBandATag() {
+        let tempBand = selectedBand
+        guard let currentBand = currentBand else { return }
+        guard let currentBandTags = TagController.bandTags.first(where: {$0.bandID == currentBand.bandID}) else { return }
+        
+        workRef.bandDataPath.document(tempBand.bandID).delete { err in
+            if let err = err {
+                self.alertTextField.stringValue = err.localizedDescription
+            } else {
+                currentBandTags.variations.append(tempBand.name)
+                RemoteDataController.bandArray.removeAll(where: {$0.bandID == tempBand.bandID})
+                self.filteredBandArray.removeAll(where: {$0.bandID == tempBand.bandID})
+                
+                TagController.bandTags.removeAll(where: {$0.bandID == tempBand.bandID})
+                LocalBackupDataStorageController.saveBandTagData()
+                
+                DispatchQueue.main.async {
+                    self.reloadAllTableViews()
+                }
+            }
+        }
+    }
+    
+    private func createNewBand() {
+        if bandNameTextField.stringValue.count < 3 {
+            alertTextField.stringValue = "Fill out more information to create a band"
+            return
+        }
+        
+        let newBand = Band(name: bandNameTextField.stringValue, mediaLink: bandMediaLinkTextField.stringValue, ohmPick: ohmPickButton.state)
+        newBand.photo = imageData
+        newBand.lastModified = Timestamp()
+        
+        
+        let newTag = BandTag(band: newBand)
+        currentBand = newBand
+        
+        
+        do {
+            try workRef.bandDataPath.document(newBand.bandID).setData(from: currentBand, completion: { err in
+                if let err = err {
+                    self.alertTextField.stringValue = err.localizedDescription
+                } else {
+                    self.alertTextField.stringValue = "Band added on database"
+                    LocalBackupDataStorageController.bandArray.append(newBand)
+                    TagController.bandTags.append(newTag)
+                    LocalBackupDataStorageController.saveBandData()
+                    LocalBackupDataStorageController.saveBandTagData()
+                    self.buttonIndication(color: .green)
+                    
+                    DispatchQueue.main.async {
+                        self.reloadAllTableViews()
+                    }
+                }
+            })
+        } catch let error {
+            self.alertTextField.stringValue = error.localizedDescription
+            self.buttonIndication(color: .red)
+        }
+    }
+    
+    private func updateBand() {
+        if bandNameTextField.stringValue.count < 3 {
+            alertTextField.stringValue = "Fill out more information to update this band"
+            return
+        }
+        guard let currentBand = currentBand else {return}
+        
+        currentBand.name = bandNameTextField.stringValue
+        currentBand.mediaLink = bandMediaLinkTextField.stringValue
+        currentBand.photo = imageData
+        if ohmPickButton.state == .on {
+            currentBand.ohmPick = true
+        } else {
+            currentBand.ohmPick = false
+        }
+        currentBand.lastModified = Timestamp()
+        
+        do {
+            try workRef.bandDataPath.document(currentBand.bandID).setData(from: currentBand, completion: { err in
+                if let err = err {
+                    self.alertTextField.stringValue = err.localizedDescription
+                } else {
+                    self.alertTextField.stringValue = "Band updated on database"
+                    LocalBackupDataStorageController.saveBandData()
+                    self.buttonIndication(color: .green)
+                    
+                    DispatchQueue.main.async {
+                        self.reloadAllTableViews()
+                    }
+                }
+            })
+        } catch let error {
+            self.alertTextField.stringValue = error.localizedDescription
+            self.buttonIndication(color: .red)
         }
     }
     
     private func fillData() {
+        for genre in genreButtonArray {
+            genre.state = .off
+        }
+        
         checkCurrentObject() { [self] in
             bandNameTextField.stringValue = currentBand!.name
             bandMediaLinkTextField.stringValue = currentBand!.mediaLink ?? ""
+            bandIDLabel.stringValue = currentBand!.bandID
             
             if currentBand != nil {
+                
                 for genre in currentBand!.genre {
                     switch genre {
                     case .Rock:
@@ -419,6 +876,42 @@ extension BandDetailViewController {
                         gospelButton.state = .on
                     case .EasyListening:
                         easyListeningButton.state = .on
+                    /*
+                    case .latin:
+                        latinButton.state = .on
+                    case .world:
+                        worldButton.state = .on
+                    case .folk:
+                        folkButton.state = .on
+                    case .americana:
+                        americanaButton.state = .on
+                    case classicRock:
+                        classicRockButton.state = .on
+                    case classical:
+                        classicalButton.state = .on
+                    */
+                    case .NA:
+                        break
+                    case .SynthPop:
+                        break
+                    case .RnB:
+                        break
+                    case .Latin:
+                        break
+                    case .Folk:
+                        break
+                    case .Soul:
+                        break
+                    case .Americana:
+                        break
+                    case .ClassicRock:
+                        break
+                    case .World:
+                        break
+                    case .Alternative:
+                        break
+                    case .BlueGrass:
+                        break
                     }
                 }
             }
@@ -435,30 +928,115 @@ extension BandDetailViewController {
         }
     }
     
+    private func checkIfShowIsSpecial(show: Show, cell: NSTableCellView) -> NSTableCellView {
+        if show.onHold {
+            cell.textField?.textColor = .red
+        }
+        
+        if show.ohmPick {
+            cell.textField?.textColor = .purple
+        }
+        
+        return cell
+    }
+    
+}
+
+
+//MARK: Database Functions
+extension BandDetailViewController {
+    
 }
 
 //MARK: Tableview
 extension BandDetailViewController {
     
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return shows.count
+        switch tableView {
+        case showsTableView:
+            return showsArray.count
+            
+        case bandsTableView:
+            return filteredBandArray.count
+            
+        case tagsTableView:
+            return TagController.bandTags.first(where: {$0.bandID == currentBand?.bandID})?.variations.count ?? 0
+        
+        default:
+            return 0
+        }
+        
     }
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "Band") {
-            let bandIdentifier = NSUserInterfaceItemIdentifier("BandCell")
-            guard let cellView = tableView.makeView(withIdentifier: bandIdentifier, owner: self) as? NSTableCellView else {return nil}
-            cellView.textField?.stringValue = shows[row].venue
-            return cellView
+        
+        switch tableView {
+        case showsTableView:
+            if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "Venue") {
+                guard let venue = LocalBackupDataStorageController.venueArray.first(where: {$0.venueID == showsArray[row].venue}) else {return NSTableCellView()}
+                
+                let venueIdentifier = NSUserInterfaceItemIdentifier("VenueCell")
+                guard let cell = tableView.makeView(withIdentifier: venueIdentifier, owner: self) as? NSTableCellView else {return nil}
+                cell.textField?.stringValue = venue.name
+                
+                return checkIfShowIsSpecial(show: showsArray[row], cell: cell)
+                
+            } else if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "Time") {
+                let showTimeIdentifier = NSUserInterfaceItemIdentifier("TimeCell")
+                guard let cell = tableView.makeView(withIdentifier: showTimeIdentifier, owner: self) as? NSTableCellView else {return nil}
+                let showTime = showsArray[row].dateString
+                cell.textField?.stringValue = showTime
+                return checkIfShowIsSpecial(show: showsArray[row], cell: cell)
+            }
+            return nil
             
-        } else if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "Time") {
-            let showTimeIdentifier = NSUserInterfaceItemIdentifier("TimeCell")
-            guard let cellView = tableView.makeView(withIdentifier: showTimeIdentifier, owner: self) as? NSTableCellView else {return nil}
-            let showTime = shows[row].dateString.replacingOccurrences(of: "\n", with: " ")
-            cellView.textField?.stringValue = showTime
-            return cellView
+        case bandsTableView:
+            if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "OhmColumn") {
+                let ohmColumnIdentifier = NSUserInterfaceItemIdentifier("OhmCell")
+                guard let cell = tableView.makeView(withIdentifier: ohmColumnIdentifier, owner: self) as? NSTableCellView else {return nil}
+                
+                if filteredBandArray[row].ohmPick == true { cell.textField?.stringValue = "Xity Pick" } else { cell.textField?.stringValue = "" }
+                cell.textField?.textColor = .purple
+                return cell
+                
+            } else if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "BandNameColumn") {
+                let bandNameCellIdentifier = NSUserInterfaceItemIdentifier("BandNameCell")
+                guard let cell = tableView.makeView(withIdentifier: bandNameCellIdentifier, owner: self) as? NSTableCellView else {return nil}
+                
+                cell.textField?.stringValue = filteredBandArray[row].name
+                cell.textField?.textColor = .white
+                if filteredBandArray[row].photo != nil { cell.textField?.textColor = .orange}
+                cell.prepareForReuse()
+                return cell
+                
+            } else if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "BandIDColumn") {
+                let bandIDCellIdentifier = NSUserInterfaceItemIdentifier("BandIDCell")
+                guard let cell = tableView.makeView(withIdentifier: bandIDCellIdentifier, owner: self) as? NSTableCellView else {return nil}
+                
+                cell.textField?.stringValue = filteredBandArray[row].bandID
+                return cell
+                
+            } else if tableColumn?.identifier == NSUserInterfaceItemIdentifier(rawValue: "NumberColumn") {
+                let bandNumberCellIdentifier = NSUserInterfaceItemIdentifier("BandNumberCell")
+                guard let cell = tableView.makeView(withIdentifier: bandNumberCellIdentifier, owner: self) as? NSTableCellView else {return nil}
+                
+                cell.textField?.stringValue = "\(row + 1)"
+                cell.textField?.textColor = .white
+                if filteredBandArray[row].photo != nil { cell.textField?.textColor = .orange}
+                if filteredBandArray[row].ohmPick == true { cell.textField?.textColor = .purple}
+                cell.prepareForReuse()
+                return cell
+                
+            }
+            return nil
             
+        case tagsTableView:
+            let tagCell = NSUserInterfaceItemIdentifier("TagCell")
+            guard let cell = tableView.makeView(withIdentifier: tagCell, owner: self) as? NSTableCellView else {return nil}
+            cell.textField?.stringValue = TagController.bandTags.first(where: {$0.bandID == currentBand?.bandID})?.variations[row] ?? "No Variations Found"
+            return cell
+        default:
+            return nil
         }
-        return nil
     }
 }

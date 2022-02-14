@@ -16,13 +16,18 @@
 		D85AC754267BB02B00CEA95B /* RemoteDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85AC753267BB02B00CEA95B /* RemoteDataController.swift */; };
 		D85F3D1D267CF2FC001BCFCA /* FireStoreReferenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85F3D1C267CF2FC001BCFCA /* FireStoreReferenceManager.swift */; };
 		F610AA3A2669309100EC2E8A /* VenueDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610AA382669309100EC2E8A /* VenueDetailViewController.swift */; };
-		F610AA3F26699EE700EC2E8A /* LocalDataStorageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610AA3E26699EE700EC2E8A /* LocalDataStorageController.swift */; };
+		F610AA3F26699EE700EC2E8A /* LocalBackupDataStorageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F610AA3E26699EE700EC2E8A /* LocalBackupDataStorageController.swift */; };
 		F615064B268E67E200C4B808 /* Ohmicity Logo Banner.png in Resources */ = {isa = PBXBuildFile; fileRef = F615064A268E67E200C4B808 /* Ohmicity Logo Banner.png */; };
 		F615064D268E680B00C4B808 /* 1200px-American_Heart_Association_Logo.svg.png in Resources */ = {isa = PBXBuildFile; fileRef = F615064C268E680B00C4B808 /* 1200px-American_Heart_Association_Logo.svg.png */; };
 		F61683F626AD0490009CB284 /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61683F526AD0490009CB284 /* MainTableViewCell.swift */; };
 		F617385D26D858A40084B2CB /* BannerAdsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617385C26D858A40084B2CB /* BannerAdsViewController.swift */; };
 		F617385F26D85C8E0084B2CB /* BusinessBannerAd.swift in Sources */ = {isa = PBXBuildFile; fileRef = F617385E26D85C8E0084B2CB /* BusinessBannerAd.swift */; };
-		F630FC0726583E5A001D0DA6 /* RawJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = F630FC0626583E5A001D0DA6 /* RawJSON.swift */; };
+		F630FC0726583E5A001D0DA6 /* ShowData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F630FC0626583E5A001D0DA6 /* ShowData.swift */; };
+		F6334C0E2786504D00CD0A4F /* Tags.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6334C0D2786504D00CD0A4F /* Tags.swift */; };
+		F6334C102786511100CD0A4F /* TagController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6334C0F2786511100CD0A4F /* TagController.swift */; };
+		F63837872793E14300838858 /* ProductionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63837862793E14300838858 /* ProductionData.swift */; };
+		F638378B2793FA8B00838858 /* ProductionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F638378A2793FA8B00838858 /* ProductionController.swift */; };
+		F651C91C278605F600FCD0AA /* ImportShowsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F651C91B278605F600FCD0AA /* ImportShowsViewController.swift */; };
 		F655439F2689ABA300F823BA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F655439E2689ABA300F823BA /* GoogleService-Info.plist */; };
 		F6578F4A268D032E00AC25CE /* BusinessPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6578F48268D032E00AC25CE /* BusinessPhoto.swift */; };
 		F6578F4B268D032E00AC25CE /* BusinessPhoto.xib in Resources */ = {isa = PBXBuildFile; fileRef = F6578F49268D032E00AC25CE /* BusinessPhoto.xib */; };
@@ -30,18 +35,24 @@
 		F65B06A9266C3EC300616BD9 /* ShowDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65B06A7266C3EC300616BD9 /* ShowDetailViewController.swift */; };
 		F65B06AD266C95AF00616BD9 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65B06AC266C95AF00616BD9 /* Helper.swift */; };
 		F65DC07726E5DBA300340C07 /* BulkShowCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65DC07526E5DBA300340C07 /* BulkShowCreationViewController.swift */; };
+		F66E7018278901C700C11B18 /* OpeningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66E7016278901C700C11B18 /* OpeningViewController.swift */; };
 		F676F0E92698DAA400C47599 /* Recommendation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F676F0E82698DAA400C47599 /* Recommendation.swift */; };
 		F676F0EB2698DB4100C47599 /* Rating.swift in Sources */ = {isa = PBXBuildFile; fileRef = F676F0EA2698DB4100C47599 /* Rating.swift */; };
 		F676F0ED2698DD5900C47599 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = F676F0EC2698DD5900C47599 /* Message.swift */; };
+		F67DA271278D2C4000DB0820 /* DatabaseUtilityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67DA270278D2C4000DB0820 /* DatabaseUtilityViewController.swift */; };
+		F68A6CF027794A0B009DCB8F /* RecommendationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68A6CEE27794A0B009DCB8F /* RecommendationsViewController.swift */; };
 		F6936DC426A0DA6C00E5FA7F /* Enumerations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6936DC326A0DA6C00E5FA7F /* Enumerations.swift */; };
+		F69F94A32786868A00D060D3 /* BandTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69F94A12786868A00D060D3 /* BandTagViewController.swift */; };
+		F69F94A7278692B700D060D3 /* VenueTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69F94A5278692B700D060D3 /* VenueTagViewController.swift */; };
 		F6A2D74F2656F05900C50456 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A2D74D2656F05900C50456 /* MainViewController.swift */; };
 		F6A2D7502656F05900C50456 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F6A2D74E2656F05900C50456 /* MainViewController.xib */; };
 		F6C31F552656E57B004A1BB2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C31F542656E57B004A1BB2 /* AppDelegate.swift */; };
 		F6C31F592656E57B004A1BB2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F6C31F582656E57B004A1BB2 /* Assets.xcassets */; };
 		F6C31F5C2656E57B004A1BB2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6C31F5A2656E57B004A1BB2 /* Main.storyboard */; };
-		F6C5930C26585F1A000E0245 /* ParseDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C5930B26585F1A000E0245 /* ParseDataController.swift */; };
+		F6C5930C26585F1A000E0245 /* RawShowDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C5930B26585F1A000E0245 /* RawShowDataController.swift */; };
 		F6D80C44266AF93200A18ED2 /* Band.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D80C43266AF93200A18ED2 /* Band.swift */; };
 		F6D80C4B266B0FEF00A18ED2 /* Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D80C4A266B0FEF00A18ED2 /* Show.swift */; };
+		F6DE75B12798FD4B0033C807 /* DefaultBand.png in Resources */ = {isa = PBXBuildFile; fileRef = F6DE75B02798FD4B0033C807 /* DefaultBand.png */; };
 		F6F11E8C267FEAFD00E6368A /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = F6F11E8B267FEAFD00E6368A /* Podfile */; };
 /* End PBXBuildFile section */
 
@@ -58,14 +69,19 @@
 		D85AC753267BB02B00CEA95B /* RemoteDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDataController.swift; sourceTree = "<group>"; };
 		D85F3D1C267CF2FC001BCFCA /* FireStoreReferenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireStoreReferenceManager.swift; sourceTree = "<group>"; };
 		F610AA382669309100EC2E8A /* VenueDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueDetailViewController.swift; sourceTree = "<group>"; };
-		F610AA3E26699EE700EC2E8A /* LocalDataStorageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataStorageController.swift; sourceTree = "<group>"; };
+		F610AA3E26699EE700EC2E8A /* LocalBackupDataStorageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalBackupDataStorageController.swift; sourceTree = "<group>"; };
 		F615064A268E67E200C4B808 /* Ohmicity Logo Banner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Ohmicity Logo Banner.png"; sourceTree = "<group>"; };
 		F615064C268E680B00C4B808 /* 1200px-American_Heart_Association_Logo.svg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "1200px-American_Heart_Association_Logo.svg.png"; sourceTree = "<group>"; };
 		F61683F526AD0490009CB284 /* MainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
 		F617385C26D858A40084B2CB /* BannerAdsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerAdsViewController.swift; sourceTree = "<group>"; };
 		F617385E26D85C8E0084B2CB /* BusinessBannerAd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessBannerAd.swift; sourceTree = "<group>"; };
 		F6292DD52656F58000DAE6B5 /* PythonTests.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = PythonTests.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		F630FC0626583E5A001D0DA6 /* RawJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawJSON.swift; sourceTree = "<group>"; };
+		F630FC0626583E5A001D0DA6 /* ShowData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowData.swift; sourceTree = "<group>"; };
+		F6334C0D2786504D00CD0A4F /* Tags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tags.swift; sourceTree = "<group>"; };
+		F6334C0F2786511100CD0A4F /* TagController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagController.swift; sourceTree = "<group>"; };
+		F63837862793E14300838858 /* ProductionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductionData.swift; sourceTree = "<group>"; };
+		F638378A2793FA8B00838858 /* ProductionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductionController.swift; sourceTree = "<group>"; };
+		F651C91B278605F600FCD0AA /* ImportShowsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportShowsViewController.swift; sourceTree = "<group>"; };
 		F655439E2689ABA300F823BA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F6578F48268D032E00AC25CE /* BusinessPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessPhoto.swift; sourceTree = "<group>"; };
 		F6578F49268D032E00AC25CE /* BusinessPhoto.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BusinessPhoto.xib; sourceTree = "<group>"; };
@@ -73,10 +89,15 @@
 		F65B06A7266C3EC300616BD9 /* ShowDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDetailViewController.swift; sourceTree = "<group>"; };
 		F65B06AC266C95AF00616BD9 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		F65DC07526E5DBA300340C07 /* BulkShowCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulkShowCreationViewController.swift; sourceTree = "<group>"; };
+		F66E7016278901C700C11B18 /* OpeningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpeningViewController.swift; sourceTree = "<group>"; };
 		F676F0E82698DAA400C47599 /* Recommendation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recommendation.swift; sourceTree = "<group>"; };
 		F676F0EA2698DB4100C47599 /* Rating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rating.swift; sourceTree = "<group>"; };
 		F676F0EC2698DD5900C47599 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		F67DA270278D2C4000DB0820 /* DatabaseUtilityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseUtilityViewController.swift; sourceTree = "<group>"; };
+		F68A6CEE27794A0B009DCB8F /* RecommendationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationsViewController.swift; sourceTree = "<group>"; };
 		F6936DC326A0DA6C00E5FA7F /* Enumerations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enumerations.swift; sourceTree = "<group>"; };
+		F69F94A12786868A00D060D3 /* BandTagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BandTagViewController.swift; sourceTree = "<group>"; };
+		F69F94A5278692B700D060D3 /* VenueTagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueTagViewController.swift; sourceTree = "<group>"; };
 		F6A2D74D2656F05900C50456 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		F6A2D74E2656F05900C50456 /* MainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
 		F6C31F512656E57B004A1BB2 /* Ohmicity Backend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Ohmicity Backend.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -85,9 +106,10 @@
 		F6C31F5B2656E57B004A1BB2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F6C31F5D2656E57B004A1BB2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F6C31F5E2656E57B004A1BB2 /* Ohmicity_Backend.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Ohmicity_Backend.entitlements; sourceTree = "<group>"; };
-		F6C5930B26585F1A000E0245 /* ParseDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseDataController.swift; sourceTree = "<group>"; };
+		F6C5930B26585F1A000E0245 /* RawShowDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawShowDataController.swift; sourceTree = "<group>"; };
 		F6D80C43266AF93200A18ED2 /* Band.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Band.swift; sourceTree = "<group>"; };
 		F6D80C4A266B0FEF00A18ED2 /* Show.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Show.swift; sourceTree = "<group>"; };
+		F6DE75B02798FD4B0033C807 /* DefaultBand.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DefaultBand.png; sourceTree = "<group>"; };
 		F6F11E8B267FEAFD00E6368A /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -107,12 +129,13 @@
 			isa = PBXGroup;
 			children = (
 				F65B06AC266C95AF00616BD9 /* Helper.swift */,
-				D85AC753267BB02B00CEA95B /* RemoteDataController.swift */,
 				D85F3D1C267CF2FC001BCFCA /* FireStoreReferenceManager.swift */,
-				F610AA3E26699EE700EC2E8A /* LocalDataStorageController.swift */,
-				F6C5930B26585F1A000E0245 /* ParseDataController.swift */,
+				D85AC753267BB02B00CEA95B /* RemoteDataController.swift */,
+				F610AA3E26699EE700EC2E8A /* LocalBackupDataStorageController.swift */,
+				F6C5930B26585F1A000E0245 /* RawShowDataController.swift */,
 				D83B32CC267A5D800065948E /* ImageController.swift */,
 				F6936DC326A0DA6C00E5FA7F /* Enumerations.swift */,
+				F6334C0F2786511100CD0A4F /* TagController.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -129,7 +152,7 @@
 		F6292DD32656F2E000DAE6B5 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				F630FC0626583E5A001D0DA6 /* RawJSON.swift */,
+				F630FC0626583E5A001D0DA6 /* ShowData.swift */,
 				D8092A0E26681C0000560A97 /* Business.swift */,
 				F676F0EA2698DB4100C47599 /* Rating.swift */,
 				F6D80C4A266B0FEF00A18ED2 /* Show.swift */,
@@ -138,6 +161,8 @@
 				F676F0E82698DAA400C47599 /* Recommendation.swift */,
 				F676F0EC2698DD5900C47599 /* Message.swift */,
 				F617385E26D85C8E0084B2CB /* BusinessBannerAd.swift */,
+				F6334C0D2786504D00CD0A4F /* Tags.swift */,
+				F63837862793E14300838858 /* ProductionData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -165,11 +190,18 @@
 			isa = PBXGroup;
 			children = (
 				F6A2D74D2656F05900C50456 /* MainViewController.swift */,
+				F66E7016278901C700C11B18 /* OpeningViewController.swift */,
 				F65DC07526E5DBA300340C07 /* BulkShowCreationViewController.swift */,
 				F610AA382669309100EC2E8A /* VenueDetailViewController.swift */,
 				F65B06A7266C3EC300616BD9 /* ShowDetailViewController.swift */,
 				F65B06A2266C360F00616BD9 /* BandDetailViewController.swift */,
+				F651C91B278605F600FCD0AA /* ImportShowsViewController.swift */,
+				F69F94A12786868A00D060D3 /* BandTagViewController.swift */,
+				F69F94A5278692B700D060D3 /* VenueTagViewController.swift */,
 				F617385C26D858A40084B2CB /* BannerAdsViewController.swift */,
+				F68A6CEE27794A0B009DCB8F /* RecommendationsViewController.swift */,
+				F67DA270278D2C4000DB0820 /* DatabaseUtilityViewController.swift */,
+				F638378A2793FA8B00838858 /* ProductionController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -208,6 +240,7 @@
 		F6C31F532656E57B004A1BB2 /* Ohmicity Backend */ = {
 			isa = PBXGroup;
 			children = (
+				F6DE75AF2798FD3D0033C807 /* Images */,
 				D85AC756267BB03300CEA95B /* Helpers */,
 				F6292DD32656F2E000DAE6B5 /* Models */,
 				F6A2D7522656F06300C50456 /* Views */,
@@ -219,6 +252,14 @@
 				F6F11E8B267FEAFD00E6368A /* Podfile */,
 			);
 			path = "Ohmicity Backend";
+			sourceTree = "<group>";
+		};
+		F6DE75AF2798FD3D0033C807 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				F6DE75B02798FD4B0033C807 /* DefaultBand.png */,
+			);
+			path = Images;
 			sourceTree = "<group>";
 		};
 		F6F5C1B32656EB2C0003924A /* Assets */ = {
@@ -300,6 +341,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6F11E8C267FEAFD00E6368A /* Podfile in Resources */,
+				F6DE75B12798FD4B0033C807 /* DefaultBand.png in Resources */,
 				F6C31F592656E57B004A1BB2 /* Assets.xcassets in Resources */,
 				F6C31F5C2656E57B004A1BB2 /* Main.storyboard in Resources */,
 				F6578F4B268D032E00AC25CE /* BusinessPhoto.xib in Resources */,
@@ -361,31 +403,41 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F69F94A7278692B700D060D3 /* VenueTagViewController.swift in Sources */,
 				F61683F626AD0490009CB284 /* MainTableViewCell.swift in Sources */,
 				F676F0E92698DAA400C47599 /* Recommendation.swift in Sources */,
 				F617385F26D85C8E0084B2CB /* BusinessBannerAd.swift in Sources */,
 				F676F0EB2698DB4100C47599 /* Rating.swift in Sources */,
+				F66E7018278901C700C11B18 /* OpeningViewController.swift in Sources */,
 				F6D80C44266AF93200A18ED2 /* Band.swift in Sources */,
 				F65B06AD266C95AF00616BD9 /* Helper.swift in Sources */,
+				F69F94A32786868A00D060D3 /* BandTagViewController.swift in Sources */,
 				F6A2D74F2656F05900C50456 /* MainViewController.swift in Sources */,
+				F6334C102786511100CD0A4F /* TagController.swift in Sources */,
 				D8092A0F26681C0000560A97 /* Business.swift in Sources */,
 				D85AC754267BB02B00CEA95B /* RemoteDataController.swift in Sources */,
 				F65B06A9266C3EC300616BD9 /* ShowDetailViewController.swift in Sources */,
 				D8092A1226682D4E00560A97 /* User.swift in Sources */,
 				D85F3D1D267CF2FC001BCFCA /* FireStoreReferenceManager.swift in Sources */,
 				F65B06A4266C360F00616BD9 /* BandDetailViewController.swift in Sources */,
+				F63837872793E14300838858 /* ProductionData.swift in Sources */,
 				F65DC07726E5DBA300340C07 /* BulkShowCreationViewController.swift in Sources */,
 				D83B32CD267A5D800065948E /* ImageController.swift in Sources */,
 				F617385D26D858A40084B2CB /* BannerAdsViewController.swift in Sources */,
-				F610AA3F26699EE700EC2E8A /* LocalDataStorageController.swift in Sources */,
-				F630FC0726583E5A001D0DA6 /* RawJSON.swift in Sources */,
+				F67DA271278D2C4000DB0820 /* DatabaseUtilityViewController.swift in Sources */,
+				F610AA3F26699EE700EC2E8A /* LocalBackupDataStorageController.swift in Sources */,
+				F630FC0726583E5A001D0DA6 /* ShowData.swift in Sources */,
 				F6936DC426A0DA6C00E5FA7F /* Enumerations.swift in Sources */,
 				F610AA3A2669309100EC2E8A /* VenueDetailViewController.swift in Sources */,
-				F6C5930C26585F1A000E0245 /* ParseDataController.swift in Sources */,
+				F6C5930C26585F1A000E0245 /* RawShowDataController.swift in Sources */,
+				F6334C0E2786504D00CD0A4F /* Tags.swift in Sources */,
 				F6578F4A268D032E00AC25CE /* BusinessPhoto.swift in Sources */,
+				F638378B2793FA8B00838858 /* ProductionController.swift in Sources */,
+				F651C91C278605F600FCD0AA /* ImportShowsViewController.swift in Sources */,
 				F676F0ED2698DD5900C47599 /* Message.swift in Sources */,
 				F6C31F552656E57B004A1BB2 /* AppDelegate.swift in Sources */,
 				F6D80C4B266B0FEF00A18ED2 /* Show.swift in Sources */,
+				F68A6CF027794A0B009DCB8F /* RecommendationsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -536,7 +588,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.41;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanhedgeman.Ohmicity-Backend";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -562,7 +614,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 1.41;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.nathanhedgeman.Ohmicity-Backend";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

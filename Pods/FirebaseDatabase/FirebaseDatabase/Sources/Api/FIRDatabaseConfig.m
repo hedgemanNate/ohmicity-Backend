@@ -75,10 +75,10 @@
         [NSException raise:NSInvalidArgumentException
                     format:@"The minimum cache size must be at least 1MB"];
     }
-    if (persistenceCacheSizeBytes > 100 * 1024 * 1024) {
+    if (persistenceCacheSizeBytes > 2000 * 1024 * 1024) {
         [NSException raise:NSInvalidArgumentException
                     format:@"Firebase Database currently doesn't support a "
-                           @"cache size larger than 100MB"];
+                           @"cache size larger than 2GB"];
     }
     self->_persistenceCacheSizeBytes = persistenceCacheSizeBytes;
 }
